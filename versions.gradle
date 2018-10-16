@@ -1,0 +1,39 @@
+def projectInfo = [:]
+projectInfo.with {
+    applicationId = "com.illiarb.tmdbclient"
+    minSdkVersion = 21
+    targetSdkVersion = 28
+    compileSdkVersion = 28
+}
+
+def versions = [:]
+versions.with {
+    kotlin = "1.2.71"
+    supportLibrary = "1.0.0"
+    constraintLayout = "1.1.0"
+    archComponents = "2.0.0-alpha1"
+    navigation = "1.0.0-alpha06"
+    glide = "4.8.0"
+    dagger = "2.16"
+    rxJava = "2.2.2"
+    rxAndroid = "2.1.0"
+    retrofit = "2.4.0"
+    okHttpLogger = "3.11.0"
+    javax = "1"
+}
+
+def testVersions = [:]
+testVersions.with {
+    junit = "4.12"
+}
+
+def androidTestVersions = [:]
+androidTestVersions.with {
+    runner = "1.1.0-alpha1"
+    espresso = "3.1.0-alpha1"
+}
+
+ext.projectInfo = projectInfo
+ext.versions = versions
+ext.testVersions = testVersions
+ext.androidTestVersions = androidTestVersions

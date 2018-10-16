@@ -1,0 +1,16 @@
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/moviesFragment">
+
+    <fragment
+        android:id="@+id/moviesFragment"
+        android:name="com.illiarb.tmdbclient.feature.movies.movieslist.MoviesFragment"
+        android:label="MoviesFragment" />
+
+    <action
+        android:id="@+id/moviesFragmentAction"
+        app:destination="@id/moviesFragment"
+        />
+
+</navigation>

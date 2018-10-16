@@ -1,0 +1,46 @@
+def deps = [:]
+
+// STD
+deps.kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+
+// AndroidX
+deps.supportDesign = "com.google.android.material:material:$versions.supportLibrary"
+deps.appcompat = "androidx.appcompat:appcompat:$versions.supportLibrary"
+deps.recyclerView = "androidx.recyclerview:recyclerview:$versions.supportLibrary"
+deps.constraintLayout = "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
+
+// Arch components
+deps.viewmodel = "androidx.lifecycle:lifecycle-viewmodel:$versions.archComponents"
+deps.viewModelExt = "androidx.lifecycle:lifecycle-extensions:$versions.archComponents"
+deps.navigation = "android.arch.navigation:navigation-fragment:$versions.navigation"
+deps.navigationUi = "android.arch.navigation:navigation-ui:$versions.navigation"
+
+// Image Loading
+deps.glide = "com.github.bumptech.glide:glide:$versions.glide"
+deps.glideCompiler = "com.github.bumptech.glide:compiler:$versions.glide"
+
+// Network
+deps.retrofit = "com.squareup.retrofit2:retrofit:$versions.retrofit"
+deps.converterGson = "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+deps.rxJavaAdapter = "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
+deps.okHttpLogger = "com.squareup.okhttp3:logging-interceptor:$versions.okHttpLogger"
+
+// ReactiveX
+deps.rxJava = "io.reactivex.rxjava2:rxjava:$versions.rxJava"
+deps.rxAndroid = "io.reactivex.rxjava2:rxandroid:$versions.rxAndroid"
+
+// Di
+deps.dagger = "com.google.dagger:dagger:$versions.dagger"
+deps.daggerCompiler = "com.google.dagger:dagger-compiler:$versions.dagger"
+deps.javax = "javax.inject:javax.inject:$versions.javax"
+
+def testDeps = [:]
+testDeps.junit = "junit:junit:$testVersions.junit"
+
+def androidTestDeps = [:]
+androidTestDeps.runner = "androidx.test:runner:$androidTestVersions.runner"
+androidTestDeps.espresso = "androidx.test.espresso:espresso-core:$androidTestVersions.espresso"
+
+ext.deps = deps
+ext.testDeps = testDeps
+ext.androidTestDeps = androidTestDeps

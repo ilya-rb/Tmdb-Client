@@ -1,0 +1,12 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+
+apply from: dependenciesFilePath
+
+dependencies {
+
+    implementation deps.kotlin
+    implementation deps.rxJava
+    implementation deps.javax
+
+}

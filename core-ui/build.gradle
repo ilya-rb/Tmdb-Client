@@ -1,0 +1,46 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+apply from: dependenciesFilePath
+
+android {
+    compileSdkVersion projectInfo.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion projectInfo.minSdkVersion
+        targetSdkVersion projectInfo.targetSdkVersion
+
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        all {
+            def config = file("$rootDir/api-config.properties")
+            def properties = new Properties()
+            properties.load(new FileInputStream(config))
+
+            buildConfigField "String", "IMG_URL", properties["api.imgUrl"]
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    kapt deps.daggerCompiler
+
+    implementation deps.viewmodel
+    implementation deps.viewModelExt
+    implementation deps.supportDesign
+
+    implementation deps.kotlin
+    implementation deps.rxJava
+    implementation deps.dagger
+    implementation deps.glide
+}
