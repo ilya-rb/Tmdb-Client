@@ -5,20 +5,19 @@ import android.view.View
 import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.viewmodel.BaseViewModel
-import com.illiarb.tmdblcient.core.entity.Movie
 import kotlinx.android.synthetic.main.fragment_movie_details_info.*
 
 class MovieDetailsInfoFragment : BaseFragment<BaseViewModel>() {
 
     companion object {
 
-        private const val EXTRA_MOVIE = "movie"
+        private const val EXTRA_OVERVIEW = "overview"
 
-        fun newInstance(movie: Movie): MovieDetailsInfoFragment {
+        fun newInstance(overview: String?): MovieDetailsInfoFragment {
             return MovieDetailsInfoFragment().apply {
                 arguments = Bundle()
                     .apply {
-                        putSerializable(EXTRA_MOVIE, movie)
+                        putString(EXTRA_OVERVIEW, overview)
                     }
             }
         }
@@ -28,15 +27,7 @@ class MovieDetailsInfoFragment : BaseFragment<BaseViewModel>() {
         super.onViewCreated(view, savedInstanceState)
 
         arguments?.let { args ->
-            val movie = args.getSerializable(EXTRA_MOVIE) as Movie
-
-            movie.runtime?.let { runtime ->
-                movieDetailsMeta.text = runtime.toString()
-            }
-
-            movie.overview?.let { overview ->
-                movieDetailsOverview.text = overview
-            }
+            movieDetailsOverview.text = args.getString(EXTRA_OVERVIEW, getString(R.string.movie_details_overview_empty))
         }
     }
 

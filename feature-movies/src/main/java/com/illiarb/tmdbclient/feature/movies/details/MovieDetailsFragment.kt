@@ -62,10 +62,17 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
 
     private fun showMovieDetails(movie: Movie) {
         movie.backdropPath?.let {
-            ImageLoader.loadImage(movieDetailsPoster, it)
+            ImageLoader.loadImage(movieDetailsPoster, it, true)
+            ImageLoader.loadImage(
+                movieDetailsPosterSmall,
+                it,
+                true,
+                resources.getDimensionPixelSize(R.dimen.movie_details_small_poster_corner_radius)
+            )
         }
 
         movieDetailsTitle.text = movie.title
+        movieDetailsRating.text = movie.voteAverage.toString()
 
         if (movie.genres.isNotEmpty()) {
             val builder = StringBuilder()
@@ -75,8 +82,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
                 builder.append(it.next().name)
 
                 if (it.hasNext()) {
-                    builder.append(",")
-                    builder.append(" ")
+                    builder.append(" / ")
                 }
             }
 

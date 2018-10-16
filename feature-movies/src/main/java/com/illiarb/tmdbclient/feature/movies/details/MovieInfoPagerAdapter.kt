@@ -18,7 +18,7 @@ class MovieInfoPagerAdapter @Inject constructor(
 ) : FragmentStatePagerAdapter(fragmentManager) {
 
     companion object {
-        private const val TABS_COUNT = 4
+        private const val TABS_COUNT = 3
     }
 
     var movie: Movie? = null
@@ -26,7 +26,7 @@ class MovieInfoPagerAdapter @Inject constructor(
     override fun getItem(position: Int): Fragment? {
         return movie?.let {
             when (position) {
-                0 -> MovieDetailsInfoFragment.newInstance(it)
+                0 -> MovieDetailsInfoFragment.newInstance(it.overview)
                 1 -> MovieDetailsReviewsFragment()
                 2 -> MovieDetailsPhotosFragment()
                 3 -> MovieDetailsVideosFragment()

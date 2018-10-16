@@ -32,6 +32,8 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
             val spacing = resources.getDimensionPixelSize(R.dimen.item_movie_spacing)
             it.addItemDecoration(SpaceItemDecoration(spacing, spacing))
         }
+
+        swipeRefreshLayout.isEnabled = false
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -53,6 +55,8 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
     }
 
     private fun onMoviesUiStateChanged(state: UiState<List<Movie>>) {
+        swipeRefreshLayout.isRefreshing = state.isLoading()
+
         if (state.hasData()) {
             moviesAdapter.submitList(state.requireData())
         }

@@ -1,7 +1,7 @@
 <resources>
 
     <string name="movie_details_info_title">Details</string>
-    <string name="movie_details_info_overview">Overview</string>
+    <string name="movie_details_overview_empty">No description provided</string>
 
     <string name="movie_details_info_tab_title">Info</string>
     <string name="movie_details_info_reviews_tab_title">Reviews</string>
