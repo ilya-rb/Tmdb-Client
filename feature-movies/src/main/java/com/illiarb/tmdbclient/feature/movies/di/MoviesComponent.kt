@@ -2,6 +2,7 @@ package com.illiarb.tmdbclient.feature.movies.di
 
 import androidx.fragment.app.FragmentActivity
 import com.illiarb.tmdbclient.feature.movies.details.MovieDetailsFragment
+import com.illiarb.tmdbclient.feature.movies.details.reviews.MovieDetailsReviewsFragment
 import com.illiarb.tmdbclient.feature.movies.movieslist.MoviesFragment
 import com.illiarb.tmdbexplorer.coreui.di.ViewModelModule
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
@@ -29,4 +30,6 @@ interface MoviesComponent : StartScreenActionProvider {
     fun inject(fragment: MoviesFragment)
 
     fun inject(fragment: MovieDetailsFragment)
+
+    fun inject(fragment: MovieDetailsReviewsFragment)
 }

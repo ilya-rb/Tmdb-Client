@@ -2,6 +2,7 @@ package com.illiarb.tmdbclient.network.api.movie
 
 import com.illiarb.tmdbclient.network.responses.MovieResponse
 import com.illiarb.tmdbclient.network.responses.ResultsResponse
+import com.illiarb.tmdbclient.network.responses.ReviewResponse
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -17,4 +18,7 @@ interface MovieService {
         @Path("id") id: Int,
         @Query("append_to_response") appendToResponse: String
     ): Single<MovieResponse>
+
+    @GET("movie/{id}/reviews")
+    fun getMovieReviews(@Path("id") id: Int): Single<ResultsResponse<ReviewResponse>>
 }

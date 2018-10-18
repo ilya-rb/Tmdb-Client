@@ -14,6 +14,7 @@ class ShowMovieDetailsActionImpl @Inject constructor(
         activity.supportFragmentManager
             .beginTransaction()
             .replace(R.id.frameContainer, MovieDetailsFragment.newInstance(id), MovieDetailsFragment::class.java.name)
+            .addToBackStack(MovieDetailsFragment::class.java.name)
             .commit()
     }
 }

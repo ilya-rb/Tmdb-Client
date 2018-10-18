@@ -27,7 +27,7 @@ class MovieInfoPagerAdapter @Inject constructor(
         return movie?.let {
             when (position) {
                 0 -> MovieDetailsInfoFragment.newInstance(it.overview)
-                1 -> MovieDetailsReviewsFragment()
+                1 -> MovieDetailsReviewsFragment.newInstance(it.id)
                 2 -> MovieDetailsPhotosFragment()
                 3 -> MovieDetailsVideosFragment()
                 else -> throw IllegalArgumentException("Unknown tab position")

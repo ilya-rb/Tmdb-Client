@@ -24,6 +24,14 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 1) {
+            supportFragmentManager.popBackStack()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     @LayoutRes
     protected abstract fun getContentView(): Int
 }
