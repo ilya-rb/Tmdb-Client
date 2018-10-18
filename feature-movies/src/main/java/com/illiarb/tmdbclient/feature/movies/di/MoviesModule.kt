@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.illiarb.tmdbclient.feature.movies.details.MovieDetailsViewModel
 import com.illiarb.tmdbclient.feature.movies.details.reviews.MovieDetailsReviewViewModel
 import com.illiarb.tmdbclient.feature.movies.movieslist.MoviesViewModel
-import com.illiarb.tmdbclient.feature.movies.navigation.MoviesScreenAction
+import com.illiarb.tmdbclient.feature.movies.navigation.ShowMoviesListActionImpl
 import com.illiarb.tmdbclient.feature.movies.navigation.ShowMovieDetailsActionImpl
 import com.illiarb.tmdbexplorer.coreui.di.ViewModelKey
 import com.illiarb.tmdblcient.core.navigation.ShowMovieDetailsAction
@@ -32,7 +32,7 @@ interface MoviesModule {
     fun bindMovieReviewsViewModel(viewModel: MovieDetailsReviewViewModel): ViewModel
 
     @Binds
-    fun bindStartScreenAction(moviesScreenAction: MoviesScreenAction): ShowMoviesListAction
+    fun bindStartScreenAction(showMoviesListActionImpl: ShowMoviesListActionImpl): ShowMoviesListAction
 
     @Binds
     fun bindShowMovieDetailsAction(impl: ShowMovieDetailsActionImpl): ShowMovieDetailsAction

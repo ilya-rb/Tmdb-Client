@@ -1,32 +1,22 @@
 package com.illiarb.tmdbclient.features.main
 
-import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.illiarb.tmdbclient.features.main.di.MainComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseActivity
 import com.illiarb.tmdbexplorerdi.Injectable
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
-import javax.inject.Inject
 
-class MainActivity : BaseActivity(), Injectable {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private lateinit var viewModel: MainViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = viewModelFactory.create(MainViewModel::class.java)
-
-        if (savedInstanceState == null) {
-            viewModel.onScreenInitialized()
-        }
-    }
+class MainActivity : BaseActivity<MainViewModel>(), Injectable {
 
     override fun getContentView(): Int = R.layout.activity_main
 
-    override fun inject(appProvider: AppProvider) {
+    override fun getViewModelClass(): Class<MainViewModel> = MainViewModel::class.java
+
+    override fun inject(appProvider: AppProvider) =
         MainComponent.get(appProvider, this).inject(this)
-    }
+
+    override fun onNavigateUp(): Boolean =
+        Navigation
+            .findNavController(this, R.id.nav_host_fragment)
+            .navigateUp()
 }

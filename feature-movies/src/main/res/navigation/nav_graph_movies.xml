@@ -1,5 +1,4 @@
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:startDestination="@id/moviesFragment">
 
@@ -10,7 +9,15 @@
 
     <action
         android:id="@+id/moviesFragmentAction"
-        app:destination="@id/moviesFragment"
-        />
+        app:destination="@id/moviesFragment" />
+
+    <fragment
+        android:id="@+id/movieDetailsFragment"
+        android:name="com.illiarb.tmdbclient.feature.movies.details.MovieDetailsFragment"
+        android:label="MovieDetailsFragment" />
+
+    <action
+        android:id="@+id/movieDetailsAction"
+        app:destination="@id/movieDetailsFragment" />
 
 </navigation>

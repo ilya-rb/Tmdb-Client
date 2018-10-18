@@ -20,14 +20,10 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
 
         private const val EXTRA_MOVIE_ID = "id"
 
-        fun newInstance(movieId: Int): MovieDetailsFragment {
-            return MovieDetailsFragment().apply {
-                arguments = Bundle()
-                    .apply {
-                        putInt(EXTRA_MOVIE_ID, movieId)
-                    }
+        fun createBundle(movieId: Int): Bundle =
+            Bundle().apply {
+                putInt(EXTRA_MOVIE_ID, movieId)
             }
-        }
     }
 
     @Inject
