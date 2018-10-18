@@ -30,7 +30,7 @@ class MoviesViewModel @Inject constructor(
     }
 
     init {
-        moviesSubject.loadData("now_playing")
+        moviesSubject.loadData("popular")
     }
 
     fun observeMovies(): Observable<UiState<List<Movie>>> = moviesSubject.observer()

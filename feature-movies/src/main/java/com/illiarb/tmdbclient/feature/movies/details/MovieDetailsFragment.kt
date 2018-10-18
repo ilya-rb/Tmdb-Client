@@ -1,6 +1,7 @@
 package com.illiarb.tmdbclient.feature.movies.details
 
 import android.os.Bundle
+import android.view.View
 import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbclient.feature.movies.di.MoviesComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
@@ -31,6 +32,14 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
 
     @Inject
     lateinit var infoPagerAdapter: MovieInfoPagerAdapter
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        btnBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
