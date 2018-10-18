@@ -43,11 +43,10 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
         arguments?.let {
             val movieId = it.getInt(EXTRA_MOVIE_ID)
 
+            viewModel.id = movieId
             viewModel.observeMovieDetailsState()
                 .subscribe(::onMovieDetailsStateChanged, Throwable::printStackTrace)
                 .addTo(destroyViewDisposable)
-
-            viewModel.getMovieDetails(movieId)
         }
     }
 
