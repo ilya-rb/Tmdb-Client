@@ -1,10 +1,10 @@
 package com.illiarb.tmdbclient.feature.movies.movieslist.adapter
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.BaseAdapter
+import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdblcient.core.entity.Movie
 import javax.inject.Inject
 
@@ -19,8 +19,6 @@ class MoviesAdapter @Inject constructor() : BaseAdapter<Movie, MovieViewHolder>(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
-        return MovieViewHolder(view)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder =
+        MovieViewHolder(parent.inflate(R.layout.item_movie))
 }

@@ -5,6 +5,7 @@ import android.view.View
 import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbclient.feature.movies.di.MoviesComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
+import com.illiarb.tmdbexplorer.coreui.ext.setTranslucentStatusBar
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.state.UiState
 import com.illiarb.tmdbexplorerdi.Injectable
@@ -48,6 +49,16 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
                 .subscribe(::onMovieDetailsStateChanged, Throwable::printStackTrace)
                 .addTo(destroyViewDisposable)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().setTranslucentStatusBar(true)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        requireActivity().setTranslucentStatusBar(false)
     }
 
     override fun getContentView(): Int = R.layout.fragment_movie_details
