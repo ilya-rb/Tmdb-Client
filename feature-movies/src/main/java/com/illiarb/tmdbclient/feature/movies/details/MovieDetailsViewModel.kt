@@ -28,7 +28,7 @@ class MovieDetailsViewModel @Inject constructor(
 
     private val movieDetailsState = object : DataUiStateSubject<Int, Movie>() {
         override fun createData(payload: Int): Disposable =
-            moviesInteractor.getMovieDetails(payload, "")
+            moviesInteractor.getMovieDetails(payload, "images")
                 .ioToMain(schedulerProvider)
                 .subscribe(this)
                 .addTo(clearDisposable)

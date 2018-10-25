@@ -10,5 +10,6 @@
 
     <dimen name="movie_details_small_poster_corner_radius">4dp</dimen>
     <dimen name="movie_details_horizontal_margin">16dp</dimen>
+    <dimen name="movie_details_horizontal_small_margin">8dp</dimen>
 
 </resources>

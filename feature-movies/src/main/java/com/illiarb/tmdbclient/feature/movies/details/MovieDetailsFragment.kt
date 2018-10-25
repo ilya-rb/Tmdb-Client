@@ -79,7 +79,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
     }
 
     private fun showMovieDetails(movie: Movie) {
-        movie.backdropPath?.let {
+        movie.posterPath?.let {
             ImageLoader.loadImage(movieDetailsPoster, it, true)
             ImageLoader.loadImage(
                 movieDetailsPosterSmall,

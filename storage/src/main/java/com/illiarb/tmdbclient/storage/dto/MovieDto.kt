@@ -3,7 +3,7 @@ package com.illiarb.tmdbclient.storage.dto
 data class MovieDto(
     val id: Int,
     val adult: Boolean,
-    val backdropPath: String?,
+    val posterPath: String?,
     val budget: Int,
     val genres: List<GenreDto>,
     val homepage: String?,

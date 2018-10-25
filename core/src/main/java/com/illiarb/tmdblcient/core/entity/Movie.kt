@@ -5,7 +5,7 @@ import java.io.Serializable
 data class Movie(
     val id: Int,
     val adult: Boolean,
-    val backdropPath: String?,
+    val posterPath: String?,
     val budget: Int,
     val genres: List<Genre>,
     val homepage: String?,

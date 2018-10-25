@@ -17,7 +17,7 @@ class MovieViewHolder(containerView: View) : BaseViewHolder<Movie>(containerView
     override fun bind(item: Movie) {
         itemTitle.text = item.title
 
-        item.backdropPath?.let {
+        item.posterPath?.let {
             ImageLoader.loadImage(itemImage, it, true, imageCornerRadius)
         }
     }
