@@ -1,0 +1,46 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+apply from: dependenciesFilePath
+
+android {
+    compileSdkVersion projectInfo.compileSdkVersion
+
+    defaultConfig {
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        all {
+            def config = file("$rootDir/api-config.properties")
+            def properties = new Properties()
+            properties.load(new FileInputStream(config))
+
+            buildConfigField "String", "API_URL", properties["api.url"]
+            buildConfigField "String", "API_KEY", properties["api.key"]
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    kapt deps.daggerCompiler
+
+    implementation project(':core')
+    implementation project(':di')
+
+    implementation deps.kotlin
+    implementation deps.rxJava
+    implementation deps.dagger
+    implementation deps.retrofit
+    implementation deps.converterGson
+    implementation deps.rxJavaAdapter
+    implementation deps.okHttpLogger
+}

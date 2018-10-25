@@ -9,7 +9,7 @@ import com.illiarb.tmdbclient.feature.movies.details.photos.MovieDetailsPhotosFr
 import com.illiarb.tmdbclient.feature.movies.details.reviews.MovieDetailsReviewsFragment
 import com.illiarb.tmdbclient.feature.movies.details.videos.MovieDetailsVideosFragment
 import com.illiarb.tmdblcient.core.entity.Movie
-import com.illiarb.tmdblcient.core.resources.ResourceResolver
+import com.illiarb.tmdblcient.core.system.ResourceResolver
 import javax.inject.Inject
 
 class MovieInfoPagerAdapter @Inject constructor(

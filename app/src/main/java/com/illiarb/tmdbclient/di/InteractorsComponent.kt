@@ -2,23 +2,23 @@ package com.illiarb.tmdbclient.di
 
 import com.illiarb.tmdbclient.coreimpl.modules.movie.MoviesInteractorImpl
 import com.illiarb.tmdbexplorerdi.providers.InteractorsProvider
-import com.illiarb.tmdbexplorerdi.providers.NetworkProvider
+import com.illiarb.tmdbexplorerdi.providers.StorageProvider
 import com.illiarb.tmdblcient.core.modules.movie.MoviesInteractor
 import dagger.Binds
 import dagger.Component
 import dagger.Module
 
 @Component(
-    dependencies = [NetworkProvider::class],
+    dependencies = [StorageProvider::class],
     modules = [InteractorsModule::class]
 )
 interface InteractorsComponent : InteractorsProvider {
 
     companion object {
 
-        fun get(networkProvider: NetworkProvider): InteractorsProvider {
+        fun get(storageProvider: StorageProvider): InteractorsProvider {
             return DaggerInteractorsComponent.builder()
-                .networkProvider(networkProvider)
+                .storageProvider(storageProvider)
                 .build()
         }
     }

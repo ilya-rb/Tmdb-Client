@@ -34,7 +34,7 @@ dependencies {
 
     implementation project(':core')
     implementation project(':core-impl')
-    implementation project(':network')
+    implementation project(':storage')
     implementation project(':di')
     implementation project(':feature-main')
     implementation project(':feature-movies')

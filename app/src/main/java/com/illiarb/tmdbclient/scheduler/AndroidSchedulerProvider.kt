@@ -1,6 +1,6 @@
 package com.illiarb.tmdbclient.scheduler
 
-import com.illiarb.tmdblcient.core.schedulers.SchedulerProvider
+import com.illiarb.tmdblcient.core.system.SchedulerProvider
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

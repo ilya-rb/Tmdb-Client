@@ -1,6 +1,6 @@
 package com.illiarb.tmdblcient.core.ext
 
-import com.illiarb.tmdblcient.core.schedulers.SchedulerProvider
+import com.illiarb.tmdblcient.core.system.SchedulerProvider
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable

@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.resources
 
 import android.content.Context
-import com.illiarb.tmdblcient.core.resources.ResourceResolver
+import com.illiarb.tmdblcient.core.system.ResourceResolver
 
 class AndroidResourceResolver constructor(private val context: Context) : ResourceResolver {
 

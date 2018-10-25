@@ -8,7 +8,7 @@ import com.illiarb.tmdblcient.core.entity.Review
 import com.illiarb.tmdblcient.core.ext.addTo
 import com.illiarb.tmdblcient.core.ext.ioToMain
 import com.illiarb.tmdblcient.core.modules.movie.MoviesInteractor
-import com.illiarb.tmdblcient.core.schedulers.SchedulerProvider
+import com.illiarb.tmdblcient.core.system.SchedulerProvider
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
