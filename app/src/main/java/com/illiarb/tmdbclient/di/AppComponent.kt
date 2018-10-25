@@ -27,7 +27,7 @@ interface AppComponent : AppProvider {
     companion object {
 
         fun get(app: App): AppProvider {
-            val storageProvider = StorageComponent.get()
+            val storageProvider = StorageComponent.get(app)
             val interactorsProvider = InteractorsComponent.get(storageProvider)
 
             return DaggerAppComponent.builder()

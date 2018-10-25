@@ -16,5 +16,3 @@ interface MoviesRepository {
     fun getMovieReviews(id: Int): Single<List<Review>>
 
 }
-
-interface MovieDataSource : MoviesRepository

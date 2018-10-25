@@ -8,8 +8,12 @@ android {
     compileSdkVersion projectInfo.compileSdkVersion
 
     defaultConfig {
+        minSdkVersion projectInfo.minSdkVersion
+        targetSdkVersion projectInfo.targetSdkVersion
+        
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -43,4 +47,5 @@ dependencies {
     implementation deps.converterGson
     implementation deps.rxJavaAdapter
     implementation deps.okHttpLogger
+    implementation deps.binaryPrefs
 }
