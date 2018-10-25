@@ -2,6 +2,7 @@ package com.illiarb.tmdbclient.feature.movies.details
 
 import android.os.Bundle
 import android.view.View
+import com.google.android.material.chip.Chip
 import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbclient.feature.movies.di.MoviesComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
@@ -91,19 +92,19 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
         movieDetailsTitle.text = movie.title
         movieDetailsRating.text = movie.voteAverage.toString()
 
-        if (movie.genres.isNotEmpty()) {
-            val builder = StringBuilder()
+        movie.runtime?.let {
+            movieDetailsDuration.text = getString(R.string.movie_details_duration, it)
+        }
 
-            val it = movie.genres.iterator()
-            while (it.hasNext()) {
-                builder.append(it.next().name)
-
-                if (it.hasNext()) {
-                    builder.append(" / ")
+        movie.genres.forEach { genre ->
+            Chip(requireContext(), null, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Action)
+                .apply {
+                    text = genre.name
+                    setOnClickListener {
+                        viewModel.onGenreClicked(text.toString())
+                    }
                 }
-            }
-
-            movieDetailsTags.text = builder
+                .also { movieDetailsTags.addView(it) }
         }
 
         infoPagerAdapter.movie = movie

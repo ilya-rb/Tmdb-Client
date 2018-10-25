@@ -78,52 +78,68 @@
             tools:maxLines="1"
             tools:text="Movie title" />
 
-        <TextView
-            android:id="@+id/movieDetailsTags"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:ellipsize="end"
-            app:layout_constraintBottom_toBottomOf="@id/movieDetailsPosterSmall"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/movieDetailsPosterSmall"
-            app:layout_constraintTop_toBottomOf="@id/movieDetailsPoster"
-            tools:text="Action, Comedy" />
-
         <ImageView
             android:id="@+id/movieDetailsTmdb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_tmdblogo"
-            app:layout_constraintBottom_toBottomOf="@id/movieDetailsTitle"
-            app:layout_constraintEnd_toStartOf="@id/movieDetailsRating"
-            app:layout_constraintTop_toTopOf="@id/movieDetailsTitle" />
+            app:layout_constraintStart_toEndOf="@id/movieDetailsPosterSmall"
+            app:layout_constraintTop_toBottomOf="@id/movieDetailsPoster" />
 
         <TextView
             android:id="@+id/movieDetailsRating"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/movieDetailsTitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/movieDetailsTitle"
+            app:layout_constraintBottom_toBottomOf="@id/movieDetailsTmdb"
+            app:layout_constraintStart_toEndOf="@id/movieDetailsTmdb"
+            app:layout_constraintTop_toTopOf="@id/movieDetailsTmdb"
             tools:text="7.9" />
+
+        <TextView
+            android:id="@+id/movieDetailsDuration"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="@id/movieDetailsPosterSmall"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/movieDetailsPosterSmall"
+            app:layout_constraintTop_toBottomOf="@id/movieDetailsTmdb"
+            tools:text="Duration: 120 min" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/movieDetailsTags"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            app:chipSpacing="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/movieDetailsTitle" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/movieDetailsTabs"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginTop="8dp"
+            android:background="@null"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/movieDetailsTitle"
+            app:layout_constraintTop_toBottomOf="@id/movieDetailsTags"
             app:tabIndicatorFullWidth="false"
             app:tabIndicatorHeight="3dp"
             app:tabMode="scrollable" />
@@ -131,9 +147,10 @@
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/movieDetailsViewPager"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:background="#efefef"
             android:padding="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/movieDetailsTabs" />

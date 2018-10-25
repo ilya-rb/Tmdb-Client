@@ -7,5 +7,6 @@
     <string name="movie_details_info_reviews_tab_title">Reviews</string>
     <string name="movie_details_info_photos_tab_title">Photos</string>
     <string name="movie_details_info_videos_tab_title">Videos</string>
+    <string name="movie_details_duration">%1$d min</string>
 
 </resources>

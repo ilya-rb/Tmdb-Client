@@ -35,4 +35,8 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     fun observeMovieDetailsState(): Observable<UiState<Movie>> = movieDetailsState.observer()
+
+    fun onGenreClicked(name: String) {
+
+    }
 }

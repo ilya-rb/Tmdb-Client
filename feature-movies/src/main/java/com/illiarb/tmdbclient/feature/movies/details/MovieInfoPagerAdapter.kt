@@ -27,8 +27,8 @@ class MovieInfoPagerAdapter @Inject constructor(
         return movie?.let {
             when (position) {
                 0 -> MovieDetailsInfoFragment.newInstance(it.overview)
-                1 -> MovieDetailsReviewsFragment.newInstance(it.id)
-                2 -> MovieDetailsPhotosFragment()
+                1 -> MovieDetailsPhotosFragment()
+                2 -> MovieDetailsReviewsFragment.newInstance(it.id)
                 3 -> MovieDetailsVideosFragment()
                 else -> throw IllegalArgumentException("Unknown tab position")
             }
@@ -40,8 +40,8 @@ class MovieInfoPagerAdapter @Inject constructor(
     override fun getPageTitle(position: Int): CharSequence? =
         when (position) {
             0 -> resourceResolver.getString(R.string.movie_details_info_tab_title)
-            1 -> resourceResolver.getString(R.string.movie_details_info_reviews_tab_title)
-            2 -> resourceResolver.getString(R.string.movie_details_info_photos_tab_title)
+            1 -> resourceResolver.getString(R.string.movie_details_info_photos_tab_title)
+            2 -> resourceResolver.getString(R.string.movie_details_info_reviews_tab_title)
             3 -> resourceResolver.getString(R.string.movie_details_info_videos_tab_title)
             else -> throw IllegalArgumentException("Unknown tab position")
         }
