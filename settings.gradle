@@ -1,8 +1,8 @@
 include ':app',
-    ':core',
-    ':core-impl',
-    ':core-ui',
-    ':network',
-    ':di',
-    ':feature-main',
-    ':feature-movies'
+        ':core',
+        ':storage',
+        ':core-impl',
+        ':core-ui',
+        ':di',
+        ':feature-main',
+        ':feature-movies'
