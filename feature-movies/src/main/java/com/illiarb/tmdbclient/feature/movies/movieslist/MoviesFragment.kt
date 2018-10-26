@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.illiarb.tmdbclient.feature.movies.R
-import com.illiarb.tmdbclient.feature.movies.movieslist.adapter.MoviesAdapter
 import com.illiarb.tmdbclient.feature.movies.di.MoviesComponent
+import com.illiarb.tmdbclient.feature.movies.movieslist.adapter.MoviesAdapter
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDecoration
 import com.illiarb.tmdbexplorer.coreui.state.UiState
@@ -31,6 +31,10 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
 
             val spacing = resources.getDimensionPixelSize(R.dimen.item_movie_spacing)
             it.addItemDecoration(SpaceItemDecoration(spacing, spacing))
+        }
+
+        moviesFilter.setOnClickListener {
+            viewModel.onFilterClicked()
         }
 
         swipeRefreshLayout.isEnabled = false

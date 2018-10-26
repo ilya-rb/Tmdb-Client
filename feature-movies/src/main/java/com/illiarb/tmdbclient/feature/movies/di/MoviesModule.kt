@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import com.illiarb.tmdbclient.feature.movies.details.MovieDetailsViewModel
 import com.illiarb.tmdbclient.feature.movies.details.reviews.MovieDetailsReviewViewModel
 import com.illiarb.tmdbclient.feature.movies.movieslist.MoviesViewModel
-import com.illiarb.tmdbclient.feature.movies.navigation.ShowMoviesListActionImpl
 import com.illiarb.tmdbclient.feature.movies.navigation.ShowMovieDetailsActionImpl
+import com.illiarb.tmdbclient.feature.movies.navigation.ShowMovieFiltersActionImpl
+import com.illiarb.tmdbclient.feature.movies.navigation.ShowMoviesListActionImpl
 import com.illiarb.tmdbexplorer.coreui.di.ViewModelKey
 import com.illiarb.tmdblcient.core.navigation.ShowMovieDetailsAction
+import com.illiarb.tmdblcient.core.navigation.ShowMovieFiltersAction
 import com.illiarb.tmdblcient.core.navigation.ShowMoviesListAction
 import dagger.Binds
 import dagger.Module
@@ -36,4 +38,7 @@ interface MoviesModule {
 
     @Binds
     fun bindShowMovieDetailsAction(impl: ShowMovieDetailsActionImpl): ShowMovieDetailsAction
+
+    @Binds
+    fun bindShowMovieFiltersAction(impl: ShowMovieFiltersActionImpl): ShowMovieFiltersAction
 }

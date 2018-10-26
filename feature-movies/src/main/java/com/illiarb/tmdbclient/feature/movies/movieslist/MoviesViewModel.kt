@@ -9,6 +9,7 @@ import com.illiarb.tmdblcient.core.ext.addTo
 import com.illiarb.tmdblcient.core.ext.ioToMain
 import com.illiarb.tmdblcient.core.modules.movie.MoviesInteractor
 import com.illiarb.tmdblcient.core.navigation.ShowMovieDetailsAction
+import com.illiarb.tmdblcient.core.navigation.ShowMovieFiltersAction
 import com.illiarb.tmdblcient.core.system.SchedulerProvider
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
@@ -17,7 +18,8 @@ import javax.inject.Inject
 class MoviesViewModel @Inject constructor(
     moviesInteractor: MoviesInteractor,
     private val schedulerProvider: SchedulerProvider,
-    private val showMovieDetailsAction: ShowMovieDetailsAction
+    private val showMovieDetailsAction: ShowMovieDetailsAction,
+    private val showMovieFiltersAction: ShowMovieFiltersAction
 ) : BaseViewModel() {
 
     private val moviesSubject = object : DataUiStateSubject<String, List<Movie>>() {
@@ -37,5 +39,9 @@ class MoviesViewModel @Inject constructor(
 
     fun onMovieClicked(movie: Movie) {
         showMovieDetailsAction.showMovieDetails(movie.id)
+    }
+
+    fun onFilterClicked() {
+        showMovieFiltersAction.showMovieFilters()
     }
 }

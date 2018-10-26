@@ -22,4 +22,13 @@ data class Movie(
     val images: List<Backdrop>,
     val voteAverage: Float,
     val voteCount: Int
-) : Serializable
+) : Serializable {
+
+    companion object {
+
+        const val TYPE_POPULAR = "popular"
+        const val TYPE_NOW_PLAYING = "now_playing"
+        const val TYPE_TOP_RATED = "top_rated"
+        const val TYPE_UPCOMING = "upcoming"
+    }
+}
