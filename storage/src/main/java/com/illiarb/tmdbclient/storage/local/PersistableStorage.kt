@@ -1,5 +1,6 @@
 package com.illiarb.tmdbclient.storage.local
 
+import android.util.Log
 import com.illiarb.tmdbclient.storage.dto.MovieDto
 import com.illiarb.tmdbclient.storage.dto.MovieListDto
 import com.illiarb.tmdbexplorerdi.App
@@ -21,19 +22,20 @@ class PersistableStorage @Inject constructor(app: App) {
         const val KEY_MOVIE = "movie"
     }
 
-    val store: Preferences = BinaryPreferencesBuilder(app.getApplication())
+    private val store: Preferences = BinaryPreferencesBuilder(app.getApplication())
         .name(STORE_NAME)
         .registerPersistable(KEY_MOVIE, MovieDto::class.java)
         .registerPersistable(KEY_POPULAR_MOVIES, MovieListDto::class.java)
+        .exceptionHandler { Log.e(PersistableStorage::class.java.name, "Cache error", it) }
         .externalStorage(false)
         .build()
 
-    inline fun <reified T : Persistable> getValue(key: String): T = store.getPersistable(key, T::class.java.newInstance()) as T
+    fun <T : Persistable> getValue(key: String, result: T): T = store.getPersistable(key, result) as T
 
     fun putValue(key: String, value: Persistable) {
         store.edit()
             .putPersistable(key, value)
-            .apply()
+            .commit()
     }
 
     fun clear() {

@@ -12,7 +12,7 @@ import javax.inject.Inject
 class MoviesStorage @Inject constructor(private val persistableStorage: PersistableStorage) {
 
     fun getMoviesByType(type: String): Single<List<MovieDto>> {
-        val movies = persistableStorage.getValue<MovieListDto>(type).movies
+        val movies = persistableStorage.getValue(type, MovieListDto()).movies
         return Single.just(movies)
     }
 

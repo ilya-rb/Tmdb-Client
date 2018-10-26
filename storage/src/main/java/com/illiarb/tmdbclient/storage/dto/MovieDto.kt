@@ -78,10 +78,13 @@ data class MovieListDto(var movies: List<MovieDto>) : Persistable {
     constructor() : this(emptyList())
 
     override fun readExternal(input: DataInput) {
-        val size = input.readInt()
-        for (i in 0 until size) {
-            val movie = MovieDto()
-            movie.readExternal(input)
+        movies = mutableListOf<MovieDto>().apply {
+            val size = input.readInt()
+            for (i in 0 until size) {
+                MovieDto()
+                    .also { it.readExternal(input) }
+                    .also { add(it) }
+            }
         }
     }
 
