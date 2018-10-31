@@ -8,7 +8,6 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.illiarb.tmdbclient.features.main.di.MainComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseActivity
-import com.illiarb.tmdbexplorer.coreui.viewmodel.BaseViewModel
 import com.illiarb.tmdbexplorerdi.Injectable
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
 import com.illiarb.tmdblcient.core.ext.addTo
