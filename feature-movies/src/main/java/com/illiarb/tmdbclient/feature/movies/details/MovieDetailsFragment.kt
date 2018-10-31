@@ -1,10 +1,13 @@
 package com.illiarb.tmdbclient.feature.movies.details
 
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.chip.Chip
 import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbclient.feature.movies.di.MoviesComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
+import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsetsWithMargin
 import com.illiarb.tmdbexplorer.coreui.ext.setTranslucentStatusBar
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.state.UiState
@@ -20,6 +23,21 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
 
     @Inject
     lateinit var infoPagerAdapter: MovieInfoPagerAdapter
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val activity = requireActivity() as AppCompatActivity
+
+        movieDetailsToolbar
+            .apply {
+                awareOfWindowInsetsWithMargin(R.dimen.movie_details_horizontal_margin)
+                setNavigationOnClickListener {
+                    requireActivity().onBackPressed()
+                }
+            }
+            .also { activity.setSupportActionBar(it) }
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -69,6 +87,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
             )
         }
 
+        movieDetailsToolbar.title = movie.title
         movieDetailsTitle.text = movie.title
         movieDetailsRating.text = movie.voteAverage.toString()
 

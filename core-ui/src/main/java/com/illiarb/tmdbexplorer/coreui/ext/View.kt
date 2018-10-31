@@ -19,6 +19,6 @@ fun View.awareOfWindowInsetsWithMargin(@DimenRes space: Int) {
         params.topMargin = insets.systemWindowInsetTop + viewMargin
 
         layoutParams = params
-        return@setOnApplyWindowInsetsListener insets
+        return@setOnApplyWindowInsetsListener insets.consumeSystemWindowInsets()
     }
 }
