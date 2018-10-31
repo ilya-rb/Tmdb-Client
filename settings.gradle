@@ -4,5 +4,6 @@ include ':app',
         ':core-impl',
         ':core-ui',
         ':di',
+        ':feature-explore',
         ':feature-main',
         ':feature-movies'
