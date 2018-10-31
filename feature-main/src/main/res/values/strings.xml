@@ -3,5 +3,6 @@
     <string name="navigation_movies">Movies</string>
     <string name="navigation_tv_shows">Tv Shows</string>
     <string name="navigation_search">Search</string>
+    <string name="navigation_explore">Explore</string>
 
 </resources>

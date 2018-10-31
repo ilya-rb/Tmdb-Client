@@ -14,6 +14,13 @@
     <item
         android:id="@+id/navigation_search"
         android:icon="@drawable/ic_search_24dp"
-        android:title="@string/navigation_search" />
+        android:title="@string/navigation_search"
+        />
+
+    <item
+        android:id="@+id/navigation_explore"
+        android:icon="@drawable/ic_explore"
+        android:title="@string/navigation_explore"
+        />
 
 </menu>
