@@ -39,7 +39,6 @@ dependencies {
     implementation deps.rxAndroid
     implementation deps.viewmodel
     implementation deps.navigation
-    implementation deps.navigationUi
     implementation deps.constraintLayout
     implementation deps.dagger
 }

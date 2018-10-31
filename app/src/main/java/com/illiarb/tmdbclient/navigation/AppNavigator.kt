@@ -30,6 +30,10 @@ class AppNavigator @Inject constructor(private val bus: EventBus) : Navigator {
         )
     }
 
+    override fun showExploreScreen() {
+        bus.postEvent(createNavigationData(R.id.exploreAction))
+    }
+
     private fun createNavigationData(actionId: Int, args: Bundle? = null): NavDirections =
         object : NavDirections {
             override fun getArguments(): Bundle? = args

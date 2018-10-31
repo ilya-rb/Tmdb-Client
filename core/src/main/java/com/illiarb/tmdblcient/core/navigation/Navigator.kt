@@ -11,4 +11,6 @@ interface Navigator {
     fun showMoviesScreen()
 
     fun showMovieDetailsScreen(movieId: Int)
+
+    fun showExploreScreen()
 }

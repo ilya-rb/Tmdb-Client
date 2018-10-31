@@ -7,17 +7,26 @@
         android:name="com.illiarb.tmdbclient.feature.movies.movieslist.MoviesFragment"
         android:label="MoviesFragment" />
 
-    <action
-        android:id="@+id/moviesFragmentAction"
-        app:destination="@id/moviesFragment" />
-
     <fragment
         android:id="@+id/movieDetailsFragment"
         android:name="com.illiarb.tmdbclient.feature.movies.details.MovieDetailsFragment"
         android:label="MovieDetailsFragment" />
 
+    <fragment
+        android:id="@+id/exploreFragment"
+        android:name="com.illiarb.tmdbclient.feature.explore.ExploreFragment"
+        android:label="ExploreFragment" />
+
     <action
         android:id="@+id/movieDetailsAction"
         app:destination="@id/movieDetailsFragment" />
+
+    <action
+        android:id="@+id/moviesFragmentAction"
+        app:destination="@id/moviesFragment" />
+
+    <action
+        android:id="@+id/exploreAction"
+        app:destination="@id/exploreFragment" />
 
 </navigation>

@@ -16,7 +16,7 @@ import com.illiarb.tmdblcient.core.system.EventBus
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity<BaseViewModel>(), Injectable {
+class MainActivity : BaseActivity<MainViewModel>(), Injectable {
 
     @Inject
     lateinit var eventBus: EventBus
@@ -39,6 +39,12 @@ class MainActivity : BaseActivity<BaseViewModel>(), Injectable {
             addDestinationChangedListener(host.navController)
         }
 
+        bottomNavigation.setOnNavigationItemReselectedListener { /* No-op */ }
+        bottomNavigation.setOnNavigationItemSelectedListener {
+            viewModel.onNavigationItemSelected(it.itemId)
+            true
+        }
+
         eventBus.observeEvents(NavDirections::class.java)
             .subscribe { Navigation.findNavController(this, R.id.nav_host_container).navigate(it) }
             .addTo(destroyDisposable)
@@ -46,7 +52,7 @@ class MainActivity : BaseActivity<BaseViewModel>(), Injectable {
 
     override fun getContentView(): Int = R.layout.activity_main
 
-    override fun getViewModelClass(): Class<BaseViewModel> = BaseViewModel::class.java
+    override fun getViewModelClass(): Class<MainViewModel> = MainViewModel::class.java
 
     override fun inject(appProvider: AppProvider) = MainComponent.get(appProvider).inject(this)
 
