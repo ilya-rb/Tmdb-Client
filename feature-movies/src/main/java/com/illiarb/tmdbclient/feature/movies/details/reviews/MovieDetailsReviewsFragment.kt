@@ -54,14 +54,9 @@ class MovieDetailsReviewsFragment : BaseFragment<MovieDetailsReviewViewModel>(),
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        arguments?.let {
-            val id = it.getInt(ARG_MOVIE_ID)
-
-            viewModel.id = id
-            viewModel.observeMovieReviews()
-                .subscribe(::onReviewsStateChanged, Throwable::printStackTrace)
-                .addTo(destroyViewDisposable)
-        }
+        viewModel.observeMovieReviews()
+            .subscribe(::onReviewsStateChanged, Throwable::printStackTrace)
+            .addTo(destroyViewDisposable)
     }
 
     override fun getContentView(): Int = R.layout.fragment_movie_details_reviews
@@ -69,6 +64,16 @@ class MovieDetailsReviewsFragment : BaseFragment<MovieDetailsReviewViewModel>(),
     override fun getViewModelClass(): Class<MovieDetailsReviewViewModel> = MovieDetailsReviewViewModel::class.java
 
     override fun inject(appProvider: AppProvider) = MoviesComponent.get(appProvider, requireActivity()).inject(this)
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+
+        if (isVisibleToUser) {
+            arguments?.let {
+                viewModel.fetchReviews(it.getInt(ARG_MOVIE_ID))
+            }
+        }
+    }
 
     private fun onReviewsStateChanged(uiState: UiState<List<Review>>) {
         if (uiState.hasData()) {

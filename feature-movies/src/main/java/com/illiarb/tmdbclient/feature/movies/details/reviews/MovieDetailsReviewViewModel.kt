@@ -21,14 +21,6 @@ class MovieDetailsReviewViewModel @Inject constructor(
     private val schedulerProvider: SchedulerProvider
 ) : BaseViewModel() {
 
-    var id: Int = 0
-        set(value) {
-            if (value != 0) {
-                field = value
-                movieReviewsSubject.loadData(value)
-            }
-        }
-
     private val movieReviewsSubject = object : DataUiStateSubject<Int, List<Review>>() {
         override fun createData(payload: Int): Disposable =
             moviesInteractor.getMovieReviews(payload)
@@ -38,4 +30,10 @@ class MovieDetailsReviewViewModel @Inject constructor(
     }
 
     fun observeMovieReviews(): Observable<UiState<List<Review>>> = movieReviewsSubject.observer()
+
+    fun fetchReviews(id: Int) {
+        if (id != 0 && !movieReviewsSubject.hasData()) {
+            movieReviewsSubject.loadData(id)
+        }
+    }
 }

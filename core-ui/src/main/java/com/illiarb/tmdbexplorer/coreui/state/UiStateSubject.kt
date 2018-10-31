@@ -10,4 +10,6 @@ interface UiStateSubject<Payload, Result> {
     fun loadData(payload: Payload)
 
     fun dispatchState(state: UiState<Result>)
+
+    fun hasData(): Boolean
 }

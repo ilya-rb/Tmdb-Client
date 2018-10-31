@@ -29,14 +29,16 @@
 
     <TextView
         android:id="@+id/itemMovieTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@id/itemMovieReleaseDate"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:text="Movie Title" />
 
     <TextView

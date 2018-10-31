@@ -23,4 +23,6 @@ abstract class DataUiStateSubject<Payload, Result> : UiStateSubject<Payload, Res
     override fun loadData(payload: Payload) {
         createData(payload)
     }
+
+    override fun hasData(): Boolean = dataSubject.hasValue()
 }

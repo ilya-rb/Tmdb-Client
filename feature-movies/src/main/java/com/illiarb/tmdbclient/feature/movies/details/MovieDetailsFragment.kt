@@ -14,20 +14,11 @@ import com.illiarb.tmdbexplorerdi.Injectable
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.ext.addTo
+import com.illiarb.tmdblcient.core.navigation.NavigationExtras
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import javax.inject.Inject
 
 class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
-
-    companion object {
-
-        private const val EXTRA_MOVIE_ID = "id"
-
-        fun createBundle(movieId: Int): Bundle =
-            Bundle().apply {
-                putInt(EXTRA_MOVIE_ID, movieId)
-            }
-    }
 
     @Inject
     lateinit var infoPagerAdapter: MovieInfoPagerAdapter
@@ -45,7 +36,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
         super.onActivityCreated(savedInstanceState)
 
         arguments?.let {
-            val movieId = it.getInt(EXTRA_MOVIE_ID)
+            val movieId = it.getInt(NavigationExtras.EXTRA_MOVIE_DETAILS_ID)
 
             viewModel.id = movieId
             viewModel.observeMovieDetailsState()
@@ -110,6 +101,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
         infoPagerAdapter.movie = movie
 
         movieDetailsViewPager.adapter = infoPagerAdapter
+        movieDetailsViewPager.offscreenPageLimit = MovieInfoPagerAdapter.TABS_COUNT
+
         movieDetailsTabs.setupWithViewPager(movieDetailsViewPager)
     }
 }

@@ -18,13 +18,13 @@ class MovieInfoPagerAdapter @Inject constructor(
 ) : FragmentStatePagerAdapter(fragmentManager) {
 
     companion object {
-        private const val TABS_COUNT = 3
+        const val TABS_COUNT = 3
     }
 
     var movie: Movie? = null
 
-    override fun getItem(position: Int): Fragment? {
-        return movie?.let {
+    override fun getItem(position: Int): Fragment? =
+        movie?.let {
             when (position) {
                 0 -> MovieDetailsInfoFragment.newInstance(it.overview)
                 1 -> MovieDetailsPhotosFragment.newInstance(it.images)
@@ -33,9 +33,6 @@ class MovieInfoPagerAdapter @Inject constructor(
                 else -> throw IllegalArgumentException("Unknown tab position")
             }
         }
-    }
-
-    override fun getCount(): Int = TABS_COUNT
 
     override fun getPageTitle(position: Int): CharSequence? =
         when (position) {
@@ -45,4 +42,6 @@ class MovieInfoPagerAdapter @Inject constructor(
             3 -> resourceResolver.getString(R.string.movie_details_info_videos_tab_title)
             else -> throw IllegalArgumentException("Unknown tab position")
         }
+
+    override fun getCount(): Int = TABS_COUNT
 }
