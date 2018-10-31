@@ -4,6 +4,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 apply from: dependenciesFilePath
+apply from: versionsFilePath
 
 android {
     compileSdkVersion projectInfo.compileSdkVersion
@@ -19,6 +20,14 @@ android {
     }
 
     buildTypes {
+        all {
+            def config = file("$rootDir/api-config.properties")
+            def properties = new Properties()
+            properties.load(new FileInputStream(config))
+
+            resValue "string", "google_maps_api_key", properties["maps.key"]
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -39,4 +48,5 @@ dependencies {
     implementation deps.rxAndroid
     implementation deps.viewmodel
     implementation deps.dagger
+    implementation deps.maps
 }

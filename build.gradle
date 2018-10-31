@@ -1,6 +1,7 @@
 buildscript {
 
     ext.dependenciesFilePath = "$rootDir/dependencies.gradle"
+    ext.versionsFilePath = "$rootDir/versions.gradle"
 
     apply from: 'versions.gradle'
 
