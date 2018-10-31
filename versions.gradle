@@ -21,6 +21,7 @@ versions.with {
     retrofit = "2.4.0"
     okHttpLogger = "3.11.0"
     javax = "1"
+    binaryPrefs = "1.0.0"
 }
 
 def testVersions = [:]
