@@ -1,6 +1,7 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 apply from: dependenciesFilePath
 
@@ -8,15 +9,11 @@ android {
     compileSdkVersion projectInfo.compileSdkVersion
 
     defaultConfig {
-        applicationId projectInfo.applicationId
-
         minSdkVersion projectInfo.minSdkVersion
         targetSdkVersion projectInfo.targetSdkVersion
 
         versionCode 1
         versionName "1.0"
-
-        vectorDrawables.useSupportLibrary true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -33,19 +30,13 @@ dependencies {
     kapt deps.daggerCompiler
 
     implementation project(':core')
-    implementation project(':core-impl')
-    implementation project(':storage')
+    implementation project(':core-ui')
     implementation project(':di')
 
-    // App Features
-    implementation project(':feature-main')
-    implementation project(':feature-movies')
-    implementation project(':feature-explore')
-
-    implementation deps.kotlin
-    implementation deps.dagger
     implementation deps.supportDesign
-    implementation deps.rxAndroid
+    implementation deps.kotlin
     implementation deps.rxJava
-    implementation deps.navigation
+    implementation deps.rxAndroid
+    implementation deps.viewmodel
+    implementation deps.dagger
 }
