@@ -36,7 +36,7 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
             it.setHasFixedSize(true)
 
             val spacing = resources.getDimensionPixelSize(R.dimen.item_movie_spacing)
-            it.addItemDecoration(SpaceItemDecoration(spacing, spacing))
+            it.addItemDecoration(SpaceItemDecoration(spacing / 2, spacing))
         }
 
         moviesFilter.setOnClickListener {

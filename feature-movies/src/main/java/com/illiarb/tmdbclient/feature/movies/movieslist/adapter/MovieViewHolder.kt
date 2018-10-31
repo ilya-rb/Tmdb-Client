@@ -13,11 +13,14 @@ class MovieViewHolder(containerView: View) : BaseViewHolder<Movie>(containerView
     private val itemTitle = itemView.itemMovieTitle
     private val itemImage = itemView.itemMoviePoster
     private val itemReleaseDate = itemView.itemMovieReleaseDate
+    private val itemRating = itemView.itemMovieRating
 
     private val imageCornerRadius = itemView.resources.getDimensionPixelSize(R.dimen.item_movie_corner_radius)
 
     override fun bind(item: Movie) {
         itemTitle.text = item.title
+        itemRating.text = item.voteAverage.toString()
+
         itemReleaseDate.setDateText(item.releaseDate)
 
         item.posterPath?.let {

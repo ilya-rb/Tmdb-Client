@@ -5,4 +5,6 @@
 
     <corners android:radius="@dimen/item_movie_corner_radius"/>
 
+    <solid android:color="@android:color/white"/>
+
 </shape>
