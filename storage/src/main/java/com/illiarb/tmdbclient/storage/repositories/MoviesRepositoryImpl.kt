@@ -1,12 +1,15 @@
 package com.illiarb.tmdbclient.storage.repositories
 
+import com.illiarb.tmdbclient.storage.R
 import com.illiarb.tmdbclient.storage.local.movies.MoviesStorage
 import com.illiarb.tmdbclient.storage.mappers.MovieMapper
 import com.illiarb.tmdbclient.storage.mappers.ReviewMapper
 import com.illiarb.tmdbclient.storage.network.api.movie.MoviesApi
 import com.illiarb.tmdblcient.core.entity.Movie
+import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.entity.Review
 import com.illiarb.tmdblcient.core.modules.movie.MoviesRepository
+import com.illiarb.tmdblcient.core.system.ResourceResolver
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -17,7 +20,8 @@ class MoviesRepositoryImpl @Inject constructor(
     private val moviesApi: MoviesApi,
     private val moviesStorage: MoviesStorage,
     private val movieMapper: MovieMapper,
-    private val reviewMapper: ReviewMapper
+    private val reviewMapper: ReviewMapper,
+    private val resourceResolver: ResourceResolver
 ) : MoviesRepository {
 
     override fun getMoviesByType(type: String): Single<List<Movie>> =
@@ -39,4 +43,11 @@ class MoviesRepositoryImpl @Inject constructor(
 
     override fun getMovieReviews(id: Int): Single<List<Review>> =
         moviesApi.getMovieReviews(id).map(reviewMapper::mapList)
+
+    override fun getMovieFilters(): Single<List<MovieFilter>> =
+        Single.just(
+            resourceResolver
+                .getStringArray(R.array.movie_filters)
+                .map { MovieFilter(it, it.toLowerCase().replace(" ", "_")) }
+        )
 }

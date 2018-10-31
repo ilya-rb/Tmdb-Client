@@ -6,13 +6,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbclient.feature.movies.di.MoviesComponent
 import com.illiarb.tmdbclient.feature.movies.movieslist.adapter.MoviesAdapter
+import com.illiarb.tmdbclient.feature.movies.movieslist.filters.MovieFiltersFragment
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDecoration
 import com.illiarb.tmdbexplorer.coreui.state.UiState
 import com.illiarb.tmdbexplorerdi.Injectable
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Movie
+import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.ext.addTo
+import com.illiarb.tmdblcient.core.system.EventBus
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
 
@@ -20,6 +23,9 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
 
     @Inject
     lateinit var moviesAdapter: MoviesAdapter
+
+    @Inject
+    lateinit var bus: EventBus
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,14 +40,26 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
         }
 
         moviesFilter.setOnClickListener {
-            viewModel.onFilterClicked()
+            MovieFiltersFragment.show(requireFragmentManager())
         }
+
+        bus.observeEvents(MovieFilter::class.java)
+            .subscribe { viewModel.onFilterChanged(it) }
+            .addTo(destroyViewDisposable)
 
         swipeRefreshLayout.isEnabled = false
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        viewModel.observeMovieFilter()
+            .subscribe {
+                if (it.hasData()) {
+                    moviesType.text = it.requireData()
+                }
+            }
+            .addTo(destroyViewDisposable)
 
         viewModel.observeMovies()
             .subscribe(::onMoviesUiStateChanged, Throwable::printStackTrace)

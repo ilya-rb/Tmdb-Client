@@ -9,7 +9,7 @@ import javax.inject.Singleton
     modules = [
         RepositoriesModule::class,
         NetworkModule::class,
-        PersistableStorageModule::class
+        StorageModule::class
     ]
 )
 @Singleton
@@ -17,7 +17,7 @@ interface StorageComponent : StorageProvider {
     companion object {
         fun get(app: App): StorageProvider =
             DaggerStorageComponent.builder()
-                .persistableStorageModule(PersistableStorageModule(app))
+                .storageModule(StorageModule(app))
                 .build()
     }
 }

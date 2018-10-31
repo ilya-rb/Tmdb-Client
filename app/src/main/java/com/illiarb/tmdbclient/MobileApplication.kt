@@ -9,6 +9,7 @@ import com.illiarb.tmdbexplorerdi.providers.AppProvider
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.android.schedulers.AndroidSchedulers
 
+@Suppress("unused")
 class MobileApplication : Application(), App {
 
     private val applicationProvider by lazy { AppComponent.get(this) }

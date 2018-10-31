@@ -4,11 +4,10 @@ import androidx.fragment.app.FragmentActivity
 import com.illiarb.tmdbclient.feature.movies.details.MovieDetailsFragment
 import com.illiarb.tmdbclient.feature.movies.details.photos.MovieDetailsPhotosFragment
 import com.illiarb.tmdbclient.feature.movies.details.reviews.MovieDetailsReviewsFragment
-import com.illiarb.tmdbclient.feature.movies.filters.MovieFiltersFragment
 import com.illiarb.tmdbclient.feature.movies.movieslist.MoviesFragment
+import com.illiarb.tmdbclient.feature.movies.movieslist.filters.MovieFiltersFragment
 import com.illiarb.tmdbexplorer.coreui.di.ViewModelModule
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
-import com.illiarb.tmdbexplorerdi.providers.StartScreenActionProvider
 import dagger.Component
 
 @Component(
@@ -19,7 +18,7 @@ import dagger.Component
         ActivityModule::class
     ]
 )
-interface MoviesComponent : StartScreenActionProvider {
+interface MoviesComponent {
 
     companion object {
         fun get(appDepsProvider: AppProvider, activity: FragmentActivity): MoviesComponent =

@@ -7,6 +7,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 
+/**
+ * @author ilya-rb on 31.10.18.
+ */
 @Module
 interface MainModule {
 

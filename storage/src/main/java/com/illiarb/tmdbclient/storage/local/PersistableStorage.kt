@@ -37,8 +37,4 @@ class PersistableStorage @Inject constructor(app: App) {
             .putPersistable(key, value)
             .commit()
     }
-
-    fun clear() {
-        store.edit().clear().apply()
-    }
 }

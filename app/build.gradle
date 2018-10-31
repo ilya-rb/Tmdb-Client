@@ -36,6 +36,8 @@ dependencies {
     implementation project(':core-impl')
     implementation project(':storage')
     implementation project(':di')
+
+    // App Features
     implementation project(':feature-main')
     implementation project(':feature-movies')
 
@@ -44,4 +46,5 @@ dependencies {
     implementation deps.supportDesign
     implementation deps.rxAndroid
     implementation deps.rxJava
+    implementation deps.navigation
 }
