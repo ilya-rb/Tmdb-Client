@@ -13,8 +13,8 @@ class MainViewModel @Inject constructor(
 
     fun onNavigationItemSelected(id: Int) {
         when (id) {
-            R.id.navigation_movies -> navigator.showMoviesScreen()
-            R.id.navigation_explore -> navigator.showExploreScreen()
+            R.id.moviesFragment -> navigator.showMoviesScreen()
+            R.id.exploreFragment -> navigator.showExploreScreen()
         }
     }
 }
