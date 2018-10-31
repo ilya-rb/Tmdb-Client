@@ -44,7 +44,6 @@ class MovieDetailsReviewsFragment : BaseFragment<MovieDetailsReviewViewModel>(),
         reviewsList.let {
             it.adapter = reviewsAdapter
             it.layoutManager = LinearLayoutManager(requireActivity())
-            it.isNestedScrollingEnabled = false
 
             val spacing = resources.getDimensionPixelSize(R.dimen.item_review_spacing)
             it.addItemDecoration(SpaceItemDecoration(0, spacing, true, true))

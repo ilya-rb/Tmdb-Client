@@ -1,159 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@null">
 
-        <ImageView
-            android:id="@+id/movieDetailsPoster"
-            android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:contentDescription="@null"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:scaleType="fitXY"
-            tools:src="@tools:sample/backgrounds/scenic" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:background="#99000000"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_arrow_back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_play_circle_filled"
-            app:layout_constraintBottom_toBottomOf="@id/movieDetailsPoster"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/movieDetailsPoster" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/movieDetailsPosterSmall"
-            android:layout_width="100dp"
-            android:layout_height="150dp"
-            android:layout_marginStart="16dp"
-            android:contentDescription="@null"
-            app:layout_constraintBottom_toBottomOf="@id/movieDetailsPoster"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/movieDetailsPoster"
-            tools:scaleType="fitXY"
-            tools:src="@tools:sample/backgrounds/scenic" />
+                <ImageView
+                    android:id="@+id/movieDetailsPoster"
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:contentDescription="@null"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:scaleType="fitXY"
+                    tools:src="@tools:sample/backgrounds/scenic" />
 
-        <TextView
-            android:id="@+id/movieDetailsTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:textColor="@android:color/black"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/movieDetailsPosterSmall"
-            tools:maxLines="1"
-            tools:text="Movie title" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:background="#99000000"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/movieDetailsTmdb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_tmdblogo"
-            app:layout_constraintStart_toEndOf="@id/movieDetailsPosterSmall"
-            app:layout_constraintTop_toBottomOf="@id/movieDetailsPoster" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_play_circle_filled"
+                    app:layout_constraintBottom_toBottomOf="@id/movieDetailsPoster"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/movieDetailsPoster" />
 
-        <TextView
-            android:id="@+id/movieDetailsRating"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/movieDetailsTmdb"
-            app:layout_constraintStart_toEndOf="@id/movieDetailsTmdb"
-            app:layout_constraintTop_toTopOf="@id/movieDetailsTmdb"
-            tools:text="7.9" />
+                <ImageView
+                    android:id="@+id/movieDetailsPosterSmall"
+                    android:layout_width="100dp"
+                    android:layout_height="150dp"
+                    android:layout_marginStart="16dp"
+                    android:contentDescription="@null"
+                    app:layout_constraintBottom_toBottomOf="@id/movieDetailsPoster"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/movieDetailsPoster"
+                    tools:scaleType="fitXY"
+                    tools:src="@tools:sample/backgrounds/scenic" />
 
-        <TextView
-            android:id="@+id/movieDetailsDuration"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:gravity="center_vertical"
-            android:textColor="@android:color/black"
-            app:layout_constraintBottom_toBottomOf="@id/movieDetailsPosterSmall"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/movieDetailsPosterSmall"
-            app:layout_constraintTop_toBottomOf="@id/movieDetailsTmdb"
-            tools:text="Duration: 120 min" />
+                <TextView
+                    android:id="@+id/movieDetailsTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/movieDetailsPosterSmall"
+                    tools:maxLines="1"
+                    tools:text="Movie title" />
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/movieDetailsTags"
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            app:chipSpacing="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/movieDetailsTitle" />
+                <ImageView
+                    android:id="@+id/movieDetailsTmdb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_tmdblogo"
+                    app:layout_constraintStart_toEndOf="@id/movieDetailsPosterSmall"
+                    app:layout_constraintTop_toBottomOf="@id/movieDetailsPoster" />
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/movieDetailsTabs"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="8dp"
-            android:background="@null"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/movieDetailsTags"
-            app:tabIndicatorFullWidth="false"
-            app:tabIndicatorHeight="3dp"
-            app:tabMode="scrollable" />
+                <TextView
+                    android:id="@+id/movieDetailsRating"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/movieDetailsTmdb"
+                    app:layout_constraintStart_toEndOf="@id/movieDetailsTmdb"
+                    app:layout_constraintTop_toTopOf="@id/movieDetailsTmdb"
+                    tools:text="7.9" />
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/movieDetailsViewPager"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="#efefef"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/movieDetailsTabs" />
+                <TextView
+                    android:id="@+id/movieDetailsDuration"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintBottom_toBottomOf="@id/movieDetailsPosterSmall"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/movieDetailsPosterSmall"
+                    app:layout_constraintTop_toBottomOf="@id/movieDetailsTmdb"
+                    tools:text="Duration: 120 min" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/movieDetailsTags"
+                    android:layout_width="0dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    app:chipSpacing="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/movieDetailsTitle" />
 
-</ScrollView>
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/movieDetailsTabs"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@null"
+                    app:layout_collapseMode="pin"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/movieDetailsTags"
+                    app:tabIndicatorFullWidth="false"
+                    app:tabIndicatorHeight="3dp"
+                    app:tabMode="scrollable" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/movieDetailsViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#efefef"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsTabs" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
