@@ -2,9 +2,11 @@ package com.illiarb.tmdblcient.core.ext
 
 import com.illiarb.tmdblcient.core.system.SchedulerProvider
 import io.reactivex.Completable
+import io.reactivex.CompletableEmitter
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.SingleEmitter
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
@@ -35,4 +37,22 @@ fun Completable.ioToMain(schedulersProvider: SchedulerProvider): Completable {
     return this
         .subscribeOn(schedulersProvider.provideIoScheduler())
         .observeOn(schedulersProvider.provideMainThreadScheduler())
+}
+
+fun <T> SingleEmitter<T>.onSuccessSafe(value: T) {
+    if (!isDisposed) {
+        onSuccess(value)
+    }
+}
+
+fun <T> SingleEmitter<T>.onErrorSafe(throwable: Throwable) {
+    if (!isDisposed) {
+        onError(throwable)
+    }
+}
+
+fun CompletableEmitter.onCompleteSafe() {
+    if (!isDisposed) {
+        onComplete()
+    }
 }

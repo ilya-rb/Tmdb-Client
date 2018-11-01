@@ -6,4 +6,10 @@ import javax.inject.Inject
 /**
  * @author ilya-rb on 31.10.18.
  */
-class ExploreViewModel @Inject constructor(): BaseViewModel()
+class ExploreViewModel @Inject constructor(): BaseViewModel() {
+
+    fun fetchNearbyMovieTheaters() {
+
+    }
+
+}

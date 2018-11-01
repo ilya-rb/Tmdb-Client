@@ -1,5 +1,6 @@
 package com.illiarb.tmdbexplorerdi.providers
 
+import com.illiarb.tmdblcient.core.modules.location.LocationRepository
 import com.illiarb.tmdblcient.core.modules.movie.MoviesRepository
 import com.illiarb.tmdblcient.core.system.ResourceResolver
 
@@ -10,6 +11,8 @@ import com.illiarb.tmdblcient.core.system.ResourceResolver
 interface StorageProvider {
 
     fun provideMoviesRepository(): MoviesRepository
+
+    fun provideLocationRepository(): LocationRepository
 
     fun provideResourceResolver(): ResourceResolver
 }

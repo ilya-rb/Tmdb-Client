@@ -49,4 +49,5 @@ dependencies {
     implementation deps.viewmodel
     implementation deps.dagger
     implementation deps.maps
+    implementation deps.location
 }
