@@ -1,10 +1,14 @@
 package com.illiarb.tmdbclient.feature.explore
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.illiarb.tmdbclient.feature.explore.di.ExploreComponent
@@ -123,14 +127,46 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
 
     private fun showNearbyTheaters(theaters: List<Location>) {
         googleMap?.let { map ->
-            theaters.forEach { (lat, lon) ->
-                val options = MarkerOptions().apply {
-                    position(LatLng(lat, lon))
-                    flat(true)
-                    icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-                }
-                map.addMarker(options)
+
+            map.uiSettings.apply {
+                isMyLocationButtonEnabled = true
+                isZoomControlsEnabled = true
             }
+
+            val currentLocation = LatLng(50.4390483, 30.4966947)
+            map.addMarker(
+                MarkerOptions()
+                    .position(currentLocation)
+                    .flat(true)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+            )
+
+            val cameraUpdate =
+                CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(currentLocation, 15f))
+
+            map.animateCamera(cameraUpdate, object : GoogleMap.CancelableCallback {
+                override fun onFinish() {
+                    theaters.forEach { (lat, lon) ->
+                        MarkerOptions()
+                            .position(LatLng(lat, lon))
+                            .flat(true)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                            .also { map.addMarker(it) }
+                    }
+
+                    map.addCircle(
+                        CircleOptions()
+                            .center(currentLocation)
+                            .fillColor(Color.TRANSPARENT)
+                            .strokeColor(Color.BLUE)
+                            .strokeWidth(1.5f)
+                            .radius(1000.0)
+                    )
+                }
+
+                override fun onCancel() {
+                }
+            })
         }
     }
 

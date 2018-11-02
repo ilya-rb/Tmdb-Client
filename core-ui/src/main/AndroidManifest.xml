@@ -3,7 +3,9 @@
 
     <application>
 
-        <activity android:name=".permission.PermissionsRequestActivity" />
+        <activity
+            android:name=".permission.PermissionsRequestActivity"
+            android:theme="@style/Theme.Transparent" />
 
     </application>
 

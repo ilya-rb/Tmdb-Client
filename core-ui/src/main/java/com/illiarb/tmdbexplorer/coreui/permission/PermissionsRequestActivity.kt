@@ -25,7 +25,9 @@ class PermissionsRequestActivity : BaseActivity<BaseViewModel>(), Injectable {
 
         fun startPermissionsRequest(context: Context, permissions: Array<out String>) {
             context.startActivity(
-                Intent(context, PermissionsRequestActivity::class.java).putExtra(EXTRA_PERMISSIONS, permissions)
+                Intent(context, PermissionsRequestActivity::class.java)
+                    .putExtra(EXTRA_PERMISSIONS, permissions)
+                    .addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             )
         }
     }
