@@ -9,8 +9,7 @@ import javax.inject.Singleton
     modules = [
         RepositoriesModule::class,
         NetworkModule::class,
-        StorageModule::class,
-        LocationModule::class
+        StorageModule::class
     ]
 )
 @Singleton
@@ -19,7 +18,6 @@ interface StorageComponent : StorageProvider {
         fun get(app: App): StorageProvider =
             DaggerStorageComponent.builder()
                 .storageModule(StorageModule(app))
-                .locationModule(LocationModule(app))
                 .build()
     }
 }
