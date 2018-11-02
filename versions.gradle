@@ -16,7 +16,7 @@ versions.with {
     navigation = "1.0.0-alpha06"
     play_services_version = "16.0.0"
     glide = "4.8.0"
-    dagger = "2.16"
+    dagger = "2.19"
     rxJava = "2.2.2"
     rxAndroid = "2.1.0"
     retrofit = "2.4.0"

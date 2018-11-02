@@ -22,6 +22,7 @@ deps.roomRxJava = "androidx.room:room-rxjava2:$versions.room"
 
 // Play services
 deps.maps = "com.google.android.gms:play-services-maps:$versions.play_services_version"
+deps.location = "com.google.android.gms:play-services-location:$versions.play_services_version"
 
 // Cache
 deps.binaryPrefs = "com.github.yandextaxitech:binaryprefs:$versions.binaryPrefs"
