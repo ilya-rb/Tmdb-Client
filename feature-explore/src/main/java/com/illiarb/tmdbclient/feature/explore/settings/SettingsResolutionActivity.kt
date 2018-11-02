@@ -26,7 +26,9 @@ class SettingsResolutionActivity : BaseActivity<BaseViewModel>(), Injectable {
 
         fun startSettingsResolution(context: Context, status: Status) {
             context.startActivity(
-                Intent(context, SettingsResolutionActivity::class.java).putExtra(EXTRA_STATUS, status)
+                Intent(context, SettingsResolutionActivity::class.java)
+                    .putExtra(EXTRA_STATUS, status)
+                    .addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             )
         }
     }

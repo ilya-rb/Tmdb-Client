@@ -1,2 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.illiarb.tmdbexplorer.coreui" />
+    package="com.illiarb.tmdbexplorer.coreui">
+
+    <application>
+
+        <activity android:name=".permission.PermissionsRequestActivity" />
+
+    </application>
+
+</manifest>
