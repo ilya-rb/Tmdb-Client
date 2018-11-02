@@ -3,6 +3,7 @@ package com.illiarb.tmdbexplorer.coreui.permission
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.core.content.ContextCompat
 import com.illiarb.tmdbexplorerdi.App
 import com.illiarb.tmdblcient.core.system.EventBus
 import io.reactivex.Flowable
@@ -17,7 +18,8 @@ class PermissionResolver @Inject constructor(app: App, private val eventBus: Eve
     private val context = app.getApplication()
 
     companion object {
-        const val PERMISSION_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION
+        const val PERMISSION_COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION
+        const val PERMISSION_FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
     }
 
     fun requestPermissions(vararg permissions: String): Single<List<PermissionResult>> {
@@ -27,7 +29,7 @@ class PermissionResolver @Inject constructor(app: App, private val eventBus: Eve
             Single
                 .fromCallable {
                     permissions.any {
-                        context.checkSelfPermission(it) == PackageManager.PERMISSION_GRANTED
+                        ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
                     }
                 }
                 .flatMap { hasDeniesPermissions ->

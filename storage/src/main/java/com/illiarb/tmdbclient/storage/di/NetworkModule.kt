@@ -59,12 +59,14 @@ class NetworkModule {
         @HereApi
         fun provideHereApiRetrofit(
             @HereApi okHttpClient: OkHttpClient,
-            callAdapterFactory: CallAdapter.Factory
+            callAdapterFactory: CallAdapter.Factory,
+            converterFactory: Converter.Factory
         ): Retrofit =
             Retrofit.Builder()
                 .baseUrl(BuildConfig.HERE_API_URL)
                 .client(okHttpClient)
                 .addCallAdapterFactory(callAdapterFactory)
+                .addConverterFactory(converterFactory)
                 .build()
 
         @Provides
@@ -84,12 +86,16 @@ class NetworkModule {
         @Provides
         @JvmStatic
         @HereApi
-        fun provideHereApiOkHttpClient(hereApiInterceptor: HereApiInterceptor): OkHttpClient =
+        fun provideHereApiOkHttpClient(
+            hereApiInterceptor: HereApiInterceptor,
+            httpLoggerInterceptor: HttpLoggingInterceptor
+        ): OkHttpClient =
             OkHttpClient.Builder()
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
                 .addInterceptor(hereApiInterceptor)
+                .addInterceptor(httpLoggerInterceptor)
                 .build()
 
         @Provides

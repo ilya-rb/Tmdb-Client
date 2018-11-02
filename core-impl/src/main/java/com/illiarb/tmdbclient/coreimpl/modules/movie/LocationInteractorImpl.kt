@@ -13,9 +13,14 @@ class LocationInteractorImpl @Inject constructor(
     private val locationRepository: LocationRepository
 ) : LocationInteractor {
 
-    override fun getNearbyMovieTheaters(coords: Location): Single<List<Location>> =
-        locationRepository.getCurrentLocation()
-            .flatMap {
-                locationRepository.getNearbyMovieTheaters(it)
-            }
+    companion object {
+        val FAKE_LOCATION = Location(50.4390483, 30.4966947)
+    }
+
+    override fun getNearbyMovieTheaters(): Single<List<Location>> =
+        locationRepository.getNearbyMovieTheaters(FAKE_LOCATION)
+//        locationRepository.getCurrentLocation()
+//            .flatMap {
+//                locationRepository.getNearbyMovieTheaters(it)
+//            }
 }

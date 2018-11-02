@@ -8,5 +8,5 @@ import io.reactivex.Single
  */
 interface LocationInteractor {
 
-    fun getNearbyMovieTheaters(coords: Location): Single<List<Location>>
+    fun getNearbyMovieTheaters(): Single<List<Location>>
 }

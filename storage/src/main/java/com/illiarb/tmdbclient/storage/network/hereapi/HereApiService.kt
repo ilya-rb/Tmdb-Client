@@ -13,13 +13,11 @@ interface HereApiService {
     companion object {
         const val CATEGORY_CINEMA = "cinema"
         const val CATEGORY_SYSTEM = "places"
-        const val DEFAULT_RADIUS = 5
     }
 
     @GET("discover/explore")
     fun getNearbyMovieTheaters(
         @Query("at") coordinates: String,
-        @Query("in") radius: Int = DEFAULT_RADIUS,
         @Query("cs") systemCategory: String = CATEGORY_SYSTEM,
         @Query("cat") category: String = CATEGORY_CINEMA
     ): Single<List<HereLocationDto>>

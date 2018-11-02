@@ -6,6 +6,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsStatusCodes
+import com.illiarb.tmdblcient.core.ext.onCompleteSafe
 import io.reactivex.Completable
 import javax.inject.Inject
 
@@ -29,9 +30,10 @@ class SettingsChecker @Inject constructor(private val activity: FragmentActivity
                                 }
                             } catch (ex: IntentSender.SendIntentException) {
                                 // Ignore error
+                                emitter.onCompleteSafe()
                             }
                         }
-                        else -> emitter.onComplete()
+                        else -> emitter.onCompleteSafe()
                     }
                 }
         }
