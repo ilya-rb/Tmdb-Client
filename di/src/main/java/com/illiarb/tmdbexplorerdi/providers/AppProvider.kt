@@ -7,7 +7,7 @@ import com.illiarb.tmdblcient.core.system.SchedulerProvider
 
 interface AppProvider : InteractorsProvider, StorageProvider {
 
-    fun provideApp(): App
+    fun getApp(): App
 
     fun provideSchedulerProvider(): SchedulerProvider
 

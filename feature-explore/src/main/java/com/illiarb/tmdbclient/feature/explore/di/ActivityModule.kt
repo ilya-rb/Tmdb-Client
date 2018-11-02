@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.feature.movies.di
+package com.illiarb.tmdbclient.feature.explore.di
 
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager

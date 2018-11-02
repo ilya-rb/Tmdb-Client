@@ -97,7 +97,7 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
 
     override fun getViewModelClass(): Class<ExploreViewModel> = ExploreViewModel::class.java
 
-    override fun inject(appProvider: AppProvider) = ExploreComponent.get(appProvider).inject(this)
+    override fun inject(appProvider: AppProvider) = ExploreComponent.get(appProvider, requireActivity()).inject(this)
 
     private fun showPermissionDeniedError() {
     }

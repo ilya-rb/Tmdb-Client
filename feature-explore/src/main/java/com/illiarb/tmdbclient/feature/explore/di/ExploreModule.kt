@@ -17,5 +17,4 @@ interface ExploreModule {
     @IntoMap
     @ViewModelKey(ExploreViewModel::class)
     fun bindExploreViewModel(viewModel: ExploreViewModel): ViewModel
-
 }
