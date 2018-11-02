@@ -1,14 +1,18 @@
-package com.illiarb.tmdbclient.storage.network.api
+package com.illiarb.tmdbclient.storage.network.hereapi
 
 import com.illiarb.tmdbclient.storage.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 
-class ApiKeyInterceptor @Inject constructor() : Interceptor {
+/**
+ * @author ilya-rb on 02.11.18.
+ */
+class HereApiInterceptor @Inject constructor() : Interceptor {
 
     companion object {
-        const val PARAM_API_KEY = "api_key"
+        const val PARAM_APP_ID = "app_id"
+        const val PARAM_APP_CODE = "app_code"
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -18,7 +22,8 @@ class ApiKeyInterceptor @Inject constructor() : Interceptor {
                 chain.request()
                     .url()
                     .newBuilder()
-                    .addQueryParameter(PARAM_API_KEY, BuildConfig.API_KEY)
+                    .addQueryParameter(PARAM_APP_ID, BuildConfig.HERE_APP_ID)
+                    .addQueryParameter(PARAM_APP_CODE, BuildConfig.HERE_APP_CODE)
                     .build()
             )
             .build()

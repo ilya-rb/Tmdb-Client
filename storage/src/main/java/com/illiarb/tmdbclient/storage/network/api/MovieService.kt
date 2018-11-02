@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.storage.network.api.movie
+package com.illiarb.tmdbclient.storage.network.api
 
 import com.illiarb.tmdbclient.storage.dto.MovieDto
 import com.illiarb.tmdbclient.storage.dto.ResultsDto

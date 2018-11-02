@@ -4,7 +4,7 @@ import com.illiarb.tmdbclient.storage.R
 import com.illiarb.tmdbclient.storage.local.movies.MoviesStorage
 import com.illiarb.tmdbclient.storage.mappers.MovieMapper
 import com.illiarb.tmdbclient.storage.mappers.ReviewMapper
-import com.illiarb.tmdbclient.storage.network.api.movie.MoviesApi
+import com.illiarb.tmdbclient.storage.network.api.MovieService
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.entity.Review
@@ -17,7 +17,7 @@ import javax.inject.Inject
  * @author ilya-rb on 25.10.18.
  */
 class MoviesRepositoryImpl @Inject constructor(
-    private val moviesApi: MoviesApi,
+    private val moviesService: MovieService,
     private val moviesStorage: MoviesStorage,
     private val movieMapper: MovieMapper,
     private val reviewMapper: ReviewMapper,
@@ -26,23 +26,26 @@ class MoviesRepositoryImpl @Inject constructor(
 
     override fun getMoviesByType(type: String): Single<List<Movie>> =
         moviesStorage.getMoviesByType(type)
-            .flatMap {
-                if (it.isNotEmpty()) {
-                    Single.just(it)
+            .flatMap { movies ->
+                if (movies.isNotEmpty()) {
+                    Single.just(movies)
                 } else {
-                    moviesApi.getMoviesByType(type)
-                        .doOnSuccess { movies ->
-                            moviesStorage.storeMovies(type, movies)
+                    moviesService.getMoviesByType(type)
+                        .map { it.results }
+                        .doOnSuccess {
+                            moviesStorage.storeMovies(type, it)
                         }
                 }
             }
             .map(movieMapper::mapList)
 
     override fun getMovieDetails(id: Int, appendToResponse: String): Single<Movie> =
-        moviesApi.getMovieDetails(id, appendToResponse).map(movieMapper::map)
+        moviesService.getMovieDetails(id, appendToResponse).map(movieMapper::map)
 
     override fun getMovieReviews(id: Int): Single<List<Review>> =
-        moviesApi.getMovieReviews(id).map(reviewMapper::mapList)
+        moviesService.getMovieReviews(id)
+            .map { it.results }
+            .map(reviewMapper::mapList)
 
     override fun getMovieFilters(): Single<List<MovieFilter>> =
         Single.just(

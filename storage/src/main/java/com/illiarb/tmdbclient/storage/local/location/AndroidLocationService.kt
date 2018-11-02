@@ -23,6 +23,8 @@ class AndroidLocationService @Inject constructor(app: App) {
                 .addOnSuccessListener {
                     if (it != null) {
                         emitter.onSuccessSafe(it)
+                    } else {
+                        emitter.onSuccessSafe(Location(""))
                     }
                 }
                 .addOnFailureListener { emitter.onErrorSafe(it) }

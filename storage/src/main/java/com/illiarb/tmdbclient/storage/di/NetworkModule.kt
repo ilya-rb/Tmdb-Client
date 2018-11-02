@@ -4,8 +4,11 @@ import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.illiarb.tmdbclient.storage.BuildConfig
+import com.illiarb.tmdbclient.storage.di.qualifier.HereApi
 import com.illiarb.tmdbclient.storage.network.api.ApiKeyInterceptor
-import com.illiarb.tmdbclient.storage.network.api.movie.MovieService
+import com.illiarb.tmdbclient.storage.network.api.MovieService
+import com.illiarb.tmdbclient.storage.network.hereapi.HereApiInterceptor
+import com.illiarb.tmdbclient.storage.network.hereapi.HereApiService
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -34,6 +37,11 @@ class NetworkModule {
 
         @Provides
         @JvmStatic
+        fun provideHereApiService(@HereApi retrofit: Retrofit): HereApiService =
+            retrofit.create(HereApiService::class.java)
+
+        @Provides
+        @JvmStatic
         fun provideApiRetrofit(
             okHttpClient: OkHttpClient,
             callAdapterFactory: CallAdapter.Factory,
@@ -48,6 +56,19 @@ class NetworkModule {
 
         @Provides
         @JvmStatic
+        @HereApi
+        fun provideHereApiRetrofit(
+            @HereApi okHttpClient: OkHttpClient,
+            callAdapterFactory: CallAdapter.Factory
+        ): Retrofit =
+            Retrofit.Builder()
+                .baseUrl(BuildConfig.HERE_API_URL)
+                .client(okHttpClient)
+                .addCallAdapterFactory(callAdapterFactory)
+                .build()
+
+        @Provides
+        @JvmStatic
         fun provideApiOkHttpClient(
             apiKeyInterceptor: ApiKeyInterceptor,
             httpLoggerInterceptor: HttpLoggingInterceptor
@@ -58,6 +79,17 @@ class NetworkModule {
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
                 .addInterceptor(apiKeyInterceptor)
                 .addInterceptor(httpLoggerInterceptor)
+                .build()
+
+        @Provides
+        @JvmStatic
+        @HereApi
+        fun provideHereApiOkHttpClient(hereApiInterceptor: HereApiInterceptor): OkHttpClient =
+            OkHttpClient.Builder()
+                .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+                .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
+                .addInterceptor(hereApiInterceptor)
                 .build()
 
         @Provides
