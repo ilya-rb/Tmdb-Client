@@ -20,6 +20,7 @@ class LocationInteractorImpl @Inject constructor(
     override fun getNearbyMovieTheaters(): Single<List<Location>> =
         locationRepository.getNearbyMovieTheaters(FAKE_LOCATION)
 //        locationRepository.getCurrentLocation()
+//            .observeOn(schedulerProvider.provideIoScheduler())
 //            .flatMap {
 //                locationRepository.getNearbyMovieTheaters(it)
 //            }

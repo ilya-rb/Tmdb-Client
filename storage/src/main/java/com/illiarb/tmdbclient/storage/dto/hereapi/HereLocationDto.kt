@@ -5,10 +5,7 @@ package com.illiarb.tmdbclient.storage.dto.hereapi
  */
 data class HereLocationDto(
     val id: String,
-    val position: List<Int>,
+    val position: List<Double>,
     val distance: Int,
-    val title: String,
-    val icon: String,
-    val vicinity: String,
-    val href: String
+    val title: String
 )

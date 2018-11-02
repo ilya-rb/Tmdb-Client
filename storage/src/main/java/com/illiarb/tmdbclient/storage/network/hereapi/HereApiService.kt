@@ -1,6 +1,6 @@
 package com.illiarb.tmdbclient.storage.network.hereapi
 
-import com.illiarb.tmdbclient.storage.dto.hereapi.HereLocationDto
+import com.illiarb.tmdbclient.storage.dto.hereapi.HereResults
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -20,5 +20,5 @@ interface HereApiService {
         @Query("at") coordinates: String,
         @Query("cs") systemCategory: String = CATEGORY_SYSTEM,
         @Query("cat") category: String = CATEGORY_CINEMA
-    ): Single<List<HereLocationDto>>
+    ): Single<HereResults>
 }

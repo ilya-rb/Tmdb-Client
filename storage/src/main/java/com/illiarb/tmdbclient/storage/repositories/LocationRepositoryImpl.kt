@@ -23,5 +23,8 @@ class LocationRepositoryImpl @Inject constructor(
         locationService.getLastKnownLocation().map(locationMapper::map)
 
     override fun getNearbyMovieTheaters(coords: Location): Single<List<Location>> =
-        hereApiService.getNearbyMovieTheaters("${coords.lat},${coords.lon}").map(hereLocationMapper::mapList)
+        hereApiService.getNearbyMovieTheaters("${coords.lat},${coords.lon}")
+            .map { it.results }
+            .map { it.items }
+            .map(hereLocationMapper::mapList)
 }

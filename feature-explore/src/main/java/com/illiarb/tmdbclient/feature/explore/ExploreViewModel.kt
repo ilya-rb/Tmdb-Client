@@ -22,12 +22,11 @@ class ExploreViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val nearbyTheatersSubject = object : DataUiStateSubject<Unit, List<Location>>() {
-        override fun createData(payload: Unit): Disposable {
-            return locationInteractor.getNearbyMovieTheaters()
+        override fun createData(payload: Unit): Disposable =
+            locationInteractor.getNearbyMovieTheaters()
                 .ioToMain(schedulerProvider)
                 .subscribe(this)
                 .addTo(clearDisposable)
-        }
     }
 
     fun fetchNearbyMovieTheaters() {
