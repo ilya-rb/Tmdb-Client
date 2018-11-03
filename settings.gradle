@@ -6,4 +6,5 @@ include ':app',
         ':di',
         ':feature-explore',
         ':feature-main',
-        ':feature-movies'
+        ':feature-movies',
+        ':tools'
