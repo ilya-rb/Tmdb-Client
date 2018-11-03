@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.storage.di
+package com.illiarb.tmdbclient.di.modules
 
 import com.illiarb.tmdbclient.storage.local.AndroidResourceResolver
 import com.illiarb.tmdbclient.storage.local.PersistableStorage
@@ -10,7 +10,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 /**
- * @author ilya-rb on 26.10.18.
+ * @author ilya-rb on 03.11.18.
  */
 @Module
 class StorageModule(val app: App) {

@@ -11,5 +11,4 @@ interface SchedulerProvider {
     fun provideNewThreadScheduler(): Scheduler
 
     fun provideMainThreadScheduler(): Scheduler
-
 }

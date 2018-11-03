@@ -1,11 +1,15 @@
-package com.illiarb.tmdbclient.system
+package com.illiarb.tmdbclient.tools
 
 import com.illiarb.tmdblcient.core.system.SchedulerProvider
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class RxSchedulerProvider : SchedulerProvider {
+/**
+ * @author ilya-rb on 04.11.18.
+ */
+class RxSchedulerProvider @Inject constructor() : SchedulerProvider {
 
     override fun provideIoScheduler(): Scheduler = Schedulers.io()
 

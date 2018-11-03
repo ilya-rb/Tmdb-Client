@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 
 apply from: dependenciesFilePath
 
@@ -10,7 +9,7 @@ android {
     defaultConfig {
         minSdkVersion projectInfo.minSdkVersion
         targetSdkVersion projectInfo.targetSdkVersion
-        
+
         versionCode 1
         versionName "1.0"
 
@@ -38,18 +37,18 @@ android {
 }
 
 dependencies {
-    kapt deps.daggerCompiler
-
     implementation project(':core')
     implementation project(':di')
 
     implementation deps.kotlin
     implementation deps.rxJava
-    implementation deps.dagger
-    implementation deps.retrofit
-    implementation deps.converterGson
-    implementation deps.rxJavaAdapter
-    implementation deps.okHttpLogger
     implementation deps.binaryPrefs
     implementation deps.location
+
+    // Dependencies are used in app component
+    // to create di module
+    api deps.retrofit
+    api deps.converterGson
+    api deps.rxJavaAdapter
+    api deps.okHttpLogger
 }

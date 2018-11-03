@@ -46,7 +46,6 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
     }

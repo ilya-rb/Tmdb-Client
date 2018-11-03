@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.coreimpl.modules.movie
+package com.illiarb.tmdbclient.coreimpl.explore
 
 import com.illiarb.tmdblcient.core.entity.Location
 import com.illiarb.tmdblcient.core.modules.location.LocationInteractor

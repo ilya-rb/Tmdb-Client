@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.storage.di.qualifier
+package com.illiarb.tmdbclient.di.qualifier
 
 import javax.inject.Qualifier
 

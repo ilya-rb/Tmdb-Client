@@ -1,14 +1,9 @@
 package com.illiarb.tmdbclient.di
 
-import com.illiarb.tmdbclient.coreimpl.modules.movie.LocationInteractorImpl
-import com.illiarb.tmdbclient.coreimpl.modules.movie.MoviesInteractorImpl
+import com.illiarb.tmdbclient.di.modules.InteractorsModule
 import com.illiarb.tmdbexplorerdi.providers.InteractorsProvider
 import com.illiarb.tmdbexplorerdi.providers.StorageProvider
-import com.illiarb.tmdblcient.core.modules.location.LocationInteractor
-import com.illiarb.tmdblcient.core.modules.movie.MoviesInteractor
-import dagger.Binds
 import dagger.Component
-import dagger.Module
 
 @Component(
     dependencies = [StorageProvider::class],
@@ -24,14 +19,4 @@ interface InteractorsComponent : InteractorsProvider {
                 .build()
         }
     }
-}
-
-@Module
-interface InteractorsModule {
-
-    @Binds
-    fun bindMoviesInteractor(impl: MoviesInteractorImpl): MoviesInteractor
-
-    @Binds
-    fun bindLocationInteractor(impl: LocationInteractorImpl): LocationInteractor
 }

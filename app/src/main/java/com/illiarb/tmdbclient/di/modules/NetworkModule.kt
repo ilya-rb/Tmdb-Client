@@ -1,10 +1,10 @@
-package com.illiarb.tmdbclient.storage.di
+package com.illiarb.tmdbclient.di.modules
 
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.illiarb.tmdbclient.di.qualifier.HereApi
 import com.illiarb.tmdbclient.storage.BuildConfig
-import com.illiarb.tmdbclient.storage.di.qualifier.HereApi
 import com.illiarb.tmdbclient.storage.network.api.ApiKeyInterceptor
 import com.illiarb.tmdbclient.storage.network.api.MovieService
 import com.illiarb.tmdbclient.storage.network.hereapi.HereApiInterceptor
@@ -20,6 +20,9 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+/**
+ * @author ilya-rb on 03.11.18.
+ */
 @Module
 class NetworkModule {
 

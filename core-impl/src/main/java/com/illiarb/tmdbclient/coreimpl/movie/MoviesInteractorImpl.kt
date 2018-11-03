@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.coreimpl.modules.movie
+package com.illiarb.tmdbclient.coreimpl.movie
 
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter

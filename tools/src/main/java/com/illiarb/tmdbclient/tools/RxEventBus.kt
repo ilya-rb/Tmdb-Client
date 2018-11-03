@@ -1,15 +1,14 @@
-package com.illiarb.tmdbclient.system
+package com.illiarb.tmdbclient.tools
 
 import com.illiarb.tmdblcient.core.system.EventBus
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
- * @author ilya-rb on 30.10.18.
+ * @author ilya-rb on 03.11.18.
  */
-class AndroidEventBus @Inject constructor() : EventBus {
+class RxEventBus @Inject constructor() : EventBus {
 
     private val busSubject = PublishSubject.create<Any>()
 

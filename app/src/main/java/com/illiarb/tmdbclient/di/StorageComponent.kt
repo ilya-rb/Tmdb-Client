@@ -1,10 +1,16 @@
-package com.illiarb.tmdbclient.storage.di
+package com.illiarb.tmdbclient.di
 
+import com.illiarb.tmdbclient.di.modules.NetworkModule
+import com.illiarb.tmdbclient.di.modules.RepositoriesModule
+import com.illiarb.tmdbclient.di.modules.StorageModule
 import com.illiarb.tmdbexplorerdi.App
 import com.illiarb.tmdbexplorerdi.providers.StorageProvider
 import dagger.Component
 import javax.inject.Singleton
 
+/**
+ * @author ilya-rb on 03.11.18.
+ */
 @Component(
     modules = [
         RepositoriesModule::class,
