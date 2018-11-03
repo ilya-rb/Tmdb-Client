@@ -4,10 +4,12 @@ import com.illiarb.tmdblcient.core.system.EventBus
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * @author ilya-rb on 03.11.18.
  */
+@Singleton
 class RxEventBus @Inject constructor() : EventBus {
 
     private val busSubject = PublishSubject.create<Any>()
