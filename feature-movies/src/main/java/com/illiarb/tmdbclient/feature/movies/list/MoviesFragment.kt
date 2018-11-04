@@ -9,7 +9,6 @@ import com.illiarb.tmdbclient.feature.movies.list.delegates.movie.MovieSectionDe
 import com.illiarb.tmdbclient.feature.movies.list.delegates.nowplaying.NowPlayingSectionDelegate
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.DelegateAdapter
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDecoration
 import com.illiarb.tmdbexplorer.coreui.state.UiState
 import com.illiarb.tmdbexplorerdi.Injectable
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
