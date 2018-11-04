@@ -37,13 +37,14 @@ class NowPlayingPagerAdapter : PagerAdapter() {
     }
 
     private fun bindMovie(movie: Movie, view: View) {
+        val radius = view.resources.getDimensionPixelSize(R.dimen.item_movie_corner_radius)
+
         movie.posterPath?.let {
-            val radius = view.resources.getDimensionPixelSize(R.dimen.item_movie_corner_radius)
             ImageLoader.loadImage(view.itemNowPlayingPosterSmall, it, cornerRadius = radius)
         }
 
         movie.backdropPath?.let {
-            ImageLoader.loadImage(view.itemNowPlayingCover, it, true, blur = BlurParams())
+            ImageLoader.loadImage(view.itemNowPlayingCover, it, true, radius, BlurParams())
         }
 
         view.itemNowPlayingTitle.text = movie.title

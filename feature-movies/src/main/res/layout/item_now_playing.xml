@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="150dp"
     android:contentDescription="@null"
+    android:background="@drawable/bg_item_now_playing"
     tools:scaleType="fitXY"
     tools:src="@tools:sample/backgrounds/scenic">
 
@@ -53,7 +54,7 @@
         android:id="@+id/itemNowPlayingTmdb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:contentDescription="@null"
         android:src="@drawable/ic_tmdblogo"
         app:layout_constraintStart_toStartOf="@id/itemNowPlayingTitle"
