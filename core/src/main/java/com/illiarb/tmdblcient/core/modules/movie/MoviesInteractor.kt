@@ -2,12 +2,13 @@ package com.illiarb.tmdblcient.core.modules.movie
 
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter
+import com.illiarb.tmdblcient.core.entity.MovieSection
 import com.illiarb.tmdblcient.core.entity.Review
 import io.reactivex.Single
 
 interface MoviesInteractor {
 
-    fun getMoviesByType(type: String): Single<List<Movie>>
+    fun getMovieSections(): Single<List<MovieSection>>
 
     fun getMovieDetails(id: Int, appendToResponse: String): Single<Movie>
 

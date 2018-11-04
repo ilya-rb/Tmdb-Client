@@ -8,7 +8,7 @@ import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdblcient.core.entity.Movie
 import javax.inject.Inject
 
-class MoviesAdapter @Inject constructor() : BaseAdapter<Movie, MovieViewHolder>(diffCallback) {
+class MovieAdapter @Inject constructor() : BaseAdapter<Movie, MovieViewHolder>(diffCallback) {
 
     companion object {
 

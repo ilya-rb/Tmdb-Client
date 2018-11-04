@@ -5,47 +5,40 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbclient.feature.movies.di.MoviesComponent
-import com.illiarb.tmdbclient.feature.movies.movieslist.adapter.MoviesAdapter
-import com.illiarb.tmdbclient.feature.movies.movieslist.filters.MovieFiltersFragment
+import com.illiarb.tmdbclient.feature.movies.movieslist.adapter.MovieSectionDelegate
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
+import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.DelegateAdapter
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDecoration
 import com.illiarb.tmdbexplorer.coreui.state.UiState
 import com.illiarb.tmdbexplorerdi.Injectable
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Movie
-import com.illiarb.tmdblcient.core.entity.MovieFilter
+import com.illiarb.tmdblcient.core.entity.MovieSection
 import com.illiarb.tmdblcient.core.ext.addTo
-import com.illiarb.tmdblcient.core.system.EventBus
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
 
 class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
 
     @Inject
-    lateinit var moviesAdapter: MoviesAdapter
+    lateinit var delegateAdapter: DelegateAdapter
 
     @Inject
-    lateinit var bus: EventBus
+    lateinit var movieSectionDelegate: MovieSectionDelegate
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        delegateAdapter.addDelegate(movieSectionDelegate)
+
         moviesList.let {
             it.layoutManager = LinearLayoutManager(requireContext())
-            it.adapter = moviesAdapter
+            it.adapter = delegateAdapter
             it.setHasFixedSize(true)
 
             val spacing = resources.getDimensionPixelSize(R.dimen.item_movie_spacing)
-            it.addItemDecoration(SpaceItemDecoration(spacing / 2, spacing))
+            it.addItemDecoration(SpaceItemDecoration(spacing / 2, spacing / 2))
         }
-
-        moviesFilter.setOnClickListener {
-            MovieFiltersFragment.show(requireFragmentManager())
-        }
-
-        bus.observeEvents(MovieFilter::class.java)
-            .subscribe { viewModel.onFilterChanged(it) }
-            .addTo(destroyViewDisposable)
 
         swipeRefreshLayout.isEnabled = false
     }
@@ -53,19 +46,15 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.observeMovieFilter()
-            .subscribe {
-                if (it.hasData()) {
-                    moviesType.text = it.requireData()
-                }
-            }
-            .addTo(destroyViewDisposable)
-
         viewModel.observeMovies()
             .subscribe(::onMoviesUiStateChanged, Throwable::printStackTrace)
             .addTo(destroyViewDisposable)
 
-        moviesAdapter.clickEvent = { _, _, movie -> viewModel.onMovieClicked(movie) }
+        delegateAdapter.clickEvent = { _, _, item ->
+            if (item is Movie) {
+                viewModel.onMovieClicked(item)
+            }
+        }
     }
 
     override fun getContentView(): Int = R.layout.fragment_movies
@@ -76,11 +65,11 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
         MoviesComponent.get(appProvider, requireActivity()).inject(this)
     }
 
-    private fun onMoviesUiStateChanged(state: UiState<List<Movie>>) {
+    private fun onMoviesUiStateChanged(state: UiState<List<MovieSection>>) {
         swipeRefreshLayout.isRefreshing = state.isLoading()
 
         if (state.hasData()) {
-            moviesAdapter.submitList(state.requireData())
+            delegateAdapter.submitList(state.requireData())
         }
     }
 }

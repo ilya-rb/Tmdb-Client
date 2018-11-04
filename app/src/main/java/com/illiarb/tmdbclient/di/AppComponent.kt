@@ -25,7 +25,7 @@ interface AppComponent : AppProvider {
         fun get(app: App): AppProvider {
             val storageProvider = StorageComponent.get(app)
             val toolsProvider = ToolsComponent.get()
-            val interactorsProvider = InteractorsComponent.get(storageProvider)
+            val interactorsProvider = InteractorsComponent.get(storageProvider, toolsProvider)
 
             return DaggerAppComponent.builder()
                 .storageProvider(storageProvider)
