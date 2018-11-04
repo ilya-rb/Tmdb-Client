@@ -5,6 +5,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.Transformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.illiarb.tmdbexplorer.coreui.BuildConfig
@@ -20,16 +21,16 @@ object ImageLoader {
     ) {
         val transformations = mutableListOf<Transformation<Bitmap>>()
 
+        blur?.let {
+            transformations.add(BlurTransformation(target.context, it.radius, it.sampling))
+        }
+
         if (centerCrop) {
             transformations.add(CenterCrop())
         }
 
         if (cornerRadius > 0) {
             transformations.add(RoundedCorners(cornerRadius))
-        }
-
-        blur?.let {
-            transformations.add(BlurTransformation(target.context, it.radius, it.sampling))
         }
 
         Glide.with(target.context)
