@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.feature.movies.movieslist
+package com.illiarb.tmdbclient.feature.movies.list
 
 import com.illiarb.tmdbexplorer.coreui.state.DataUiStateSubject
 import com.illiarb.tmdbexplorer.coreui.state.UiState

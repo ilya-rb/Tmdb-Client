@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.feature.movies.movieslist.adapter
+package com.illiarb.tmdbclient.feature.movies.list.delegates.movie
 
 import android.view.View
 import com.illiarb.tmdbclient.feature.movies.R

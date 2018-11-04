@@ -8,6 +8,7 @@ data class MovieDto(
     var id: Int,
     var adult: Boolean,
     var posterPath: String?,
+    var backdropPath: String?,
     var budget: Int,
     var genres: MutableList<GenreDto>,
     var homepage: String?,
@@ -26,12 +27,13 @@ data class MovieDto(
     var voteCount: Int
 ) : Persistable {
 
-    constructor() : this(0, false, null, 0, mutableListOf<GenreDto>(), null, null, null, null, "", null, null, 0, null, "", null, null, 0f, 0)
+    constructor() : this(0, false, null, null, 0, mutableListOf<GenreDto>(), null, null, null, null, "", null, null, 0, null, "", null, null, 0f, 0)
 
     override fun readExternal(input: DataInput) =
         with(input) {
             id = readInt()
             posterPath = readString()
+            backdropPath = readString()
             releaseDate = readString()
             overview = readString()
             title = readString()
@@ -43,6 +45,7 @@ data class MovieDto(
             id,
             false,
             posterPath,
+            backdropPath,
             0,
             mutableListOf(),
             null,
@@ -65,6 +68,7 @@ data class MovieDto(
         output.run {
             writeInt(id)
             writeString(posterPath)
+            writeString(backdropPath)
             writeString(releaseDate)
             writeString(overview)
             writeString(title)

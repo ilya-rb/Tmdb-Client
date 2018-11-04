@@ -1,8 +1,10 @@
 package com.illiarb.tmdbclient.coreimpl.movie
 
+import com.illiarb.tmdblcient.core.entity.ListSection
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.entity.MovieSection
+import com.illiarb.tmdblcient.core.entity.NowPlayingSection
 import com.illiarb.tmdblcient.core.entity.Review
 import com.illiarb.tmdblcient.core.modules.movie.MoviesInteractor
 import com.illiarb.tmdblcient.core.modules.movie.MoviesRepository
@@ -20,7 +22,15 @@ class MoviesInteractorImpl @Inject constructor(
             .flatMap { filters ->
                 Single.just(filters.map { filter ->
                     moviesRepository.getMoviesByType(filter.code)
-                        .map { MovieSection(filter.name, it) }
+                        .map {
+                            // Set now playing filter
+                            // as main
+                            if (filter.code == MovieFilter.TYPE_NOW_PLAYING) {
+                                NowPlayingSection(filter.name, it)
+                            } else {
+                                ListSection(filter.name, it)
+                            }
+                        }
                         .subscribeOn(schedulerProvider.provideIoScheduler())
                         .blockingGet()
                 })

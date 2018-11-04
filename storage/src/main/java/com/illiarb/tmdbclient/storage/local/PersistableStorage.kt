@@ -3,7 +3,7 @@ package com.illiarb.tmdbclient.storage.local
 import android.util.Log
 import com.illiarb.tmdbclient.storage.dto.MovieListDto
 import com.illiarb.tmdbexplorerdi.App
-import com.illiarb.tmdblcient.core.entity.Movie
+import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.ironz.binaryprefs.BinaryPreferencesBuilder
 import com.ironz.binaryprefs.Preferences
 import com.ironz.binaryprefs.serialization.serializer.persistable.Persistable
@@ -20,9 +20,9 @@ class PersistableStorage @Inject constructor(app: App) {
 
     private val store: Preferences = BinaryPreferencesBuilder(app.getApplication())
         .name(STORE_NAME)
-        .registerPersistable(Movie.TYPE_POPULAR, MovieListDto::class.java)
-        .registerPersistable(Movie.TYPE_UPCOMING, MovieListDto::class.java)
-        .registerPersistable(Movie.TYPE_NOW_PLAYING, MovieListDto::class.java)
+        .registerPersistable(MovieFilter.TYPE_POPULAR, MovieListDto::class.java)
+        .registerPersistable(MovieFilter.TYPE_UPCOMING, MovieListDto::class.java)
+        .registerPersistable(MovieFilter.TYPE_NOW_PLAYING, MovieListDto::class.java)
         .exceptionHandler { Log.e(PersistableStorage::class.java.name, "Cache error", it) }
         .externalStorage(false)
         .build()

@@ -17,6 +17,7 @@ class MovieMapper @Inject constructor(
             from.id,
             from.adult,
             from.posterPath,
+            from.backdropPath,
             from.budget,
             genreMapper.mapList(from.genres),
             from.homepage,

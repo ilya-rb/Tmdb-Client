@@ -15,7 +15,8 @@ object ImageLoader {
         target: ImageView,
         url: String,
         centerCrop: Boolean = false,
-        cornerRadius: Int = 0
+        cornerRadius: Int = 0,
+        blur: BlurParams? = null
     ) {
         val transformations = mutableListOf<Transformation<Bitmap>>()
 
@@ -25,6 +26,10 @@ object ImageLoader {
 
         if (cornerRadius > 0) {
             transformations.add(RoundedCorners(cornerRadius))
+        }
+
+        blur?.let {
+            transformations.add(BlurTransformation(target.context, it.radius, it.sampling))
         }
 
         Glide.with(target.context)
