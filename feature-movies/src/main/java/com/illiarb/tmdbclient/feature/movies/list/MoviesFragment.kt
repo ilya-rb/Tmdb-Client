@@ -40,9 +40,7 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
             it.layoutManager = LinearLayoutManager(requireContext())
             it.adapter = delegateAdapter
             it.setHasFixedSize(true)
-
-            val spacing = resources.getDimensionPixelSize(R.dimen.item_movie_spacing)
-            it.addItemDecoration(SpaceItemDecoration(spacing / 2, spacing / 2))
+            it.addItemDecoration(MoviesSpaceDecoration(requireContext()))
         }
 
         swipeRefreshLayout.isEnabled = false

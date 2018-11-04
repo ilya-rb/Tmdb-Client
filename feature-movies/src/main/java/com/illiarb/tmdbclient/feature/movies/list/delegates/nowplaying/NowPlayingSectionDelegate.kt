@@ -27,7 +27,8 @@ class NowPlayingSectionDelegate @Inject constructor() : AdapterDelegate {
 
         init {
             sectionPager.adapter = adapter
-            sectionPager.pageMargin = itemView.resources.getDimensionPixelSize(R.dimen.item_movie_spacing)
+            sectionPager.pageMargin =
+                itemView.resources.getDimensionPixelSize(R.dimen.item_movie_spacing) / 2
         }
 
         override fun bind(item: Any) {
