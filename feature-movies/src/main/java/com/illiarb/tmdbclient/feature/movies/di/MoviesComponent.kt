@@ -15,7 +15,8 @@ import dagger.Component
     modules = [
         ViewModelModule::class,
         MoviesModule::class,
-        ActivityModule::class
+        ActivityModule::class,
+        DelegatesModule::class
     ]
 )
 interface MoviesComponent {

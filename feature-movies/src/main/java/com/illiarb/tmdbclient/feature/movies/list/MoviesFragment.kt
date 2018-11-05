@@ -5,9 +5,8 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbclient.feature.movies.di.MoviesComponent
-import com.illiarb.tmdbclient.feature.movies.list.delegates.movie.MovieSectionDelegate
-import com.illiarb.tmdbclient.feature.movies.list.delegates.nowplaying.NowPlayingSectionDelegate
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
+import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.AdapterDelegate
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.DelegateAdapter
 import com.illiarb.tmdbexplorer.coreui.state.UiState
 import com.illiarb.tmdbexplorerdi.Injectable
@@ -24,16 +23,12 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
     lateinit var delegateAdapter: DelegateAdapter
 
     @Inject
-    lateinit var movieSectionDelegate: MovieSectionDelegate
-
-    @Inject
-    lateinit var nowPlayingSectionDelegate: NowPlayingSectionDelegate
+    lateinit var delegatesSet: Set<@JvmSuppressWildcards AdapterDelegate>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        delegateAdapter.addDelegate(movieSectionDelegate)
-        delegateAdapter.addDelegate(nowPlayingSectionDelegate)
+        delegateAdapter.addDelegatesFromSet(delegatesSet)
 
         moviesList.let {
             it.layoutManager = LinearLayoutManager(requireContext())

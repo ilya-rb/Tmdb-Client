@@ -75,6 +75,10 @@ class DelegateAdapter @Inject constructor() : RecyclerView.Adapter<BaseDelegateV
 
     override fun getItemCount(): Int = asyncListDiffer.currentList.size
 
+    fun addDelegatesFromSet(delegates: Set<AdapterDelegate>) {
+        delegates.forEach { addDelegate(it) }
+    }
+
     fun addDelegate(delegate: AdapterDelegate) {
         val viewType = delegatesMap.size()
 
