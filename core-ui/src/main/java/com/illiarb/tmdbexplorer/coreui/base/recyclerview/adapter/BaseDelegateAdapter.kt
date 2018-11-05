@@ -6,13 +6,20 @@ import androidx.collection.SparseArrayCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.illiarb.tmdbexplorer.coreui.R
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.viewholder.BaseDelegateViewHolder
+import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import javax.inject.Inject
 
 /**
  * @author ilya-rb on 04.11.18.
  */
 class DelegateAdapter @Inject constructor() : RecyclerView.Adapter<BaseDelegateViewHolder>() {
+
+    private val delegatesMap = SparseArrayCompat<AdapterDelegate>()
+
+    private val currentList: MutableList<Any>
+        get() = asyncListDiffer.currentList
 
     private val diffCallback = object : DiffUtil.ItemCallback<Any>() {
         override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean = oldItem == newItem
@@ -21,29 +28,12 @@ class DelegateAdapter @Inject constructor() : RecyclerView.Adapter<BaseDelegateV
 
     private val asyncListDiffer = AsyncListDiffer<Any>(this, diffCallback)
 
-    private val delegatesMap = SparseArrayCompat<AdapterDelegate>()
+    private var fallbackDelegate: AdapterDelegate = DefaultFallbackDelegate()
 
-    private val currentList: MutableList<Any>
-        get() = asyncListDiffer.currentList
-
-    private var fallbackDelegate: AdapterDelegate? = null
-
-    var clickEvent: (viewId: Int, position: Int, item: Any) -> Unit = { _, _, _ -> }
-
-    fun addDelegate(delegate: AdapterDelegate) {
-        val viewType = delegatesMap.size()
-
-        if (delegatesMap[viewType] == null) {
-            delegatesMap.put(viewType, delegate)
-        }
-    }
-
-    fun setFallbackDelegate(delegate: AdapterDelegate) {
-        fallbackDelegate = delegate
-    }
+    private var clickEvent: (viewId: Int, position: Int, item: Any) -> Unit = { _, _, _ -> }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseDelegateViewHolder {
-        val delegate = delegatesMap[viewType] ?: fallbackDelegate ?: TODO()
+        val delegate = delegatesMap[viewType] ?: fallbackDelegate
         return delegate.onCreateViewHolder(parent, viewType)
     }
 
@@ -85,7 +75,35 @@ class DelegateAdapter @Inject constructor() : RecyclerView.Adapter<BaseDelegateV
 
     override fun getItemCount(): Int = asyncListDiffer.currentList.size
 
+    fun addDelegate(delegate: AdapterDelegate) {
+        val viewType = delegatesMap.size()
+
+        if (delegatesMap[viewType] == null) {
+            delegatesMap.put(viewType, delegate)
+        }
+    }
+
+    fun setFallbackDelegate(delegate: AdapterDelegate) {
+        fallbackDelegate = delegate
+    }
+
+    fun setClickEvent(onClick: (Int, Int, Any) -> Unit) {
+        clickEvent = onClick
+    }
+
     fun submitList(newList: List<Any>) {
         asyncListDiffer.submitList(newList)
+    }
+
+    class DefaultFallbackDelegate : AdapterDelegate {
+        override fun isForViewType(item: Any): Boolean = false
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseDelegateViewHolder =
+            object : BaseDelegateViewHolder(parent.inflate(R.layout.item_fallback)) {
+                override fun bind(item: Any) {
+                }
+
+                override fun onViewRecycled() {
+                }
+            }
     }
 }

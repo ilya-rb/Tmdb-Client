@@ -1,19 +1,14 @@
 package com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter
 
 import android.view.View
-import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.viewholder.BaseViewHolder
 
-abstract class BaseAdapter<T, VH : BaseViewHolder<T>> : ListAdapter<T, VH> {
+abstract class BaseAdapter<T, VH : BaseViewHolder<T>>(diffCallback: DiffUtil.ItemCallback<T>) : ListAdapter<T, VH>(diffCallback) {
 
     var clickEvent: (viewId: Int, position: Int, item: T) -> Unit = { _, _, _ -> }
-
-    constructor(diffCallback: DiffUtil.ItemCallback<T>) : super(diffCallback)
-
-    constructor(config: AsyncDifferConfig<T>) : super(config)
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         holder.bindClickListener(View.OnClickListener { view ->
