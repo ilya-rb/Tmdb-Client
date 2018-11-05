@@ -52,7 +52,7 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
             .subscribe(::onMoviesUiStateChanged, Throwable::printStackTrace)
             .addTo(destroyViewDisposable)
 
-        delegateAdapter.clickEvent = { _, _, item ->
+        delegateAdapter.setClickEvent { _, _, item ->
             if (item is Movie) {
                 viewModel.onMovieClicked(item)
             }

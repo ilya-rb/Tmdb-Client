@@ -5,6 +5,7 @@ import com.illiarb.tmdbclient.feature.movies.details.MovieDetailsFragment
 import com.illiarb.tmdbclient.feature.movies.details.photos.MovieDetailsPhotosFragment
 import com.illiarb.tmdbclient.feature.movies.details.reviews.MovieDetailsReviewsFragment
 import com.illiarb.tmdbclient.feature.movies.list.MoviesFragment
+import com.illiarb.tmdbexplorer.coreui.di.ActivityModule
 import com.illiarb.tmdbexplorer.coreui.di.ViewModelModule
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
 import dagger.Component

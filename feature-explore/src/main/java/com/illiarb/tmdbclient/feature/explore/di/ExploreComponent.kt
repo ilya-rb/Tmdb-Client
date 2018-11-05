@@ -1,8 +1,8 @@
 package com.illiarb.tmdbclient.feature.explore.di
 
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import com.illiarb.tmdbclient.feature.explore.ExploreFragment
+import com.illiarb.tmdbexplorer.coreui.di.ActivityModule
 import com.illiarb.tmdbexplorer.coreui.di.ViewModelModule
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
 import dagger.Component
