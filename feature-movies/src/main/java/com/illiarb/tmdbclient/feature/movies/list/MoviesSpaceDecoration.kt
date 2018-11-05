@@ -20,6 +20,10 @@ class MoviesSpaceDecoration(context: Context) : RecyclerView.ItemDecoration() {
         } else {
             outRect.left = spacing / 2
             outRect.right = spacing / 2
+
+            if (parent.getChildAdapterPosition(view) == parent.childCount - 1) {
+                outRect.bottom = spacing / 2
+            }
         }
     }
 }
