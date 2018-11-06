@@ -2,12 +2,10 @@ package com.illiarb.tmdbclient.feature.movies.details
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.chip.Chip
 import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbclient.feature.movies.di.MoviesComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
-import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsetsWithMargin
 import com.illiarb.tmdbexplorer.coreui.ext.setTranslucentStatusBar
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.state.UiState
@@ -27,16 +25,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val activity = requireActivity() as AppCompatActivity
-
-        movieDetailsToolbar
-            .apply {
-                awareOfWindowInsetsWithMargin(R.dimen.movie_details_horizontal_margin)
-                setNavigationOnClickListener {
-                    requireActivity().onBackPressed()
-                }
-            }
-            .also { activity.setSupportActionBar(it) }
+        movieDetailsToolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -52,13 +43,13 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         requireActivity().setTranslucentStatusBar(true)
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
         requireActivity().setTranslucentStatusBar(false)
     }
 
