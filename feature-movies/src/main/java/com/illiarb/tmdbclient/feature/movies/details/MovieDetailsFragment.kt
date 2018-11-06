@@ -2,10 +2,14 @@ package com.illiarb.tmdbclient.feature.movies.details
 
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.illiarb.tmdbclient.feature.movies.R
+import com.illiarb.tmdbclient.feature.movies.details.photos.PhotosAdapter
 import com.illiarb.tmdbclient.feature.movies.di.MoviesComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
+import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDecoration
+import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.setTranslucentStatusBar
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.state.UiState
@@ -20,13 +24,23 @@ import javax.inject.Inject
 class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
 
     @Inject
-    lateinit var infoPagerAdapter: MovieInfoPagerAdapter
+    lateinit var photosAdapter: PhotosAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        movieDetailsToolbar.setNavigationOnClickListener {
-            requireActivity().onBackPressed()
+        movieDetailsToolbar.apply {
+            awareOfWindowInsets()
+            movieDetailsToolbar.setNavigationOnClickListener {
+                requireActivity().onBackPressed()
+            }
+        }
+
+        movieDetailsPhotos.let {
+            it.adapter = photosAdapter
+            it.setHasFixedSize(true)
+            it.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            it.addItemDecoration(SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.movie_details_horizontal_margin), 0))
         }
     }
 
@@ -78,7 +92,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
             )
         }
 
-        movieDetailsToolbar.title = movie.title
         movieDetailsTitle.text = movie.title
         movieDetailsRating.text = movie.voteAverage.toString()
 
@@ -97,11 +110,10 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
                 .also { movieDetailsTags.addView(it) }
         }
 
-        infoPagerAdapter.movie = movie
+        movie.overview?.let {
+            movieDetailsOverview.text = it
+        }
 
-        movieDetailsViewPager.adapter = infoPagerAdapter
-        movieDetailsViewPager.offscreenPageLimit = MovieInfoPagerAdapter.TABS_COUNT
-
-        movieDetailsTabs.setupWithViewPager(movieDetailsViewPager)
+        movie.images.map { it.filePath }.also { photosAdapter.submitList(it) }
     }
 }

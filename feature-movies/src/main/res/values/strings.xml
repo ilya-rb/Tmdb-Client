@@ -1,13 +1,9 @@
 <resources>
 
-    <string name="movie_details_info_title">Details</string>
-    <string name="movie_details_overview_empty">No description provided</string>
-
-    <string name="movie_details_info_tab_title">Info</string>
-    <string name="movie_details_info_reviews_tab_title">Reviews</string>
-    <string name="movie_details_info_photos_tab_title">Photos</string>
-    <string name="movie_details_info_videos_tab_title">Videos</string>
-    <string name="movie_details_duration">%1$d min</string>
     <string name="movie_section_more">See all</string>
+
+    <string name="movie_details_photos">Photos</string>
+    <string name="movie_details_overview_empty">No description provided</string>
+    <string name="movie_details_duration">%1$d min</string>
 
 </resources>
