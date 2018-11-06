@@ -43,9 +43,7 @@ class NowPlayingPagerAdapter : PagerAdapter() {
             ImageLoader.loadImage(view.itemNowPlayingPosterSmall, it, cornerRadius = radius)
         }
 
-        movie.backdropPath?.let {
-            ImageLoader.loadImage(view.itemNowPlayingCover, it, true, radius, BlurParams())
-        }
+        ImageLoader.loadImage(view.itemNowPlayingCover, movie.backdropPath, true, radius, BlurParams())
 
         view.itemNowPlayingTitle.text = movie.title
         view.itemNowPlayingRating.text = movie.voteAverage.toString()

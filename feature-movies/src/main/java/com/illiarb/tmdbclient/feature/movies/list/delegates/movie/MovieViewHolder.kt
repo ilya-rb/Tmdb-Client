@@ -13,9 +13,7 @@ class MovieViewHolder(containerView: View) : BaseViewHolder<Movie>(containerView
     private val imageCornerRadius = itemView.resources.getDimensionPixelSize(R.dimen.item_movie_corner_radius)
 
     override fun bind(item: Movie) {
-        item.posterPath?.let {
-            ImageLoader.loadImage(itemImage, it, true, imageCornerRadius)
-        }
+        ImageLoader.loadImage(itemImage, item.posterPath, true, imageCornerRadius)
     }
 
     override fun bindClickListener(clickListener: View.OnClickListener) {

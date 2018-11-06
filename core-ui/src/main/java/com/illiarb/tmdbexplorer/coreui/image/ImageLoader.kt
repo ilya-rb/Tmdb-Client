@@ -5,16 +5,16 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.Transformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.illiarb.tmdbexplorer.coreui.BuildConfig
+import com.illiarb.tmdbexplorer.coreui.R
 
 object ImageLoader {
 
     fun loadImage(
         target: ImageView,
-        url: String,
+        url: String?,
         centerCrop: Boolean = false,
         cornerRadius: Int = 0,
         blur: BlurParams? = null
@@ -36,9 +36,15 @@ object ImageLoader {
         Glide.with(target.context)
             .load(createImageUrl(url))
             .apply {
-                if (transformations.isNotEmpty()) {
-                    apply(RequestOptions().transforms(*transformations.toTypedArray()))
-                }
+                val options = RequestOptions()
+                    .apply {
+                        error(R.drawable.image_error_placeholder)
+
+                        if (transformations.isNotEmpty()) {
+                            transforms(*transformations.toTypedArray())
+                        }
+                    }
+                apply(options)
             }
             .into(target)
     }
@@ -47,5 +53,10 @@ object ImageLoader {
         Glide.with(target.context).clear(target)
     }
 
-    private fun createImageUrl(url: String): String = "${BuildConfig.IMG_URL}/$url"
+    private fun createImageUrl(url: String?): String =
+        if (url != null) {
+            "${BuildConfig.IMG_URL}/$url"
+        } else {
+            ""
+        }
 }
