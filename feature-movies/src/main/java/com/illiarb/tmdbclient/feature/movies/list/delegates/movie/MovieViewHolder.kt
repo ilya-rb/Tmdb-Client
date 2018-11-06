@@ -17,7 +17,7 @@ class MovieViewHolder(containerView: View) : BaseViewHolder<Movie>(containerView
     }
 
     override fun bindClickListener(clickListener: View.OnClickListener) {
-        itemView.setOnClickListener(clickListener::onClick)
+        itemView.setOnClickListener(clickListener)
     }
 
     override fun onViewRecycled() {

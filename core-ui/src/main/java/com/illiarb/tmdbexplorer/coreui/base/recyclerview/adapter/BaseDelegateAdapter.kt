@@ -38,15 +38,14 @@ class DelegateAdapter @Inject constructor() : RecyclerView.Adapter<BaseDelegateV
     }
 
     override fun onBindViewHolder(holder: BaseDelegateViewHolder, position: Int) {
-        holder.bindClickListener(View.OnClickListener { view ->
-            val adapterPosition = holder.adapterPosition
-            if (adapterPosition != RecyclerView.NO_POSITION && adapterPosition < itemCount) {
-                clickEvent(view.id, adapterPosition, currentList[adapterPosition])
-            }
-        })
-
         if (position != RecyclerView.NO_POSITION && position < itemCount) {
             holder.bind(currentList[position])
+            holder.bindClickListener(View.OnClickListener { view ->
+                val adapterPosition = holder.adapterPosition
+                if (adapterPosition != RecyclerView.NO_POSITION && adapterPosition < itemCount) {
+                    clickEvent(view.id, adapterPosition, currentList[adapterPosition])
+                }
+            })
         }
     }
 

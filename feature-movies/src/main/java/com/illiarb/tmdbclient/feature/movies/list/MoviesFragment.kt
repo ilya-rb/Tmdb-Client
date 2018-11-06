@@ -14,6 +14,7 @@ import com.illiarb.tmdbexplorerdi.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieSection
 import com.illiarb.tmdblcient.core.ext.addTo
+import com.illiarb.tmdblcient.core.system.EventBus
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
 
@@ -24,6 +25,9 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
 
     @Inject
     lateinit var delegatesSet: Set<@JvmSuppressWildcards AdapterDelegate>
+
+    @Inject
+    lateinit var eventBus: EventBus
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,11 +51,9 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
             .subscribe(::onMoviesUiStateChanged, Throwable::printStackTrace)
             .addTo(destroyViewDisposable)
 
-        delegateAdapter.setClickEvent { _, _, item ->
-            if (item is Movie) {
-                viewModel.onMovieClicked(item)
-            }
-        }
+        eventBus.observeEvents(Movie::class.java)
+            .subscribe({ viewModel.onMovieClicked(it) }, Throwable::printStackTrace)
+            .addTo(destroyViewDisposable)
     }
 
     override fun getContentView(): Int = R.layout.fragment_movies
