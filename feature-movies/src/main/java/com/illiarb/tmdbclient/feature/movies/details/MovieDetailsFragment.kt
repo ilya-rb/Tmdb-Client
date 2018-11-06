@@ -40,7 +40,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
             it.adapter = photosAdapter
             it.setHasFixedSize(true)
             it.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            it.addItemDecoration(SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.movie_details_horizontal_margin), 0))
+            it.addItemDecoration(SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.movie_details_horizontal_small_margin) / 2, 0, false, false))
         }
     }
 
