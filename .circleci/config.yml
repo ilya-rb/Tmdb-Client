@@ -2,6 +2,7 @@ version: 2
 jobs:
   build:
     working_directory: ~/code
+    parallelism: 4
 
     docker:
       - image: circleci/android:api-28-alpha
@@ -19,17 +20,20 @@ jobs:
 #         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
 #         command: sudo chmod +x ./gradlew
 
+      - persist_to_workspace
+          root: .
+
       - run:
           name: Create Project Keys
-          command: touch $CIRCLE_WORKING_DIRECTORY/api-config.properties && circleci-env-keys.txt >> $CIRCLE_WORKING_DIRECTORY/api-config.properties
+          command: ls $CIRCLE_WORKING_DIRECTORY #touch $CIRCLE_WORKING_DIRECTORY/api-config.properties && circleci-env-keys.txt >> $CIRCLE_WORKING_DIRECTORY/api-config.properties
 
-      - run:
-          name: Download Dependencies
-          command: ./gradlew androidDependencies
-
-      - run:
-          name: Build Project
-          command: ./gradlew build --scan --exclude-task test
+#      - run:
+#          name: Download Dependencies
+#          command: ./gradlew androidDependencies
+#
+#      - run:
+#          name: Build Project
+#          command: ./gradlew build --scan --exclude-task test
 
       - save_cache:
           paths:
