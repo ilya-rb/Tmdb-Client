@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
-import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.illiarb.tmdbclient.features.main.di.MainComponent
@@ -46,13 +45,7 @@ class MainActivity : BaseActivity<MainViewModel>(), Injectable {
         }
 
         eventBus.observeEvents(NavDirections::class.java)
-            .subscribe {
-                val options = NavOptions.Builder()
-
-                    .build()
-
-                Navigation.findNavController(this, R.id.nav_host_container).navigate(it, options)
-            }
+            .subscribe { Navigation.findNavController(this, R.id.nav_host_container).navigate(it) }
             .addTo(destroyDisposable)
     }
 
