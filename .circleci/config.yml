@@ -20,9 +20,6 @@ jobs:
 #         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
 #         command: sudo chmod +x ./gradlew
 
-      - persist_to_workspace
-          root: .
-
       - run:
           name: Create Project Keys
           command: ls $CIRCLE_WORKING_DIRECTORY #touch $CIRCLE_WORKING_DIRECTORY/api-config.properties && circleci-env-keys.txt >> $CIRCLE_WORKING_DIRECTORY/api-config.properties
