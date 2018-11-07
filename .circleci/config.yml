@@ -21,7 +21,7 @@ jobs:
 
       - run:
           name: Create Project Keys
-          command: circleci-env-keys.txt >> ~/TmdbClient/api-config.properties
+          command: touch ~/TmdbClient/api-config.properties && circleci-env-keys.txt >> ~/TmdbClient/api-config.properties
 
       - run:
           name: Download Dependencies
