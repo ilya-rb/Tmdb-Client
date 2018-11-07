@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbclient.feature.movies.details.photos.PhotosAdapter
+import com.illiarb.tmdbclient.feature.movies.details.reviews.ReviewsAdapter
 import com.illiarb.tmdbclient.feature.movies.di.MoviesComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDecoration
@@ -26,6 +27,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
     @Inject
     lateinit var photosAdapter: PhotosAdapter
 
+    @Inject
+    lateinit var reviewsAdapter: ReviewsAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -40,7 +44,21 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
             it.adapter = photosAdapter
             it.setHasFixedSize(true)
             it.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            it.addItemDecoration(SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.movie_details_horizontal_small_margin) / 2, 0, false, false))
+            it.addItemDecoration(
+                SpaceItemDecoration(
+                    resources.getDimensionPixelSize(R.dimen.movie_details_horizontal_small_margin) / 2,
+                    0,
+                    false,
+                    false
+                )
+            )
+        }
+
+        movieDetailsReviews.let {
+            it.adapter = reviewsAdapter
+            it.layoutManager = LinearLayoutManager(requireContext())
+            it.addItemDecoration(SpaceItemDecoration(0, resources.getDimensionPixelSize(R.dimen.movie_details_horizontal_small_margin)))
+            it.isNestedScrollingEnabled = false
         }
     }
 
@@ -115,5 +133,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
         }
 
         movie.images.map { it.filePath }.also { photosAdapter.submitList(it) }
+
+        reviewsAdapter.submitList(movie.reviews)
     }
 }

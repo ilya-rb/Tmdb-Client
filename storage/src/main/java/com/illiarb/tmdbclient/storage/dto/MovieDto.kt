@@ -17,7 +17,7 @@ data class MovieDto(
     var productionCompanies: List<CompanyDto>?,
     var releaseDate: String,
     var overview: String?,
-    var reviews: ReviewListDto?,
+    var reviews: ResultsDto<ReviewDto>?,
     var runtime: Int?,
     var status: String?,
     var title: String,

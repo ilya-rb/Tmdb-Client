@@ -6,9 +6,8 @@ import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.BaseAdapter
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdblcient.core.entity.Movie
-import javax.inject.Inject
 
-class MovieAdapter @Inject constructor() : BaseAdapter<Movie, MovieViewHolder>(diffCallback) {
+class MovieAdapter : BaseAdapter<Movie, MovieViewHolder>(diffCallback) {
 
     companion object {
 

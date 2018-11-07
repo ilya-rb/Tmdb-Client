@@ -26,7 +26,7 @@ class MovieMapper @Inject constructor(
             companyMapper.mapList(from.productionCompanies),
             from.releaseDate,
             from.overview,
-            reviewMapper.mapList(from.reviews?.reviews),
+            reviewMapper.mapList(from.reviews?.results),
             from.runtime,
             from.status,
             from.title,

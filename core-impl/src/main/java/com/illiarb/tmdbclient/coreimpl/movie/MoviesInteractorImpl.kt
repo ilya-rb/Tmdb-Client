@@ -23,8 +23,7 @@ class MoviesInteractorImpl @Inject constructor(
                 Single.just(filters.map { filter ->
                     moviesRepository.getMoviesByType(filter.code)
                         .map {
-                            // Set now playing filter
-                            // as main
+                            // Set now playing filter as main
                             if (filter.code == MovieFilter.TYPE_NOW_PLAYING) {
                                 NowPlayingSection(filter.name, it)
                             } else {
