@@ -16,6 +16,8 @@ jobs:
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
+      - run:
+          name: Build Project
           command: ./gradlew build --scan --exclude-task test
       - save_cache:
           paths:
