@@ -1,9 +1,11 @@
 package com.illiarb.tmdbclient.feature.movies.details
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.Slide
 import com.google.android.material.chip.Chip
 import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbclient.feature.movies.details.photos.PhotosAdapter
@@ -39,6 +41,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
                 movieDetailsPlayTrailer.show()
             }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = Slide(Gravity.END)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
