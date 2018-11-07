@@ -2,7 +2,6 @@ version: 2
 jobs:
   build:
     working_directory: ~/code
-    parallelism: 4
 
     docker:
       - image: circleci/android:api-28-alpha
