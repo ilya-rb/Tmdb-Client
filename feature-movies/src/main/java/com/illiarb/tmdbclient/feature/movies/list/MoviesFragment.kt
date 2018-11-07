@@ -3,6 +3,7 @@ package com.illiarb.tmdbclient.feature.movies.list
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.Fade
 import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbclient.feature.movies.di.MoviesComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
@@ -28,6 +29,11 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
 
     @Inject
     lateinit var eventBus: EventBus
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        exitTransition = Fade()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
