@@ -2,6 +2,7 @@ package com.illiarb.tmdbclient.feature.movies.details
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.illiarb.tmdbclient.feature.movies.R
@@ -29,6 +30,16 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
 
     @Inject
     lateinit var reviewsAdapter: ReviewsAdapter
+
+    private val containerScrollListener by lazy(LazyThreadSafetyMode.NONE) {
+        ViewTreeObserver.OnScrollChangedListener {
+            if (movieDetailsContainer.scrollY > 0) {
+                movieDetailsPlayTrailer.hide()
+            } else {
+                movieDetailsPlayTrailer.show()
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -78,6 +89,16 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
     override fun onStart() {
         super.onStart()
         requireActivity().setTranslucentStatusBar(true)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        movieDetailsContainer.viewTreeObserver.addOnScrollChangedListener(containerScrollListener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        movieDetailsContainer.viewTreeObserver.removeOnScrollChangedListener(containerScrollListener)
     }
 
     override fun onStop() {
