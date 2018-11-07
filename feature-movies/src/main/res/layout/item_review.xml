@@ -23,14 +23,13 @@
 
     <TextView
         android:id="@+id/itemReviewLink"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:paddingEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/itemReviewAuthor"
         tools:text="https://google.com" />
 
@@ -39,14 +38,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:textColor="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@id/itemReviewDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/itemReviewLink"
-        app:layout_constraintBottom_toTopOf="@id/itemReviewDivider"
-        android:layout_marginBottom="8dp"
         tools:text="@tools:sample/lorem" />
 
     <View
@@ -54,8 +53,8 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="#ccc"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
