@@ -1,0 +1,9 @@
+api.url=$ENV_API_URL
+api.imgUrl=$ENV_IMG_URL
+api.key=$ENV_API_KEY
+
+maps.key=$ENV_MAPS_KEY
+
+here.api.url=$ENV_HERE_API_URL
+here.app.id=$ENV_HERE_APP_ID
+here.app.code=$ENV_HERE_APP_CODE
