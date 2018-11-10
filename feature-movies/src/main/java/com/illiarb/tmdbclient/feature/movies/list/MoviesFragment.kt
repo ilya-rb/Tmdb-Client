@@ -46,8 +46,6 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
             it.setHasFixedSize(true)
             it.addItemDecoration(MoviesSpaceDecoration(requireContext()))
         }
-
-        swipeRefreshLayout.isEnabled = false
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -71,8 +69,6 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
     }
 
     private fun onMoviesUiStateChanged(state: UiState<List<MovieSection>>) {
-        swipeRefreshLayout.isRefreshing = state.isLoading()
-
         if (state.hasData()) {
             delegateAdapter.submitList(state.requireData())
         }
