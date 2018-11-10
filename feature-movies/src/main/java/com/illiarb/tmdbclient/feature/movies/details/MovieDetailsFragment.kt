@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.view.ViewTreeObserver
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Slide
 import com.google.android.material.chip.Chip
@@ -14,7 +15,6 @@ import com.illiarb.tmdbclient.feature.movies.di.MoviesComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDecoration
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
-import com.illiarb.tmdbexplorer.coreui.ext.setTranslucentStatusBar
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.state.UiState
 import com.illiarb.tmdbexplorerdi.Injectable
@@ -78,6 +78,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
             it.addItemDecoration(SpaceItemDecoration(0, resources.getDimensionPixelSize(R.dimen.movie_details_horizontal_small_margin)))
             it.isNestedScrollingEnabled = false
         }
+
+        ViewCompat.requestApplyInsets(view)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -86,16 +88,15 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
         arguments?.let {
             val movieId = it.getInt(NavigationExtras.EXTRA_MOVIE_DETAILS_ID)
 
+            val title = it.getString(NavigationExtras.EXTRA_MOVIE_DETAILS_TITLE, "")
+            val posterPath = it.getString(NavigationExtras.EXTRA_MOVIE_DETAILS_POSTER)
+            showMovieDetailsBasicInfo(title, posterPath)
+
             viewModel.id = movieId
             viewModel.observeMovieDetailsState()
                 .subscribe(::onMovieDetailsStateChanged, Throwable::printStackTrace)
                 .addTo(destroyViewDisposable)
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        requireActivity().setTranslucentStatusBar(true)
     }
 
     override fun onResume() {
@@ -106,11 +107,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
     override fun onPause() {
         super.onPause()
         movieDetailsContainer.viewTreeObserver.removeOnScrollChangedListener(containerScrollListener)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        requireActivity().setTranslucentStatusBar(false)
     }
 
     override fun getContentView(): Int = R.layout.fragment_movie_details
@@ -128,7 +124,39 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
     }
 
     private fun showMovieDetails(movie: Movie) {
-        movie.posterPath?.let {
+        showMovieDetailsBasicInfo(movie.title, movie.posterPath)
+
+        with(movie) {
+            movieDetailsRating.text = voteAverage.toString()
+
+            runtime?.let {
+                movieDetailsDuration.text = getString(R.string.movie_details_duration, it)
+            }
+
+            genres.forEach { genre ->
+                Chip(requireContext(), null, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Action)
+                    .apply {
+                        text = genre.name
+                        setOnClickListener {
+                            viewModel.onGenreClicked(text.toString())
+                        }
+                    }
+                    .also { movieDetailsTags.addView(it) }
+            }
+
+            overview?.let {
+                movieDetailsOverview.text = it
+            }
+
+            photosAdapter.submitList(images.map { it.filePath })
+            reviewsAdapter.submitList(reviews)
+        }
+    }
+
+    private fun showMovieDetailsBasicInfo(title: String, posterPath: String?) {
+        movieDetailsTitle.text = title
+
+        posterPath?.let {
             ImageLoader.loadImage(movieDetailsPoster, it, true)
             ImageLoader.loadImage(
                 movieDetailsPosterSmall,
@@ -137,31 +165,5 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
                 resources.getDimensionPixelSize(R.dimen.movie_details_small_poster_corner_radius)
             )
         }
-
-        movieDetailsTitle.text = movie.title
-        movieDetailsRating.text = movie.voteAverage.toString()
-
-        movie.runtime?.let {
-            movieDetailsDuration.text = getString(R.string.movie_details_duration, it)
-        }
-
-        movie.genres.forEach { genre ->
-            Chip(requireContext(), null, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Action)
-                .apply {
-                    text = genre.name
-                    setOnClickListener {
-                        viewModel.onGenreClicked(text.toString())
-                    }
-                }
-                .also { movieDetailsTags.addView(it) }
-        }
-
-        movie.overview?.let {
-            movieDetailsOverview.text = it
-        }
-
-        movie.images.map { it.filePath }.also { photosAdapter.submitList(it) }
-
-        reviewsAdapter.submitList(movie.reviews)
     }
 }

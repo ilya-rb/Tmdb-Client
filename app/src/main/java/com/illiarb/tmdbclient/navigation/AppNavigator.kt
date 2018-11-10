@@ -19,12 +19,14 @@ class AppNavigator @Inject constructor(private val bus: EventBus) : Navigator {
         bus.postEvent(createNavigationData(R.id.moviesFragmentAction))
     }
 
-    override fun showMovieDetailsScreen(movieId: Int) {
+    override fun showMovieDetailsScreen(movieId: Int, title: String, posterPath: String?) {
         bus.postEvent(
             createNavigationData(
                 R.id.movieDetailsAction,
                 createArguments(
-                    NavigationExtras.EXTRA_MOVIE_DETAILS_ID to movieId
+                    NavigationExtras.EXTRA_MOVIE_DETAILS_ID to movieId,
+                    NavigationExtras.EXTRA_MOVIE_DETAILS_TITLE to title,
+                    NavigationExtras.EXTRA_MOVIE_DETAILS_POSTER to posterPath
                 )
             )
         )
@@ -40,7 +42,7 @@ class AppNavigator @Inject constructor(private val bus: EventBus) : Navigator {
             override fun getActionId(): Int = actionId
         }
 
-    private fun createArguments(vararg args: Pair<String, Any>): Bundle =
+    private fun createArguments(vararg args: Pair<String, Any?>): Bundle =
         Bundle().apply {
             args.forEach { (key, value) ->
                 when (value) {

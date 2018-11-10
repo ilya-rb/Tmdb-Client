@@ -10,7 +10,7 @@ interface Navigator {
 
     fun showMoviesScreen()
 
-    fun showMovieDetailsScreen(movieId: Int)
+    fun showMovieDetailsScreen(movieId: Int, title: String, posterPath: String?)
 
     fun showExploreScreen()
 }

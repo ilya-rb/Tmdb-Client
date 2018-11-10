@@ -6,5 +6,7 @@ package com.illiarb.tmdblcient.core.navigation
 object NavigationExtras {
 
     const val EXTRA_MOVIE_DETAILS_ID = "id"
+    const val EXTRA_MOVIE_DETAILS_TITLE = "title"
+    const val EXTRA_MOVIE_DETAILS_POSTER = "poster"
 
 }
