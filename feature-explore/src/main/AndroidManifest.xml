@@ -11,7 +11,7 @@
             android:value="@string/google_maps_api_key" />
 
         <activity
-            android:name=".settings.SettingsResolutionActivity"
+            android:name=".settings.SettingsResolutionFragment"
             android:theme="@style/Theme.Transparent" />
 
     </application>

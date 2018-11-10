@@ -50,6 +50,8 @@ class ExploreViewModel @Inject constructor(
         }
     }
 
+    // For now keep coroutine together with rxJava
+    // Just to use coroutines in single module
     private suspend fun getNearbyLocationInterop(): List<Location> =
         suspendCoroutine { c ->
             locationInteractor.getNearbyMovieTheaters()
