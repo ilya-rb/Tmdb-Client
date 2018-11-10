@@ -147,7 +147,9 @@
             android:text="@string/movie_details_photos"
             android:textColor="@android:color/background_dark"
             android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@id/movieDetailsOverview" />
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/movieDetailsOverview"
+            tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/movieDetailsPhotos"
@@ -174,7 +176,9 @@
             android:text="@string/movie_details_reviews"
             android:textColor="@android:color/background_dark"
             android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@id/movieDetailsPhotos" />
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/movieDetailsPhotos"
+            tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/movieDetailsReviews"
