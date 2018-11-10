@@ -44,6 +44,7 @@ dependencies {
 
     implementation deps.supportDesign
     implementation deps.kotlin
+    implementation deps.kotlinCoroutines
     implementation deps.rxJava
     implementation deps.rxAndroid
     implementation deps.viewmodel

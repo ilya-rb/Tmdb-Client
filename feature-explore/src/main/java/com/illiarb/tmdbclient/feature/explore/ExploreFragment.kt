@@ -16,7 +16,6 @@ import com.illiarb.tmdbclient.feature.explore.exception.PermissionDeniedExceptio
 import com.illiarb.tmdbclient.feature.explore.settings.SettingsChecker
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.permission.PermissionResolver
-import com.illiarb.tmdbexplorer.coreui.state.UiState
 import com.illiarb.tmdbexplorerdi.Injectable
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Location
@@ -118,10 +117,8 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
             .addTo(destroyViewDisposable)
     }
 
-    private fun onTheatersStateChanged(uiState: UiState<List<Location>>) {
-        if (uiState.hasData()) {
-            showNearbyTheaters(uiState.requireData())
-        }
+    private fun onTheatersStateChanged(data: List<Location>) {
+        showNearbyTheaters(data)
     }
 
     private fun showNearbyTheaters(theaters: List<Location>) {

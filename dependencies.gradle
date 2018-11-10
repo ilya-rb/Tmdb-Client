@@ -2,6 +2,7 @@ def deps = [:]
 
 // STD
 deps.kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+deps.kotlinCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlin_coroutines"
 
 // AndroidX
 deps.supportDesign = "com.google.android.material:material:$versions.supportLibrary"
