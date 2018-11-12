@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#673AB7</color>
-    <color name="colorPrimaryDark">#512DA8</color>
-    <color name="colorAccent">#FFC107</color>
+
+    <!-- Main App color scheme -->
+    <color name="colorPrimary">#344955</color>
+    <color name="colorPrimaryVariant">#232F34</color>
+    <color name="colorSecondary">#F9AA33</color>
+    <color name="colorBackground">#FFF</color>
+    <color name="colorSurface">#FFF</color>
+    <color name="colorError">#B00020</color>
+    <color name="colorOnPrimary">#FFF</color>
+    <color name="colorOnSecondary">#000</color>
+    <color name="colorOnBackground">#000</color>
+    <color name="colorOnSurface">#000</color>
+    <color name="colorOnError">#FFF</color>
+    <color name="colorDivider">#BDBDBD</color>
+    <color name="colorTextLink">#03A9F4</color>
+
 </resources>

@@ -38,7 +38,7 @@ class NowPlayingPagerAdapter(private val eventBus: EventBus) : PagerAdapter() {
     }
 
     private fun bindMovie(movie: Movie, view: View) {
-        val radius = view.resources.getDimensionPixelSize(R.dimen.item_movie_corner_radius)
+        val radius = view.resources.getDimensionPixelSize(R.dimen.image_corner_radius)
 
         movie.posterPath?.let {
             ImageLoader.loadImage(view.itemNowPlayingPosterSmall, it, cornerRadius = radius)

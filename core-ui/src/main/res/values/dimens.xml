@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Typography -->
+    <dimen name="text_body_1">16sp</dimen>
+    <dimen name="text_body_2">14sp</dimen>
+    <dimen name="text_subtitle_2">14sp</dimen>
+    <dimen name="text_subtitle_1">16sp</dimen>
+    <dimen name="text_heading_2">20sp</dimen>
+    <dimen name="text_heading_1">24sp</dimen>
+    <dimen name="text_button">14sp</dimen>
+    <dimen name="text_caption">12sp</dimen>
+
+    <!-- Spaces -->
+    <dimen name="margin_default">16dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+
+    <!-- Misc -->
+    <dimen name="image_corner_radius">4dp</dimen>
+
+</resources>

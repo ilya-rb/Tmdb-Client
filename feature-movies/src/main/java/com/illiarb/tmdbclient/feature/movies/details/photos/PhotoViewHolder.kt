@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.item_photo.view.*
 class PhotoViewHolder(containerView: View) : BaseViewHolder<String>(containerView) {
 
     private val photo: ImageView = itemView.moviePhoto
-    private val cornerRadius = itemView.resources.getDimensionPixelSize(R.dimen.item_movie_corner_radius)
+    private val cornerRadius = itemView.resources.getDimensionPixelSize(R.dimen.image_corner_radius)
 
     override fun bind(item: String) {
         ImageLoader.loadImage(photo, item, true, cornerRadius)

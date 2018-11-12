@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.item_movie.view.*
 class MovieViewHolder(containerView: View) : BaseViewHolder<Movie>(containerView) {
 
     private val itemImage = itemView.itemMoviePoster
-    private val imageCornerRadius = itemView.resources.getDimensionPixelSize(R.dimen.item_movie_corner_radius)
+    private val imageCornerRadius = itemView.resources.getDimensionPixelSize(R.dimen.image_corner_radius)
 
     override fun bind(item: Movie) {
         ImageLoader.loadImage(itemImage, item.posterPath, true, imageCornerRadius)

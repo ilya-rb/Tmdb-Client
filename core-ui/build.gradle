@@ -39,9 +39,10 @@ dependencies {
     implementation project(':core')
     implementation project(':di')
 
-    implementation deps.viewmodel
-    implementation deps.viewModelExt
-    implementation deps.supportDesign
+    api deps.constraintLayout
+    api deps.viewmodel
+    api deps.supportDesign
+    api deps.viewModelExt
 
     implementation deps.kotlin
     implementation deps.rxJava

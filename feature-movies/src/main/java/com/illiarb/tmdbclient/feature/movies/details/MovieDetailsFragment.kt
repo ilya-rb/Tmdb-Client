@@ -64,7 +64,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
             it.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             it.addItemDecoration(
                 SpaceItemDecoration(
-                    resources.getDimensionPixelSize(R.dimen.movie_details_horizontal_small_margin) / 2,
+                    resources.getDimensionPixelSize(R.dimen.margin_small) / 2,
                     0,
                     false,
                     false
@@ -75,7 +75,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
         movieDetailsReviews.let {
             it.adapter = reviewsAdapter
             it.layoutManager = LinearLayoutManager(requireContext())
-            it.addItemDecoration(SpaceItemDecoration(0, resources.getDimensionPixelSize(R.dimen.movie_details_horizontal_small_margin)))
+            it.addItemDecoration(SpaceItemDecoration(0, resources.getDimensionPixelSize(R.dimen.margin_small)))
             it.isNestedScrollingEnabled = false
         }
 
@@ -170,7 +170,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
                 movieDetailsPosterSmall,
                 it,
                 true,
-                resources.getDimensionPixelSize(R.dimen.movie_details_small_poster_corner_radius)
+                resources.getDimensionPixelSize(R.dimen.image_corner_radius)
             )
         }
     }

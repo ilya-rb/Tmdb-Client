@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Strings -->
+    <string name="movie_section_more">See all</string>
+
+    <!-- Dimens -->
+    <dimen name="item_movie_height">150dp</dimen>
+    <dimen name="item_movie_spacing">@dimen/margin_default</dimen>
+    <dimen name="item_review_spacing">@dimen/margin_small</dimen>
+
+</resources>

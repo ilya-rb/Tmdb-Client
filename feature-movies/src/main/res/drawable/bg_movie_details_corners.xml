@@ -2,10 +2,10 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:bottom="-200dp"
+        android:bottom="@dimen/movie_details_poster_height_neg"
         android:left="0dp"
-        android:right="-200dp"
-        android:top="200dp">
+        android:right="@dimen/movie_details_poster_height_neg"
+        android:top="@dimen/movie_details_poster_height">
 
         <rotate
             android:fromDegrees="-10"
@@ -13,7 +13,7 @@
             android:pivotY="100%">
 
             <shape android:shape="rectangle">
-                <solid android:color="@android:color/white" />
+                <solid android:color="@color/colorBackground"/>
             </shape>
 
         </rotate>
