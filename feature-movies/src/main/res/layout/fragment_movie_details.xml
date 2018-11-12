@@ -10,8 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorBackground"
-        >
+        android:background="@color/colorBackground">
 
         <include layout="@layout/layout_start_end_guidelines" />
 
@@ -57,16 +56,12 @@
             tools:scaleType="fitXY"
             tools:src="@tools:sample/backgrounds/scenic" />
 
-        <!-- TODO Heading and bold text style -->
         <TextView
             android:id="@+id/movieDetailsTitle"
-            style="@style/AppTheme.Text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/movie_details_space_between"
-            android:textColor="@android:color/black"
-            android:textSize="22sp"
-            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.MovieDetailsSection"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
             app:layout_constraintTop_toBottomOf="@id/movieDetailsPosterSmall"
@@ -84,17 +79,12 @@
             app:layout_constraintStart_toEndOf="@id/movieDetailsPosterSmall"
             app:layout_constraintTop_toBottomOf="@id/movieDetailsPoster" />
 
-        <!-- TODO Text heading and style -->
         <TextView
             android:id="@+id/movieDetailsRating"
-            style="@style/AppTheme.Text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_default"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/movieDetailsTmdb"
             app:layout_constraintStart_toEndOf="@id/movieDetailsTmdb"
             app:layout_constraintTop_toTopOf="@id/movieDetailsTmdb"
@@ -103,12 +93,10 @@
         <!-- TODO Text color -->
         <TextView
             android:id="@+id/movieDetailsDuration"
-            style="@style/AppTheme.Text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_default"
             android:layout_marginTop="@dimen/margin_small"
-            android:gravity="center_vertical"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toEndOf="@id/movieDetailsPosterSmall"
             app:layout_constraintTop_toBottomOf="@id/movieDetailsTmdb"
@@ -126,28 +114,23 @@
 
         <TextView
             android:id="@+id/movieDetailsOverview"
-            style="@style/AppTheme.Text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/movie_details_space_between"
             android:ellipsize="end"
             android:maxLines="5"
-            android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
             app:layout_constraintTop_toBottomOf="@id/movieDetailsTags"
             tools:text="@tools:sample/lorem/random" />
 
-        <!-- TODO Text style -->
         <TextView
             android:id="@+id/movieDetailsPhotosTitle"
-            style="@style/AppTheme.Text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/movie_details_space_between"
             android:text="@string/movie_details_photos"
-            android:textColor="@android:color/background_dark"
-            android:textSize="18sp"
+            android:textAppearance="@style/TextAppearance.MovieDetailsSection"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
@@ -169,15 +152,13 @@
             tools:listitem="@layout/item_photo"
             tools:orientation="horizontal" />
 
-        <!-- TODO Test style -->
         <TextView
             android:id="@+id/movieDetailsReviewsTitle"
-            style="@style/AppTheme.Text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/movie_details_space_between"
             android:text="@string/movie_details_reviews"
-            android:textSize="18sp"
+            android:textAppearance="@style/TextAppearance.MovieDetailsSection"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"

@@ -14,24 +14,13 @@
         <item name="colorControlActivated">@color/colorSecondary</item>
         <item name="colorControlHighlight">@color/colorSecondary</item>
 
-        <!-- Typography -->
-        <item name="textAppearanceButton">@style/AppTheme.Button</item>
-        <item name="textAppearanceBody1">@style/AppTheme.Text.Body1</item>
-        <item name="textAppearanceBody2">@style/AppTheme.Text.Body2</item>
-        <item name="textAppearanceSubtitle1">@style/AppTheme.Text.Subtitle1</item>
-        <item name="textAppearanceSubtitle2">@style/AppTheme.Text.Subtitle2</item>
-        <item name="textAppearanceHeadline5">@style/AppTheme.Text.Heading1</item>
-        <item name="textAppearanceHeadline6">@style/AppTheme.Text.Heading2</item>
-
         <!-- Text colors -->
         <item name="android:fontFamily">@font/montserrat</item>
-        <item name="android:textColorPrimary">@color/colorOnPrimary</item>
-        <item name="android:textColorSecondary">@color/colorOnSecondary</item>
+        <item name="android:textColor">@color/colorOnSecondary</item>
         <item name="android:textColorLink">@color/colorTextLink</item>
 
         <!-- Misc -->
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowBackground">@null</item>
     </style>
 
     <style name="Theme.Transparent" parent="Theme.AppCompat.NoActionBar">
@@ -44,43 +33,6 @@
     </style>
 
     <!-- Typography -->
-    <style name="AppTheme.Text" />
-
-    <style name="AppTheme.Text.Body2" parent="TextAppearance.AppCompat.Body2">
-        <item name="android:textSize">@dimen/text_body_2</item>
-        <item name="android:letterSpacing">0.25</item>
-    </style>
-
-    <style name="AppTheme.Text.Body1" parent="TextAppearance.AppCompat.Body1">
-        <item name="android:textSize">@dimen/text_body_1</item>
-        <item name="android:letterSpacing">0.5</item>
-    </style>
-
-    <style name="AppTheme.Text.Subtitle1">
-        <item name="android:textSize">@dimen/text_subtitle_1</item>
-        <item name="android:letterSpacing">0.15</item>
-    </style>
-
-    <style name="AppTheme.Text.Subtitle2">
-        <item name="android:textSize">@dimen/text_subtitle_2</item>
-        <item name="android:letterSpacing">0.1</item>
-    </style>
-
-    <style name="AppTheme.Text.Heading1" parent="TextAppearance.AppCompat.Headline">
-        <item name="android:textSize">@dimen/text_heading_1</item>
-        <item name="android:letterSpacing">0</item>
-    </style>
-
-    <style name="AppTheme.Text.Heading2">
-        <item name="android:textSize">@dimen/text_heading_2</item>
-        <item name="android:letterSpacing">0.15</item>
-        <item name="android:fontFamily">@font/montserrat_bold</item>
-    </style>
-
-    <style name="AppTheme.Button" parent="TextAppearance.AppCompat.Button">
-        <item name="android:textSize">@dimen/text_button</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:fontFamily">@font/montserrat_bold</item>
-    </style>
+    <style name="TextAppearance.SecondaryText" parent="TextAppearance.MaterialComponents.Body1" />
 
 </resources>

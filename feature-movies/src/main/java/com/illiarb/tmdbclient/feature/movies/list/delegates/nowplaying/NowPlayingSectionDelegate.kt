@@ -9,6 +9,7 @@ import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdblcient.core.entity.NowPlayingSection
 import com.illiarb.tmdblcient.core.system.EventBus
 import kotlinx.android.synthetic.main.item_now_playing_section.view.*
+import kotlinx.android.synthetic.main.layout_section_title.view.*
 import javax.inject.Inject
 
 class NowPlayingSectionDelegate @Inject constructor(
@@ -25,8 +26,8 @@ class NowPlayingSectionDelegate @Inject constructor(
         eventBus: EventBus
     ) : BaseDelegateViewHolder(containerView) {
 
-        private val sectionTitle = itemView.itemNowPlayingSectionTitle
-        private val sectionMore = itemView.itemNowPlayingSectionMore
+        private val sectionTitle = itemView.itemSectionTitle
+        private val sectionMore = itemView.itemSectionMore
         private val sectionPager = itemView.itemNowPlayingSectionPager
 
         private val adapter = NowPlayingPagerAdapter(eventBus)

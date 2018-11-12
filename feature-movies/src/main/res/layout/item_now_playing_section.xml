@@ -1,46 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/itemNowPlayingSectionTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:paddingBottom="16dp"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/itemNowPlayingSectionMore"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Upcoming" />
-
-    <TextView
-        android:id="@+id/itemNowPlayingSectionMore"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:gravity="center_vertical"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:text="@string/movie_section_more"
-        android:textColor="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="@id/itemNowPlayingSectionTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <include layout="@layout/layout_section_title" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/itemNowPlayingSectionPager"
         android:layout_width="0dp"
         android:layout_height="@dimen/item_movie_height"
         android:clipToPadding="false"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:paddingStart="@dimen/margin_default"
+        android:paddingEnd="@dimen/margin_default"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/itemNowPlayingSectionTitle" />
+        app:layout_constraintTop_toBottomOf="@id/itemSectionTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

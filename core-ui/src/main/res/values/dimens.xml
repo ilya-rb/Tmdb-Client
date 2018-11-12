@@ -12,8 +12,9 @@
     <dimen name="text_caption">12sp</dimen>
 
     <!-- Spaces -->
-    <dimen name="margin_default">16dp</dimen>
     <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_default">16dp</dimen>
+    <dimen name="margin_large">64dp</dimen>
 
     <!-- Misc -->
     <dimen name="image_corner_radius">4dp</dimen>

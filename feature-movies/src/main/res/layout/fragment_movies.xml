@@ -10,7 +10,6 @@
         android:id="@+id/moviesList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_item_movie"
         tools:listitem="@layout/item_movie_section" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

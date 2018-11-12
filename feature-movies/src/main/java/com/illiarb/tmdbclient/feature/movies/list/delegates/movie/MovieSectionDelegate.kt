@@ -12,6 +12,7 @@ import com.illiarb.tmdblcient.core.entity.ListSection
 import com.illiarb.tmdblcient.core.entity.MovieSection
 import com.illiarb.tmdblcient.core.system.EventBus
 import kotlinx.android.synthetic.main.item_movie_section.view.*
+import kotlinx.android.synthetic.main.layout_section_title.view.*
 import javax.inject.Inject
 
 /**
@@ -35,7 +36,7 @@ class MovieSectionDelegate @Inject constructor(private val eventBus: EventBus) :
         }
 
         private val sectionList = itemView.itemMovieSectionList
-        private val sectionTitle = itemView.itemMovieSectionTitle
+        private val sectionTitle = itemView.itemSectionTitle
 
         private val itemSpacing = itemView.resources.getDimensionPixelSize(R.dimen.item_movie_spacing)
         private val adapter = MovieAdapter()
