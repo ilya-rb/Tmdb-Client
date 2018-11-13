@@ -24,6 +24,7 @@ versions.with {
     okHttpLogger = "3.11.0"
     javax = "1"
     binaryPrefs = "1.0.0"
+    timber = "4.7.1"
 }
 
 def testVersions = [:]

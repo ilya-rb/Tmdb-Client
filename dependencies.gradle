@@ -47,6 +47,9 @@ deps.dagger = "com.google.dagger:dagger:$versions.dagger"
 deps.daggerCompiler = "com.google.dagger:dagger-compiler:$versions.dagger"
 deps.javax = "javax.inject:javax.inject:$versions.javax"
 
+// Logging
+deps.timber = "com.jakewharton.timber:timber:$versions.timber"
+
 def testDeps = [:]
 testDeps.junit = "junit:junit:$testVersions.junit"
 

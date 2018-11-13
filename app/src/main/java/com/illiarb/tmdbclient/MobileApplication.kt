@@ -6,8 +6,10 @@ import com.illiarb.tmdbclient.di.AppComponent
 import com.illiarb.tmdbexplorerdi.App
 import com.illiarb.tmdbexplorerdi.AppInjector
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
+import com.illiarb.tmdblcient.core.system.Logger
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.android.schedulers.AndroidSchedulers
+import timber.log.Timber
 
 @Suppress("unused")
 class MobileApplication : Application(), App {
@@ -19,6 +21,7 @@ class MobileApplication : Application(), App {
 
         configureRxJava()
         configureDi()
+        configureLogger()
     }
 
     override fun getApplication(): Application = this
@@ -34,5 +37,24 @@ class MobileApplication : Application(), App {
 
         RxAndroidPlugins.setInitMainThreadSchedulerHandler { asyncMainThreadScheduler }
         RxAndroidPlugins.setMainThreadSchedulerHandler { asyncMainThreadScheduler }
+    }
+
+    private fun configureLogger() {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
+
+        val timberPrinter = object : Logger.Printer {
+            override fun log(priority: Logger.Priority, message: String, throwable: Throwable?) {
+                when (priority) {
+                    Logger.Priority.WARN -> Timber.w(message)
+                    Logger.Priority.DEBUG -> Timber.d(message)
+                    Logger.Priority.INFO -> Timber.i(message)
+                    Logger.Priority.ERROR -> Timber.e(throwable, message)
+                }
+            }
+        }
+
+        Logger.addPrinter(timberPrinter)
     }
 }

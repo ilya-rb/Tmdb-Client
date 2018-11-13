@@ -49,4 +49,5 @@ dependencies {
     implementation deps.rxAndroid
     implementation deps.rxJava
     implementation deps.navigation
+    implementation deps.timber
 }
