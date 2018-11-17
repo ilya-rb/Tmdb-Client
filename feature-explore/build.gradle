@@ -42,12 +42,7 @@ dependencies {
     implementation project(':core-ui')
     implementation project(':di')
 
-    implementation deps.supportDesign
-    implementation deps.kotlin
     implementation deps.kotlinCoroutines
-    implementation deps.rxJava
-    implementation deps.rxAndroid
-    implementation deps.viewmodel
     implementation deps.dagger
     implementation deps.maps
     implementation deps.location

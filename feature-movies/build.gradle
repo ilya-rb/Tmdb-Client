@@ -33,8 +33,5 @@ dependencies {
     implementation project(':core-ui')
     implementation project(':di')
 
-    implementation deps.kotlin
-    implementation deps.rxJava
-    implementation deps.rxAndroid
     implementation deps.dagger
 }

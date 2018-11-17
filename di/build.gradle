@@ -31,7 +31,6 @@ dependencies {
 
     implementation project(':core')
 
-    implementation deps.kotlin
     implementation deps.dagger
     implementation deps.supportDesign
 }

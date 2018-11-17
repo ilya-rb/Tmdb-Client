@@ -25,10 +25,9 @@ android {
 }
 
 dependencies {
+
     implementation project(':core')
 
-    implementation deps.kotlin
-    implementation deps.rxJava
     implementation deps.rxAndroid
     implementation deps.javax
 }

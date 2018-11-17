@@ -39,13 +39,11 @@ dependencies {
     implementation project(':core')
     implementation project(':di')
 
+    api deps.supportDesign
     api deps.constraintLayout
     api deps.viewmodel
-    api deps.supportDesign
     api deps.viewModelExt
 
-    implementation deps.kotlin
-    implementation deps.rxJava
     implementation deps.dagger
     implementation deps.glide
 }

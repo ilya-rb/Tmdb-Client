@@ -5,8 +5,9 @@ apply from: dependenciesFilePath
 
 dependencies {
 
-    implementation deps.kotlin
-    implementation deps.rxJava
+    api deps.kotlin
+    api deps.rxJava
+
     implementation deps.javax
 
     implementation testDeps.junit

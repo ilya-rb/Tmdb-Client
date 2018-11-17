@@ -4,10 +4,8 @@ apply plugin: 'kotlin'
 apply from: dependenciesFilePath
 
 dependencies {
+
     implementation project(':core')
 
-    implementation deps.kotlin
-    implementation deps.rxJava
     implementation deps.javax
-
 }

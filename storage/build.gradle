@@ -40,8 +40,6 @@ dependencies {
     implementation project(':core')
     implementation project(':di')
 
-    implementation deps.kotlin
-    implementation deps.rxJava
     implementation deps.binaryPrefs
     implementation deps.location
 
