@@ -1,8 +1,8 @@
 package com.illiarb.tmdbclient.storage.local.movies
 
-import com.illiarb.tmdbclient.storage.dto.MovieDto
-import com.illiarb.tmdbclient.storage.dto.MovieListDto
 import com.illiarb.tmdbclient.storage.local.PersistableStorage
+import com.illiarb.tmdbclient.storage.model.MovieListModel
+import com.illiarb.tmdbclient.storage.model.MovieModel
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -11,12 +11,12 @@ import javax.inject.Inject
  */
 class MoviesStorage @Inject constructor(private val persistableStorage: PersistableStorage) {
 
-    fun getMoviesByType(type: String): Single<List<MovieDto>> {
-        val movies = persistableStorage.getValue(type, MovieListDto()).movies
+    fun getMoviesByType(type: String): Single<List<MovieModel>> {
+        val movies = persistableStorage.getValue(type, MovieListModel()).movies
         return Single.just(movies)
     }
 
-    fun storeMovies(type: String, movies: List<MovieDto>) {
-        persistableStorage.putValue(type, MovieListDto(movies))
+    fun storeMovies(type: String, movies: List<MovieModel>) {
+        persistableStorage.putValue(type, MovieListModel(movies))
     }
 }

@@ -2,7 +2,7 @@ package com.illiarb.tmdbclient.storage.repositories
 
 import com.illiarb.tmdbclient.storage.local.location.AndroidLocationService
 import com.illiarb.tmdbclient.storage.mappers.LocationMapper
-import com.illiarb.tmdbclient.storage.mappers.hereapi.HereLocationMapper
+import com.illiarb.tmdbclient.storage.mappers.here.HereLocationMapper
 import com.illiarb.tmdbclient.storage.network.hereapi.HereApiService
 import com.illiarb.tmdblcient.core.entity.Location
 import com.illiarb.tmdblcient.core.modules.location.LocationRepository
