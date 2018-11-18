@@ -34,10 +34,6 @@ class MoviesViewModel @Inject constructor(
     fun observeMovies(): Observable<UiState<List<MovieSection>>> = moviesSubject.observer()
 
     fun onMovieClicked(movie: Movie) {
-//        navigator.showMovieDetailsScreen(
-//            movie.id,
-//            movie.title,
-//            movie.posterPath
-//        )
+        moviesInteractor.onMovieSelected(movie.id, movie.title, movie.posterPath)
     }
 }

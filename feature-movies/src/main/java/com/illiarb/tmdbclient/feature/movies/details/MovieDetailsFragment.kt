@@ -58,11 +58,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
             }
         }
 
-        movieDetailsPhotos.let {
-            it.adapter = photosAdapter
-            it.setHasFixedSize(true)
-            it.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            it.addItemDecoration(
+        movieDetailsPhotos.apply {
+            adapter = photosAdapter
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            addItemDecoration(
                 SpaceItemDecoration(
                     resources.getDimensionPixelSize(R.dimen.margin_small) / 2,
                     0,
@@ -72,11 +72,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
             )
         }
 
-        movieDetailsReviews.let {
-            it.adapter = reviewsAdapter
-            it.layoutManager = LinearLayoutManager(requireContext())
-            it.addItemDecoration(SpaceItemDecoration(0, resources.getDimensionPixelSize(R.dimen.margin_small)))
-            it.isNestedScrollingEnabled = false
+        movieDetailsReviews.apply {
+            adapter = reviewsAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+            addItemDecoration(SpaceItemDecoration(0, resources.getDimensionPixelSize(R.dimen.margin_small)))
+            isNestedScrollingEnabled = false
         }
 
         ViewCompat.requestApplyInsets(view)

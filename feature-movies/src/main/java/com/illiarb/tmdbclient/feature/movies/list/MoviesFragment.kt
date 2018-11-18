@@ -40,11 +40,11 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
 
         delegateAdapter.addDelegatesFromSet(delegatesSet)
 
-        moviesList.let {
-            it.layoutManager = LinearLayoutManager(requireContext())
-            it.adapter = delegateAdapter
-            it.setHasFixedSize(true)
-            it.addItemDecoration(MoviesSpaceDecoration(requireContext()))
+        moviesList.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = delegateAdapter
+            setHasFixedSize(true)
+            addItemDecoration(MoviesSpaceDecoration(requireContext()))
         }
     }
 
