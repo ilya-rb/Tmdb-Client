@@ -37,4 +37,5 @@ dependencies {
 
     implementation deps.dagger
     implementation deps.navigation
+    implementation deps.navigationUi
 }

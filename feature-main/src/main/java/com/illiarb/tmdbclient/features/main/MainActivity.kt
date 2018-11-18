@@ -5,6 +5,7 @@ import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
 import com.illiarb.tmdbclient.features.main.di.MainComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseActivity
 import com.illiarb.tmdbexplorerdi.Injectable
@@ -25,9 +26,10 @@ class MainActivity : BaseActivity<MainViewModel>(), Injectable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Navigation
-            .findNavController(this, R.id.nav_host_fragment)
-            .addOnNavigatedListener(::onDestinationChanged)
+        with(Navigation.findNavController(this, R.id.nav_host_fragment)) {
+            addOnNavigatedListener(::onDestinationChanged)
+            NavigationUI.setupWithNavController(bottomNavigation, this)
+        }
     }
 
     override fun onResumeFragments() {
@@ -59,7 +61,7 @@ class MainActivity : BaseActivity<MainViewModel>(), Injectable {
         // Don't show bottom navigation
         // for non-root fragments
         bottomNavigation.visibility = if (menuItem == null) {
-            View.GONE
+            View.VISIBLE
         } else {
             View.VISIBLE
         }
