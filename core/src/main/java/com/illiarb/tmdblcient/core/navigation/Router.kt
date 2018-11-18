@@ -3,7 +3,7 @@ package com.illiarb.tmdblcient.core.navigation
 /**
  * @author ilya-rb on 18.11.18.
  */
-interface Navigator {
+interface Router {
 
-    fun runNavigate(data: NavigationData)
+    fun navigateTo(data: NavigationData)
 }

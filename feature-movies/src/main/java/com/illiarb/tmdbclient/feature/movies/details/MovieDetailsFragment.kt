@@ -21,7 +21,7 @@ import com.illiarb.tmdbexplorerdi.Injectable
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.ext.addTo
-import com.illiarb.tmdblcient.core.navigation.NavigationExtras
+import com.illiarb.tmdblcient.core.navigation.NavigationKeys
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import javax.inject.Inject
 
@@ -86,10 +86,10 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
         super.onActivityCreated(savedInstanceState)
 
         arguments?.let {
-            val movieId = it.getInt(NavigationExtras.EXTRA_MOVIE_DETAILS_ID)
+            val movieId = it.getInt(NavigationKeys.EXTRA_MOVIE_DETAILS_ID)
 
-            val title = it.getString(NavigationExtras.EXTRA_MOVIE_DETAILS_TITLE, "")
-            val posterPath = it.getString(NavigationExtras.EXTRA_MOVIE_DETAILS_POSTER)
+            val title = it.getString(NavigationKeys.EXTRA_MOVIE_DETAILS_TITLE, "")
+            val posterPath = it.getString(NavigationKeys.EXTRA_MOVIE_DETAIL_POSTER_PATH)
             showMovieDetailsBasicInfo(title, posterPath)
 
             viewModel.id = movieId

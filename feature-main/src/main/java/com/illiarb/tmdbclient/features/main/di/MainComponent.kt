@@ -1,6 +1,8 @@
 package com.illiarb.tmdbclient.features.main.di
 
+import androidx.fragment.app.FragmentActivity
 import com.illiarb.tmdbclient.features.main.MainActivity
+import com.illiarb.tmdbexplorer.coreui.di.ActivityModule
 import com.illiarb.tmdbexplorer.coreui.di.ViewModelModule
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
 import dagger.Component
@@ -9,15 +11,17 @@ import dagger.Component
     dependencies = [AppProvider::class],
     modules = [
         ViewModelModule::class,
-        MainModule::class
+        MainModule::class,
+        ActivityModule::class
     ]
 )
 interface MainComponent {
 
     companion object {
-        fun get(appProvider: AppProvider): MainComponent =
+        fun get(appProvider: AppProvider, activity: FragmentActivity): MainComponent =
             DaggerMainComponent.builder()
                 .appProvider(appProvider)
+                .activityModule(ActivityModule(activity))
                 .build()
     }
 

@@ -32,6 +32,8 @@ dependencies {
     implementation project(':core')
     implementation project(':core-ui')
     implementation project(':di')
+    implementation project(':feature-movies')
+    implementation project(':feature-explore')
 
     implementation deps.dagger
     implementation deps.navigation

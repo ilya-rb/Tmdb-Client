@@ -34,20 +34,13 @@ dependencies {
 
     implementation project(':core')
     implementation project(':core-impl')
+    implementation project(':core-ui')
     implementation project(':storage')
     implementation project(':di')
     implementation project(':tools')
-
-    // App Features
     implementation project(':feature-main')
-    implementation project(':feature-movies')
-    implementation project(':feature-explore')
 
-    implementation deps.kotlin
     implementation deps.dagger
-    implementation deps.supportDesign
-    implementation deps.rxAndroid
-    implementation deps.rxJava
-    implementation deps.navigation
     implementation deps.timber
+    implementation deps.rxAndroid
 }

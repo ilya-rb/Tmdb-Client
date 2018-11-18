@@ -1,8 +1,10 @@
 package com.illiarb.tmdbclient.di.modules
 
-import com.illiarb.tmdbclient.coreimpl.explore.LocationInteractorImpl
+import com.illiarb.tmdbclient.coreimpl.explore.ExploreInteractorImpl
+import com.illiarb.tmdbclient.coreimpl.movie.MovieDetailsInteractorImpl
 import com.illiarb.tmdbclient.coreimpl.movie.MoviesInteractorImpl
-import com.illiarb.tmdblcient.core.modules.location.LocationInteractor
+import com.illiarb.tmdblcient.core.modules.explore.ExploreInteractor
+import com.illiarb.tmdblcient.core.modules.movie.MovieDetailsInteractor
 import com.illiarb.tmdblcient.core.modules.movie.MoviesInteractor
 import dagger.Binds
 import dagger.Module
@@ -17,5 +19,8 @@ interface InteractorsModule {
     fun bindMoviesInteractor(impl: MoviesInteractorImpl): MoviesInteractor
 
     @Binds
-    fun bindLocationInteractor(impl: LocationInteractorImpl): LocationInteractor
+    fun bindMovieDetailsInteractor(impl: MovieDetailsInteractorImpl): MovieDetailsInteractor
+
+    @Binds
+    fun bindExploreInteractor(impl: ExploreInteractorImpl): ExploreInteractor
 }

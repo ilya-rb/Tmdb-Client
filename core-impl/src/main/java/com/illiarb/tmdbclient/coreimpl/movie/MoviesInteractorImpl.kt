@@ -1,20 +1,21 @@
 package com.illiarb.tmdbclient.coreimpl.movie
 
 import com.illiarb.tmdblcient.core.entity.ListSection
-import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.entity.MovieSection
 import com.illiarb.tmdblcient.core.entity.NowPlayingSection
-import com.illiarb.tmdblcient.core.entity.Review
 import com.illiarb.tmdblcient.core.modules.movie.MoviesInteractor
-import com.illiarb.tmdblcient.core.modules.movie.MoviesRepository
+import com.illiarb.tmdblcient.core.navigation.MovieDetailsData
+import com.illiarb.tmdblcient.core.navigation.Router
+import com.illiarb.tmdblcient.core.storage.MoviesRepository
 import com.illiarb.tmdblcient.core.system.SchedulerProvider
 import io.reactivex.Single
 import javax.inject.Inject
 
 class MoviesInteractorImpl @Inject constructor(
     private val moviesRepository: MoviesRepository,
-    private val schedulerProvider: SchedulerProvider
+    private val schedulerProvider: SchedulerProvider,
+    private val router: Router
 ) : MoviesInteractor {
 
     override fun getMovieSections(): Single<List<MovieSection>> =
@@ -35,12 +36,9 @@ class MoviesInteractorImpl @Inject constructor(
                 })
             }
 
-    override fun getMovieDetails(id: Int, appendToResponse: String): Single<Movie> =
-        moviesRepository.getMovieDetails(id, appendToResponse)
+    override fun getMovieFilters(): Single<List<MovieFilter>> = moviesRepository.getMovieFilters()
 
-    override fun getMovieReviews(id: Int): Single<List<Review>> =
-        moviesRepository.getMovieReviews(id)
-
-    override fun getMovieFilters(): Single<List<MovieFilter>> =
-        moviesRepository.getMovieFilters()
+    override fun onMovieSelected(id: Int, title: String, posterPath: String?) {
+        router.navigateTo(MovieDetailsData(id, title, posterPath))
+    }
 }

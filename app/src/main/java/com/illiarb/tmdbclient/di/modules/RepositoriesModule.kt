@@ -2,8 +2,8 @@ package com.illiarb.tmdbclient.di.modules
 
 import com.illiarb.tmdbclient.storage.repositories.LocationRepositoryImpl
 import com.illiarb.tmdbclient.storage.repositories.MoviesRepositoryImpl
-import com.illiarb.tmdblcient.core.modules.location.LocationRepository
-import com.illiarb.tmdblcient.core.modules.movie.MoviesRepository
+import com.illiarb.tmdblcient.core.storage.LocationRepository
+import com.illiarb.tmdblcient.core.storage.MoviesRepository
 import dagger.Binds
 import dagger.Module
 

@@ -3,7 +3,7 @@ package com.illiarb.tmdbclient.feature.explore
 import com.illiarb.tmdbexplorer.coreui.viewmodel.BaseViewModel
 import com.illiarb.tmdblcient.core.entity.Location
 import com.illiarb.tmdblcient.core.ext.addTo
-import com.illiarb.tmdblcient.core.modules.location.LocationInteractor
+import com.illiarb.tmdblcient.core.modules.explore.ExploreInteractor
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import kotlinx.coroutines.CoroutineScope
@@ -21,7 +21,7 @@ import kotlin.coroutines.suspendCoroutine
  * @author ilya-rb on 31.10.18.
  */
 class ExploreViewModel @Inject constructor(
-    private val locationInteractor: LocationInteractor
+    private val exploreInteractor: ExploreInteractor
 ) : BaseViewModel(), CoroutineScope {
 
     private val coroutinesJob = Job()
@@ -54,7 +54,7 @@ class ExploreViewModel @Inject constructor(
     // Just to use coroutines in single module
     private suspend fun getNearbyLocationInterop(): List<Location> =
         suspendCoroutine { c ->
-            locationInteractor.getNearbyMovieTheaters()
+            exploreInteractor.getNearbyMovieTheaters()
                 .subscribe(
                     { c.resume(it) },
                     { c.resumeWithException(it) }
