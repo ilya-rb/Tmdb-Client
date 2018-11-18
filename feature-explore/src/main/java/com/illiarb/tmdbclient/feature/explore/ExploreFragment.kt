@@ -77,11 +77,6 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
         mapView.onStop()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mapView?.onDestroy()
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         mapView.onSaveInstanceState(outState)

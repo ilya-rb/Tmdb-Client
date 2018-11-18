@@ -113,9 +113,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
 
     override fun getViewModelClass(): Class<MovieDetailsViewModel> = MovieDetailsViewModel::class.java
 
-    override fun inject(appProvider: AppProvider) {
-        MoviesComponent.get(appProvider, requireActivity()).inject(this)
-    }
+    override fun inject(appProvider: AppProvider) = MoviesComponent.get(appProvider).inject(this)
 
     private fun onMovieDetailsStateChanged(uiState: UiState<Movie>) {
         if (uiState.hasData()) {
