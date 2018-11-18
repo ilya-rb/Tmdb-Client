@@ -6,16 +6,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Fade
 import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbclient.feature.movies.di.MoviesComponent
+import com.illiarb.tmdbclient.feature.movies.pipeline.MoviePipelineData
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.AdapterDelegate
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.DelegateAdapter
+import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData
 import com.illiarb.tmdbexplorer.coreui.state.UiState
 import com.illiarb.tmdbexplorerdi.Injectable
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
-import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieSection
 import com.illiarb.tmdblcient.core.ext.addTo
-import com.illiarb.tmdblcient.core.system.EventBus
+import com.illiarb.tmdblcient.core.pipeline.EventPipeline
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
 
@@ -28,7 +29,7 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
     lateinit var delegatesSet: Set<@JvmSuppressWildcards AdapterDelegate>
 
     @Inject
-    lateinit var eventBus: EventBus
+    lateinit var uiEventsPipeline: EventPipeline<@JvmSuppressWildcards UiPipelineData>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +56,9 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
             .subscribe(::onMoviesUiStateChanged, Throwable::printStackTrace)
             .addTo(destroyViewDisposable)
 
-        eventBus.observeEvents(Movie::class.java)
-            .subscribe({ viewModel.onMovieClicked(it) }, Throwable::printStackTrace)
+        uiEventsPipeline.observeEvents()
+            .ofType(MoviePipelineData::class.java)
+            .subscribe({ viewModel.onMovieClicked(it.movie) }, Throwable::printStackTrace)
             .addTo(destroyViewDisposable)
     }
 

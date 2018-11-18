@@ -8,10 +8,11 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import com.illiarb.tmdbexplorer.coreui.base.BaseActivity
+import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData
 import com.illiarb.tmdbexplorer.coreui.viewmodel.BaseViewModel
 import com.illiarb.tmdbexplorerdi.Injectable
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
-import com.illiarb.tmdblcient.core.system.EventBus
+import com.illiarb.tmdblcient.core.pipeline.EventPipeline
 
 /**
  * @author ilya-rb on 01.11.18.
@@ -32,7 +33,7 @@ class PermissionsRequestActivity : BaseActivity<BaseViewModel>(), Injectable {
         }
     }
 
-    private lateinit var eventBus: EventBus
+    private lateinit var uiEventsPipeline: EventPipeline<UiPipelineData>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +53,8 @@ class PermissionsRequestActivity : BaseActivity<BaseViewModel>(), Injectable {
             PermissionResult(permission, isGranted)
         }
 
-        eventBus.postEvent(PermissionResultList(permissionResults))
+        // TODO
+//        uiEventsPipeline.dispatchEvent(PermissionResultList(permissionResults))
 
         finish()
     }
@@ -67,8 +69,6 @@ class PermissionsRequestActivity : BaseActivity<BaseViewModel>(), Injectable {
     override fun getViewModelClass(): Class<BaseViewModel> = BaseViewModel::class.java
 
     override fun inject(appProvider: AppProvider) {
-        // TODO Add normal injection
-        eventBus = appProvider.provideEventBus()
     }
 
     private fun requestPermissions(intent: Intent) {

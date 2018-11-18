@@ -4,13 +4,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.illiarb.tmdbclient.feature.movies.R
+import com.illiarb.tmdbclient.feature.movies.pipeline.MoviePipelineData
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.AdapterDelegate
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDecoration
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.viewholder.BaseDelegateViewHolder
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
+import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData
 import com.illiarb.tmdblcient.core.entity.ListSection
 import com.illiarb.tmdblcient.core.entity.MovieSection
-import com.illiarb.tmdblcient.core.system.EventBus
+import com.illiarb.tmdblcient.core.pipeline.EventPipeline
 import kotlinx.android.synthetic.main.item_movie_section.view.*
 import kotlinx.android.synthetic.main.layout_section_title.view.*
 import javax.inject.Inject
@@ -18,17 +20,19 @@ import javax.inject.Inject
 /**
  * @author ilya-rb on 04.11.18.
  */
-class MovieSectionDelegate @Inject constructor(private val eventBus: EventBus) : AdapterDelegate {
+class MovieSectionDelegate @Inject constructor(
+    private val uiEventsPipeline: EventPipeline<@JvmSuppressWildcards UiPipelineData>
+) : AdapterDelegate {
 
     override fun isForViewType(item: Any): Boolean = item is ListSection
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseDelegateViewHolder {
-        return ViewHolder(parent.inflate(R.layout.item_movie_section), eventBus)
+        return ViewHolder(parent.inflate(R.layout.item_movie_section), uiEventsPipeline)
     }
 
     class ViewHolder(
         containerView: View,
-        private val eventBus: EventBus
+        private val uiEventsPipeline: EventPipeline<UiPipelineData>
     ) : BaseDelegateViewHolder(containerView) {
 
         companion object {
@@ -41,7 +45,9 @@ class MovieSectionDelegate @Inject constructor(private val eventBus: EventBus) :
         private val itemSpacing = itemView.resources.getDimensionPixelSize(R.dimen.item_movie_spacing)
         private val adapter = MovieAdapter()
             .apply {
-                clickEvent = { _, _, item -> eventBus.postEvent(item) }
+                clickEvent = { _, _, item ->
+                    uiEventsPipeline.dispatchEvent(MoviePipelineData(item))
+                }
             }
 
         init {

@@ -2,6 +2,7 @@ package com.illiarb.tmdbexplorer.coreui.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.illiarb.tmdbexplorer.coreui.viewmodel.DaggerViewModelFactory
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module

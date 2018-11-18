@@ -4,8 +4,9 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
+import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData
 import com.illiarb.tmdbexplorerdi.App
-import com.illiarb.tmdblcient.core.system.EventBus
+import com.illiarb.tmdblcient.core.pipeline.EventPipeline
 import io.reactivex.Flowable
 import io.reactivex.Single
 import javax.inject.Inject
@@ -13,7 +14,10 @@ import javax.inject.Inject
 /**
  * @author ilya-rb on 01.11.18.
  */
-class PermissionResolver @Inject constructor(app: App, private val eventBus: EventBus) {
+class PermissionResolver @Inject constructor(
+    app: App,
+    private val uiEventPipeline: EventPipeline<@JvmSuppressWildcards UiPipelineData>
+) {
 
     private val context = app.getApplication()
 
@@ -50,7 +54,8 @@ class PermissionResolver @Inject constructor(app: App, private val eventBus: Eve
     private fun startPermissionsRequest(permissions: Array<out String>): Single<List<PermissionResult>> {
         PermissionsRequestActivity.startPermissionsRequest(context, permissions)
 
-        return eventBus.observeEvents(PermissionResultList::class.java)
+        return uiEventPipeline.observeEvents()
+            .ofType(PermissionResultList::class.java)
             .firstOrError()
             .map { it.results }
     }

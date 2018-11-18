@@ -6,31 +6,32 @@ import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.AdapterDelegate
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.viewholder.BaseDelegateViewHolder
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
+import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData
 import com.illiarb.tmdblcient.core.entity.NowPlayingSection
-import com.illiarb.tmdblcient.core.system.EventBus
+import com.illiarb.tmdblcient.core.pipeline.EventPipeline
 import kotlinx.android.synthetic.main.item_now_playing_section.view.*
 import kotlinx.android.synthetic.main.layout_section_title.view.*
 import javax.inject.Inject
 
 class NowPlayingSectionDelegate @Inject constructor(
-    private val eventBus: EventBus
+    private val uiEventsPipeline: EventPipeline<@JvmSuppressWildcards UiPipelineData>
 ) : AdapterDelegate {
 
     override fun isForViewType(item: Any): Boolean = item is NowPlayingSection
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseDelegateViewHolder =
-        ViewHolder(parent.inflate(R.layout.item_now_playing_section), eventBus)
+        ViewHolder(parent.inflate(R.layout.item_now_playing_section), uiEventsPipeline)
 
     class ViewHolder(
         containerView: View,
-        eventBus: EventBus
+        uiEventsPipeline: EventPipeline<UiPipelineData>
     ) : BaseDelegateViewHolder(containerView) {
 
         private val sectionTitle = itemView.itemSectionTitle
         private val sectionMore = itemView.itemSectionMore
         private val sectionPager = itemView.itemNowPlayingSectionPager
 
-        private val adapter = NowPlayingPagerAdapter(eventBus)
+        private val adapter = NowPlayingPagerAdapter(uiEventsPipeline)
 
         init {
             sectionPager.adapter = adapter

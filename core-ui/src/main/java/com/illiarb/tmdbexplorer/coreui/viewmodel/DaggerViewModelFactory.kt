@@ -1,4 +1,4 @@
-package com.illiarb.tmdbexplorer.coreui.di
+package com.illiarb.tmdbexplorer.coreui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

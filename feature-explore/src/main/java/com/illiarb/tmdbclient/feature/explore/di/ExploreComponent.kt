@@ -3,7 +3,9 @@ package com.illiarb.tmdbclient.feature.explore.di
 import androidx.fragment.app.FragmentActivity
 import com.illiarb.tmdbclient.feature.explore.ExploreFragment
 import com.illiarb.tmdbexplorer.coreui.di.ActivityModule
+import com.illiarb.tmdbexplorer.coreui.di.UiEventsModule
 import com.illiarb.tmdbexplorer.coreui.di.ViewModelModule
+import com.illiarb.tmdbexplorer.coreui.di.scope.FragmentScope
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
 import dagger.Component
 
@@ -15,9 +17,11 @@ import dagger.Component
     modules = [
         ExploreModule::class,
         ViewModelModule::class,
-        ActivityModule::class
+        ActivityModule::class,
+        UiEventsModule::class
     ]
 )
+@FragmentScope
 interface ExploreComponent {
 
     companion object {

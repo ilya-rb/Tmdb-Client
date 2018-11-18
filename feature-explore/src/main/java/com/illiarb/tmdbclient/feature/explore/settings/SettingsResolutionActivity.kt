@@ -4,15 +4,16 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import com.google.android.gms.common.api.Status
 import com.illiarb.tmdbexplorer.coreui.base.BaseActivity
+import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData
 import com.illiarb.tmdbexplorer.coreui.viewmodel.BaseViewModel
 import com.illiarb.tmdbexplorerdi.Injectable
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
-import com.illiarb.tmdblcient.core.system.EventBus
+import com.illiarb.tmdblcient.core.pipeline.EventPipeline
+import com.illiarb.tmdblcient.core.system.Logger
 
 /**
  * @author ilya-rb on 01.11.18.
@@ -33,7 +34,8 @@ class SettingsResolutionActivity : BaseActivity<BaseViewModel>(), Injectable {
         }
     }
 
-    private lateinit var eventBus: EventBus
+    // TODO Add Inject
+    private lateinit var uiEventsPipeline: EventPipeline<UiPipelineData>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,10 +54,10 @@ class SettingsResolutionActivity : BaseActivity<BaseViewModel>(), Injectable {
 
         // https://developers.google.com/android/reference/com/google/android/gms/location/SettingsApi
         when (requestCode) {
-            Activity.RESULT_CANCELED -> Log.d(SettingsResolutionActivity::class.java.name, "Location setting change canceled")
+            Activity.RESULT_CANCELED -> Logger.d("Location setting change canceled")
             Activity.RESULT_OK -> {
                 // All required changes were made
-                Log.d(SettingsResolutionActivity::class.java.name, "Location settings changed")
+                Logger.d("Location settings changed")
             }
         }
 
@@ -67,7 +69,5 @@ class SettingsResolutionActivity : BaseActivity<BaseViewModel>(), Injectable {
     override fun getViewModelClass(): Class<BaseViewModel> = BaseViewModel::class.java
 
     override fun inject(appProvider: AppProvider) {
-        // TODO Add normal di
-        eventBus = appProvider.provideEventBus()
     }
 }
