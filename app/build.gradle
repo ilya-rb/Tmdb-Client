@@ -34,7 +34,6 @@ dependencies {
 
     implementation project(':core')
     implementation project(':core-impl')
-    implementation project(':core-ui')
     implementation project(':storage')
     implementation project(':di')
     implementation project(':tools')
@@ -43,4 +42,5 @@ dependencies {
     implementation deps.dagger
     implementation deps.timber
     implementation deps.rxAndroid
+    implementation deps.supportDesign
 }
