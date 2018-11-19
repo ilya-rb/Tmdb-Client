@@ -3,10 +3,12 @@ package com.illiarb.tmdbclient.di.modules
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonParser
 import com.illiarb.tmdbclient.di.qualifier.HereApi
 import com.illiarb.tmdbclient.storage.BuildConfig
 import com.illiarb.tmdbclient.storage.network.api.ApiKeyInterceptor
 import com.illiarb.tmdbclient.storage.network.api.MovieService
+import com.illiarb.tmdbclient.storage.network.error.ApiCallAdapterFactory
 import com.illiarb.tmdbclient.storage.network.hereapi.HereApiInterceptor
 import com.illiarb.tmdbclient.storage.network.hereapi.HereApiService
 import dagger.Module
@@ -103,7 +105,8 @@ class NetworkModule {
 
         @Provides
         @JvmStatic
-        fun provideApiCallAdapterFactory(): CallAdapter.Factory = RxJava2CallAdapterFactory.create()
+        fun provideApiCallAdapterFactory(): CallAdapter.Factory =
+            ApiCallAdapterFactory(RxJava2CallAdapterFactory.create(), JsonParser())
 
         @Provides
         @JvmStatic
