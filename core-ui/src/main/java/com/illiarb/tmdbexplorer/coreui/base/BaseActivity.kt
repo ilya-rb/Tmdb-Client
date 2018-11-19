@@ -6,11 +6,13 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.illiarb.tmdbexplorer.coreui.actions.CommonUiActions
+import com.illiarb.tmdbexplorer.coreui.actions.DefaultCommonUiActions
 import com.illiarb.tmdbexplorer.coreui.viewmodel.BaseViewModel
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity() {
+abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity(), CommonUiActions {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -19,6 +21,8 @@ abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity() {
 
     protected lateinit var viewModel: T
         private set
+
+    private val commonUiActions by lazy { DefaultCommonUiActions(this) }
 
     @LayoutRes
     protected abstract fun getContentView(): Int
@@ -40,6 +44,10 @@ abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity() {
         destroyDisposable.clear()
         super.onDestroy()
     }
+
+    override fun showMessage(message: String) = commonUiActions.showMessage(message)
+
+    override fun showError(message: String) = commonUiActions.showError(message)
 
     private fun createViewModel() {
         if (::viewModelFactory.isInitialized) {

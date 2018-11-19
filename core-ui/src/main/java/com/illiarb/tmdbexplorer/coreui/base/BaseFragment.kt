@@ -9,19 +9,23 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.illiarb.tmdbexplorer.coreui.actions.CommonUiActions
+import com.illiarb.tmdbexplorer.coreui.actions.DefaultCommonUiActions
 import com.illiarb.tmdbexplorer.coreui.viewmodel.ViewModelScope
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-abstract class BaseFragment <T : ViewModel> : Fragment() {
+abstract class BaseFragment<T : ViewModel> : Fragment(), CommonUiActions {
 
-    protected val destroyViewDisposable = CompositeDisposable()
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    protected val destroyViewDisposable by lazy { CompositeDisposable() }
 
     protected lateinit var viewModel: T
         private set
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val commonUiActions by lazy { DefaultCommonUiActions(requireContext()) }
 
     @LayoutRes
     protected abstract fun getContentView(): Int
@@ -47,6 +51,10 @@ abstract class BaseFragment <T : ViewModel> : Fragment() {
         destroyViewDisposable.clear()
         super.onDestroyView()
     }
+
+    override fun showMessage(message: String) = commonUiActions.showMessage(message)
+
+    override fun showError(message: String) = commonUiActions.showError(message)
 
     private fun createViewModel() {
         if (::viewModelFactory.isInitialized) {
