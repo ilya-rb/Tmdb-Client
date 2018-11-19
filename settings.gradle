@@ -5,7 +5,7 @@ include ':app',
         ':core_ui',
         ':di',
         ':feature_explore',
-        ':feature-main',
+        ':feature_main',
         ':feature_movies',
         ':feature_dynamic_account',
         ':tools'
