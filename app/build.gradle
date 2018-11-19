@@ -39,7 +39,7 @@ dependencies {
     implementation project(':storage')
     implementation project(':di')
     implementation project(':tools')
-    implementation project(':feature-main')
+    implementation project(':feature_main')
 
     implementation deps.dagger
     implementation deps.timber
