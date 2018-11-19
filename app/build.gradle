@@ -27,13 +27,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    dynamicFeatures = [":feature_dynamic_account"]
 }
 
 dependencies {
     kapt deps.daggerCompiler
 
     implementation project(':core')
-    implementation project(':core-impl')
+    implementation project(':core_impl')
     implementation project(':storage')
     implementation project(':di')
     implementation project(':tools')

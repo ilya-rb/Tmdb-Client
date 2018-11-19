@@ -30,10 +30,10 @@ dependencies {
     kapt deps.daggerCompiler
 
     implementation project(':core')
-    implementation project(':core-ui')
+    implementation project(':core_ui')
     implementation project(':di')
-    implementation project(':feature-movies')
-    implementation project(':feature-explore')
+    implementation project(':feature_movies')
+    implementation project(':feature_explore')
 
     implementation deps.dagger
     implementation deps.navigation
