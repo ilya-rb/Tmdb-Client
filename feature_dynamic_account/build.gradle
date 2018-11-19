@@ -1,16 +1,28 @@
 apply plugin: 'com.android.dynamic-feature'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+apply from: dependenciesFilePath
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion projectInfo.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 28
+        minSdkVersion projectInfo.minSdkVersion
+        targetSdkVersion projectInfo.targetSdkVersion
+
         versionCode 1
         versionName "1.0"
     }
 }
 
 dependencies {
-    implementation project(':app')
+    kapt deps.daggerCompiler
+
+    implementation project(':core')
+    implementation project(':core_ui')
+    implementation project(':di')
+
+    implementation deps.dagger
 }

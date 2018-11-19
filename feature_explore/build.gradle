@@ -4,7 +4,6 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 apply from: dependenciesFilePath
-apply from: versionsFilePath
 
 android {
     compileSdkVersion projectInfo.compileSdkVersion

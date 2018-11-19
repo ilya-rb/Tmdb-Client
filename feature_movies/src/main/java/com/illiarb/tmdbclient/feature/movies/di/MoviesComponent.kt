@@ -21,9 +21,9 @@ import dagger.Component
 interface MoviesComponent {
 
     companion object {
-        fun get(appDepsProvider: AppProvider): MoviesComponent =
+        fun get(appProvider: AppProvider): MoviesComponent =
             DaggerMoviesComponent.builder()
-                .appProvider(appDepsProvider)
+                .appProvider(appProvider)
                 .build()
     }
 
