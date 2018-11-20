@@ -5,6 +5,11 @@ package com.illiarb.tmdblcient.core.navigation
  */
 sealed class NavigationData(val screenName: ScreenName)
 
+object MoviesScreenData : NavigationData(ScreenName.MOVIES)
+object ExploreScreenData : NavigationData(ScreenName.EXPLORE)
+object AccountScreenData : NavigationData(ScreenName.ACCOUNT)
+object AuthScreenData : NavigationData(ScreenName.AUTH)
+
 class MovieDetailsData(
     val id: Int,
     val title: String,

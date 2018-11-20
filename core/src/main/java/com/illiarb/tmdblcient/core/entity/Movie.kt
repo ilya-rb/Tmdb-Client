@@ -12,6 +12,6 @@ data class Movie(
     val reviews: List<Review>,
     val runtime: Int?,
     val title: String,
-    val images: List<Backdrop>,
+    val images: List<String>,
     val voteAverage: Float
 )

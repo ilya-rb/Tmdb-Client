@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.storage.repositories
 
 import com.illiarb.tmdbclient.storage.R
-import com.illiarb.tmdbclient.storage.local.movies.MoviesStorage
+import com.illiarb.tmdbclient.storage.local.PersistableStorage
 import com.illiarb.tmdbclient.storage.mappers.MovieMapper
 import com.illiarb.tmdbclient.storage.mappers.ReviewMapper
 import com.illiarb.tmdbclient.storage.network.api.MovieService
@@ -18,14 +18,14 @@ import javax.inject.Inject
  */
 class MoviesRepositoryImpl @Inject constructor(
     private val moviesService: MovieService,
-    private val moviesStorage: MoviesStorage,
+    private val persistableStorage: PersistableStorage,
     private val movieMapper: MovieMapper,
     private val reviewMapper: ReviewMapper,
     private val resourceResolver: ResourceResolver
 ) : MoviesRepository {
 
     override fun getMoviesByType(type: String): Single<List<Movie>> =
-        moviesStorage.getMoviesByType(type)
+        persistableStorage.getMoviesByType(type)
             .flatMap { movies ->
                 if (movies.isNotEmpty()) {
                     Single.just(movies)
@@ -33,7 +33,7 @@ class MoviesRepositoryImpl @Inject constructor(
                     moviesService.getMoviesByType(type)
                         .map { it.results }
                         .doOnSuccess {
-                            moviesStorage.storeMovies(type, it)
+                            persistableStorage.storeMovies(type, it)
                         }
                 }
             }

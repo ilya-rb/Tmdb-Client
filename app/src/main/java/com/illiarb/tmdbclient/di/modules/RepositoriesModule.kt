@@ -1,7 +1,9 @@
 package com.illiarb.tmdbclient.di.modules
 
+import com.illiarb.tmdbclient.storage.repositories.AccountRepositoryImpl
 import com.illiarb.tmdbclient.storage.repositories.LocationRepositoryImpl
 import com.illiarb.tmdbclient.storage.repositories.MoviesRepositoryImpl
+import com.illiarb.tmdblcient.core.storage.AccountRepository
 import com.illiarb.tmdblcient.core.storage.LocationRepository
 import com.illiarb.tmdblcient.core.storage.MoviesRepository
 import dagger.Binds
@@ -18,4 +20,7 @@ interface RepositoriesModule {
 
     @Binds
     fun bindLocationRepository(impl: LocationRepositoryImpl): LocationRepository
+
+    @Binds
+    fun bindAccountRepository(impl: AccountRepositoryImpl): AccountRepository
 }
