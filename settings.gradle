@@ -7,5 +7,4 @@ include ':app',
         ':feature_explore',
         ':feature_main',
         ':feature_movies',
-        ':feature_dynamic_account',
         ':tools'
