@@ -19,4 +19,7 @@
     <!-- Misc -->
     <dimen name="image_corner_radius">4dp</dimen>
 
+    <dimen name="default_corner_radius">4dp</dimen>
+    <dimen name="default_elevation">4dp</dimen>
+
 </resources>

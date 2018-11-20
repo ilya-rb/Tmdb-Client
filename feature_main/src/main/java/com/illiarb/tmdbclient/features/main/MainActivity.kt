@@ -5,7 +5,6 @@ import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
-import androidx.navigation.ui.NavigationUI
 import com.illiarb.tmdbclient.features.main.di.MainComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseActivity
 import com.illiarb.tmdbexplorerdi.Injectable
@@ -28,7 +27,14 @@ class MainActivity : BaseActivity<MainViewModel>(), Injectable {
 
         with(Navigation.findNavController(this, R.id.nav_host_fragment)) {
             addOnNavigatedListener(::onDestinationChanged)
-            NavigationUI.setupWithNavController(bottomNavigation, this)
+        }
+
+        bottomNavigation.apply {
+            setOnNavigationItemReselectedListener { /* No-op */ }
+            setOnNavigationItemSelectedListener {
+                viewModel.onBottomNavigationItemSelected(it.itemId)
+                true
+            }
         }
     }
 
@@ -61,7 +67,7 @@ class MainActivity : BaseActivity<MainViewModel>(), Injectable {
         // Don't show bottom navigation
         // for non-root fragments
         bottomNavigation.visibility = if (menuItem == null) {
-            View.VISIBLE
+            View.GONE
         } else {
             View.VISIBLE
         }

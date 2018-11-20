@@ -34,6 +34,7 @@ dependencies {
     implementation project(':di')
     implementation project(':feature_movies')
     implementation project(':feature_explore')
+    implementation project(':dynamic_feature_account')
 
     implementation deps.dagger
     implementation deps.navigation

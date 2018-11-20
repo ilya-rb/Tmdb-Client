@@ -28,6 +28,8 @@ class MainNavigator @Inject constructor(private val activity: FragmentActivity) 
             ScreenName.MOVIES -> R.id.moviesFragmentAction
             ScreenName.MOVIE_DETAILS -> R.id.movieDetailsAction
             ScreenName.EXPLORE -> R.id.exploreAction
+            ScreenName.ACCOUNT -> R.id.accountAction
+            else -> TODO("Implement other screens")
         }
 
         return object : NavDirections {

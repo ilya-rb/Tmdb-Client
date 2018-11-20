@@ -146,10 +146,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
                 movieDetailsOverview.text = it
             }
 
-            val photos = images.map { it.filePath }
-            if (photos.isNotEmpty()) {
+            if (images.isNotEmpty()) {
                 movieDetailsPhotosTitle.visibility = View.VISIBLE
-                photosAdapter.submitList(photos)
+                photosAdapter.submitList(images)
             }
 
             if (reviews.isNotEmpty()) {
