@@ -1,4 +1,4 @@
-package com.illiarb.tmdblcient.core.storage
+package com.illiarb.tmdblcient.core.modules.movie
 
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter

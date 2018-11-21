@@ -3,7 +3,7 @@ package com.illiarb.tmdbclient.coreimpl.movie
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.Review
 import com.illiarb.tmdblcient.core.modules.movie.MovieDetailsInteractor
-import com.illiarb.tmdblcient.core.storage.MoviesRepository
+import com.illiarb.tmdblcient.core.modules.movie.MoviesRepository
 import io.reactivex.Single
 import javax.inject.Inject
 

@@ -5,7 +5,7 @@ import com.illiarb.tmdbclient.storage.mappers.LocationMapper
 import com.illiarb.tmdbclient.storage.mappers.here.HereLocationMapper
 import com.illiarb.tmdbclient.storage.network.hereapi.HereApiService
 import com.illiarb.tmdblcient.core.entity.Location
-import com.illiarb.tmdblcient.core.storage.LocationRepository
+import com.illiarb.tmdblcient.core.modules.explore.LocationRepository
 import io.reactivex.Single
 import javax.inject.Inject
 

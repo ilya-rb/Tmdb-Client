@@ -7,7 +7,7 @@ import com.illiarb.tmdblcient.core.entity.NowPlayingSection
 import com.illiarb.tmdblcient.core.modules.movie.MoviesInteractor
 import com.illiarb.tmdblcient.core.navigation.MovieDetailsData
 import com.illiarb.tmdblcient.core.navigation.Router
-import com.illiarb.tmdblcient.core.storage.MoviesRepository
+import com.illiarb.tmdblcient.core.modules.movie.MoviesRepository
 import com.illiarb.tmdblcient.core.system.SchedulerProvider
 import io.reactivex.Single
 import javax.inject.Inject

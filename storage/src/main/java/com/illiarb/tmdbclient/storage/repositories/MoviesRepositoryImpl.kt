@@ -8,7 +8,7 @@ import com.illiarb.tmdbclient.storage.network.api.MovieService
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.entity.Review
-import com.illiarb.tmdblcient.core.storage.MoviesRepository
+import com.illiarb.tmdblcient.core.modules.movie.MoviesRepository
 import com.illiarb.tmdblcient.core.system.ResourceResolver
 import io.reactivex.Single
 import javax.inject.Inject

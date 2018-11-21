@@ -1,9 +1,13 @@
 package com.illiarb.tmdbclient.di.modules
 
+import com.illiarb.tmdbclient.coreimpl.account.AccountInteractorImpl
+import com.illiarb.tmdbclient.coreimpl.auth.AuthInteractorImpl
 import com.illiarb.tmdbclient.coreimpl.explore.ExploreInteractorImpl
 import com.illiarb.tmdbclient.coreimpl.main.MainInteractorImpl
 import com.illiarb.tmdbclient.coreimpl.movie.MovieDetailsInteractorImpl
 import com.illiarb.tmdbclient.coreimpl.movie.MoviesInteractorImpl
+import com.illiarb.tmdblcient.core.modules.account.AccountInteractor
+import com.illiarb.tmdblcient.core.modules.auth.AuthInteractor
 import com.illiarb.tmdblcient.core.modules.explore.ExploreInteractor
 import com.illiarb.tmdblcient.core.modules.main.MainInteractor
 import com.illiarb.tmdblcient.core.modules.movie.MovieDetailsInteractor
@@ -28,4 +32,10 @@ interface InteractorsModule {
 
     @Binds
     fun bindMainInteractor(impl: MainInteractorImpl): MainInteractor
+
+    @Binds
+    fun bindAccountInteractor(impl: AccountInteractorImpl): AccountInteractor
+
+    @Binds
+    fun bindAuthInteractor(impl: AuthInteractorImpl): AuthInteractor
 }

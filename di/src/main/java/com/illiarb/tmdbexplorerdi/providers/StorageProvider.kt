@@ -1,8 +1,9 @@
 package com.illiarb.tmdbexplorerdi.providers
 
-import com.illiarb.tmdblcient.core.storage.AccountRepository
-import com.illiarb.tmdblcient.core.storage.LocationRepository
-import com.illiarb.tmdblcient.core.storage.MoviesRepository
+import com.illiarb.tmdblcient.core.modules.account.AccountRepository
+import com.illiarb.tmdblcient.core.modules.auth.Authenticator
+import com.illiarb.tmdblcient.core.modules.explore.LocationRepository
+import com.illiarb.tmdblcient.core.modules.movie.MoviesRepository
 import com.illiarb.tmdblcient.core.system.ResourceResolver
 
 /**
@@ -18,4 +19,6 @@ interface StorageProvider {
     fun provideAccountRepository(): AccountRepository
 
     fun provideResourceResolver(): ResourceResolver
+
+    fun provideAuthenticator(): Authenticator
 }

@@ -37,7 +37,15 @@ class PersistableStorage @Inject constructor(app: App) {
 
     fun getMoviesByType(type: String): Single<List<MovieModel>> = Single.just(getValue(type, MovieListModel()).movies)
 
+    fun getCurrentAccount(): Single<AccountModel> = Single.just(getValue(KEY_ACCOUNT, AccountModel()))
+
+    fun getSessionId(): String = store.getString(KEY_SESSION_ID, null) ?: ""
+
     fun storeMovies(type: String, movies: List<MovieModel>) = putValue(type, MovieListModel(movies))
+
+    fun storeAccount(accountModel: AccountModel) = putValue(KEY_ACCOUNT, accountModel)
+
+    fun storeSessionId(sessionId: String) = store.edit().putString(KEY_SESSION_ID, sessionId).commit()
 
     private fun <T : Persistable> getValue(key: String, result: T): T = store.getPersistable(key, result) as T
 

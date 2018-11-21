@@ -11,18 +11,22 @@ import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataOutput
 data class AccountModel(
 
     @SerializedName("id")
-    var id: Int,
+    var id: Int = ID_NON_EXISTENT,
 
     @SerializedName("name")
-    var name: String,
+    var name: String = "",
 
     @SerializedName("username")
-    var username: String,
+    var username: String = "",
 
     @SerializedName("avatar")
-    var avatar: Gravatar
+    var avatar: Gravatar = Gravatar("")
 
 ) : Persistable {
+
+    companion object {
+        const val ID_NON_EXISTENT = -1
+    }
 
     override fun readExternal(input: DataInput) =
         input.run {
@@ -41,6 +45,8 @@ data class AccountModel(
         }
 
     override fun deepClone(): Persistable = AccountModel(id, name, username, avatar)
+
+    fun isNonExistent(): Boolean = id == ID_NON_EXISTENT
 }
 
 data class Gravatar(@SerializedName("hash") val hash: String)

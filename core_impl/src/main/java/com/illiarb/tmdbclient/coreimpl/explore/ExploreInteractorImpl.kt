@@ -2,7 +2,7 @@ package com.illiarb.tmdbclient.coreimpl.explore
 
 import com.illiarb.tmdblcient.core.entity.Location
 import com.illiarb.tmdblcient.core.modules.explore.ExploreInteractor
-import com.illiarb.tmdblcient.core.storage.LocationRepository
+import com.illiarb.tmdblcient.core.modules.explore.LocationRepository
 import io.reactivex.Single
 import javax.inject.Inject
 

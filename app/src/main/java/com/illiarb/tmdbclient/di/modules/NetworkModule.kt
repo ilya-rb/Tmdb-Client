@@ -6,7 +6,9 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.illiarb.tmdbclient.di.qualifier.HereApi
 import com.illiarb.tmdbclient.storage.BuildConfig
+import com.illiarb.tmdbclient.storage.network.api.AccountService
 import com.illiarb.tmdbclient.storage.network.api.ApiKeyInterceptor
+import com.illiarb.tmdbclient.storage.network.api.AuthService
 import com.illiarb.tmdbclient.storage.network.api.MovieService
 import com.illiarb.tmdbclient.storage.network.error.ApiCallAdapterFactory
 import com.illiarb.tmdbclient.storage.network.hereapi.HereApiInterceptor
@@ -21,6 +23,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 /**
  * @author ilya-rb on 03.11.18.
@@ -37,16 +40,31 @@ class NetworkModule {
 
         @Provides
         @JvmStatic
+        @Singleton
         fun provideMoviesService(retrofit: Retrofit): MovieService =
             retrofit.create(MovieService::class.java)
 
         @Provides
         @JvmStatic
+        @Singleton
+        fun provideAuthService(retrofit: Retrofit): AuthService =
+            retrofit.create(AuthService::class.java)
+
+        @Provides
+        @JvmStatic
+        @Singleton
+        fun provideAccountService(retrofit: Retrofit): AccountService =
+            retrofit.create(AccountService::class.java)
+
+        @Provides
+        @JvmStatic
+        @Singleton
         fun provideHereApiService(@HereApi retrofit: Retrofit): HereApiService =
             retrofit.create(HereApiService::class.java)
 
         @Provides
         @JvmStatic
+        @Singleton
         fun provideApiRetrofit(
             okHttpClient: OkHttpClient,
             callAdapterFactory: CallAdapter.Factory,

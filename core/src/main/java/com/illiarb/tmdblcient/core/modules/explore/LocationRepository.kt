@@ -1,4 +1,4 @@
-package com.illiarb.tmdblcient.core.storage
+package com.illiarb.tmdblcient.core.modules.explore
 
 import com.illiarb.tmdblcient.core.entity.Location
 import io.reactivex.Single
