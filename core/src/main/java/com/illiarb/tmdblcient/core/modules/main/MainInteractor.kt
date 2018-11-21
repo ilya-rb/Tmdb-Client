@@ -8,6 +8,4 @@ import com.illiarb.tmdblcient.core.navigation.ScreenName
 interface MainInteractor {
 
     fun onMainScreenSelected(screenName: ScreenName)
-
-    fun onAccountSelected()
 }

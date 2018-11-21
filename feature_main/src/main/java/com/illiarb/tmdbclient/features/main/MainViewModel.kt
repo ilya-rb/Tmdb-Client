@@ -16,14 +16,11 @@ class MainViewModel @Inject constructor(
         mainInteractor.onMainScreenSelected(mapToScreenName(id))
     }
 
-    fun onAccountSelected() {
-        mainInteractor.onAccountSelected()
-    }
-
     private fun mapToScreenName(id: Int): ScreenName =
         when (id) {
-            R.id.moviesFragmentAction -> ScreenName.MOVIES
-            R.id.exploreAction -> ScreenName.EXPLORE
+            R.id.moviesFragment -> ScreenName.MOVIES
+            R.id.exploreFragment -> ScreenName.EXPLORE
+            R.id.accountFragment -> ScreenName.ACCOUNT
             else -> TODO("Implement other screens")
         }
 }

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical"
+    tools:layout_marginTop="24dp">
+
+    <ImageView
+        android:id="@+id/tmdbLogo"
+        android:layout_width="@dimen/auth_logo_size"
+        android:layout_height="@dimen/auth_logo_size"
+        android:layout_marginTop="@dimen/margin_large"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_tmdblogo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textUsernameLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_default"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tmdbLogo">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textUsername"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_auth_edit_text"
+            android:hint="@string/auth_username_hint"
+            android:paddingStart="@dimen/margin_default"
+            android:paddingEnd="@dimen/margin_default"
+            android:textColorHint="@color/colorOnSecondary" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textPasswordLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginEnd="@dimen/margin_default"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textUsernameLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_auth_edit_text"
+            android:hint="@string/auth_password_hint"
+            android:paddingStart="@dimen/margin_default"
+            android:paddingEnd="@dimen/margin_default"
+            android:textColorHint="@color/colorOnSecondary" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAuthorize"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:text="@string/auth_btn_authorize"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@id/textPasswordLayout"
+        app:layout_constraintEnd_toEndOf="@id/textPasswordLayout"
+        app:layout_constraintStart_toStartOf="@id/textPasswordLayout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

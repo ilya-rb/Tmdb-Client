@@ -29,6 +29,7 @@ class MainNavigator @Inject constructor(private val activity: FragmentActivity) 
             ScreenName.MOVIE_DETAILS -> R.id.movieDetailsAction
             ScreenName.EXPLORE -> R.id.exploreAction
             ScreenName.ACCOUNT -> R.id.accountAction
+            ScreenName.AUTH -> R.id.authAction
             else -> TODO("Implement other screens")
         }
 

@@ -23,14 +23,13 @@ class MainInteractorImpl @Inject constructor(
         when (screenName) {
             ScreenName.MOVIES -> router.navigateTo(MoviesScreenData)
             ScreenName.EXPLORE -> router.navigateTo(ExploreScreenData)
-        }
-    }
-
-    override fun onAccountSelected() {
-        if (accountRepository.isAuthorized()) {
-            router.navigateTo(AccountScreenData)
-        } else {
-            router.navigateTo(AuthScreenData)
+            ScreenName.ACCOUNT -> {
+                if (accountRepository.isAuthorized()) {
+                    router.navigateTo(AccountScreenData)
+                } else {
+                    router.navigateTo(AuthScreenData)
+                }
+            }
         }
     }
 }

@@ -25,9 +25,7 @@ class MainActivity : BaseActivity<MainViewModel>(), Injectable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        with(Navigation.findNavController(this, R.id.nav_host_fragment)) {
-            addOnNavigatedListener(::onDestinationChanged)
-        }
+        Navigation.findNavController(this, R.id.nav_host_fragment).addOnNavigatedListener(::onDestinationChanged)
 
         bottomNavigation.apply {
             setOnNavigationItemReselectedListener { /* No-op */ }
@@ -66,7 +64,7 @@ class MainActivity : BaseActivity<MainViewModel>(), Injectable {
         val menuItem = bottomNavigation.menu.findItem(destination.id)
         // Don't show bottom navigation
         // for non-root fragments
-        bottomNavigation.visibility = if (menuItem == null) {
+        bottomNavigation.visibility = if (menuItem == null && destination.id != R.id.authFragment) {
             View.GONE
         } else {
             View.VISIBLE
