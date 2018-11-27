@@ -14,7 +14,6 @@ deps.constraintLayout = "androidx.constraintlayout:constraintlayout:$versions.co
 deps.viewmodel = "androidx.lifecycle:lifecycle-viewmodel:$versions.archComponents"
 deps.viewModelExt = "androidx.lifecycle:lifecycle-extensions:$versions.archComponents"
 deps.navigation = "android.arch.navigation:navigation-fragment:$versions.navigation"
-deps.navigationUi = "android.arch.navigation:navigation-ui:$versions.navigation"
 
 // Database
 deps.room = "androidx.room:room-runtime:$versions.room"
