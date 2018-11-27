@@ -40,6 +40,7 @@ dependencies {
     implementation project(':core')
     implementation project(':di')
 
+    implementation deps.javax
     implementation deps.binaryPrefs
     implementation deps.location
 
