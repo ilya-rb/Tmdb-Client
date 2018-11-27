@@ -8,6 +8,7 @@ import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.state.UiState
 import com.illiarb.tmdbexplorerdi.Injectable
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
+import com.illiarb.tmdblcient.core.exception.ApiException
 import com.illiarb.tmdblcient.core.exception.ErrorCodes
 import com.illiarb.tmdblcient.core.exception.ValidationException
 import com.illiarb.tmdblcient.core.ext.addTo
@@ -46,14 +47,19 @@ class AuthFragment : BaseFragment<AuthViewModel>(), Injectable {
         when {
             state.hasError() -> {
                 val error = state.requireError()
-                if (error is ValidationException) {
-                    error.errors.forEach { (code, message) ->
-                        when (code) {
-                            ErrorCodes.ERROR_USERNAME_EMPTY -> textUsername.error = message
-                            ErrorCodes.ERROR_PASSWORD_EMPTY -> textPassword.error = message
-                        }
-                    }
+                when (error) {
+                    is ValidationException -> showValidationErrors(error.errors)
+                    is ApiException -> showError(error.message)
                 }
+            }
+        }
+    }
+
+    private fun showValidationErrors(errors: List<Pair<Int, String>>) {
+        errors.forEach { (code, message) ->
+            when (code) {
+                ErrorCodes.ERROR_USERNAME_EMPTY -> textUsername.error = message
+                ErrorCodes.ERROR_PASSWORD_EMPTY -> textPassword.error = message
             }
         }
     }

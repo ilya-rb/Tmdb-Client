@@ -1,7 +1,6 @@
 package com.illiarb.tmdbexplorer.coreui.actions
 
 import android.content.Context
-import android.graphics.Color
 import android.widget.Toast
 
 /**
@@ -16,8 +15,6 @@ class DefaultCommonUiActions(val context: Context) : CommonUiActions {
     }
 
     override fun showError(message: String) {
-        Toast(context)
-            .apply { view.setBackgroundColor(Color.RED) }
-            .also { it.show() }
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 }

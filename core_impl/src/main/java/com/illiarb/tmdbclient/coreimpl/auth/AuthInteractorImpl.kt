@@ -3,7 +3,6 @@ package com.illiarb.tmdbclient.coreimpl.auth
 import com.illiarb.tmdblcient.core.exception.ErrorCodes
 import com.illiarb.tmdblcient.core.exception.ValidationException
 import com.illiarb.tmdblcient.core.ext.onCompleteSafe
-import com.illiarb.tmdblcient.core.ext.onErrorSafe
 import com.illiarb.tmdblcient.core.modules.auth.AuthInteractor
 import com.illiarb.tmdblcient.core.modules.auth.Authenticator
 import com.illiarb.tmdblcient.core.navigation.AccountScreenData
@@ -24,7 +23,7 @@ class AuthInteractorImpl @Inject constructor(
 
     override fun authenticate(username: String, password: String): Completable =
         validateCredentials(username, password)
-            .andThen { authenticator.authorize(username, password) }
+            .andThen(authenticator.authorize(username, password))
             .andThen { router.navigateTo(AccountScreenData) }
 
     private fun validateCredentials(username: String, password: String): Completable =
@@ -40,7 +39,7 @@ class AuthInteractorImpl @Inject constructor(
             }
 
             if (errors.isNotEmpty()) {
-                emitter.onErrorSafe(ValidationException(errors))
+                emitter.tryOnError(ValidationException(errors))
             } else {
                 emitter.onCompleteSafe()
             }
