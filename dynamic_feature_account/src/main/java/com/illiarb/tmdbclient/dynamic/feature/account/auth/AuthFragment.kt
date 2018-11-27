@@ -8,6 +8,8 @@ import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.state.UiState
 import com.illiarb.tmdbexplorerdi.Injectable
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
+import com.illiarb.tmdblcient.core.exception.ErrorCodes
+import com.illiarb.tmdblcient.core.exception.ValidationException
 import com.illiarb.tmdblcient.core.ext.addTo
 import kotlinx.android.synthetic.main.fragment_auth.*
 
@@ -26,8 +28,8 @@ class AuthFragment : BaseFragment<AuthViewModel>(), Injectable {
         super.onViewCreated(view, savedInstanceState)
 
         btnAuthorize.setOnClickListener {
-            val username = textUsername.text?.trim()?.toString() ?: ""
-            val password = textPassword.text?.trim()?.toString() ?: ""
+            val username = textUsername.text?.toString() ?: ""
+            val password = textPassword.text?.toString() ?: ""
             viewModel.authorize(username, password)
         }
     }
@@ -41,6 +43,18 @@ class AuthFragment : BaseFragment<AuthViewModel>(), Injectable {
     }
 
     private fun onAuthStateChanged(state: UiState<Unit>) {
-        // TODO Need to react to state and show loading
+        when {
+            state.hasError() -> {
+                val error = state.requireError()
+                if (error is ValidationException) {
+                    error.errors.forEach { (code, message) ->
+                        when (code) {
+                            ErrorCodes.ERROR_USERNAME_EMPTY -> textUsername.error = message
+                            ErrorCodes.ERROR_PASSWORD_EMPTY -> textPassword.error = message
+                        }
+                    }
+                }
+            }
+        }
     }
 }

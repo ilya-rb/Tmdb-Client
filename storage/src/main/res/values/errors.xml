@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="error_username_empty">Username is required</string>
+    <string name="error_password_empty">Password is required</string>
+
+</resources>

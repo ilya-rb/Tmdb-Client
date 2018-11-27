@@ -127,8 +127,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
         with(movie) {
             movieDetailsRating.text = voteAverage.toString()
 
-            runtime?.let {
-                movieDetailsDuration.text = getString(R.string.movie_details_duration, it)
+            if (runtime > 0) {
+                movieDetailsDuration.text = getString(R.string.movie_details_duration, runtime)
             }
 
             genres.forEach { genre ->

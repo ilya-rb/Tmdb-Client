@@ -21,19 +21,16 @@ class AuthViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val authStateSubject = object : DataUiStateSubject<AuthPayload, Unit>() {
-        override fun createData(payload: AuthPayload): Disposable {
-            return authInteractor.authenticate(payload.username, payload.password)
+        override fun createData(payload: AuthPayload): Disposable =
+            authInteractor.authenticate(payload.username, payload.password)
                 .ioToMain(schedulerProvider)
                 .subscribe(this)
                 .addTo(clearDisposable)
-        }
     }
 
     fun observeAuthState(): Observable<UiState<Unit>> = authStateSubject.observer()
 
-    fun authorize(username: String, password: String) {
-        authStateSubject.loadData(AuthPayload(username, password))
-    }
+    fun authorize(username: String, password: String) = authStateSubject.loadData(AuthPayload(username, password))
 
     private class AuthPayload(val username: String, val password: String)
 }

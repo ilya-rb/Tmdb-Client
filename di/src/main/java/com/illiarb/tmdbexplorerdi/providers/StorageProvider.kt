@@ -4,6 +4,7 @@ import com.illiarb.tmdblcient.core.modules.account.AccountRepository
 import com.illiarb.tmdblcient.core.modules.auth.Authenticator
 import com.illiarb.tmdblcient.core.modules.explore.LocationRepository
 import com.illiarb.tmdblcient.core.modules.movie.MoviesRepository
+import com.illiarb.tmdblcient.core.system.ErrorMessageBag
 import com.illiarb.tmdblcient.core.system.ResourceResolver
 
 /**
@@ -21,4 +22,6 @@ interface StorageProvider {
     fun provideResourceResolver(): ResourceResolver
 
     fun provideAuthenticator(): Authenticator
+
+    fun provideErrorMessageBar(): ErrorMessageBag
 }
