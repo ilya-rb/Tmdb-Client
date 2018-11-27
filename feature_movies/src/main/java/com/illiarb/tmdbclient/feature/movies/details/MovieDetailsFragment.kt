@@ -75,8 +75,13 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
         movieDetailsReviews.apply {
             adapter = reviewsAdapter
             layoutManager = LinearLayoutManager(requireContext())
-            addItemDecoration(SpaceItemDecoration(0, resources.getDimensionPixelSize(R.dimen.margin_small)))
             isNestedScrollingEnabled = false
+            addItemDecoration(
+                SpaceItemDecoration(
+                    resources.getDimensionPixelSize(R.dimen.margin_default),
+                    resources.getDimensionPixelSize(R.dimen.margin_small)
+                )
+            )
         }
 
         ViewCompat.requestApplyInsets(view)
@@ -122,8 +127,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
     }
 
     private fun showMovieDetails(movie: Movie) {
-        showMovieDetailsBasicInfo(movie.title, movie.posterPath)
-
         with(movie) {
             movieDetailsRating.text = voteAverage.toString()
 
