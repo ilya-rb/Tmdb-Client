@@ -5,5 +5,5 @@ package com.illiarb.tmdblcient.core.navigation
  */
 interface Router {
 
-    fun navigateTo(data: NavigationData)
+    fun navigateTo(data: ScreenData)
 }

@@ -1,6 +1,6 @@
 package com.illiarb.tmdbclient.tools.navigation
 
-import com.illiarb.tmdblcient.core.navigation.NavigationData
+import com.illiarb.tmdblcient.core.navigation.ScreenData
 import com.illiarb.tmdblcient.core.navigation.Router
 import javax.inject.Inject
 
@@ -9,7 +9,7 @@ import javax.inject.Inject
  */
 class AppRouter @Inject constructor(private val navigatorHolder: SimpleNavigatorHolder) : Router {
 
-    override fun navigateTo(data: NavigationData) {
+    override fun navigateTo(data: ScreenData) {
         navigatorHolder.runNavigation(data)
     }
 }

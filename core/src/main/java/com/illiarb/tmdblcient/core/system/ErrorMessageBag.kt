@@ -9,4 +9,5 @@ interface ErrorMessageBag {
 
     fun getPasswordEmptyMessage(): String
 
+    fun getIncorrectPasswordLengthMessage(): String
 }

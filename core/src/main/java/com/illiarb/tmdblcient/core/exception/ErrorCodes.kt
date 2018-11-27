@@ -7,5 +7,6 @@ object ErrorCodes {
 
     const val ERROR_USERNAME_EMPTY = 0
     const val ERROR_PASSWORD_EMPTY = 1
+    const val ERROR_PASSWORD_LENGTH = 2
 
 }

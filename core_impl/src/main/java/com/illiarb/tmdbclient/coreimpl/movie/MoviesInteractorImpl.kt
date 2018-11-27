@@ -5,9 +5,9 @@ import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.entity.MovieSection
 import com.illiarb.tmdblcient.core.entity.NowPlayingSection
 import com.illiarb.tmdblcient.core.modules.movie.MoviesInteractor
-import com.illiarb.tmdblcient.core.navigation.MovieDetailsData
-import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.modules.movie.MoviesRepository
+import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
+import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.system.SchedulerProvider
 import io.reactivex.Single
 import javax.inject.Inject
@@ -39,6 +39,6 @@ class MoviesInteractorImpl @Inject constructor(
     override fun getMovieFilters(): Single<List<MovieFilter>> = moviesRepository.getMovieFilters()
 
     override fun onMovieSelected(id: Int, title: String, posterPath: String?) {
-        router.navigateTo(MovieDetailsData(id, title, posterPath))
+        router.navigateTo(MovieDetailsScreen(id, title, posterPath))
     }
 }

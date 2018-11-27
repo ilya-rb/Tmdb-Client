@@ -5,5 +5,5 @@ package com.illiarb.tmdblcient.core.navigation
  */
 interface Navigator {
 
-    fun runNavigate(data: NavigationData)
+    fun runNavigate(data: ScreenData)
 }

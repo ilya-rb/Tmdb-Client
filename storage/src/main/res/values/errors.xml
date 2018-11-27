@@ -3,5 +3,6 @@
 
     <string name="error_username_empty">Username is required</string>
     <string name="error_password_empty">Password is required</string>
+    <string name="error_password_incorrect_length">Password must be 4 characters length</string>
 
 </resources>

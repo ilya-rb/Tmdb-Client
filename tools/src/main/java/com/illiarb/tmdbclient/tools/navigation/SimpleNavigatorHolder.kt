@@ -1,6 +1,6 @@
 package com.illiarb.tmdbclient.tools.navigation
 
-import com.illiarb.tmdblcient.core.navigation.NavigationData
+import com.illiarb.tmdblcient.core.navigation.ScreenData
 import com.illiarb.tmdblcient.core.navigation.Navigator
 import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
 import java.util.LinkedList
@@ -12,7 +12,7 @@ import javax.inject.Inject
  */
 class SimpleNavigatorHolder @Inject constructor() : NavigatorHolder {
 
-    private val navEventsBuffer: Queue<NavigationData> = LinkedList<NavigationData>()
+    private val navEventsBuffer: Queue<ScreenData> = LinkedList<ScreenData>()
 
     private var navigator: Navigator? = null
 
@@ -28,7 +28,7 @@ class SimpleNavigatorHolder @Inject constructor() : NavigatorHolder {
         this.navigator = null
     }
 
-    fun runNavigation(data: NavigationData) {
+    fun runNavigation(data: ScreenData) {
         if (navigator == null) {
             navEventsBuffer.add(data)
         } else {

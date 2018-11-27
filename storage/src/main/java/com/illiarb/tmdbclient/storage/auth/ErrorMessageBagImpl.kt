@@ -15,4 +15,7 @@ class ErrorMessageBagImpl @Inject constructor(
     override fun getUsernameEmptyMessage(): String = resourceResolver.getString(R.string.error_username_empty)
 
     override fun getPasswordEmptyMessage(): String = resourceResolver.getString(R.string.error_password_empty)
+
+    override fun getIncorrectPasswordLengthMessage(): String =
+        resourceResolver.getString(R.string.error_password_incorrect_length)
 }

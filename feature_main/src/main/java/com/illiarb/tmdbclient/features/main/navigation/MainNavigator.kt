@@ -5,10 +5,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.illiarb.tmdbclient.features.main.R
-import com.illiarb.tmdblcient.core.navigation.MovieDetailsData
-import com.illiarb.tmdblcient.core.navigation.NavigationData
+import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import com.illiarb.tmdblcient.core.navigation.NavigationKeys
 import com.illiarb.tmdblcient.core.navigation.Navigator
+import com.illiarb.tmdblcient.core.navigation.ScreenData
 import com.illiarb.tmdblcient.core.navigation.ScreenName
 import javax.inject.Inject
 
@@ -17,12 +17,12 @@ import javax.inject.Inject
  */
 class MainNavigator @Inject constructor(private val activity: FragmentActivity) : Navigator {
 
-    override fun runNavigate(data: NavigationData) {
+    override fun runNavigate(data: ScreenData) {
         val directions = createNavDirections(data)
         Navigation.findNavController(activity, R.id.nav_host_fragment).navigate(directions)
     }
 
-    private fun createNavDirections(data: NavigationData): NavDirections {
+    private fun createNavDirections(data: ScreenData): NavDirections {
         val args = createNavigationArguments(data)
         val action = when (data.screenName) {
             ScreenName.MOVIES -> R.id.moviesFragmentAction
@@ -39,9 +39,9 @@ class MainNavigator @Inject constructor(private val activity: FragmentActivity) 
         }
     }
 
-    private fun createNavigationArguments(data: NavigationData): Bundle =
+    private fun createNavigationArguments(data: ScreenData): Bundle =
         when (data) {
-            is MovieDetailsData -> Bundle().apply {
+            is MovieDetailsScreen -> Bundle().apply {
                 putInt(NavigationKeys.EXTRA_MOVIE_DETAILS_ID, data.id)
                 putString(NavigationKeys.EXTRA_MOVIE_DETAILS_TITLE, data.title)
                 putString(NavigationKeys.EXTRA_MOVIE_DETAIL_POSTER_PATH, data.posterPath)
