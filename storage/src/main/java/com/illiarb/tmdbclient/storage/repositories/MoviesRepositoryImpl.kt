@@ -27,6 +27,10 @@ class MoviesRepositoryImpl @Inject constructor(
     private val resourceResolver: ResourceResolver
 ) : MoviesRepository {
 
+    /**
+     * As repository is a singleton
+     * data refresh will be once per app starting
+     */
     private var needsRefresh = true
 
     override fun getMoviesByType(type: String): Single<List<Movie>> {
