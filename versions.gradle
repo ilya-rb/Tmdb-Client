@@ -8,7 +8,7 @@ projectInfo.with {
 
 def versions = [:]
 versions.with {
-    kotlin = "1.3.0"
+    kotlin = "1.3.10"
     kotlin_coroutines = "1.0.1"
     supportLibrary = "1.0.0"
     constraintLayout = "1.1.0"
