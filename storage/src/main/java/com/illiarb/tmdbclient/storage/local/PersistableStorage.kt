@@ -24,6 +24,7 @@ class PersistableStorage @Inject constructor(app: App) {
         const val KEY_POPULAR = MovieFilter.TYPE_POPULAR
         const val KEY_UPCOMING = MovieFilter.TYPE_UPCOMING
         const val KEY_NOW_PLAYING = MovieFilter.TYPE_NOW_PLAYING
+        const val KEY_TOP_RATED = MovieFilter.TYPE_TOP_RATED
     }
 
     private val store: Preferences = BinaryPreferencesBuilder(app.getApplication())
@@ -55,6 +56,7 @@ class PersistableStorage @Inject constructor(app: App) {
         registerPersistable(KEY_POPULAR, MovieListModel::class.java)
         registerPersistable(KEY_UPCOMING, MovieListModel::class.java)
         registerPersistable(KEY_NOW_PLAYING, MovieListModel::class.java)
+        registerPersistable(KEY_TOP_RATED, MovieListModel::class.java)
         registerPersistable(KEY_ACCOUNT, AccountModel::class.java)
         return this
     }

@@ -5,6 +5,7 @@
         <item>Now Playing</item>
         <item>Upcoming</item>
         <item>Popular</item>
+        <item>Top Rated</item>
     </string-array>
 
 </resources>

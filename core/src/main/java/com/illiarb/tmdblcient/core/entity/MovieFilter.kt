@@ -9,5 +9,6 @@ data class MovieFilter(val name: String, val code: String) {
         const val TYPE_POPULAR = "popular"
         const val TYPE_NOW_PLAYING = "now_playing"
         const val TYPE_UPCOMING = "upcoming"
+        const val TYPE_TOP_RATED = "top_rated"
     }
 }
