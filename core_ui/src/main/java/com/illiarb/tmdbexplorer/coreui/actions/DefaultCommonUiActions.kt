@@ -1,20 +1,31 @@
 package com.illiarb.tmdbexplorer.coreui.actions
 
-import android.content.Context
 import android.widget.Toast
+import androidx.fragment.app.FragmentActivity
+import com.illiarb.tmdbexplorer.coreui.common.ProgressDialog
 
 /**
  * @author ilya-rb on 19.11.18.
  */
-class DefaultCommonUiActions(val context: Context) : CommonUiActions {
+class DefaultCommonUiActions(val activity: FragmentActivity) : CommonUiActions {
 
-    // TODO Add maybe more pretty dialogs
+    private val progressDialog by lazy { ProgressDialog() }
 
     override fun showMessage(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
     }
 
     override fun showError(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
+    }
+
+    override fun showProgressDialog() {
+        if (!progressDialog.isAdded) {
+            progressDialog.show(activity.supportFragmentManager)
+        }
+    }
+
+    override fun hideProgressDialog() {
+        progressDialog.dismiss()
     }
 }

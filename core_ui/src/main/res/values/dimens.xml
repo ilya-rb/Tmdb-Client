@@ -22,4 +22,6 @@
     <dimen name="default_corner_radius">4dp</dimen>
     <dimen name="default_elevation">4dp</dimen>
 
+    <dimen name="progress_dialog_size">100dp</dimen>
+
 </resources>

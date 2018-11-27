@@ -49,6 +49,14 @@ abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity(), CommonUiAc
 
     override fun showError(message: String) = commonUiActions.showError(message)
 
+    override fun showProgressDialog() {
+
+    }
+
+    override fun hideProgressDialog() {
+
+    }
+
     private fun createViewModel() {
         if (::viewModelFactory.isInitialized) {
             viewModel = ViewModelProviders.of(this, viewModelFactory).get(getViewModelClass())

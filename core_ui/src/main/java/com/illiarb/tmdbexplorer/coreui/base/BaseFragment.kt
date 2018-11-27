@@ -25,7 +25,7 @@ abstract class BaseFragment<T : ViewModel> : Fragment(), CommonUiActions {
     protected lateinit var viewModel: T
         private set
 
-    private val commonUiActions by lazy { DefaultCommonUiActions(requireContext()) }
+    private val commonUiActions by lazy { DefaultCommonUiActions(requireActivity()) }
 
     @LayoutRes
     protected abstract fun getContentView(): Int
@@ -55,6 +55,10 @@ abstract class BaseFragment<T : ViewModel> : Fragment(), CommonUiActions {
     override fun showMessage(message: String) = commonUiActions.showMessage(message)
 
     override fun showError(message: String) = commonUiActions.showError(message)
+
+    override fun showProgressDialog() = commonUiActions.showProgressDialog()
+
+    override fun hideProgressDialog() = commonUiActions.hideProgressDialog()
 
     private fun createViewModel() {
         if (::viewModelFactory.isInitialized) {

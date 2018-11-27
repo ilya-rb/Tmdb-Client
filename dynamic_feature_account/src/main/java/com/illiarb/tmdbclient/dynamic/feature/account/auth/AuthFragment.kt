@@ -44,6 +44,12 @@ class AuthFragment : BaseFragment<AuthViewModel>(), Injectable {
     }
 
     private fun onAuthStateChanged(state: UiState<Unit>) {
+        if (state.isLoading()) {
+            showProgressDialog()
+        } else {
+            hideProgressDialog()
+        }
+
         when {
             state.hasError() -> {
                 val error = state.requireError()

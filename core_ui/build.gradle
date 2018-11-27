@@ -46,4 +46,5 @@ dependencies {
 
     implementation deps.dagger
     implementation deps.glide
+    implementation deps.lottie
 }

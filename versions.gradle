@@ -25,6 +25,7 @@ versions.with {
     javax = "1"
     binaryPrefs = "1.0.0"
     timber = "4.7.1"
+    lottie = "2.8.0"
 }
 
 def testVersions = [:]

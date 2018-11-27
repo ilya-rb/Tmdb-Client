@@ -9,4 +9,8 @@ interface CommonUiActions {
 
     fun showError(message: String)
 
+    fun showProgressDialog()
+
+    fun hideProgressDialog()
+
 }

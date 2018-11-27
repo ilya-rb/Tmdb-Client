@@ -30,6 +30,7 @@ deps.binaryPrefs = "com.github.yandextaxitech:binaryprefs:$versions.binaryPrefs"
 // Image Loading
 deps.glide = "com.github.bumptech.glide:glide:$versions.glide"
 deps.glideCompiler = "com.github.bumptech.glide:compiler:$versions.glide"
+deps.lottie = "com.airbnb.android:lottie:$versions.lottie"
 
 // Network
 deps.retrofit = "com.squareup.retrofit2:retrofit:$versions.retrofit"
