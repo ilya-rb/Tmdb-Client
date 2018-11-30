@@ -20,7 +20,7 @@ data class AccountModel(
     var username: String = "",
 
     @SerializedName("avatar")
-    var avatar: Gravatar = Gravatar("")
+    var avatar: Avatar = Avatar(Gravatar(""))
 
 ) : Persistable {
 
@@ -33,7 +33,7 @@ data class AccountModel(
             id = input.readInt()
             name = input.readString()
             username = input.readString()
-            avatar = Gravatar(input.readString())
+            avatar = Avatar(Gravatar(input.readString()))
         }
 
     override fun writeExternal(output: DataOutput) =
@@ -41,12 +41,14 @@ data class AccountModel(
             writeInt(id)
             writeString(name)
             writeString(username)
-            writeString(avatar.hash)
+            writeString(avatar.gravatar.hash)
         }
 
     override fun deepClone(): Persistable = AccountModel(id, name, username, avatar)
 
     fun isNonExistent(): Boolean = id == ID_NON_EXISTENT
 }
+
+data class Avatar(@SerializedName("gravatar") val gravatar: Gravatar)
 
 data class Gravatar(@SerializedName("hash") val hash: String)

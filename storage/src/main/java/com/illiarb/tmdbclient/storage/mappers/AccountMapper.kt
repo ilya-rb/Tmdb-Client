@@ -14,6 +14,6 @@ class AccountMapper @Inject constructor() : Mapper<AccountModel, Account> {
             from.id,
             from.name,
             from.username,
-            from.avatar.hash
+            from.avatar.gravatar.hash
         )
 }

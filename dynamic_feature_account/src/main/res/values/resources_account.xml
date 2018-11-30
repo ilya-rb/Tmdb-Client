@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="account_image_size">100dp</dimen>
+
+    <string name="account_username">\@%1$s</string>
+    <string name="account_name_fallback">Name not provided</string>
+
+</resources>
