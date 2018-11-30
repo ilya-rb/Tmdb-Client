@@ -56,3 +56,9 @@ fun CompletableEmitter.onCompleteSafe() {
         onComplete()
     }
 }
+
+fun CompletableEmitter.onErrorSafe(throwable: Throwable) {
+    if (!isDisposed) {
+        onError(throwable)
+    }
+}

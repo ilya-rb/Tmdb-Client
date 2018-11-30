@@ -1,6 +1,5 @@
 package com.illiarb.tmdbclient.dynamic.feature.account
 
-import android.view.View
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 
 /**
@@ -8,7 +7,7 @@ import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
  */
 class AccountFragment : BaseFragment<AccountViewModel>() {
 
-    override fun getContentView(): Int = View.NO_ID
+    override fun getContentView(): Int = R.layout.fragment_account
 
     override fun getViewModelClass(): Class<AccountViewModel> = AccountViewModel::class.java
 }

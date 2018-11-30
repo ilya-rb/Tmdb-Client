@@ -24,7 +24,7 @@ class AuthInteractorImpl @Inject constructor(
     override fun authenticate(username: String, password: String): Completable =
         validateCredentials(username, password)
             .andThen(authenticator.authorize(username, password))
-            .andThen { router.navigateTo(AccountScreen) }
+            .doAfterTerminate { router.navigateTo(AccountScreen) }
 
     private fun validateCredentials(username: String, password: String): Completable =
         Completable.create { emitter ->
@@ -36,7 +36,7 @@ class AuthInteractorImpl @Inject constructor(
 
             if (validator.isPasswordEmpty(password)) {
                 errors.add(Pair(ErrorCodes.ERROR_PASSWORD_EMPTY, errorMessageBag.getPasswordEmptyMessage()))
-            } else if (validator.isPasswordLengthCorrect(password)) {
+            } else if (!validator.isPasswordLengthCorrect(password)) {
                 errors.add(Pair(ErrorCodes.ERROR_PASSWORD_LENGTH, errorMessageBag.getIncorrectPasswordLengthMessage()))
             }
 

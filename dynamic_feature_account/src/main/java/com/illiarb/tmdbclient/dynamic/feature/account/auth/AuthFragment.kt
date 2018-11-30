@@ -65,7 +65,8 @@ class AuthFragment : BaseFragment<AuthViewModel>(), Injectable {
         errors.forEach { (code, message) ->
             when (code) {
                 ErrorCodes.ERROR_USERNAME_EMPTY -> textUsername.error = message
-                ErrorCodes.ERROR_PASSWORD_EMPTY -> textPassword.error = message
+                ErrorCodes.ERROR_PASSWORD_EMPTY,
+                ErrorCodes.ERROR_PASSWORD_LENGTH -> textPassword.error = message
             }
         }
     }
