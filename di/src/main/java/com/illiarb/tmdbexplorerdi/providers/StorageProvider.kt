@@ -6,6 +6,7 @@ import com.illiarb.tmdblcient.core.modules.explore.LocationRepository
 import com.illiarb.tmdblcient.core.modules.movie.MoviesRepository
 import com.illiarb.tmdblcient.core.system.ErrorMessageBag
 import com.illiarb.tmdblcient.core.system.ResourceResolver
+import com.illiarb.tmdblcient.core.system.WorkManager
 
 /**
  * Interface for providing repositories
@@ -24,4 +25,6 @@ interface StorageProvider {
     fun provideAuthenticator(): Authenticator
 
     fun provideErrorMessageBar(): ErrorMessageBag
+
+    fun provideWorkManager(): WorkManager
 }

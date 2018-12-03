@@ -6,13 +6,18 @@ import com.illiarb.tmdbclient.di.AppComponent
 import com.illiarb.tmdbexplorerdi.App
 import com.illiarb.tmdbexplorerdi.AppInjector
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
+import com.illiarb.tmdblcient.core.modules.AppInteractor
 import com.illiarb.tmdblcient.core.system.Logger
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
+import javax.inject.Inject
 
 @Suppress("unused")
 class MobileApplication : Application(), App {
+
+    @Inject
+    lateinit var appInteractor: AppInteractor
 
     private val applicationProvider by lazy { AppComponent.get(this) }
 
@@ -22,6 +27,11 @@ class MobileApplication : Application(), App {
         configureRxJava()
         configureDi()
         configureLogger()
+
+        val appComponent = applicationProvider as AppComponent
+        appComponent.inject(this)
+
+        appInteractor.onAppStarted()
     }
 
     override fun getApplication(): Application = this

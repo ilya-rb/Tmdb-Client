@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.storage.network.api
+package com.illiarb.tmdbclient.storage.network.api.service
 
 import com.illiarb.tmdbclient.storage.model.AccountModel
 import io.reactivex.Single

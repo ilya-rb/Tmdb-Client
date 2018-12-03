@@ -50,4 +50,5 @@ dependencies {
     api deps.converterGson
     api deps.rxJavaAdapter
     api deps.okHttpLogger
+    api deps.workManager
 }

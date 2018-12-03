@@ -1,5 +1,6 @@
 package com.illiarb.tmdbclient.di
 
+import com.illiarb.tmdbclient.MobileApplication
 import com.illiarb.tmdbclient.di.modules.AppModule
 import com.illiarb.tmdbexplorerdi.App
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
@@ -35,4 +36,6 @@ interface AppComponent : AppProvider {
                 .build()
         }
     }
+
+    fun inject(app: MobileApplication)
 }

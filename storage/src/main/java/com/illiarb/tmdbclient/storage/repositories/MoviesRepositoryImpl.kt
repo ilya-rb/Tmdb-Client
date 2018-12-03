@@ -5,7 +5,7 @@ import com.illiarb.tmdbclient.storage.local.PersistableStorage
 import com.illiarb.tmdbclient.storage.mappers.MovieMapper
 import com.illiarb.tmdbclient.storage.mappers.ReviewMapper
 import com.illiarb.tmdbclient.storage.model.MovieModel
-import com.illiarb.tmdbclient.storage.network.api.MovieService
+import com.illiarb.tmdbclient.storage.network.api.service.MovieService
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.entity.Review

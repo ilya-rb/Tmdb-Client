@@ -3,6 +3,7 @@ package com.illiarb.tmdbclient.storage.local
 import com.illiarb.tmdbclient.storage.model.AccountModel
 import com.illiarb.tmdbclient.storage.model.MovieListModel
 import com.illiarb.tmdbclient.storage.model.MovieModel
+import com.illiarb.tmdbclient.storage.network.api.config.Configuration
 import com.illiarb.tmdbexplorerdi.App
 import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.system.Logger
@@ -21,6 +22,7 @@ class PersistableStorage @Inject constructor(app: App) {
         const val STORE_NAME = "tmdb_cache"
         const val KEY_SESSION_ID = "session_id"
         const val KEY_ACCOUNT = "account"
+        const val KEY_CONFIGURATION = "configuration"
         const val KEY_POPULAR = MovieFilter.TYPE_POPULAR
         const val KEY_UPCOMING = MovieFilter.TYPE_UPCOMING
         const val KEY_NOW_PLAYING = MovieFilter.TYPE_NOW_PLAYING
@@ -48,6 +50,8 @@ class PersistableStorage @Inject constructor(app: App) {
 
     fun storeSessionId(sessionId: String) = store.edit().putString(KEY_SESSION_ID, sessionId).commit()
 
+    fun storeConfiguration(configuration: Configuration) = putValue(KEY_CONFIGURATION, configuration)
+
     private fun <T : Persistable> getValue(key: String, result: T): T = store.getPersistable(key, result) as T
 
     private fun putValue(key: String, value: Persistable) = store.edit().putPersistable(key, value).commit()
@@ -58,6 +62,7 @@ class PersistableStorage @Inject constructor(app: App) {
         registerPersistable(KEY_NOW_PLAYING, MovieListModel::class.java)
         registerPersistable(KEY_TOP_RATED, MovieListModel::class.java)
         registerPersistable(KEY_ACCOUNT, AccountModel::class.java)
+        registerPersistable(KEY_CONFIGURATION, Configuration::class.java)
         return this
     }
 }

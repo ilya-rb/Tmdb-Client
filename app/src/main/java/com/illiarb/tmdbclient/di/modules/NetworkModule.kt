@@ -6,10 +6,11 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.illiarb.tmdbclient.di.qualifier.HereApi
 import com.illiarb.tmdbclient.storage.BuildConfig
-import com.illiarb.tmdbclient.storage.network.api.AccountService
 import com.illiarb.tmdbclient.storage.network.api.ApiKeyInterceptor
-import com.illiarb.tmdbclient.storage.network.api.AuthService
-import com.illiarb.tmdbclient.storage.network.api.MovieService
+import com.illiarb.tmdbclient.storage.network.api.service.AccountService
+import com.illiarb.tmdbclient.storage.network.api.service.AuthService
+import com.illiarb.tmdbclient.storage.network.api.service.ConfigurationService
+import com.illiarb.tmdbclient.storage.network.api.service.MovieService
 import com.illiarb.tmdbclient.storage.network.error.ApiCallAdapterFactory
 import com.illiarb.tmdbclient.storage.network.hereapi.HereApiInterceptor
 import com.illiarb.tmdbclient.storage.network.hereapi.HereApiService
@@ -61,6 +62,12 @@ class NetworkModule {
         @Singleton
         fun provideHereApiService(@HereApi retrofit: Retrofit): HereApiService =
             retrofit.create(HereApiService::class.java)
+
+        @Provides
+        @JvmStatic
+        @Singleton
+        fun provideConfigurationService(retrofit: Retrofit): ConfigurationService =
+            retrofit.create(ConfigurationService::class.java)
 
         @Provides
         @JvmStatic

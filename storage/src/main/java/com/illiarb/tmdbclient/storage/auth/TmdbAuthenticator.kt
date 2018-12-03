@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.storage.auth
 
 import com.illiarb.tmdbclient.storage.local.PersistableStorage
-import com.illiarb.tmdbclient.storage.network.api.AuthService
+import com.illiarb.tmdbclient.storage.network.api.service.AuthService
 import com.illiarb.tmdbclient.storage.network.request.CreateSessionRequest
 import com.illiarb.tmdbclient.storage.network.request.ValidateTokenRequest
 import com.illiarb.tmdblcient.core.modules.auth.Authenticator

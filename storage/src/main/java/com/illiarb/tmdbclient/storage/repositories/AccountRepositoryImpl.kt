@@ -2,7 +2,7 @@ package com.illiarb.tmdbclient.storage.repositories
 
 import com.illiarb.tmdbclient.storage.local.PersistableStorage
 import com.illiarb.tmdbclient.storage.mappers.AccountMapper
-import com.illiarb.tmdbclient.storage.network.api.AccountService
+import com.illiarb.tmdbclient.storage.network.api.service.AccountService
 import com.illiarb.tmdblcient.core.entity.Account
 import com.illiarb.tmdblcient.core.modules.account.AccountRepository
 import io.reactivex.Single

@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.storage.network.api
+package com.illiarb.tmdbclient.storage.network.api.service
 
 import com.illiarb.tmdbclient.storage.network.request.CreateSessionRequest
 import com.illiarb.tmdbclient.storage.network.request.ValidateTokenRequest
