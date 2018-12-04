@@ -24,7 +24,11 @@ class AuthInteractorImpl @Inject constructor(
     override fun authenticate(username: String, password: String): Completable =
         validateCredentials(username, password)
             .andThen(authenticator.authorize(username, password))
-            .doAfterTerminate { router.navigateTo(AccountScreen) }
+            .doAfterTerminate {
+                if (authenticator.isAuthenticated()) {
+                    router.navigateTo(AccountScreen)
+                }
+            }
 
     private fun validateCredentials(username: String, password: String): Completable =
         Completable.create { emitter ->

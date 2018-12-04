@@ -20,39 +20,31 @@
     <fragment
         android:id="@+id/accountFragment"
         android:name="com.illiarb.tmdbclient.dynamic.feature.account.AccountFragment"
-        android:label="AccountFragment"
-        />
+        android:label="AccountFragment" />
 
     <fragment
         android:id="@+id/authFragment"
         android:name="com.illiarb.tmdbclient.dynamic.feature.account.auth.AuthFragment"
-        android:label="AuthFragment"
-        />
+        android:label="AuthFragment" />
 
     <action
         android:id="@+id/movieDetailsAction"
-        app:destination="@id/movieDetailsFragment"
-        />
+        app:destination="@id/movieDetailsFragment" />
 
     <action
         android:id="@+id/moviesFragmentAction"
-        app:destination="@id/moviesFragment"
-        />
+        app:destination="@id/moviesFragment" />
 
     <action
         android:id="@+id/exploreAction"
-        app:destination="@id/exploreFragment"
-        />
+        app:destination="@id/exploreFragment" />
 
     <action
         android:id="@+id/accountAction"
-        app:destination="@id/accountFragment"
-        />
+        app:destination="@id/accountFragment" />
 
     <action
         android:id="@+id/authAction"
-        app:destination="@id/authFragment"
-        app:popUpTo="@id/authFragment"
-        />
+        app:destination="@id/authFragment" />
 
 </navigation>

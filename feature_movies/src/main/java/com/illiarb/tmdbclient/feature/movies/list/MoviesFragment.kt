@@ -2,6 +2,7 @@ package com.illiarb.tmdbclient.feature.movies.list
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Fade
 import com.illiarb.tmdbclient.feature.movies.R
@@ -10,6 +11,7 @@ import com.illiarb.tmdbclient.feature.movies.pipeline.MoviePipelineData
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.AdapterDelegate
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.DelegateAdapter
+import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData
 import com.illiarb.tmdbexplorer.coreui.state.UiState
 import com.illiarb.tmdbexplorerdi.Injectable
@@ -39,6 +41,11 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        swipeRefreshLayout.apply {
+            isEnabled = false
+            awareOfWindowInsets()
+        }
+
         delegateAdapter.addDelegatesFromSet(delegatesSet)
 
         moviesList.apply {
@@ -47,6 +54,8 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
             setHasFixedSize(true)
             addItemDecoration(MoviesSpaceDecoration(requireContext()))
         }
+
+        ViewCompat.requestApplyInsets(view)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -69,6 +78,8 @@ class MoviesFragment : BaseFragment<MoviesViewModel>(), Injectable {
     override fun inject(appProvider: AppProvider) = MoviesComponent.get(appProvider).inject(this)
 
     private fun onMoviesUiStateChanged(state: UiState<List<MovieSection>>) {
+        swipeRefreshLayout.isRefreshing = state.isLoading()
+
         if (state.hasData()) {
             delegateAdapter.submitList(state.requireData())
         }
