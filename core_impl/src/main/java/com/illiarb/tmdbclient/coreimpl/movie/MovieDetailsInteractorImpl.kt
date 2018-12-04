@@ -14,8 +14,8 @@ class MovieDetailsInteractorImpl @Inject constructor(
     private val moviesRepository: MoviesRepository
 ) : MovieDetailsInteractor {
 
-    override fun getMovieDetails(id: Int, appendToResponse: String): Single<Movie> =
-        moviesRepository.getMovieDetails(id, appendToResponse)
+    override fun getMovieDetails(id: Int): Single<Movie> =
+        moviesRepository.getMovieDetails(id, "images,reviews,videos")
 
     override fun getMovieReviews(id: Int): Single<List<Review>> =
         moviesRepository.getMovieReviews(id)

@@ -9,7 +9,7 @@ import io.reactivex.Single
  */
 interface MovieDetailsInteractor {
 
-    fun getMovieDetails(id: Int, appendToResponse: String): Single<Movie>
+    fun getMovieDetails(id: Int): Single<Movie>
 
     fun getMovieReviews(id: Int): Single<List<Review>>
 
