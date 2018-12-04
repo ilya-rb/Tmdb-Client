@@ -32,4 +32,8 @@ class AccountViewModel @Inject constructor(
     }
 
     fun observeAccountState() = accountState.observer()
+
+    fun onLogoutClicked() {
+        accountInteractor.onLogoutClicked()
+    }
 }

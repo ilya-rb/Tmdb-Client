@@ -52,6 +52,13 @@ class PersistableStorage @Inject constructor(app: App) {
 
     fun storeConfiguration(configuration: Configuration) = putValue(KEY_CONFIGURATION, configuration)
 
+    fun clearAccountData() {
+        store.edit()
+            .remove(KEY_SESSION_ID)
+            .putPersistable(KEY_ACCOUNT, AccountModel.createNonExistent())
+            .commit()
+    }
+
     private fun <T : Persistable> getValue(key: String, result: T): T = store.getPersistable(key, result) as T
 
     private fun putValue(key: String, value: Persistable) = store.edit().putPersistable(key, value).commit()

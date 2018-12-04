@@ -13,14 +13,15 @@
         android:layout_height="match_parent"
         tools:paddingTop="20dp">
 
+        <include layout="@layout/layout_start_end_guidelines" />
+
         <ImageView
             android:id="@+id/accountImage"
             android:layout_width="@dimen/account_image_size"
             android:layout_height="@dimen/account_image_size"
-            android:layout_marginStart="@dimen/margin_default"
             android:layout_marginTop="@dimen/margin_default"
             android:contentDescription="@null"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/avatars" />
 
@@ -44,6 +45,16 @@
             app:layout_constraintStart_toEndOf="@id/accountImage"
             app:layout_constraintTop_toBottomOf="@id/accountUsername"
             tools:text="User name" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAccountLogout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:text="@string/account_exit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

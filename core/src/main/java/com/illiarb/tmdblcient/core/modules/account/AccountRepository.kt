@@ -1,6 +1,7 @@
 package com.illiarb.tmdblcient.core.modules.account
 
 import com.illiarb.tmdblcient.core.entity.Account
+import io.reactivex.Completable
 import io.reactivex.Single
 
 /**
@@ -9,4 +10,6 @@ import io.reactivex.Single
 interface AccountRepository {
 
     fun getCurrentAccount(): Single<Account>
+
+    fun clearAccountData(): Completable
 }

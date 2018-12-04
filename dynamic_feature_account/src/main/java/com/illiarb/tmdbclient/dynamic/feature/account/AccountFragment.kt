@@ -31,6 +31,10 @@ class AccountFragment : BaseFragment<AccountViewModel>(), Injectable {
         accountSwipeRefreshLayout.isEnabled = false
         accountSwipeRefreshLayout.awareOfWindowInsets()
 
+        btnAccountLogout.setOnClickListener {
+            viewModel.onLogoutClicked()
+        }
+
         ViewCompat.requestApplyInsets(view)
     }
 

@@ -52,6 +52,7 @@
     <action
         android:id="@+id/authAction"
         app:destination="@id/authFragment"
+        app:popUpTo="@id/authFragment"
         />
 
 </navigation>

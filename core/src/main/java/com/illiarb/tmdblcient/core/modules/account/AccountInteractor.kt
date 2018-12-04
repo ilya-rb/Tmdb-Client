@@ -9,4 +9,6 @@ import io.reactivex.Single
 interface AccountInteractor {
 
     fun getCurrentAccount(): Single<Account>
+
+    fun onLogoutClicked()
 }

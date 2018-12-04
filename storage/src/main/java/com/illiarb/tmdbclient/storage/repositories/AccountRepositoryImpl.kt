@@ -5,6 +5,7 @@ import com.illiarb.tmdbclient.storage.mappers.AccountMapper
 import com.illiarb.tmdbclient.storage.network.api.service.AccountService
 import com.illiarb.tmdblcient.core.entity.Account
 import com.illiarb.tmdblcient.core.modules.account.AccountRepository
+import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -28,4 +29,8 @@ class AccountRepositoryImpl @Inject constructor(
                 }
             }
             .map(accountMapper::map)
+
+    override fun clearAccountData(): Completable = Completable.fromAction {
+        persistableStorage.clearAccountData()
+    }
 }

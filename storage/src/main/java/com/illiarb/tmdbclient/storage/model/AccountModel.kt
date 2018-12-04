@@ -25,7 +25,10 @@ data class AccountModel(
 ) : Persistable {
 
     companion object {
+
         const val ID_NON_EXISTENT = -1
+
+        fun createNonExistent() = AccountModel()
     }
 
     override fun readExternal(input: DataInput) =

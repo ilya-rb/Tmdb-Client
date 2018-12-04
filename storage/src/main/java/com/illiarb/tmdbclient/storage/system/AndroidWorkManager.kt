@@ -3,7 +3,6 @@ package com.illiarb.tmdbclient.storage.system
 import androidx.work.Configuration
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkerFactory
-import androidx.work.impl.WorkManagerInitializer
 import com.illiarb.tmdbclient.storage.network.api.config.ConfigurationFetchWork
 import com.illiarb.tmdbexplorerdi.App
 import com.illiarb.tmdblcient.core.system.WorkManager
