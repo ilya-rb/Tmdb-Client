@@ -19,8 +19,11 @@ class LocationRepositoryImpl @Inject constructor(
     private val hereLocationMapper: HereLocationMapper
 ) : LocationRepository {
 
-    override fun getCurrentLocation(): Single<Location> =
-        locationService.getLastKnownLocation().map(locationMapper::map)
+    companion object {
+        val FAKE_LOCATION = Location("My location", 50.4390483, 30.4966947, 0)
+    }
+
+    override fun getCurrentLocation(): Single<Location> = Single.just(FAKE_LOCATION)
 
     override fun getNearbyMovieTheaters(coords: Location): Single<List<Location>> =
         hereApiService.getNearbyMovieTheaters("${coords.lat},${coords.lon}")

@@ -13,15 +13,9 @@ class ExploreInteractorImpl @Inject constructor(
     private val locationRepository: LocationRepository
 ) : ExploreInteractor {
 
-    companion object {
-        val FAKE_LOCATION = Location(50.4390483, 30.4966947)
-    }
-
     override fun getNearbyMovieTheaters(): Single<List<Location>> =
-        locationRepository.getNearbyMovieTheaters(FAKE_LOCATION)
-//        locationRepository.getCurrentLocation()
-//            .observeOn(schedulerProvider.provideIoScheduler())
-//            .flatMap {
-//                locationRepository.getNearbyMovieTheaters(it)
-//            }
+        locationRepository.getCurrentLocation()
+            .flatMap {
+                locationRepository.getNearbyMovieTheaters(it)
+            }
 }

@@ -1,5 +1,6 @@
 package com.illiarb.tmdbclient.feature.explore
 
+import com.illiarb.tmdbexplorer.coreui.state.UiState
 import com.illiarb.tmdbexplorer.coreui.viewmodel.BaseViewModel
 import com.illiarb.tmdblcient.core.entity.Location
 import com.illiarb.tmdblcient.core.ext.addTo
@@ -25,7 +26,7 @@ class ExploreViewModel @Inject constructor(
 ) : BaseViewModel(), CoroutineScope {
 
     private val coroutinesJob = Job()
-    private val theatersSubject = BehaviorSubject.create<List<Location>>()
+    private val theatersSubject = BehaviorSubject.create<UiState<List<Location>>>()
 
     override val coroutineContext: CoroutineContext
         get() = coroutinesJob + Dispatchers.Main
@@ -35,17 +36,18 @@ class ExploreViewModel @Inject constructor(
         coroutinesJob.cancel()
     }
 
-    fun observeNearbyTheaters(): Observable<List<Location>> = theatersSubject.hide()
+    fun observeNearbyTheaters(): Observable<UiState<List<Location>>> = theatersSubject.hide()
 
     fun fetchNearbyMovieTheaters() {
         launch(context = coroutineContext) {
             try {
+                theatersSubject.onNext(UiState.createLoadingState())
                 val result = withContext(Dispatchers.IO) {
                     getNearbyLocationInterop()
                 }
-                theatersSubject.onNext(result)
+                theatersSubject.onNext(UiState.createSuccessState(result))
             } catch (e: Exception) {
-                theatersSubject.onError(e)
+                theatersSubject.onNext(UiState.createErrorState(e))
             }
         }
     }

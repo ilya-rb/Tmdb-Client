@@ -9,5 +9,11 @@ import javax.inject.Inject
  * @author ilya-rb on 02.11.18.
  */
 class HereLocationMapper @Inject constructor() : Mapper<LocationModel, Location> {
-    override fun map(from: LocationModel): Location = Location(from.position[0], from.position[1])
+    override fun map(from: LocationModel): Location =
+        Location(
+            from.title,
+            from.position[0],
+            from.position[1],
+            from.distance
+        )
 }
