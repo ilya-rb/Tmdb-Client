@@ -4,6 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.BaseAdapter
+import com.illiarb.tmdbexplorer.coreui.common.viewholder.MovieViewHolder
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdblcient.core.entity.Movie
 

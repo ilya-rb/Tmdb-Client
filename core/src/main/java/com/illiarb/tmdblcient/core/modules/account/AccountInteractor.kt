@@ -1,6 +1,7 @@
 package com.illiarb.tmdblcient.core.modules.account
 
 import com.illiarb.tmdblcient.core.entity.Account
+import com.illiarb.tmdblcient.core.entity.Movie
 import io.reactivex.Single
 
 /**
@@ -11,4 +12,6 @@ interface AccountInteractor {
     fun getCurrentAccount(): Single<Account>
 
     fun onLogoutClicked()
+
+    fun onFavoriteMovieClicked(movie: Movie)
 }

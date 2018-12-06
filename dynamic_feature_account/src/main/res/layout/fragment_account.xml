@@ -45,6 +45,58 @@
             app:layout_constraintTop_toBottomOf="@id/accountUsername"
             tools:text="User name" />
 
+        <ProgressBar
+            android:id="@+id/accountAverageScoreProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
+            android:indeterminate="false"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/accountImage" />
+
+        <TextView
+            android:id="@+id/accountAverageScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/accountAverageScoreProgress"
+            app:layout_constraintEnd_toEndOf="@id/accountAverageScoreProgress"
+            app:layout_constraintStart_toStartOf="@id/accountAverageScoreProgress"
+            app:layout_constraintTop_toTopOf="@id/accountAverageScoreProgress"
+            tools:text="45" />
+
+        <TextView
+            android:id="@+id/accountAverageScoreLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:text="@string/account_average_score"
+            app:layout_constraintBottom_toBottomOf="@id/accountAverageScoreProgress"
+            app:layout_constraintStart_toEndOf="@id/accountAverageScoreProgress"
+            app:layout_constraintTop_toTopOf="@id/accountAverageScoreProgress" />
+
+        <TextView
+            android:id="@+id/accountFavorites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
+            android:text="@string/account_favorites"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/accountAverageScoreProgress" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/accountFavoritesList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/accountFavorites"
+            tools:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/item_movie"
+            tools:orientation="horizontal" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAccountLogout"
             android:layout_width="0dp"

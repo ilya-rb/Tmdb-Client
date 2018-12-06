@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Fade
 import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbclient.feature.movies.di.MoviesComponent
-import com.illiarb.tmdbclient.feature.movies.pipeline.MoviePipelineData
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.AdapterDelegate
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.DelegateAdapter
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
+import com.illiarb.tmdbexplorer.coreui.pipeline.MoviePipelineData
 import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData
 import com.illiarb.tmdbexplorer.coreui.state.UiState
 import com.illiarb.tmdbexplorerdi.Injectable

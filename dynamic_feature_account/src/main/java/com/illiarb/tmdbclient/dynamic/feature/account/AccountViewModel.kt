@@ -4,6 +4,7 @@ import com.illiarb.tmdbexplorer.coreui.state.DataUiStateSubject
 import com.illiarb.tmdbexplorer.coreui.state.subscribe
 import com.illiarb.tmdbexplorer.coreui.viewmodel.BaseViewModel
 import com.illiarb.tmdblcient.core.entity.Account
+import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.ext.addTo
 import com.illiarb.tmdblcient.core.ext.ioToMain
 import com.illiarb.tmdblcient.core.modules.account.AccountInteractor
@@ -35,5 +36,9 @@ class AccountViewModel @Inject constructor(
 
     fun onLogoutClicked() {
         accountInteractor.onLogoutClicked()
+    }
+
+    fun onFavoriteMovieClicked(movie: Movie) {
+        accountInteractor.onFavoriteMovieClicked(movie)
     }
 }

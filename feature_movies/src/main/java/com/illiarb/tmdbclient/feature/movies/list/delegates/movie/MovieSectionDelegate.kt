@@ -4,11 +4,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.illiarb.tmdbclient.feature.movies.R
-import com.illiarb.tmdbclient.feature.movies.pipeline.MoviePipelineData
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.AdapterDelegate
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDecoration
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.viewholder.BaseDelegateViewHolder
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
+import com.illiarb.tmdbexplorer.coreui.pipeline.MoviePipelineData
 import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData
 import com.illiarb.tmdblcient.core.entity.ListSection
 import com.illiarb.tmdblcient.core.entity.MovieSection

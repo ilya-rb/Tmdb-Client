@@ -1,8 +1,12 @@
 package com.illiarb.tmdbclient.storage.network.api.service
 
 import com.illiarb.tmdbclient.storage.model.AccountModel
+import com.illiarb.tmdbclient.storage.model.MovieModel
+import com.illiarb.tmdbclient.storage.model.ResultsModel
+import com.illiarb.tmdblcient.core.entity.Movie
 import io.reactivex.Single
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
@@ -12,4 +16,16 @@ interface AccountService {
 
     @GET("account")
     fun getAccountDetails(@Query("session_id") sessionId: String): Single<AccountModel>
+
+    @GET("account/{account_id}/favorite/movies")
+    fun getAccountFavoriteMovies(
+        @Path("account_id") accountId: Int,
+        @Query("session_id") sessionId: String
+    ): Single<ResultsModel<MovieModel>>
+
+    @GET("account/{account_id}/rated/movies")
+    fun getAccountRatedMovies(
+        @Path("account_id") accountId: Int,
+        @Query("session_id") sessionId: String
+    ): Single<ResultsModel<MovieModel>>
 }
