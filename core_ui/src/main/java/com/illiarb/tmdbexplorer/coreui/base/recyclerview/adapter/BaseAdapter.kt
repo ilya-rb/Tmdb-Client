@@ -28,4 +28,8 @@ abstract class BaseAdapter<T, VH : BaseViewHolder<T>>(diffCallback: DiffUtil.Ite
             }
         }
     }
+
+    fun getItemAt(position: Int) : T {
+        return getItem(position)
+    }
 }

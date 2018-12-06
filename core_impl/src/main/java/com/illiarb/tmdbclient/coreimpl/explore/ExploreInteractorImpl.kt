@@ -15,7 +15,10 @@ class ExploreInteractorImpl @Inject constructor(
 
     override fun getNearbyMovieTheaters(): Single<List<Location>> =
         locationRepository.getCurrentLocation()
-            .flatMap {
-                locationRepository.getNearbyMovieTheaters(it)
+            .flatMap { locationRepository.getNearbyMovieTheaters(it) }
+            .map { theaters ->
+                theaters.sortedBy { theater ->
+                    theater.distance
+                }
             }
 }

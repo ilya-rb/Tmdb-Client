@@ -2,11 +2,14 @@ package com.illiarb.tmdbclient.feature.explore
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Typeface
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -16,8 +19,10 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
+import com.illiarb.tmdbclient.feature.explore.adapter.TheatersAdapter
 import com.illiarb.tmdbclient.feature.explore.di.ExploreComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
+import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDecoration
 import com.illiarb.tmdbexplorer.coreui.state.UiState
 import com.illiarb.tmdbexplorerdi.Injectable
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
@@ -27,8 +32,10 @@ import kotlinx.android.synthetic.main.fragment_explore.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -36,7 +43,12 @@ import kotlin.coroutines.CoroutineContext
  */
 class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReadyCallback, CoroutineScope {
 
+    @Inject
+    lateinit var adapter: TheatersAdapter
+
     private var googleMap: GoogleMap? = null
+
+    private val snapHelper = PagerSnapHelper()
 
     private val coroutinesJob = Job()
 
@@ -54,6 +66,29 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
 
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
+
+        theatersList.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = this@ExploreFragment.adapter
+            addItemDecoration(SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_small), 0))
+            snapHelper.attachToRecyclerView(this)
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        theatersList.layoutManager?.let { manager ->
+                            val snapView = snapHelper.findSnapView(manager)
+                            snapView?.let {
+                                val position = manager.getPosition(it)
+                                onSelectedTheaterChanged(this@ExploreFragment.adapter.getItemAt(position))
+                            }
+                        }
+                    }
+                }
+            })
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -127,11 +162,20 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
         }
     }
 
-    private fun showNearbyTheaters(theaters: List<Location>) {
+    private fun onSelectedTheaterChanged(newItem: Location) {
         googleMap?.let { map ->
+            val cameraUpdate = CameraUpdateFactory.newLatLng(LatLng(newItem.lat, newItem.lon))
+            map.animateCamera(cameraUpdate)
+        }
+    }
 
+    private fun showNearbyTheaters(theaters: List<Location>) {
+        theatersCount.text = getString(R.string.theaters_count_text, theaters.size)
+
+        adapter.submitList(theaters)
+
+        googleMap?.let { map ->
             val currentLocation = LatLng(50.4390483, 30.4966947)
-
             val cameraUpdate =
                 CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(currentLocation, 15f))
 
@@ -160,7 +204,7 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
                     MarkerOptions()
                         .position(LatLng(it.lat, it.lon))
                         .flat(true)
-                        .icon(createMapMarker(it.title))
+                        .icon(createMarkerFromView(it.title))
                 }
             }
             markerOptions.forEach { map.addMarker(it) }
@@ -185,38 +229,21 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
         return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
-    // TODO Consider replacing implementation with view inflation
-    // TODO And get bitmap from view
-    private fun createMapMarker(title: String): BitmapDescriptor {
-        val icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_nearby_theater)
-            ?: return BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
-
-        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private suspend fun createMarkerFromView(title: String): BitmapDescriptor = coroutineScope {
+        val view = LayoutInflater.from(requireContext()).inflate(R.layout.item_nearby_theater_marker, null, false)
             .apply {
-                color = ContextCompat.getColor(requireContext(), R.color.colorOnSurface)
-                textSize = resources.getDimensionPixelSize(R.dimen.text_subtitle_2).toFloat()
-                textAlign = Paint.Align.LEFT
-                typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+                findViewById<TextView>(R.id.itemNearbyTitle).text = title
             }
 
-        val baseline = -paint.ascent()
-        val textWidth = paint.measureText(title)
-        val textHeight = baseline + paint.descent()
+        val specWidth = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        view.measure(specWidth, specWidth)
+        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
 
-        val bitmap = Bitmap.createBitmap(
-            // Icon width + text width on the left
-            icon.intrinsicWidth + textWidth.toInt(),
-            Math.max(icon.intrinsicHeight, textHeight.toInt()),
-            Bitmap.Config.ARGB_8888
-        )
-
+        val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
 
-        icon.setBounds(0, 0, icon.intrinsicWidth, canvas.height)
-        icon.draw(canvas)
+        view.draw(canvas)
 
-        canvas.drawText(title, icon.intrinsicWidth.toFloat(), icon.intrinsicHeight / 2f, paint)
-
-        return BitmapDescriptorFactory.fromBitmap(bitmap)
+        BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 }
