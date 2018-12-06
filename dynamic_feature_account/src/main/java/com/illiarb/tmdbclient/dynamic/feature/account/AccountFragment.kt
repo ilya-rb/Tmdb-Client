@@ -9,7 +9,6 @@ import com.illiarb.tmdbclient.dynamic.feature.account.di.AccountComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDecoration
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
-import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.pipeline.MoviePipelineData
 import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData
 import com.illiarb.tmdbexplorer.coreui.state.UiState
@@ -85,8 +84,7 @@ class AccountFragment : BaseFragment<AccountViewModel>(), Injectable {
     }
 
     private fun showAccount(account: Account) {
-        ImageLoader.loadImage(accountImage, account.avatar, centerCrop = true)
-
+        accountAvatar.text = account.username.first().toUpperCase().toString()
         accountUsername.text = getString(R.string.account_username, account.username)
         accountAverageScore.text = account.averageRating.toString()
         accountAverageScoreProgress.progress = account.averageRating

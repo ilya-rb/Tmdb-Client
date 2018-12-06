@@ -14,24 +14,31 @@
 
         <include layout="@layout/layout_start_end_guidelines" />
 
-        <ImageView
-            android:id="@+id/accountImage"
+        <TextView
+            android:id="@+id/accountAvatar"
             android:layout_width="@dimen/account_image_size"
             android:layout_height="@dimen/account_image_size"
             android:layout_marginTop="@dimen/margin_default"
+            android:background="@drawable/bg_account_avatar"
             android:contentDescription="@null"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+            android:textColor="@color/colorOnPrimary"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/avatars" />
+            tools:src="@tools:sample/avatars"
+            tools:text="A" />
 
         <TextView
             android:id="@+id/accountUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_default"
+            android:layout_marginTop="@dimen/margin_default"
+            android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-            app:layout_constraintStart_toEndOf="@id/accountImage"
-            app:layout_constraintTop_toTopOf="@id/accountImage"
+            app:layout_constraintStart_toEndOf="@id/accountAvatar"
+            app:layout_constraintTop_toTopOf="@id/accountAvatar"
             tools:text="User nickname" />
 
         <TextView
@@ -39,9 +46,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_default"
-            android:layout_marginTop="@dimen/margin_small"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-            app:layout_constraintStart_toEndOf="@id/accountImage"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            app:layout_constraintStart_toEndOf="@id/accountAvatar"
             app:layout_constraintTop_toBottomOf="@id/accountUsername"
             tools:text="User name" />
 
@@ -52,7 +58,7 @@
             android:layout_marginTop="@dimen/margin_default"
             android:indeterminate="false"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/accountImage" />
+            app:layout_constraintTop_toBottomOf="@id/accountAvatar" />
 
         <TextView
             android:id="@+id/accountAverageScore"
