@@ -2,6 +2,7 @@ package com.illiarb.tmdbclient.feature.explore
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Point
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -50,6 +51,8 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
 
     private val snapHelper = PagerSnapHelper()
 
+    private val snapScrollListener = createSnapScrollListener()
+
     private val coroutinesJob = Job()
 
     override val coroutineContext: CoroutineContext
@@ -70,24 +73,11 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
         theatersList.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = this@ExploreFragment.adapter
-            addItemDecoration(SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_small), 0))
             snapHelper.attachToRecyclerView(this)
+            addItemDecoration(SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_small), 0))
 
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
-
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        theatersList.layoutManager?.let { manager ->
-                            val snapView = snapHelper.findSnapView(manager)
-                            snapView?.let {
-                                val position = manager.getPosition(it)
-                                onSelectedTheaterChanged(this@ExploreFragment.adapter.getItemAt(position))
-                            }
-                        }
-                    }
-                }
-            })
+            val displayWidth = getDisplayWidth()
+            setPadding(displayWidth / 2, 0, 0, 0)
         }
     }
 
@@ -107,11 +97,13 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
     override fun onResume() {
         super.onResume()
         mapView.onResume()
+        theatersList.addOnScrollListener(snapScrollListener)
     }
 
     override fun onPause() {
         super.onPause()
         mapView.onPause()
+        theatersList.removeOnScrollListener(snapScrollListener)
     }
 
     override fun onStop() {
@@ -162,17 +154,16 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
         }
     }
 
-    private fun onSelectedTheaterChanged(newItem: Location) {
+    private fun moveCameraToLocation(location: Location) {
         googleMap?.let { map ->
-            val cameraUpdate = CameraUpdateFactory.newLatLng(LatLng(newItem.lat, newItem.lon))
+            val position = LatLng(location.lat, location.lon)
+            val cameraUpdate = CameraUpdateFactory.newLatLng(position)
             map.animateCamera(cameraUpdate)
         }
     }
 
     private fun showNearbyTheaters(theaters: List<Location>) {
         theatersCount.text = getString(R.string.theaters_count_text, theaters.size)
-
-        adapter.submitList(theaters)
 
         googleMap?.let { map ->
             val currentLocation = LatLng(50.4390483, 30.4966947)
@@ -187,6 +178,12 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
                             .flat(true)
                             .icon(createMyLocationMarker())
                     )
+
+                    adapter.submitList(theaters)
+
+                    theatersList.post {
+                        theatersList.smoothScrollToPosition(0)
+                    }
 
                     placeMarkersOnMap(theaters, map)
                 }
@@ -209,6 +206,33 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
             }
             markerOptions.forEach { map.addMarker(it) }
         }
+    }
+
+    private fun createSnapScrollListener(): RecyclerView.OnScrollListener =
+        object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                // When recycler scroll is stops
+                // Start changing position
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    theatersList.layoutManager?.let { manager ->
+                        val snapView = snapHelper.findSnapView(manager)
+                        snapView?.let {
+                            val position = manager.getPosition(it)
+                            moveCameraToLocation(this@ExploreFragment.adapter.getItemAt(position))
+                        }
+                    }
+                }
+            }
+        }
+
+    private fun getDisplayWidth(): Int {
+        val display = requireActivity().windowManager.defaultDisplay
+        val outSize = Point()
+
+        display.getSize(outSize)
+
+        return outSize.x
     }
 
     private fun createMyLocationMarker(): BitmapDescriptor {
