@@ -159,12 +159,16 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
 
             map.animateCamera(cameraUpdate, object : GoogleMap.CancelableCallback {
                 override fun onFinish() {
-                    map.addMarker(
-                        MarkerOptions()
-                            .position(LatLng(50.4390483, 30.4966947))
-                            .flat(true)
-                            .icon(createMyLocationMarker())
-                    )
+                    launch(context = coroutineContext) {
+                        val myLocationMarker = withContext(Dispatchers.Default) { createMyLocationMarker() }
+
+                        map.addMarker(
+                            MarkerOptions()
+                                .position(LatLng(50.4390483, 30.4966947))
+                                .flat(true)
+                                .icon(myLocationMarker)
+                        )
+                    }
 
                     placeMarkersOnMap(theaters, map)
 
@@ -180,7 +184,6 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
             })
         }
     }
-
 
     private fun placeMarkersOnMap(theaters: List<Location>, map: GoogleMap) {
         launch(context = coroutineContext) {
@@ -218,16 +221,13 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
 
     private fun getDisplayWidth(): Int {
         val display = requireActivity().windowManager.defaultDisplay
-        val outSize = Point()
-
-        display.getSize(outSize)
-
+        val outSize = Point().also { display.getSize(it) }
         return outSize.x
     }
 
-    private fun createMyLocationMarker(): BitmapDescriptor {
+    private suspend fun createMyLocationMarker(): BitmapDescriptor = coroutineScope {
         val icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_my_location)
-            ?: return BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
+            ?: return@coroutineScope BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
 
         val bitmap = Bitmap.createBitmap(
             icon.intrinsicWidth,
@@ -240,7 +240,7 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
         icon.setBounds(0, 0, canvas.width, canvas.height)
         icon.draw(canvas)
 
-        return BitmapDescriptorFactory.fromBitmap(bitmap)
+        BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
     private suspend fun createMarkerFromView(title: String): BitmapDescriptor = coroutineScope {
