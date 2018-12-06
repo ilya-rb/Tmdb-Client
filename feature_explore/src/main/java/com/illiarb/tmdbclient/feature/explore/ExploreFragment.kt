@@ -124,12 +124,6 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
     }
 
     private fun onTheatersStateChanged(state: UiState<List<Location>>) {
-        if (state.isLoading()) {
-            showProgressDialog()
-        } else {
-            hideProgressDialog()
-        }
-
         if (state.hasData()) {
             showNearbyTheaters(state.requireData())
         }
@@ -145,6 +139,8 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
 
     private fun showNearbyTheaters(theaters: List<Location>) {
         theatersCount.text = getString(R.string.theaters_count_text, theaters.size)
+
+        adapter.submitList(theaters)
 
         googleMap?.let { map ->
             if (theaters.isEmpty()) {
@@ -168,14 +164,12 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
                                 .flat(true)
                                 .icon(myLocationMarker)
                         )
-                    }
 
-                    placeMarkersOnMap(theaters, map)
+                        placeMarkersOnMap(theaters, map)
 
-                    adapter.submitList(theaters)
-
-                    theatersList.post {
-                        theatersList.smoothScrollToPosition(0)
+                        theatersList.post {
+                            theatersList.smoothScrollToPosition(0)
+                        }
                     }
                 }
 
@@ -185,19 +179,17 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
         }
     }
 
-    private fun placeMarkersOnMap(theaters: List<Location>, map: GoogleMap) {
-        launch(context = coroutineContext) {
-            val markerOptions = withContext(Dispatchers.Default) {
-                theaters.map {
-                    MarkerOptions()
-                        .position(LatLng(it.lat, it.lon))
-                        .icon(createMarkerFromView(it.title))
-                }
+    private suspend fun placeMarkersOnMap(theaters: List<Location>, map: GoogleMap) = coroutineScope {
+        val markerOptions = withContext(Dispatchers.Default) {
+            theaters.map {
+                MarkerOptions()
+                    .position(LatLng(it.lat, it.lon))
+                    .icon(createMarkerFromView(it.title))
             }
+        }
 
-            markerOptions.forEach {
-                map.addMarker(it)
-            }
+        markerOptions.forEach {
+            map.addMarker(it)
         }
     }
 
