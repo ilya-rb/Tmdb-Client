@@ -9,46 +9,45 @@
         android:id="@+id/mapView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/mapsGuideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/mapsGuideline"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/colorBackground"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.75" />
 
-    <TextView
-        android:id="@+id/theatersCount"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/colorBackground"
-        android:gravity="center_horizontal"
-        android:paddingTop="@dimen/margin_small"
-        android:paddingBottom="@dimen/margin_small"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mapsGuideline"
-        tools:text="20 Theaters found" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/theatersList"
+    <View
+        android:id="@+id/bottomBackground"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/colorBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/theatersCount"
+        app:layout_constraintTop_toTopOf="@id/theatersCount" />
+
+    <TextView
+        android:id="@+id/theatersCount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:gravity="center"
+        android:paddingTop="@dimen/margin_small"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/theatersList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="20 Theaters found" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/theatersList"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/item_nearby_theater"
         tools:orientation="horizontal" />
