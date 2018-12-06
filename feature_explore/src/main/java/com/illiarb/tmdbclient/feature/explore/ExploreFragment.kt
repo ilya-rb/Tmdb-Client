@@ -1,5 +1,6 @@
 package com.illiarb.tmdbclient.feature.explore
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Point
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -64,11 +66,12 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
 
     override fun inject(appProvider: AppProvider) = ExploreComponent.get(appProvider, requireActivity()).inject(this)
 
+    @SuppressLint("InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mapView.onCreate(savedInstanceState)
-        mapView.getMapAsync(this)
+        val map = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        map.getMapAsync(this)
 
         theatersList.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -89,26 +92,14 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
             .addTo(destroyViewDisposable)
     }
 
-    override fun onStart() {
-        super.onStart()
-        mapView.onStart()
-    }
-
     override fun onResume() {
         super.onResume()
-        mapView.onResume()
         theatersList.addOnScrollListener(snapScrollListener)
     }
 
     override fun onPause() {
         super.onPause()
-        mapView.onPause()
         theatersList.removeOnScrollListener(snapScrollListener)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        mapView.onStop()
     }
 
     override fun onDestroyView() {
@@ -116,30 +107,20 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
         coroutinesJob.cancel()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        mapView.onSaveInstanceState(outState)
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        mapView.onLowMemory()
-    }
-
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
 
-        map.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.google_maps_style))
-        map.uiSettings.apply {
-            isMyLocationButtonEnabled = true
-            isZoomControlsEnabled = true
-            isCompassEnabled = true
-            isRotateGesturesEnabled = true
-        }
+        launch(context = coroutineContext) {
+            val styleOptions = withContext(Dispatchers.Default) {
+                MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.google_maps_style)
+            }
+            map.setMapStyle(styleOptions)
+            map.uiSettings.isRotateGesturesEnabled = true
 
-        // TODO Add Permissions Request
-        // TODO Add Location settings check
-        viewModel.fetchNearbyMovieTheaters()
+            // TODO Add Permissions Request
+            // TODO Add Location settings check
+            viewModel.fetchNearbyMovieTheaters()
+        }
     }
 
     private fun onTheatersStateChanged(state: UiState<List<Location>>) {
@@ -166,7 +147,13 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
         theatersCount.text = getString(R.string.theaters_count_text, theaters.size)
 
         googleMap?.let { map ->
-            val currentLocation = LatLng(50.4390483, 30.4966947)
+            if (theaters.isEmpty()) {
+                return@let
+            }
+
+            val firstPlace = theaters.first()
+            val currentLocation = LatLng(firstPlace.lat, firstPlace.lon)
+
             val cameraUpdate =
                 CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(currentLocation, 15f))
 
@@ -174,18 +161,18 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
                 override fun onFinish() {
                     map.addMarker(
                         MarkerOptions()
-                            .position(currentLocation)
+                            .position(LatLng(50.4390483, 30.4966947))
                             .flat(true)
                             .icon(createMyLocationMarker())
                     )
+
+                    placeMarkersOnMap(theaters, map)
 
                     adapter.submitList(theaters)
 
                     theatersList.post {
                         theatersList.smoothScrollToPosition(0)
                     }
-
-                    placeMarkersOnMap(theaters, map)
                 }
 
                 override fun onCancel() {
@@ -194,17 +181,20 @@ class ExploreFragment : BaseFragment<ExploreViewModel>(), Injectable, OnMapReady
         }
     }
 
+
     private fun placeMarkersOnMap(theaters: List<Location>, map: GoogleMap) {
         launch(context = coroutineContext) {
             val markerOptions = withContext(Dispatchers.Default) {
                 theaters.map {
                     MarkerOptions()
                         .position(LatLng(it.lat, it.lon))
-                        .flat(true)
                         .icon(createMarkerFromView(it.title))
                 }
             }
-            markerOptions.forEach { map.addMarker(it) }
+
+            markerOptions.forEach {
+                map.addMarker(it)
+            }
         }
     }
 

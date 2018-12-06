@@ -21,7 +21,6 @@
 
         <!-- Misc -->
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowBackground">@null</item>
     </style>
 
     <style name="Theme.Transparent" parent="Theme.AppCompat.NoActionBar">
