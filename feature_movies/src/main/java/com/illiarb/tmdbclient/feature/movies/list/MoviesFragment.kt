@@ -12,7 +12,7 @@ import com.illiarb.tmdbclient.feature.movies.list.mvi.MoviesFeature
 import com.illiarb.tmdbclient.feature.movies.list.mvi.MoviesNews
 import com.illiarb.tmdbclient.feature.movies.list.mvi.MoviesState
 import com.illiarb.tmdbclient.feature.movies.list.mvi.MoviesWish
-import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
+import com.illiarb.tmdbexplorer.coreui.base.BaseMviFragment
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.AdapterDelegate
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.DelegateAdapter
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
@@ -28,7 +28,7 @@ import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
 
-class MoviesFragment : BaseFragment(), Injectable, Consumer<MoviesState> {
+class MoviesFragment : BaseMviFragment(), Injectable, Consumer<MoviesState> {
 
     @Inject
     lateinit var delegateAdapter: DelegateAdapter
