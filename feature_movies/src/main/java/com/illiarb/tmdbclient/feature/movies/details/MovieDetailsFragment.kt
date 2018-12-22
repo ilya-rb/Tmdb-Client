@@ -91,13 +91,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
         super.onActivityCreated(savedInstanceState)
 
         arguments?.let {
-            val movieId = it.getInt(NavigationKeys.EXTRA_MOVIE_DETAILS_ID)
-
-            val title = it.getString(NavigationKeys.EXTRA_MOVIE_DETAILS_TITLE, "")
-            val posterPath = it.getString(NavigationKeys.EXTRA_MOVIE_DETAIL_POSTER_PATH)
-            showMovieDetailsBasicInfo(title, posterPath)
-
-            viewModel.id = movieId
+            viewModel.id = it.getInt(NavigationKeys.EXTRA_MOVIE_DETAILS_ID)
             viewModel.observeMovieDetailsState()
                 .subscribe(::onMovieDetailsStateChanged, Throwable::printStackTrace)
                 .addTo(destroyViewDisposable)
@@ -128,6 +122,18 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
 
     private fun showMovieDetails(movie: Movie) {
         with(movie) {
+            movieDetailsTitle.text = title
+
+            posterPath?.let {
+                ImageLoader.loadImage(movieDetailsPoster, it, true)
+                ImageLoader.loadImage(
+                    movieDetailsPosterSmall,
+                    it,
+                    true,
+                    resources.getDimensionPixelSize(R.dimen.image_corner_radius)
+                )
+            }
+
             movieDetailsRating.text = voteAverage.toString()
 
             if (runtime > 0) {
@@ -158,20 +164,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
                 movieDetailsReviewsTitle.visibility = View.VISIBLE
                 reviewsAdapter.submitList(reviews)
             }
-        }
-    }
-
-    private fun showMovieDetailsBasicInfo(title: String, posterPath: String?) {
-        movieDetailsTitle.text = title
-
-        posterPath?.let {
-            ImageLoader.loadImage(movieDetailsPoster, it, true)
-            ImageLoader.loadImage(
-                movieDetailsPosterSmall,
-                it,
-                true,
-                resources.getDimensionPixelSize(R.dimen.image_corner_radius)
-            )
         }
     }
 }

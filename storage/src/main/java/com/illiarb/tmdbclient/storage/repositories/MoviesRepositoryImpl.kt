@@ -66,7 +66,20 @@ class MoviesRepositoryImpl @Inject constructor(
     }
 
     override fun getMovieDetails(id: Int, appendToResponse: String): Single<Movie> =
-        moviesService.getMovieDetails(id, appendToResponse).map(movieMapper::map)
+        moviesService.getMovieDetails(id, appendToResponse)
+//        persistableStorage.getLastMovieDetails()
+//            .flatMap {
+//                // If Last stored differed of requested
+//                // Fetch from network and store it
+//                if (it.id != id) {
+//                    moviesService.getMovieDetails(id, appendToResponse)
+//                        .doOnSuccess { movie -> persistableStorage.storeLastMovieDetails(movie) }
+//                } else {
+//                    // Otherwise passed cached value
+//                    Single.just(it)
+//                }
+//            }
+            .map(movieMapper::map)
 
     override fun getMovieReviews(id: Int): Single<List<Review>> =
         moviesService.getMovieReviews(id)

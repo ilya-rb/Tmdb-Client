@@ -10,8 +10,4 @@ object ExploreScreen : ScreenData(ScreenName.EXPLORE)
 object AccountScreen : ScreenData(ScreenName.ACCOUNT)
 object AuthScreen : ScreenData(ScreenName.AUTH)
 
-class MovieDetailsScreen(
-    val id: Int,
-    val title: String,
-    val posterPath: String?
-) : ScreenData(ScreenName.MOVIE_DETAILS)
+data class MovieDetailsScreen(val id: Int) : ScreenData(ScreenName.MOVIE_DETAILS)

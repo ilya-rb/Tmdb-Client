@@ -1,6 +1,7 @@
 package com.illiarb.tmdbclient.coreimpl.movie
 
 import com.illiarb.tmdblcient.core.entity.ListSection
+import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.entity.MovieSection
 import com.illiarb.tmdblcient.core.entity.NowPlayingSection
@@ -38,7 +39,9 @@ class MoviesInteractorImpl @Inject constructor(
 
     override fun getMovieFilters(): Single<List<MovieFilter>> = moviesRepository.getMovieFilters()
 
+    override fun getMovieDetails(id: Int): Single<Movie> = moviesRepository.getMovieDetails(id, "images,reviews,photos")
+
     override fun onMovieSelected(id: Int, title: String, posterPath: String?) {
-        router.navigateTo(MovieDetailsScreen(id, title, posterPath))
+        router.navigateTo(MovieDetailsScreen(id))
     }
 }

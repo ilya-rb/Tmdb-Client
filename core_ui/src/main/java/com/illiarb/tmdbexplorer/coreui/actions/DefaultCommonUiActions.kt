@@ -26,6 +26,8 @@ class DefaultCommonUiActions(val activity: FragmentActivity) : CommonUiActions {
     }
 
     override fun hideProgressDialog() {
-        progressDialog.dismiss()
+        if (progressDialog.isAdded) {
+            progressDialog.dismiss()
+        }
     }
 }

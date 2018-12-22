@@ -22,30 +22,27 @@ class MainNavigator @Inject constructor(private val activity: FragmentActivity) 
         Navigation.findNavController(activity, R.id.nav_host_fragment).navigate(directions)
     }
 
-    private fun createNavDirections(data: ScreenData): NavDirections {
-        val args = createNavigationArguments(data)
-        val action = when (data.screenName) {
+    private fun createNavDirections(data: ScreenData): NavDirections =
+        object : NavDirections {
+            override fun getActionId(): Int = mapScreenNameToAction(data.screenName)
+            override fun getArguments(): Bundle? = createNavigationArguments(data)
+        }
+
+    private fun createNavigationArguments(data: ScreenData): Bundle =
+        when (data) {
+            is MovieDetailsScreen -> Bundle().apply {
+                putInt(NavigationKeys.EXTRA_MOVIE_DETAILS_ID, data.id)
+            }
+            else -> Bundle.EMPTY
+        }
+
+    private fun mapScreenNameToAction(screenName: ScreenName): Int =
+        when (screenName) {
             ScreenName.MOVIES -> R.id.moviesFragmentAction
             ScreenName.MOVIE_DETAILS -> R.id.movieDetailsAction
             ScreenName.EXPLORE -> R.id.exploreAction
             ScreenName.ACCOUNT -> R.id.accountAction
             ScreenName.AUTH -> R.id.authAction
             else -> TODO("Implement other screens")
-        }
-
-        return object : NavDirections {
-            override fun getActionId(): Int = action
-            override fun getArguments(): Bundle? = args
-        }
-    }
-
-    private fun createNavigationArguments(data: ScreenData): Bundle =
-        when (data) {
-            is MovieDetailsScreen -> Bundle().apply {
-                putInt(NavigationKeys.EXTRA_MOVIE_DETAILS_ID, data.id)
-                putString(NavigationKeys.EXTRA_MOVIE_DETAILS_TITLE, data.title)
-                putString(NavigationKeys.EXTRA_MOVIE_DETAIL_POSTER_PATH, data.posterPath)
-            }
-            else -> Bundle.EMPTY
         }
 }

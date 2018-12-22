@@ -27,6 +27,7 @@ class PersistableStorage @Inject constructor(app: App) {
         const val KEY_UPCOMING = MovieFilter.TYPE_UPCOMING
         const val KEY_NOW_PLAYING = MovieFilter.TYPE_NOW_PLAYING
         const val KEY_TOP_RATED = MovieFilter.TYPE_TOP_RATED
+        const val KEY_LAST_LOADED_MOVIE_DETAILS = "movie_details"
     }
 
     private val store: Preferences = BinaryPreferencesBuilder(app.getApplication())
@@ -52,6 +53,10 @@ class PersistableStorage @Inject constructor(app: App) {
 
     fun storeConfiguration(configuration: Configuration) = putValue(KEY_CONFIGURATION, configuration)
 
+    fun getLastMovieDetails(): Single<MovieModel> = Single.just(getValue(KEY_LAST_LOADED_MOVIE_DETAILS, MovieModel()))
+
+    fun storeLastMovieDetails(model: MovieModel) = putValue(KEY_LAST_LOADED_MOVIE_DETAILS, model)
+
     fun clearAccountData() {
         store.edit()
             .remove(KEY_SESSION_ID)
@@ -70,6 +75,7 @@ class PersistableStorage @Inject constructor(app: App) {
         registerPersistable(KEY_TOP_RATED, MovieListModel::class.java)
         registerPersistable(KEY_ACCOUNT, AccountModel::class.java)
         registerPersistable(KEY_CONFIGURATION, Configuration::class.java)
+        registerPersistable(KEY_LAST_LOADED_MOVIE_DETAILS, MovieModel::class.java)
         return this
     }
 }

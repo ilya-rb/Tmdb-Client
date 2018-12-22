@@ -47,7 +47,7 @@ class AccountInteractorImpl @Inject constructor(
     }
 
     override fun onFavoriteMovieClicked(movie: Movie) {
-        router.navigateTo(MovieDetailsScreen(movie.id, movie.title, movie.posterPath))
+        router.navigateTo(MovieDetailsScreen(movie.id))
     }
 
     private fun createAverageRating(ratedMovies: List<Movie>): Int =
