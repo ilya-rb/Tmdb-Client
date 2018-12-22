@@ -1,11 +1,11 @@
-package com.illiarb.tmdbclient.feature.movies.list
+package com.illiarb.tmdbclient.feature.movies.list.ui
 
 import android.content.Context
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.tmdbclient.feature.movies.R
-import com.illiarb.tmdbclient.feature.movies.list.delegates.nowplaying.NowPlayingSectionDelegate
+import com.illiarb.tmdbclient.feature.movies.list.ui.delegates.nowplaying.NowPlayingSectionDelegate
 
 // TODO: Simplify
 class MoviesSpaceDecoration(context: Context) : RecyclerView.ItemDecoration() {

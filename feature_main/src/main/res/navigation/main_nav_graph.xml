@@ -4,12 +4,12 @@
 
     <fragment
         android:id="@+id/moviesFragment"
-        android:name="com.illiarb.tmdbclient.feature.movies.list.MoviesFragment"
+        android:name="com.illiarb.tmdbclient.feature.movies.list.ui.MoviesFragment"
         android:label="MoviesFragment" />
 
     <fragment
         android:id="@+id/movieDetailsFragment"
-        android:name="com.illiarb.tmdbclient.feature.movies.details.MovieDetailsFragment"
+        android:name="com.illiarb.tmdbclient.feature.movies.details.ui.MovieDetailsFragment"
         android:label="MovieDetailsFragment" />
 
     <fragment

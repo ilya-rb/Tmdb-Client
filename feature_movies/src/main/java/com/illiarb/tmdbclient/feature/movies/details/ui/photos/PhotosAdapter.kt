@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.feature.movies.details.photos
+package com.illiarb.tmdbclient.feature.movies.details.ui.photos
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil

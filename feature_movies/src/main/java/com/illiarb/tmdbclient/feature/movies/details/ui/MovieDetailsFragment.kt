@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.feature.movies.details
+package com.illiarb.tmdbclient.feature.movies.details.ui
 
 import android.os.Bundle
 import android.view.Gravity
@@ -7,31 +7,38 @@ import android.view.ViewTreeObserver
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Slide
+import com.badoo.mvicore.binder.Binder
 import com.google.android.material.chip.Chip
 import com.illiarb.tmdbclient.feature.movies.R
-import com.illiarb.tmdbclient.feature.movies.details.photos.PhotosAdapter
-import com.illiarb.tmdbclient.feature.movies.details.reviews.ReviewsAdapter
+import com.illiarb.tmdbclient.feature.movies.details.feature.MovieDetailsFeature
+import com.illiarb.tmdbclient.feature.movies.details.feature.MovieDetailsState
+import com.illiarb.tmdbclient.feature.movies.details.ui.photos.PhotosAdapter
+import com.illiarb.tmdbclient.feature.movies.details.ui.reviews.ReviewsAdapter
 import com.illiarb.tmdbclient.feature.movies.di.MoviesComponent
-import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
+import com.illiarb.tmdbexplorer.coreui.base.BaseMviFragment
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDecoration
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
-import com.illiarb.tmdbexplorer.coreui.state.UiState
 import com.illiarb.tmdbexplorerdi.Injectable
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Movie
-import com.illiarb.tmdblcient.core.ext.addTo
 import com.illiarb.tmdblcient.core.navigation.NavigationKeys
+import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import javax.inject.Inject
 
-class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
+class MovieDetailsFragment : BaseMviFragment(), Injectable, Consumer<MovieDetailsState> {
 
     @Inject
     lateinit var photosAdapter: PhotosAdapter
 
     @Inject
     lateinit var reviewsAdapter: ReviewsAdapter
+
+    @Inject
+    lateinit var feature: MovieDetailsFeature
+
+    private val binder = Binder()
 
     private val containerScrollListener by lazy(LazyThreadSafetyMode.NONE) {
         ViewTreeObserver.OnScrollChangedListener {
@@ -50,7 +57,36 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupUi(view)
+        setupBindings()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        movieDetailsContainer.viewTreeObserver.addOnScrollChangedListener(containerScrollListener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        movieDetailsContainer.viewTreeObserver.removeOnScrollChangedListener(containerScrollListener)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binder.clear()
+    }
+
+    override fun getContentView(): Int = R.layout.fragment_movie_details
+
+    override fun inject(appProvider: AppProvider) = MoviesComponent.get(appProvider).inject(this)
+
+    override fun accept(state: MovieDetailsState) {
+        state.movie?.let {
+            showMovieDetails(it)
+        }
+    }
+
+    private fun setupUi(view: View) {
         movieDetailsToolbar.apply {
             awareOfWindowInsets()
             movieDetailsToolbar.setNavigationOnClickListener {
@@ -87,36 +123,12 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
         ViewCompat.requestApplyInsets(view)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    private fun setupBindings() {
+        binder.bind(feature to this)
 
         arguments?.let {
-            viewModel.id = it.getInt(NavigationKeys.EXTRA_MOVIE_DETAILS_ID)
-            viewModel.observeMovieDetailsState()
-                .subscribe(::onMovieDetailsStateChanged, Throwable::printStackTrace)
-                .addTo(destroyViewDisposable)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        movieDetailsContainer.viewTreeObserver.addOnScrollChangedListener(containerScrollListener)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        movieDetailsContainer.viewTreeObserver.removeOnScrollChangedListener(containerScrollListener)
-    }
-
-    override fun getContentView(): Int = R.layout.fragment_movie_details
-
-    override fun getViewModelClass(): Class<MovieDetailsViewModel> = MovieDetailsViewModel::class.java
-
-    override fun inject(appProvider: AppProvider) = MoviesComponent.get(appProvider).inject(this)
-
-    private fun onMovieDetailsStateChanged(uiState: UiState<Movie>) {
-        if (uiState.hasData()) {
-            showMovieDetails(uiState.requireData())
+            val id = it.getInt(NavigationKeys.EXTRA_MOVIE_DETAILS_ID)
+            feature.accept(MovieDetailsFeature.Wish.LoadMovieDetails(id))
         }
     }
 
@@ -145,7 +157,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(), Injectable {
                     .apply {
                         text = genre.name
                         setOnClickListener {
-                            viewModel.onGenreClicked(text.toString())
+                            // TODO
                         }
                     }
                     .also { movieDetailsTags.addView(it) }

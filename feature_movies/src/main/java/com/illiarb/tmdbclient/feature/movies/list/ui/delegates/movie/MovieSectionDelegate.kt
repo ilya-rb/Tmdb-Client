@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.feature.movies.list.delegates.movie
+package com.illiarb.tmdbclient.feature.movies.list.ui.delegates.movie
 
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +27,10 @@ class MovieSectionDelegate @Inject constructor(
     override fun isForViewType(item: Any): Boolean = item is ListSection
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseDelegateViewHolder {
-        return ViewHolder(parent.inflate(R.layout.item_movie_section), uiEventsPipeline)
+        return ViewHolder(
+            parent.inflate(R.layout.item_movie_section),
+            uiEventsPipeline
+        )
     }
 
     class ViewHolder(

@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.feature.movies.list.delegates.nowplaying
+package com.illiarb.tmdbclient.feature.movies.list.ui.delegates.nowplaying
 
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +20,10 @@ class NowPlayingSectionDelegate @Inject constructor(
     override fun isForViewType(item: Any): Boolean = item is NowPlayingSection
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseDelegateViewHolder =
-        ViewHolder(parent.inflate(R.layout.item_now_playing_section), uiEventsPipeline)
+        ViewHolder(
+            parent.inflate(R.layout.item_now_playing_section),
+            uiEventsPipeline
+        )
 
     class ViewHolder(
         containerView: View,

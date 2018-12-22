@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.feature.movies.details.reviews
+package com.illiarb.tmdbclient.feature.movies.details.ui.reviews
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil

@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.feature.movies.list.delegates.nowplaying
+package com.illiarb.tmdbclient.feature.movies.list.ui.delegates.nowplaying
 
 import android.view.View
 import android.view.ViewGroup

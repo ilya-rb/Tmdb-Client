@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.feature.movies.list
+package com.illiarb.tmdbclient.feature.movies.list.ui
 
 import android.os.Bundle
 import android.view.View
