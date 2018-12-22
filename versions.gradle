@@ -8,6 +8,7 @@ projectInfo.with {
 
 def versions = [:]
 versions.with {
+    gradleVersions = "0.20.0"
     kotlin = "1.3.10"
     kotlin_coroutines = "1.0.0"
     supportLibrary = "1.0.0"

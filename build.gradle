@@ -1,3 +1,5 @@
+apply plugin: "com.github.ben-manes.versions"
+
 buildscript {
 
     ext.dependenciesFilePath = "$rootDir/dependencies.gradle"
@@ -13,6 +15,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+        classpath "com.github.ben-manes:gradle-versions-plugin:$versions.gradleVersions"
     }
 }
 
