@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbclient.feature.movies.list.delegates.nowplaying.NowPlayingSectionDelegate
 
+// TODO: Simplify
 class MoviesSpaceDecoration(context: Context) : RecyclerView.ItemDecoration() {
 
     private val spacing = context.resources.getDimensionPixelSize(R.dimen.item_movie_spacing)

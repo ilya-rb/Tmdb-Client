@@ -8,10 +8,8 @@ import androidx.transition.Fade
 import com.badoo.mvicore.binder.Binder
 import com.illiarb.tmdbclient.feature.movies.R
 import com.illiarb.tmdbclient.feature.movies.di.MoviesComponent
-import com.illiarb.tmdbclient.feature.movies.list.mvi.MoviesFeature
-import com.illiarb.tmdbclient.feature.movies.list.mvi.MoviesNews
-import com.illiarb.tmdbclient.feature.movies.list.mvi.MoviesState
-import com.illiarb.tmdbclient.feature.movies.list.mvi.MoviesWish
+import com.illiarb.tmdbclient.feature.movies.list.feature.MoviesFeature
+import com.illiarb.tmdbclient.feature.movies.list.feature.MoviesState
 import com.illiarb.tmdbexplorer.coreui.base.BaseMviFragment
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.AdapterDelegate
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.DelegateAdapter
@@ -47,9 +45,9 @@ class MoviesFragment : BaseMviFragment(), Injectable, Consumer<MoviesState> {
 
     private val binder = Binder()
 
-    private val newsListener = Consumer<MoviesNews> { news ->
+    private val newsListener = Consumer<MoviesFeature.News> { news ->
         when (news) {
-            is MoviesNews.ShowMovieDetails -> router.navigateTo(MovieDetailsScreen(news.id))
+            is MoviesFeature.News.ShowMovieDetails -> router.navigateTo(MovieDetailsScreen(news.id))
         }
     }
 
@@ -101,12 +99,10 @@ class MoviesFragment : BaseMviFragment(), Injectable, Consumer<MoviesState> {
 
         uiEventsPipeline.observeEvents()
             .ofType(MoviePipelineData::class.java)
-            .subscribe({ feature.accept(MoviesWish.ShowMovieDetails(it.movie.id)) }, Throwable::printStackTrace)
+            .subscribe({ feature.accept(MoviesFeature.Wish.ShowMovieDetails(it.movie.id)) }, Throwable::printStackTrace)
             .addTo(destroyViewDisposable)
 
         ViewCompat.requestApplyInsets(view)
-
-        feature.accept(MoviesWish.Refresh)
     }
 
     private fun setupBindings() {
