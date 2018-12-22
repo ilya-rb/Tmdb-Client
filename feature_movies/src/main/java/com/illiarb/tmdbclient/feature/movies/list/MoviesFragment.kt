@@ -108,5 +108,7 @@ class MoviesFragment : BaseMviFragment(), Injectable, Consumer<MoviesState> {
     private fun setupBindings() {
         binder.bind(feature to this)
         binder.bind(feature.news to newsListener)
+
+        feature.accept(MoviesFeature.Wish.Refresh)
     }
 }
