@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/authFragment"
-        android:name="com.illiarb.tmdbclient.dynamic.feature.account.auth.AuthFragment"
+        android:name="com.illiarb.tmdbclient.dynamic.feature.account.auth.ui.AuthFragment"
         android:label="AuthFragment" />
 
     <action
