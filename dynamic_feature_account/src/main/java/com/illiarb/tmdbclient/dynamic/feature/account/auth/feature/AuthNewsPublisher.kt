@@ -2,6 +2,7 @@ package com.illiarb.tmdbclient.dynamic.feature.account.auth.feature
 
 import com.badoo.mvicore.element.NewsPublisher
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.feature.AuthFeature.*
+import com.illiarb.tmdblcient.core.system.Logger
 import javax.inject.Inject
 
 /**

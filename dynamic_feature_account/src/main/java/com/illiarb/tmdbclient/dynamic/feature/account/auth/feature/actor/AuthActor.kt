@@ -10,6 +10,7 @@ import com.illiarb.tmdblcient.core.modules.auth.Authenticator
 import com.illiarb.tmdblcient.core.system.ErrorMessageBag
 import com.illiarb.tmdblcient.core.system.SchedulerProvider
 import io.reactivex.Observable
+import io.reactivex.ObservableSource
 import javax.inject.Inject
 
 /**
@@ -27,9 +28,9 @@ class AuthActor @Inject constructor(
             is Action.ValidateCredentials -> validateCredentials(action.username, action.password)
             is Action.Authenticate ->
                 authenticator.authorize(action.username, action.password)
+                    .andThen(ObservableSource<Effect> { it.onNext(Effect.AuthenticationResult.Successful) })
                     .subscribeOn(schedulerProvider.provideIoScheduler())
                     .observeOn(schedulerProvider.provideMainThreadScheduler())
-                    .toObservable<Effect>()
                     .map { Effect.AuthenticationResult.Successful }
                     .cast(Effect.AuthenticationResult::class.java)
                     .onErrorReturn(Effect.AuthenticationResult::Failure)
