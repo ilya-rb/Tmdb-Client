@@ -10,7 +10,7 @@ import com.illiarb.tmdbclient.dynamic.feature.account.auth.feature.AuthFeature.W
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.feature.AuthFeature.Wish.ValidateCredentials
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.feature.AuthViewState
 import com.illiarb.tmdbclient.dynamic.feature.account.di.AccountComponent
-import com.illiarb.tmdbexplorer.coreui.base.BaseMviFragment
+import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorerdi.Injectable
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
 import com.illiarb.tmdblcient.core.exception.ApiException
@@ -29,7 +29,7 @@ import javax.inject.Inject
 /**
  * @author ilya-rb on 20.11.18.
  */
-class AuthFragment : BaseMviFragment(), Injectable, Consumer<AuthViewState> {
+class AuthFragment : BaseFragment(), Injectable, Consumer<AuthViewState> {
 
     @Inject
     lateinit var feature: AuthFeature
