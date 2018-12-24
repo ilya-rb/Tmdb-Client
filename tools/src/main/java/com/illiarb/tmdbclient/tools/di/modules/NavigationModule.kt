@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.di.modules
+package com.illiarb.tmdbclient.tools.di.modules
 
 import com.illiarb.tmdbclient.tools.navigation.AppRouter
 import com.illiarb.tmdbclient.tools.navigation.SimpleNavigatorHolder
@@ -9,7 +9,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 /**
- * @author ilya-rb on 18.11.18.
+ * @author ilya-rb on 24.12.18.
  */
 @Module
 class NavigationModule {

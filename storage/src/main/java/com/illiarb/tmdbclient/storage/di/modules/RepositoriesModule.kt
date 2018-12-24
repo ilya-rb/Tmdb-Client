@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.di.modules
+package com.illiarb.tmdbclient.storage.di.modules
 
 import com.illiarb.tmdbclient.storage.auth.ErrorMessageBagImpl
 import com.illiarb.tmdbclient.storage.auth.TmdbAuthenticator
@@ -12,7 +12,7 @@ import dagger.Binds
 import dagger.Module
 
 /**
- * @author ilya-rb on 03.11.18.
+ * @author ilya-rb on 24.12.18.
  */
 @Module
 interface RepositoriesModule {

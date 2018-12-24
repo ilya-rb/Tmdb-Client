@@ -4,7 +4,7 @@ import com.illiarb.tmdbclient.storage.model.AccountModel
 import com.illiarb.tmdbclient.storage.model.MovieListModel
 import com.illiarb.tmdbclient.storage.model.MovieModel
 import com.illiarb.tmdbclient.storage.network.api.config.Configuration
-import com.illiarb.tmdbexplorerdi.App
+import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.system.Logger
 import com.ironz.binaryprefs.BinaryPreferencesBuilder
@@ -52,10 +52,6 @@ class PersistableStorage @Inject constructor(app: App) {
     fun storeSessionId(sessionId: String) = store.edit().putString(KEY_SESSION_ID, sessionId).commit()
 
     fun storeConfiguration(configuration: Configuration) = putValue(KEY_CONFIGURATION, configuration)
-
-    fun getLastMovieDetails(): Single<MovieModel> = Single.just(getValue(KEY_LAST_LOADED_MOVIE_DETAILS, MovieModel()))
-
-    fun storeLastMovieDetails(model: MovieModel) = putValue(KEY_LAST_LOADED_MOVIE_DETAILS, model)
 
     fun clearAccountData() {
         store.edit()

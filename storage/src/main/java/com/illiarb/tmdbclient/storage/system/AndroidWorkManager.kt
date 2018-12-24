@@ -4,7 +4,7 @@ import androidx.work.Configuration
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkerFactory
 import com.illiarb.tmdbclient.storage.network.api.config.ConfigurationFetchWork
-import com.illiarb.tmdbexplorerdi.App
+import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.system.WorkManager
 import javax.inject.Inject
 import androidx.work.WorkManager as AdWorkManager

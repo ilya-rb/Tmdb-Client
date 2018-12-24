@@ -7,8 +7,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import com.illiarb.tmdbclient.features.main.di.MainComponent
-import com.illiarb.tmdbexplorerdi.Injectable
-import com.illiarb.tmdbexplorerdi.providers.AppProvider
+import com.illiarb.tmdblcient.core.di.Injectable
+import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.modules.auth.Authenticator
 import com.illiarb.tmdblcient.core.navigation.AccountScreen
 import com.illiarb.tmdblcient.core.navigation.AuthScreen

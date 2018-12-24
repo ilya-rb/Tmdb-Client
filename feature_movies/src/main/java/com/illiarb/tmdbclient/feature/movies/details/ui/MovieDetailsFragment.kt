@@ -20,8 +20,8 @@ import com.illiarb.tmdbclient.feature.movies.di.MoviesComponent
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDecoration
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
-import com.illiarb.tmdbexplorerdi.Injectable
-import com.illiarb.tmdbexplorerdi.providers.AppProvider
+import com.illiarb.tmdblcient.core.di.Injectable
+import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Movie
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import javax.inject.Inject

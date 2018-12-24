@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 apply from: dependenciesFilePath
 
@@ -25,9 +26,10 @@ android {
 }
 
 dependencies {
+    kapt deps.daggerCompiler
 
     implementation project(':core')
 
     implementation deps.rxAndroid
-    implementation deps.javax
+    implementation deps.dagger
 }

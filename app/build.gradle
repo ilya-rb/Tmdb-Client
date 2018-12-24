@@ -33,11 +33,10 @@ dependencies {
     kapt deps.daggerCompiler
 
     implementation project(':core')
-    implementation project(':core_impl')
     implementation project(':storage')
-    implementation project(':di')
     implementation project(':tools')
     implementation project(':feature_main')
+    implementation project(':feature_movies')
 
     implementation deps.dagger
     implementation deps.timber

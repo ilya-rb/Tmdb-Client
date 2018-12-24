@@ -3,21 +3,19 @@ package com.illiarb.tmdbclient
 import android.app.Application
 import android.os.Looper
 import com.illiarb.tmdbclient.di.AppComponent
-import com.illiarb.tmdbexplorerdi.App
-import com.illiarb.tmdbexplorerdi.AppInjector
-import com.illiarb.tmdbexplorerdi.providers.AppProvider
-import com.illiarb.tmdblcient.core.modules.AppInteractor
+import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.system.Logger
+import com.illiarb.tmdblcient.core.system.WorkManager
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 import javax.inject.Inject
 
-@Suppress("unused")
 class MobileApplication : Application(), App {
 
     @Inject
-    lateinit var appInteractor: AppInteractor
+    lateinit var workManager: WorkManager
 
     private val applicationProvider by lazy { AppComponent.get(this) }
 
@@ -31,7 +29,8 @@ class MobileApplication : Application(), App {
         val appComponent = applicationProvider as AppComponent
         appComponent.inject(this)
 
-        appInteractor.onAppStarted()
+        workManager.initialize()
+        workManager.schedulerPeriodicConfigurationFetch()
     }
 
     override fun getApplication(): Application = this
@@ -39,7 +38,7 @@ class MobileApplication : Application(), App {
     override fun getAppProvider(): AppProvider = applicationProvider
 
     private fun configureDi() {
-        AppInjector(this).registerLifecycleCallbacks()
+        MobileAppInjector(this).registerLifecycleCallbacks()
     }
 
     private fun configureRxJava() {

@@ -38,7 +38,6 @@ dependencies {
     kapt deps.daggerCompiler
 
     implementation project(':core')
-    implementation project(':di')
 
     api deps.supportDesign
     api deps.constraintLayout

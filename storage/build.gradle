@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 apply from: dependenciesFilePath
 
@@ -37,18 +38,15 @@ android {
 }
 
 dependencies {
+    kapt deps.daggerCompiler
+
     implementation project(':core')
-    implementation project(':di')
 
-    implementation deps.javax
     implementation deps.binaryPrefs
-    implementation deps.location
-
-    // Dependencies are used in app component
-    // to create di module
-    api deps.retrofit
-    api deps.converterGson
-    api deps.rxJavaAdapter
-    api deps.okHttpLogger
-    api deps.workManager
+    implementation deps.dagger
+    implementation deps.retrofit
+    implementation deps.converterGson
+    implementation deps.rxJavaAdapter
+    implementation deps.okHttpLogger
+    implementation deps.workManager
 }

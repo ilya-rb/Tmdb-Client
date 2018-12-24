@@ -31,7 +31,6 @@ dependencies {
 
     implementation project(':core')
     implementation project(':core_ui')
-    implementation project(':di')
 
     // For simplicity feature modules
     // not splitted up on api and implementation

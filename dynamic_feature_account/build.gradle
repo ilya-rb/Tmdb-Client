@@ -31,7 +31,6 @@ dependencies {
 
     implementation project(':core')
     implementation project(':core_ui')
-    implementation project(':di')
 
     implementation 'com.github.badoo.mvicore:mvicore:1.1.4'
     implementation ('com.github.badoo.mvicore:mvicore-android:1.1.4') {

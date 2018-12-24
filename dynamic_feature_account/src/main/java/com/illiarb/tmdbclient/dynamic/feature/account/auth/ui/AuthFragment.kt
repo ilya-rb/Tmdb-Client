@@ -11,8 +11,8 @@ import com.illiarb.tmdbclient.dynamic.feature.account.auth.feature.AuthFeature.W
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.feature.AuthViewState
 import com.illiarb.tmdbclient.dynamic.feature.account.di.AccountComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
-import com.illiarb.tmdbexplorerdi.Injectable
-import com.illiarb.tmdbexplorerdi.providers.AppProvider
+import com.illiarb.tmdblcient.core.di.Injectable
+import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.exception.ApiException
 import com.illiarb.tmdblcient.core.exception.ErrorCodes
 import com.illiarb.tmdblcient.core.exception.ValidationException

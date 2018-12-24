@@ -16,8 +16,8 @@ import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDec
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.pipeline.MoviePipelineData
 import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData
-import com.illiarb.tmdbexplorerdi.Injectable
-import com.illiarb.tmdbexplorerdi.providers.AppProvider
+import com.illiarb.tmdblcient.core.di.Injectable
+import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Account
 import com.illiarb.tmdblcient.core.ext.addTo
 import com.illiarb.tmdblcient.core.navigation.AuthScreen

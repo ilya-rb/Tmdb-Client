@@ -1,6 +1,6 @@
 package com.illiarb.tmdbclient.storage.local
 
-import com.illiarb.tmdbexplorerdi.App
+import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.system.ResourceResolver
 
 /**

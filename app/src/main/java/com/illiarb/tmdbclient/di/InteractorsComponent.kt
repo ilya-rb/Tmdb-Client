@@ -1,9 +1,9 @@
 package com.illiarb.tmdbclient.di
 
 import com.illiarb.tmdbclient.di.modules.InteractorsModule
-import com.illiarb.tmdbexplorerdi.providers.InteractorsProvider
-import com.illiarb.tmdbexplorerdi.providers.StorageProvider
-import com.illiarb.tmdbexplorerdi.providers.ToolsProvider
+import com.illiarb.tmdblcient.core.di.providers.InteractorsProvider
+import com.illiarb.tmdblcient.core.di.providers.StorageProvider
+import com.illiarb.tmdblcient.core.di.providers.ToolsProvider
 import dagger.Component
 
 @Component(

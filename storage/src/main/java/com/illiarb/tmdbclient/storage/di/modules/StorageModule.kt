@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.di.modules
+package com.illiarb.tmdbclient.storage.di.modules
 
 import androidx.work.WorkerFactory
 import com.illiarb.tmdbclient.storage.local.AndroidResourceResolver
@@ -6,7 +6,7 @@ import com.illiarb.tmdbclient.storage.local.PersistableStorage
 import com.illiarb.tmdbclient.storage.network.api.service.ConfigurationService
 import com.illiarb.tmdbclient.storage.system.AndroidWorkManager
 import com.illiarb.tmdbclient.storage.system.DaggerWorkerFactory
-import com.illiarb.tmdbexplorerdi.App
+import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.system.ResourceResolver
 import com.illiarb.tmdblcient.core.system.WorkManager
 import dagger.Module
@@ -14,7 +14,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 /**
- * @author ilya-rb on 03.11.18.
+ * @author ilya-rb on 24.12.18.
  */
 @Module
 class StorageModule(val app: App) {

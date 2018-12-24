@@ -1,13 +1,13 @@
-package com.illiarb.tmdbclient.di
+package com.illiarb.tmdbclient.tools.di
 
-import com.illiarb.tmdbclient.di.modules.NavigationModule
-import com.illiarb.tmdbclient.di.modules.ToolsModule
-import com.illiarb.tmdbexplorerdi.providers.ToolsProvider
+import com.illiarb.tmdbclient.tools.di.modules.NavigationModule
+import com.illiarb.tmdbclient.tools.di.modules.ToolsModule
+import com.illiarb.tmdblcient.core.di.providers.ToolsProvider
 import dagger.Component
 import javax.inject.Singleton
 
 /**
- * @author ilya-rb on 04.11.18.
+ * @author ilya-rb on 24.12.18.
  */
 @Component(modules = [ToolsModule::class, NavigationModule::class])
 @Singleton

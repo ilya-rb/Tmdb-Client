@@ -4,7 +4,7 @@ import com.illiarb.tmdbclient.feature.movies.details.ui.MovieDetailsFragment
 import com.illiarb.tmdbclient.feature.movies.list.ui.MoviesFragment
 import com.illiarb.tmdbexplorer.coreui.di.UiEventsModule
 import com.illiarb.tmdbexplorer.coreui.di.scope.FragmentScope
-import com.illiarb.tmdbexplorerdi.providers.AppProvider
+import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import dagger.Component
 
 @Component(

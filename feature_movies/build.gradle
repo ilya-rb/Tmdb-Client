@@ -34,7 +34,6 @@ dependencies {
 
     implementation project(':core')
     implementation project(':core_ui')
-    implementation project(':di')
 
     implementation "com.arello-mobile:moxy:$moxyVersion"
 

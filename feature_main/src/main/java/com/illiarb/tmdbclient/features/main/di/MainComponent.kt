@@ -3,7 +3,7 @@ package com.illiarb.tmdbclient.features.main.di
 import androidx.fragment.app.FragmentActivity
 import com.illiarb.tmdbclient.features.main.MainActivity
 import com.illiarb.tmdbexplorer.coreui.di.ActivityModule
-import com.illiarb.tmdbexplorerdi.providers.AppProvider
+import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import dagger.Component
 
 @Component(

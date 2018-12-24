@@ -1,6 +1,6 @@
 package com.illiarb.tmdbclient.di.modules
 
-import com.illiarb.tmdbexplorerdi.App
+import com.illiarb.tmdblcient.core.di.App
 import dagger.Module
 import dagger.Provides
 

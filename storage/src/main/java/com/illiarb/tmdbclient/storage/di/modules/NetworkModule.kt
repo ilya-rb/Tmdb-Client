@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.di.modules
+package com.illiarb.tmdbclient.storage.di.modules
 
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 /**
- * @author ilya-rb on 03.11.18.
+ * @author ilya-rb on 24.12.18.
  */
 @Module
 class NetworkModule {
