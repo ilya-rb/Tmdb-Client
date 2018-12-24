@@ -83,6 +83,15 @@ class RxFeatureInstaller @Inject constructor(
             }
         }
 
+    override fun mockInstallFeatures(vararg featureName: DynamicFeatureName): Observable<FeatureInstallState> =
+        Observable.just(
+            FeatureInstallState(
+                featureName = createFeatureName(*featureName),
+                percentDownloaded = 100,
+                status = INSTALLED
+            )
+        )
+
     override fun deleteFeature(): Completable = TODO()
 
     override fun isFeatureInstalled(): Single<Boolean> = TODO()

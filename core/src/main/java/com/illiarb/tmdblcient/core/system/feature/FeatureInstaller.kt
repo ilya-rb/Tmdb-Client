@@ -17,4 +17,6 @@ interface FeatureInstaller {
     fun deleteFeature(): Completable
 
     fun isFeatureInstalled(): Single<Boolean>
+
+    fun mockInstallFeatures(vararg featureName: DynamicFeatureName): Observable<FeatureInstallState>
 }

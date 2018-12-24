@@ -17,6 +17,9 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            // You must use the following property to specify additional ProGuard
+            // rules for dynamic feature modules.
+            // proguardFiles 'proguard-rules-default.pro'
         }
     }
 }

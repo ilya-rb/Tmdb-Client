@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="nav_host_fragment" type="id"/>
+    <item name="nav_host_fragment" type="id" />
+
+    <!--
+    Store action id's here as Account is
+    dynamic feature and will be added to NavGraph dynamically
+    -->
+    <item name="authAction" type="id" />
+    <item name="accountAction" type="id" />
+
 </resources>
