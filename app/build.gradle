@@ -27,6 +27,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    dynamicFeatures = [':dynamic_feature_account']
 }
 
 dependencies {
@@ -42,4 +44,8 @@ dependencies {
     implementation deps.timber
     implementation deps.rxAndroid
     implementation deps.supportDesign
+
+    // Play core lib that shared across
+    // all dynamic features
+    api deps.playCore
 }

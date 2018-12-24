@@ -12,15 +12,15 @@
         android:name="com.illiarb.tmdbclient.feature.movies.details.ui.MovieDetailsFragment"
         android:label="MovieDetailsFragment" />
 
-    <fragment
-        android:id="@+id/accountFragment"
-        android:name="com.illiarb.tmdbclient.dynamic.feature.account.profile.ui.AccountFragment"
-        android:label="AccountFragment" />
+    <!--<fragment-->
+        <!--android:id="@+id/accountFragment"-->
+        <!--android:name="com.illiarb.tmdbclient.dynamic.feature.account.profile.ui.AccountFragment"-->
+        <!--android:label="AccountFragment" />-->
 
-    <fragment
-        android:id="@+id/authFragment"
-        android:name="com.illiarb.tmdbclient.dynamic.feature.account.auth.ui.AuthFragment"
-        android:label="AuthFragment" />
+    <!--<fragment-->
+        <!--android:id="@+id/authFragment"-->
+        <!--android:name="com.illiarb.tmdbclient.dynamic.feature.account.auth.ui.AuthFragment"-->
+        <!--android:label="AuthFragment" />-->
 
     <action
         android:id="@+id/movieDetailsAction"
@@ -34,8 +34,8 @@
         android:id="@+id/accountAction"
         app:destination="@id/accountFragment" />
 
-    <action
-        android:id="@+id/authAction"
-        app:destination="@id/authFragment" />
+    <!--<action-->
+        <!--android:id="@+id/authAction"-->
+        <!--app:destination="@id/authFragment" />-->
 
 </navigation>

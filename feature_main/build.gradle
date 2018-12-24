@@ -35,7 +35,6 @@ dependencies {
     // For simplicity feature modules
     // not splitted up on api and implementation
     implementation project(':feature_movies')
-    implementation project(':dynamic_feature_account')
 
     implementation deps.dagger
     implementation deps.navigation

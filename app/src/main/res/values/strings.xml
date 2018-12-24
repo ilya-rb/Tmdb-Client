@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">TmdbClient</string>
-    <string name="title_account">Account</string>
+    <string name="dynamic_feature_account">account</string>
 </resources>

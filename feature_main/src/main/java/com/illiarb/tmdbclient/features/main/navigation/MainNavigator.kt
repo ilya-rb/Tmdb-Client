@@ -40,7 +40,8 @@ class MainNavigator @Inject constructor(private val activity: FragmentActivity) 
         when (screenName) {
             ScreenName.MOVIES -> R.id.moviesFragmentAction
             ScreenName.MOVIE_DETAILS -> R.id.movieDetailsAction
-            ScreenName.ACCOUNT -> R.id.accountAction
-            ScreenName.AUTH -> R.id.authAction
+            else -> TODO()
+//            ScreenName.ACCOUNT -> R.id.accountAction
+//            ScreenName.AUTH -> R.id.authAction
         }
 }

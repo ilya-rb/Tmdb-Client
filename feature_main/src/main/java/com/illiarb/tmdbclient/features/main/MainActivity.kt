@@ -9,13 +9,15 @@ import androidx.navigation.Navigation
 import com.illiarb.tmdbclient.features.main.di.MainComponent
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
-import com.illiarb.tmdblcient.core.modules.auth.Authenticator
-import com.illiarb.tmdblcient.core.navigation.AccountScreen
-import com.illiarb.tmdblcient.core.navigation.AuthScreen
+import com.illiarb.tmdblcient.core.ext.addTo
 import com.illiarb.tmdblcient.core.navigation.MoviesScreen
 import com.illiarb.tmdblcient.core.navigation.Navigator
 import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
 import com.illiarb.tmdblcient.core.navigation.Router
+import com.illiarb.tmdblcient.core.system.Logger
+import com.illiarb.tmdblcient.core.system.feature.DynamicFeatureName
+import com.illiarb.tmdblcient.core.system.feature.FeatureInstaller
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -31,7 +33,9 @@ class MainActivity : AppCompatActivity(), Injectable {
     lateinit var router: Router
 
     @Inject
-    lateinit var authenticator: Authenticator
+    lateinit var featureInstaller: FeatureInstaller
+
+    private val destroyDisposable = CompositeDisposable()
 
     override fun inject(appProvider: AppProvider) = MainComponent.get(appProvider, this).inject(this)
 
@@ -46,12 +50,16 @@ class MainActivity : AppCompatActivity(), Injectable {
             setOnNavigationItemSelectedListener {
                 when (it.itemId) {
                     R.id.moviesFragment -> router.navigateTo(MoviesScreen)
+
+                    // TODO: probably move to interactor or smth
+                    // TODO: Add navigation to account
                     R.id.accountFragment -> {
-                        if (authenticator.isAuthenticated()) {
-                            router.navigateTo(AccountScreen)
-                        } else {
-                            router.navigateTo(AuthScreen)
-                        }
+                        featureInstaller.installFeatures(DynamicFeatureName.ACCOUNT)
+                            .subscribe(
+                                { state -> Logger.i(state.toString()) },
+                                { throwable -> Logger.e("message", throwable) }
+                            )
+                            .addTo(destroyDisposable)
                     }
                 }
                 true
@@ -81,7 +89,7 @@ class MainActivity : AppCompatActivity(), Injectable {
         val menuItem = bottomNavigation.menu.findItem(destination.id)
         // Don't show bottom navigation
         // for non-root fragments
-        bottomNavigation.visibility = if (menuItem == null && destination.id != R.id.authFragment) {
+        bottomNavigation.visibility = if (menuItem == null) {// && destination.id != R.id.authFragment) {
             View.GONE
         } else {
             View.VISIBLE

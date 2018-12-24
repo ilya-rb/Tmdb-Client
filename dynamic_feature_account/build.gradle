@@ -1,4 +1,4 @@
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.dynamic-feature'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -11,17 +11,12 @@ android {
     defaultConfig {
         minSdkVersion projectInfo.minSdkVersion
         targetSdkVersion projectInfo.targetSdkVersion
-
-        versionCode 1
-        versionName "1.0"
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -29,6 +24,7 @@ android {
 dependencies {
     kapt deps.daggerCompiler
 
+    implementation project(':app')
     implementation project(':core')
     implementation project(':core_ui')
 
