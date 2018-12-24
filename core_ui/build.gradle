@@ -42,8 +42,6 @@ dependencies {
 
     api deps.supportDesign
     api deps.constraintLayout
-    api deps.viewmodel
-    api deps.viewModelExt
 
     implementation deps.dagger
     implementation deps.glide
