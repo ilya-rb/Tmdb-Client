@@ -45,7 +45,7 @@ dependencies {
     implementation deps.rxAndroid
     implementation deps.supportDesign
 
-    // Play core lib that shared across
-    // all dynamic features
-    api deps.playCore
+    // Play core lib for downloading
+    // dynamic features
+    implementation deps.playCore
 }
