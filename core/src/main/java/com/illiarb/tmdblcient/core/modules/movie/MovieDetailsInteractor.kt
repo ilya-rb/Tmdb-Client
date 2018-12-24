@@ -13,4 +13,5 @@ interface MovieDetailsInteractor {
 
     fun getMovieReviews(id: Int): Single<List<Review>>
 
+    fun onGenreSelected(id: Int)
 }

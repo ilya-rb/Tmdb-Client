@@ -7,27 +7,26 @@ import android.view.ViewTreeObserver
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Slide
-import com.badoo.mvicore.binder.Binder
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.material.chip.Chip
+import com.illiarb.tmdbclient.feature.movies.MvpAppCompatFragment
 import com.illiarb.tmdbclient.feature.movies.R
-import com.illiarb.tmdbclient.feature.movies.details.feature.MovieDetailsFeature
-import com.illiarb.tmdbclient.feature.movies.details.feature.MovieDetailsState
+import com.illiarb.tmdbclient.feature.movies.details.MovieDetailsPresenter
+import com.illiarb.tmdbclient.feature.movies.details.MovieDetailsView
 import com.illiarb.tmdbclient.feature.movies.details.ui.photos.PhotosAdapter
 import com.illiarb.tmdbclient.feature.movies.details.ui.reviews.ReviewsAdapter
 import com.illiarb.tmdbclient.feature.movies.di.MoviesComponent
-import com.illiarb.tmdbexplorer.coreui.base.BaseMviFragment
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDecoration
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorerdi.Injectable
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Movie
-import com.illiarb.tmdblcient.core.navigation.NavigationKeys
-import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import javax.inject.Inject
 
-class MovieDetailsFragment : BaseMviFragment(), Injectable, Consumer<MovieDetailsState> {
+class MovieDetailsFragment : MvpAppCompatFragment(), Injectable, MovieDetailsView {
 
     @Inject
     lateinit var photosAdapter: PhotosAdapter
@@ -36,9 +35,8 @@ class MovieDetailsFragment : BaseMviFragment(), Injectable, Consumer<MovieDetail
     lateinit var reviewsAdapter: ReviewsAdapter
 
     @Inject
-    lateinit var feature: MovieDetailsFeature
-
-    private val binder = Binder()
+    @InjectPresenter
+    lateinit var presenter: MovieDetailsPresenter
 
     private val containerScrollListener by lazy(LazyThreadSafetyMode.NONE) {
         ViewTreeObserver.OnScrollChangedListener {
@@ -50,6 +48,14 @@ class MovieDetailsFragment : BaseMviFragment(), Injectable, Consumer<MovieDetail
         }
     }
 
+    @Suppress("unused")
+    @ProvidePresenter
+    fun providePresenter(): MovieDetailsPresenter = presenter
+
+    override fun getContentView(): Int = R.layout.fragment_movie_details
+
+    override fun inject(appProvider: AppProvider) = MoviesComponent.get(appProvider).inject(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enterTransition = Slide(Gravity.END)
@@ -57,36 +63,7 @@ class MovieDetailsFragment : BaseMviFragment(), Injectable, Consumer<MovieDetail
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupUi(view)
-        setupBindings()
-    }
 
-    override fun onResume() {
-        super.onResume()
-        movieDetailsContainer.viewTreeObserver.addOnScrollChangedListener(containerScrollListener)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        movieDetailsContainer.viewTreeObserver.removeOnScrollChangedListener(containerScrollListener)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binder.clear()
-    }
-
-    override fun getContentView(): Int = R.layout.fragment_movie_details
-
-    override fun inject(appProvider: AppProvider) = MoviesComponent.get(appProvider).inject(this)
-
-    override fun accept(state: MovieDetailsState) {
-        state.movie?.let {
-            showMovieDetails(it)
-        }
-    }
-
-    private fun setupUi(view: View) {
         movieDetailsToolbar.apply {
             awareOfWindowInsets()
             movieDetailsToolbar.setNavigationOnClickListener {
@@ -123,16 +100,17 @@ class MovieDetailsFragment : BaseMviFragment(), Injectable, Consumer<MovieDetail
         ViewCompat.requestApplyInsets(view)
     }
 
-    private fun setupBindings() {
-        binder.bind(feature to this)
-
-        arguments?.let {
-            val id = it.getInt(NavigationKeys.EXTRA_MOVIE_DETAILS_ID)
-            feature.accept(MovieDetailsFeature.Wish.LoadMovieDetails(id))
-        }
+    override fun onResume() {
+        super.onResume()
+        movieDetailsContainer.viewTreeObserver.addOnScrollChangedListener(containerScrollListener)
     }
 
-    private fun showMovieDetails(movie: Movie) {
+    override fun onPause() {
+        super.onPause()
+        movieDetailsContainer.viewTreeObserver.removeOnScrollChangedListener(containerScrollListener)
+    }
+
+    override fun showMovieDetails(movie: Movie) {
         with(movie) {
             movieDetailsTitle.text = title
 
@@ -157,7 +135,7 @@ class MovieDetailsFragment : BaseMviFragment(), Injectable, Consumer<MovieDetail
                     .apply {
                         text = genre.name
                         setOnClickListener {
-                            // TODO
+                            presenter.onGenreClicked(genre.id)
                         }
                     }
                     .also { movieDetailsTags.addView(it) }

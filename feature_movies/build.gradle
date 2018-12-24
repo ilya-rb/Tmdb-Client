@@ -27,16 +27,16 @@ android {
 }
 
 dependencies {
+    def moxyVersion = '1.5.5'
+
     kapt deps.daggerCompiler
+    kapt "com.arello-mobile:moxy-compiler:$moxyVersion"
 
     implementation project(':core')
     implementation project(':core_ui')
     implementation project(':di')
 
-    implementation 'com.github.badoo.mvicore:mvicore:1.1.4'
-    implementation ('com.github.badoo.mvicore:mvicore-android:1.1.4') {
-        transitive false
-    }
+    implementation "com.arello-mobile:moxy:$moxyVersion"
 
     implementation deps.dagger
 }

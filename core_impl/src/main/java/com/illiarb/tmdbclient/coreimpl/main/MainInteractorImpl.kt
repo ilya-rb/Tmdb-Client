@@ -4,7 +4,6 @@ import com.illiarb.tmdblcient.core.modules.auth.Authenticator
 import com.illiarb.tmdblcient.core.modules.main.MainInteractor
 import com.illiarb.tmdblcient.core.navigation.AccountScreen
 import com.illiarb.tmdblcient.core.navigation.AuthScreen
-import com.illiarb.tmdblcient.core.navigation.ExploreScreen
 import com.illiarb.tmdblcient.core.navigation.MoviesScreen
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.navigation.ScreenName
@@ -22,7 +21,6 @@ class MainInteractorImpl @Inject constructor(
         @Suppress("NON_EXHAUSTIVE_WHEN")
         when (screenName) {
             ScreenName.MOVIES -> router.navigateTo(MoviesScreen)
-            ScreenName.EXPLORE -> router.navigateTo(ExploreScreen)
             ScreenName.ACCOUNT -> {
                 if (authenticator.isAuthenticated()) {
                     router.navigateTo(AccountScreen)

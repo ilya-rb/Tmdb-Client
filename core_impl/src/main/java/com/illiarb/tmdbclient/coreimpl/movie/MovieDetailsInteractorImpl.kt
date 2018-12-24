@@ -19,4 +19,8 @@ class MovieDetailsInteractorImpl @Inject constructor(
 
     override fun getMovieReviews(id: Int): Single<List<Review>> =
         moviesRepository.getMovieReviews(id)
+
+    override fun onGenreSelected(id: Int) {
+        // TODO
+    }
 }

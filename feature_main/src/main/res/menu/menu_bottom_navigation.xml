@@ -13,12 +13,6 @@
         />
 
     <item
-        android:id="@+id/exploreFragment"
-        android:icon="@drawable/ic_explore"
-        android:title="@string/navigation_explore"
-        />
-
-    <item
         android:id="@+id/accountFragment"
         android:icon="@drawable/ic_account"
         android:title="@string/navigation_account"

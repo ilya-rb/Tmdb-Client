@@ -19,7 +19,6 @@ class MainViewModel @Inject constructor(
     private fun mapToScreenName(id: Int): ScreenName =
         when (id) {
             R.id.moviesFragment -> ScreenName.MOVIES
-            R.id.exploreFragment -> ScreenName.EXPLORE
             R.id.accountFragment -> ScreenName.ACCOUNT
             else -> TODO("Implement other screens")
         }

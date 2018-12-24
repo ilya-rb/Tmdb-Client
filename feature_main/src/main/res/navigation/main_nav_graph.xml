@@ -13,13 +13,8 @@
         android:label="MovieDetailsFragment" />
 
     <fragment
-        android:id="@+id/exploreFragment"
-        android:name="com.illiarb.tmdbclient.feature.explore.ExploreFragment"
-        android:label="ExploreFragment" />
-
-    <fragment
         android:id="@+id/accountFragment"
-        android:name="com.illiarb.tmdbclient.dynamic.feature.account.AccountFragment"
+        android:name="com.illiarb.tmdbclient.dynamic.feature.account.profile.ui.AccountFragment"
         android:label="AccountFragment" />
 
     <fragment
@@ -34,10 +29,6 @@
     <action
         android:id="@+id/moviesFragmentAction"
         app:destination="@id/moviesFragment" />
-
-    <action
-        android:id="@+id/exploreAction"
-        app:destination="@id/exploreFragment" />
 
     <action
         android:id="@+id/accountAction"

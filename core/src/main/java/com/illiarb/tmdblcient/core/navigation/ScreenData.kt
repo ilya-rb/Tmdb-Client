@@ -6,7 +6,6 @@ package com.illiarb.tmdblcient.core.navigation
 sealed class ScreenData(val screenName: ScreenName)
 
 object MoviesScreen : ScreenData(ScreenName.MOVIES)
-object ExploreScreen : ScreenData(ScreenName.EXPLORE)
 object AccountScreen : ScreenData(ScreenName.ACCOUNT)
 object AuthScreen : ScreenData(ScreenName.AUTH)
 

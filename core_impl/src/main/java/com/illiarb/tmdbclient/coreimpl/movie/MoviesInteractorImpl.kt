@@ -37,11 +37,9 @@ class MoviesInteractorImpl @Inject constructor(
                 })
             }
 
-    override fun getMovieFilters(): Single<List<MovieFilter>> = moviesRepository.getMovieFilters()
-
-    override fun getMovieDetails(id: Int): Single<Movie> = moviesRepository.getMovieDetails(id, "images,reviews,photos")
-
-    override fun onMovieSelected(id: Int, title: String, posterPath: String?) {
-        router.navigateTo(MovieDetailsScreen(id))
+    override fun onMovieSelected(movie: Movie) {
+        router.navigateTo(MovieDetailsScreen(movie.id))
     }
+
+    private fun getMovieFilters(): Single<List<MovieFilter>> = moviesRepository.getMovieFilters()
 }

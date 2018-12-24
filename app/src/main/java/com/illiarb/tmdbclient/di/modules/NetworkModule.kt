@@ -4,7 +4,6 @@ import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
-import com.illiarb.tmdbclient.di.qualifier.HereApi
 import com.illiarb.tmdbclient.storage.BuildConfig
 import com.illiarb.tmdbclient.storage.network.api.ApiKeyInterceptor
 import com.illiarb.tmdbclient.storage.network.api.service.AccountService
@@ -12,8 +11,6 @@ import com.illiarb.tmdbclient.storage.network.api.service.AuthService
 import com.illiarb.tmdbclient.storage.network.api.service.ConfigurationService
 import com.illiarb.tmdbclient.storage.network.api.service.MovieService
 import com.illiarb.tmdbclient.storage.network.error.ApiCallAdapterFactory
-import com.illiarb.tmdbclient.storage.network.hereapi.HereApiInterceptor
-import com.illiarb.tmdbclient.storage.network.hereapi.HereApiService
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -60,12 +57,6 @@ class NetworkModule {
         @Provides
         @JvmStatic
         @Singleton
-        fun provideHereApiService(@HereApi retrofit: Retrofit): HereApiService =
-            retrofit.create(HereApiService::class.java)
-
-        @Provides
-        @JvmStatic
-        @Singleton
         fun provideConfigurationService(retrofit: Retrofit): ConfigurationService =
             retrofit.create(ConfigurationService::class.java)
 
@@ -86,21 +77,6 @@ class NetworkModule {
 
         @Provides
         @JvmStatic
-        @HereApi
-        fun provideHereApiRetrofit(
-            @HereApi okHttpClient: OkHttpClient,
-            callAdapterFactory: CallAdapter.Factory,
-            converterFactory: Converter.Factory
-        ): Retrofit =
-            Retrofit.Builder()
-                .baseUrl(BuildConfig.HERE_API_URL)
-                .client(okHttpClient)
-                .addCallAdapterFactory(callAdapterFactory)
-                .addConverterFactory(converterFactory)
-                .build()
-
-        @Provides
-        @JvmStatic
         fun provideApiOkHttpClient(
             apiKeyInterceptor: ApiKeyInterceptor,
             httpLoggerInterceptor: HttpLoggingInterceptor
@@ -110,21 +86,6 @@ class NetworkModule {
                 .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
                 .addInterceptor(apiKeyInterceptor)
-                .addInterceptor(httpLoggerInterceptor)
-                .build()
-
-        @Provides
-        @JvmStatic
-        @HereApi
-        fun provideHereApiOkHttpClient(
-            hereApiInterceptor: HereApiInterceptor,
-            httpLoggerInterceptor: HttpLoggingInterceptor
-        ): OkHttpClient =
-            OkHttpClient.Builder()
-                .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
-                .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
-                .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
-                .addInterceptor(hereApiInterceptor)
                 .addInterceptor(httpLoggerInterceptor)
                 .build()
 

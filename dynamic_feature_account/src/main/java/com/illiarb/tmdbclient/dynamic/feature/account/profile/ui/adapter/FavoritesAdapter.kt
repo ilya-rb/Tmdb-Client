@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.dynamic.feature.account.adapter
+package com.illiarb.tmdbclient.dynamic.feature.account.profile.ui.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
