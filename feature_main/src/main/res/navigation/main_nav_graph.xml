@@ -20,8 +20,4 @@
         android:id="@+id/moviesFragmentAction"
         app:destination="@id/moviesFragment" />
 
-    <action
-        android:id="@+id/accountAction"
-        app:destination="@id/accountFragment" />
-
 </navigation>
