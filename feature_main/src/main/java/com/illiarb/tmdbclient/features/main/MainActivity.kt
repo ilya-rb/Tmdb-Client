@@ -2,19 +2,24 @@ package com.illiarb.tmdbclient.features.main
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import com.illiarb.tmdbclient.features.main.di.MainComponent
-import com.illiarb.tmdbexplorer.coreui.base.BaseActivity
 import com.illiarb.tmdbexplorerdi.Injectable
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
+import com.illiarb.tmdblcient.core.modules.auth.Authenticator
+import com.illiarb.tmdblcient.core.navigation.AccountScreen
+import com.illiarb.tmdblcient.core.navigation.AuthScreen
+import com.illiarb.tmdblcient.core.navigation.MoviesScreen
 import com.illiarb.tmdblcient.core.navigation.Navigator
 import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
+import com.illiarb.tmdblcient.core.navigation.Router
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity<MainViewModel>(), Injectable {
+class MainActivity : AppCompatActivity(), Injectable {
 
     @Inject
     lateinit var navigator: Navigator
@@ -22,15 +27,33 @@ class MainActivity : BaseActivity<MainViewModel>(), Injectable {
     @Inject
     lateinit var navigatorHolder: NavigatorHolder
 
+    @Inject
+    lateinit var router: Router
+
+    @Inject
+    lateinit var authenticator: Authenticator
+
+    override fun inject(appProvider: AppProvider) = MainComponent.get(appProvider, this).inject(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
         Navigation.findNavController(this, R.id.nav_host_fragment).addOnNavigatedListener(::onDestinationChanged)
 
         bottomNavigation.apply {
             setOnNavigationItemReselectedListener { /* No-op */ }
             setOnNavigationItemSelectedListener {
-                viewModel.onBottomNavigationItemSelected(it.itemId)
+                when (it.itemId) {
+                    R.id.moviesFragment -> router.navigateTo(MoviesScreen)
+                    R.id.accountFragment -> {
+                        if (authenticator.isAuthenticated()) {
+                            router.navigateTo(AccountScreen)
+                        } else {
+                            router.navigateTo(AuthScreen)
+                        }
+                    }
+                }
                 true
             }
         }
@@ -45,12 +68,6 @@ class MainActivity : BaseActivity<MainViewModel>(), Injectable {
         super.onPause()
         navigatorHolder.removeNavigator()
     }
-
-    override fun getContentView(): Int = R.layout.activity_main
-
-    override fun getViewModelClass(): Class<MainViewModel> = MainViewModel::class.java
-
-    override fun inject(appProvider: AppProvider) = MainComponent.get(appProvider, this).inject(this)
 
     override fun onNavigateUp(): Boolean =
         Navigation

@@ -8,8 +8,7 @@ import com.badoo.mvicore.binder.Binder
 import com.illiarb.tmdbclient.dynamic.feature.account.R
 import com.illiarb.tmdbclient.dynamic.feature.account.di.AccountComponent
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.feature.AccountFeature
-import com.illiarb.tmdbclient.dynamic.feature.account.profile.feature.AccountFeature.Wish.ShowMovieDetails
-import com.illiarb.tmdbclient.dynamic.feature.account.profile.feature.AccountFeature.Wish.SignOut
+import com.illiarb.tmdbclient.dynamic.feature.account.profile.feature.AccountFeature.Wish.*
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.feature.AccountState
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.ui.adapter.FavoritesAdapter
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
@@ -110,6 +109,8 @@ class AccountFragment : BaseFragment(), Injectable, Consumer<AccountState> {
     private fun setupBindings() {
         binder.bind(feature to this)
         binder.bind(feature.news to newsHandler)
+
+        feature.accept(ShowAccount)
     }
 
     private fun showAccount(account: Account) {

@@ -10,7 +10,6 @@ import dagger.Component
 @Component(
     dependencies = [AppProvider::class],
     modules = [
-        ViewModelModule::class,
         MainModule::class,
         ActivityModule::class
     ]

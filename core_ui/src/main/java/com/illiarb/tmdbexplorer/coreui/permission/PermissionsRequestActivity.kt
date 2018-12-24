@@ -5,11 +5,9 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.view.WindowManager
-import com.illiarb.tmdbexplorer.coreui.base.BaseActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData
-import com.illiarb.tmdbexplorer.coreui.viewmodel.BaseViewModel
 import com.illiarb.tmdbexplorerdi.Injectable
 import com.illiarb.tmdbexplorerdi.providers.AppProvider
 import com.illiarb.tmdblcient.core.pipeline.EventPipeline
@@ -17,7 +15,7 @@ import com.illiarb.tmdblcient.core.pipeline.EventPipeline
 /**
  * @author ilya-rb on 01.11.18.
  */
-class PermissionsRequestActivity : BaseActivity<BaseViewModel>(), Injectable {
+class PermissionsRequestActivity : AppCompatActivity(), Injectable {
 
     companion object {
 
@@ -63,10 +61,6 @@ class PermissionsRequestActivity : BaseActivity<BaseViewModel>(), Injectable {
         super.onNewIntent(intent)
         requestPermissions(intent)
     }
-
-    override fun getContentView(): Int = View.NO_ID
-
-    override fun getViewModelClass(): Class<BaseViewModel> = BaseViewModel::class.java
 
     override fun inject(appProvider: AppProvider) {
     }

@@ -1,11 +1,13 @@
 package com.illiarb.tmdbclient.dynamic.feature.account.profile.feature
 
 import com.badoo.mvicore.element.Actor
+import com.illiarb.tmdbclient.dynamic.feature.account.auth.feature.AuthFeature
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.feature.AccountFeature.Action
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.feature.AccountFeature.Effect
 import com.illiarb.tmdblcient.core.modules.account.AccountRepository
 import com.illiarb.tmdblcient.core.system.SchedulerProvider
 import io.reactivex.Observable
+import io.reactivex.ObservableSource
 import javax.inject.Inject
 
 /**
@@ -27,8 +29,7 @@ class AccountActor @Inject constructor(
         accountRepository.clearAccountData()
             .subscribeOn(schedulerProvider.provideIoScheduler())
             .observeOn(schedulerProvider.provideMainThreadScheduler())
-            .toObservable<Effect>()
-            .map { Effect.SignOut.Success }
+            .andThen(ObservableSource<AuthFeature.Effect> { Effect.SignOut.Success })
             .cast(Effect.SignOut::class.java)
             .startWith(Effect.SignOut.InFlight)
             .onErrorReturn(Effect.SignOut::Failure)
