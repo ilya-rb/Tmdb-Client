@@ -33,7 +33,7 @@ dependencies {
     implementation project(':core_ui')
 
     // For simplicity feature modules
-    // not splitted up on api and implementation
+    // not splited up on api and implementation
     implementation project(':feature_movies')
 
     implementation deps.dagger
