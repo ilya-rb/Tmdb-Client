@@ -6,6 +6,7 @@ import com.illiarb.tmdbclient.storage.network.request.CreateSessionRequest
 import com.illiarb.tmdbclient.storage.network.request.ValidateTokenRequest
 import com.illiarb.tmdblcient.core.modules.auth.Authenticator
 import io.reactivex.Completable
+import io.reactivex.Observable
 import javax.inject.Inject
 
 /**
