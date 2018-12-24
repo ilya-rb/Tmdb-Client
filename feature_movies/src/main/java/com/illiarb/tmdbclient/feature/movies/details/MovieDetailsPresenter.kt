@@ -18,12 +18,18 @@ class MovieDetailsPresenter @Inject constructor(
     private val schedulerProvider: SchedulerProvider
 ) : MvpPresenter<MovieDetailsView>() {
 
+    var id: Int = 0
+        set(value) {
+            field = value
+            if (value > 0) {
+                getMovieDetails(value)
+            }
+        }
+
     private val destroyDisposable = CompositeDisposable()
 
-    override fun onFirstViewAttach() {
-        super.onFirstViewAttach()
-
-        movieDetailsInteractor.getMovieDetails(0)
+    private fun getMovieDetails(id: Int) {
+        movieDetailsInteractor.getMovieDetails(id)
             .ioToMain(schedulerProvider)
             .subscribe(
                 { viewState.showMovieDetails(it) },

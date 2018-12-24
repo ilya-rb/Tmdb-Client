@@ -23,6 +23,7 @@ import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Movie
+import com.illiarb.tmdblcient.core.navigation.NavigationKeys
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import javax.inject.Inject
 
@@ -50,7 +51,12 @@ class MovieDetailsFragment : MvpAppCompatFragment(), Injectable, MovieDetailsVie
 
     @Suppress("unused")
     @ProvidePresenter
-    fun providePresenter(): MovieDetailsPresenter = presenter
+    fun providePresenter(): MovieDetailsPresenter =
+        presenter.apply {
+            arguments?.let { arguments ->
+                id = arguments.getInt(NavigationKeys.EXTRA_MOVIE_DETAILS_ID)
+            }
+        }
 
     override fun getContentView(): Int = R.layout.fragment_movie_details
 
