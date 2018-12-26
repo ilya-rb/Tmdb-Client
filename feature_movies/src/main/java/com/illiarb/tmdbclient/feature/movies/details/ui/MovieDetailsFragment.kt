@@ -116,6 +116,10 @@ class MovieDetailsFragment : MvpAppCompatFragment(), Injectable, MovieDetailsVie
         movieDetailsContainer.viewTreeObserver.removeOnScrollChangedListener(containerScrollListener)
     }
 
+    override fun showError(message: String) {
+        showErrorDialog(message)
+    }
+
     override fun showMovieDetails(movie: Movie) {
         with(movie) {
             movieDetailsTitle.text = title

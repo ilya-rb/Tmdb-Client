@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.transition.Fade
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.illiarb.tmdbclient.feature.movies.MvpAppCompatFragment
@@ -48,11 +47,6 @@ class MoviesFragment : MvpAppCompatFragment(), Injectable, MoviesView {
 
     override fun inject(appProvider: AppProvider) = MoviesComponent.get(appProvider).inject(this)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        exitTransition = Fade()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -76,6 +70,10 @@ class MoviesFragment : MvpAppCompatFragment(), Injectable, MoviesView {
             .addTo(destroyViewDisposable)
 
         ViewCompat.requestApplyInsets(view)
+    }
+
+    override fun showError(message: String) {
+        showErrorDialog(message)
     }
 
     override fun showMovieSections(movies: List<MovieSection>) {

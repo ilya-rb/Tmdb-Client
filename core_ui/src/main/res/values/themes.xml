@@ -35,4 +35,17 @@
     <!-- Typography -->
     <style name="TextAppearance.SecondaryText" parent="TextAppearance.MaterialComponents.Body1" />
 
+    <!-- Bottom sheet -->
+    <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog" />
+
+    <!-- set the rounded drawable as background to your bottom sheet -->
+    <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet_dialog</item>
+    </style>
+
+    <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+    </style>
+
 </resources>

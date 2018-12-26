@@ -69,6 +69,7 @@
         android:layout_marginBottom="@dimen/margin_large"
         android:text="@string/auth_btn_authorize"
         android:textAllCaps="false"
+        android:enabled="false"
         app:layout_constraintEnd_toEndOf="@id/textPasswordLayout"
         app:layout_constraintStart_toStartOf="@id/textPasswordLayout"
         app:layout_constraintTop_toBottomOf="@id/textPasswordLayout" />

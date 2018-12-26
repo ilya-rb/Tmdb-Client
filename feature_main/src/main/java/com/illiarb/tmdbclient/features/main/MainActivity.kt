@@ -98,6 +98,11 @@ class MainActivity : AppCompatActivity(), Injectable {
         navigatorHolder.removeNavigator()
     }
 
+    override fun onStop() {
+        super.onStop()
+        destroyDisposable.clear()
+    }
+
     override fun onNavigateUp(): Boolean =
         Navigation
             .findNavController(this, R.id.nav_host_fragment)

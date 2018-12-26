@@ -6,15 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import com.illiarb.tmdbexplorer.coreui.actions.CommonUiActions
-import com.illiarb.tmdbexplorer.coreui.actions.DefaultCommonUiActions
+import com.illiarb.tmdbexplorer.coreui.uiactions.UiActionImpl
+import com.illiarb.tmdbexplorer.coreui.uiactions.UiActions
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BaseFragment : Fragment(), CommonUiActions {
+abstract class BaseFragment : Fragment(), UiActions {
 
     protected val destroyViewDisposable by lazy { CompositeDisposable() }
 
-    private val commonUiActions by lazy { DefaultCommonUiActions(requireActivity()) }
+    private val uiActions by lazy { UiActionImpl(requireActivity()) }
 
     @LayoutRes
     protected abstract fun getContentView(): Int
@@ -34,11 +34,11 @@ abstract class BaseFragment : Fragment(), CommonUiActions {
         super.onDestroyView()
     }
 
-    override fun showMessage(message: String) = commonUiActions.showMessage(message)
+    override fun showToast(message: String) = uiActions.showToast(message)
 
-    override fun showError(message: String) = commonUiActions.showError(message)
+    override fun showErrorDialog(message: String) = uiActions.showErrorDialog(message)
 
-    override fun showProgressDialog() = commonUiActions.showProgressDialog()
+    override fun showBlockingProgress() = uiActions.showBlockingProgress()
 
-    override fun hideProgressDialog() = commonUiActions.hideProgressDialog()
+    override fun hideBlockingProgress() = uiActions.hideBlockingProgress()
 }

@@ -1,8 +1,8 @@
 package com.illiarb.tmdbclient.dynamic.feature.account.auth.ui
 
 import android.os.Bundle
-import android.text.Editable
 import android.view.View
+import androidx.transition.Fade
 import com.badoo.mvicore.binder.Binder
 import com.illiarb.tmdbclient.dynamic.feature.account.R
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.feature.AuthFeature
@@ -52,6 +52,11 @@ class AuthFragment : BaseFragment(), Injectable, Consumer<AuthViewState> {
 
     override fun inject(appProvider: AppProvider) = AccountComponent.get(appProvider).inject(this)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = Fade()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUi(view)
@@ -67,7 +72,7 @@ class AuthFragment : BaseFragment(), Injectable, Consumer<AuthViewState> {
         if (state.error != null) {
             when (state.error) {
                 is ValidationException -> showValidationErrors(state.error.errors)
-                is ApiException -> showError(state.error.message)
+                is ApiException -> showErrorDialog(state.error.message)
             }
         } else {
             textUsername.error = null
@@ -79,18 +84,16 @@ class AuthFragment : BaseFragment(), Injectable, Consumer<AuthViewState> {
 
     private fun setupUi(@Suppress("UNUSED_PARAMETER") view: View) {
         textUsername.addTextChangedListener(object : TextWatcherAdapter() {
-            override fun afterTextChanged(editable: Editable?) {
-                editable?.let {
-                    usernamePublisher.onNext(it.toString())
-                }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                super.onTextChanged(s, start, before, count)
+                usernamePublisher.onNext(s?.toString() ?: "")
             }
         })
 
         textPassword.addTextChangedListener(object : TextWatcherAdapter() {
-            override fun afterTextChanged(editable: Editable?) {
-                editable?.let {
-                    passwordPublisher.onNext(it.toString())
-                }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                super.onTextChanged(s, start, before, count)
+                passwordPublisher.onNext(s?.toString() ?: "")
             }
         })
 

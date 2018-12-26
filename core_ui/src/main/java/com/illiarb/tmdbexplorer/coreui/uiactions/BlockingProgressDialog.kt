@@ -1,4 +1,4 @@
-package com.illiarb.tmdbexplorer.coreui.common
+package com.illiarb.tmdbexplorer.coreui.uiactions
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.fragment_progress_dialog.*
 /**
  * @author ilya-rb on 28.11.18.
  */
-class ProgressDialog : DialogFragment() {
+class BlockingProgressDialog : DialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +36,6 @@ class ProgressDialog : DialogFragment() {
     }
 
     fun show(fragmentManager: FragmentManager) {
-        show(fragmentManager, ProgressDialog::class.java.name)
+        show(fragmentManager, BlockingProgressDialog::class.java.name)
     }
 }

@@ -73,9 +73,9 @@ class AccountFragment : BaseFragment(), Injectable, Consumer<AccountState> {
         accountSwipeRefreshLayout.isRefreshing = state.isLoading
 
         if (state.isBlockingLoading) {
-            showProgressDialog()
+            showBlockingProgress()
         } else {
-            hideProgressDialog()
+            hideBlockingProgress()
         }
 
         state.account?.let {
@@ -95,7 +95,7 @@ class AccountFragment : BaseFragment(), Injectable, Consumer<AccountState> {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = favoritesAdapter
             setHasFixedSize(true)
-            addItemDecoration(SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_small), 0, false, false))
+//            addItemDecoration(SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_small), 0, false, false))
         }
 
         uiEventPipeline.observeEvents()
