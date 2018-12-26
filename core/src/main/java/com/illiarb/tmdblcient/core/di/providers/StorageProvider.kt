@@ -3,6 +3,7 @@ package com.illiarb.tmdblcient.core.di.providers
 import com.illiarb.tmdblcient.core.modules.account.AccountRepository
 import com.illiarb.tmdblcient.core.modules.auth.Authenticator
 import com.illiarb.tmdblcient.core.modules.movie.MoviesRepository
+import com.illiarb.tmdblcient.core.system.ConnectivityStatus
 import com.illiarb.tmdblcient.core.system.ErrorMessageBag
 import com.illiarb.tmdblcient.core.system.ResourceResolver
 import com.illiarb.tmdblcient.core.system.WorkManager
@@ -23,4 +24,6 @@ interface StorageProvider {
     fun provideErrorMessageBar(): ErrorMessageBag
 
     fun provideWorkManager(): WorkManager
+
+    fun provideConnectivityStatus(): ConnectivityStatus
 }

@@ -17,6 +17,8 @@ import com.illiarb.tmdblcient.core.navigation.MoviesScreen
 import com.illiarb.tmdblcient.core.navigation.Navigator
 import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
 import com.illiarb.tmdblcient.core.navigation.Router
+import com.illiarb.tmdblcient.core.system.ConnectivityStatus
+import com.illiarb.tmdblcient.core.system.ConnectivityStatus.ConnectionState
 import com.illiarb.tmdblcient.core.system.Logger
 import com.illiarb.tmdblcient.core.system.feature.DynamicFeatureName
 import com.illiarb.tmdblcient.core.system.feature.FeatureDownloadStatus
@@ -41,6 +43,9 @@ class MainActivity : AppCompatActivity(), Injectable {
 
     @Inject
     lateinit var authenticator: Authenticator
+
+    @Inject
+    lateinit var connectivityStatus: ConnectivityStatus
 
     private val destroyDisposable = CompositeDisposable()
 
@@ -88,6 +93,14 @@ class MainActivity : AppCompatActivity(), Injectable {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        connectivityStatus.connectionState()
+            .subscribe { onConnectionStateChanged(it) }
+            .addTo(destroyDisposable)
+    }
+
     override fun onResumeFragments() {
         super.onResumeFragments()
         navigatorHolder.setNavigator(navigator)
@@ -124,5 +137,12 @@ class MainActivity : AppCompatActivity(), Injectable {
             } else {
                 View.VISIBLE
             }
+    }
+
+    private fun onConnectionStateChanged(state: ConnectionState) {
+        when (state) {
+            ConnectionState.CONNECTED -> connectionStatusLabel.visibility = View.GONE
+            ConnectionState.NOT_CONNECTED -> connectionStatusLabel.visibility = View.VISIBLE
+        }
     }
 }

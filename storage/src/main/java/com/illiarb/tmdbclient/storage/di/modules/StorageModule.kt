@@ -4,9 +4,11 @@ import androidx.work.WorkerFactory
 import com.illiarb.tmdbclient.storage.local.AndroidResourceResolver
 import com.illiarb.tmdbclient.storage.local.PersistableStorage
 import com.illiarb.tmdbclient.storage.network.api.service.ConfigurationService
+import com.illiarb.tmdbclient.storage.system.AndroidConnectivityStatus
 import com.illiarb.tmdbclient.storage.system.AndroidWorkManager
 import com.illiarb.tmdbclient.storage.system.DaggerWorkerFactory
 import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.system.ConnectivityStatus
 import com.illiarb.tmdblcient.core.system.ResourceResolver
 import com.illiarb.tmdblcient.core.system.WorkManager
 import dagger.Module
@@ -30,6 +32,10 @@ class StorageModule(val app: App) {
     @Provides
     @Singleton
     fun provideWorkManager(workerFactory: WorkerFactory): WorkManager = AndroidWorkManager(app, workerFactory)
+
+    @Provides
+    @Singleton
+    fun provideConnectivityStatus(): ConnectivityStatus = AndroidConnectivityStatus(app.getApplication())
 
     @Provides
     fun provideWorkerFactory(configurationService: ConfigurationService, persistableStorage: PersistableStorage): WorkerFactory =

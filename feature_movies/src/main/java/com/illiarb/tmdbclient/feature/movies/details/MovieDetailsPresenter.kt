@@ -29,7 +29,7 @@ class MovieDetailsPresenter @Inject constructor(
     private val destroyDisposable = CompositeDisposable()
 
     private fun getMovieDetails(id: Int) {
-        movieDetailsInteractor.getMovieDetails(0)
+        movieDetailsInteractor.getMovieDetails(id)
             .ioToMain(schedulerProvider)
             .subscribe(
                 { viewState.showMovieDetails(it) },
