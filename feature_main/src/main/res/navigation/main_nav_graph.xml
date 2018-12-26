@@ -12,6 +12,11 @@
         android:name="com.illiarb.tmdbclient.feature.movies.details.ui.MovieDetailsFragment"
         android:label="MovieDetailsFragment" />
 
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.illiarb.tmdbclient.feature.search.SearchFragment"
+        android:label="SearchFragment" />
+
     <action
         android:id="@+id/movieDetailsAction"
         app:destination="@id/movieDetailsFragment" />
@@ -19,5 +24,9 @@
     <action
         android:id="@+id/moviesFragmentAction"
         app:destination="@id/moviesFragment" />
+
+    <action
+        android:id="@+id/searchAction"
+        app:destination="@id/searchFragment" />
 
 </navigation>

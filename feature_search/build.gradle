@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 apply from: dependenciesFilePath
 
@@ -32,11 +32,5 @@ dependencies {
     implementation project(':core')
     implementation project(':core_ui')
 
-    // For simplicity feature modules
-    // not splitted up on api and implementation
-    implementation project(':feature_movies')
-    implementation project(':feature_search')
-
     implementation deps.dagger
-    implementation deps.navigation
 }

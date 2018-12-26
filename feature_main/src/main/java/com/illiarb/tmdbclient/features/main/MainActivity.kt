@@ -17,6 +17,7 @@ import com.illiarb.tmdblcient.core.navigation.MoviesScreen
 import com.illiarb.tmdblcient.core.navigation.Navigator
 import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
 import com.illiarb.tmdblcient.core.navigation.Router
+import com.illiarb.tmdblcient.core.navigation.SearchScreen
 import com.illiarb.tmdblcient.core.system.ConnectivityStatus
 import com.illiarb.tmdblcient.core.system.ConnectivityStatus.ConnectionState
 import com.illiarb.tmdblcient.core.system.Logger
@@ -62,6 +63,7 @@ class MainActivity : AppCompatActivity(), Injectable {
             setOnNavigationItemSelectedListener {
                 when (it.itemId) {
                     R.id.moviesFragment -> router.navigateTo(MoviesScreen)
+                    R.id.searchFragment -> router.navigateTo(SearchScreen)
 
                     /**
                      * TODO's

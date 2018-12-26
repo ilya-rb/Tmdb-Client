@@ -74,6 +74,7 @@ class MainNavigator @Inject constructor(
             ScreenName.MOVIE_DETAILS -> R.id.movieDetailsAction
             ScreenName.ACCOUNT -> R.id.accountAction
             ScreenName.AUTH -> R.id.authAction
+            ScreenName.SEARCH -> R.id.searchAction
         }
 
     private fun isDynamicFeatureDirections(directions: NavDirections): Boolean =

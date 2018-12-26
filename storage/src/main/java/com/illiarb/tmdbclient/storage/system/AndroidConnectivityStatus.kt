@@ -17,6 +17,10 @@ import javax.inject.Inject
  */
 class AndroidConnectivityStatus @Inject constructor(private val context: Context) : ConnectivityStatus {
 
+    companion object {
+        private const val INTENT_FILTER_CONNECTIVITY_CHANGE = "android.net.conn.CONNECTIVITY_CHANGE"
+    }
+
     private val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
@@ -48,7 +52,7 @@ class AndroidConnectivityStatus @Inject constructor(private val context: Context
         }
 
     private fun registerReceiver() {
-        context.registerReceiver(connectionReceiver, IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"))
+        context.registerReceiver(connectionReceiver, IntentFilter(INTENT_FILTER_CONNECTIVITY_CHANGE))
     }
 
     private fun unregisterReceiver() {

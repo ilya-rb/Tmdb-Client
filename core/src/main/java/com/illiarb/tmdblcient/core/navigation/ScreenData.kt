@@ -8,5 +8,6 @@ sealed class ScreenData(val screenName: ScreenName)
 object MoviesScreen : ScreenData(ScreenName.MOVIES)
 object AccountScreen : ScreenData(ScreenName.ACCOUNT)
 object AuthScreen : ScreenData(ScreenName.AUTH)
+object SearchScreen : ScreenData(ScreenName.SEARCH)
 
 data class MovieDetailsScreen(val id: Int) : ScreenData(ScreenName.MOVIE_DETAILS)

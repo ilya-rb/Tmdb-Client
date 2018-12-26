@@ -39,6 +39,7 @@ dependencies {
     implementation project(':tools')
     implementation project(':feature_main')
     implementation project(':feature_movies')
+    implementation project(':feature_search')
 
     implementation deps.dagger
     implementation deps.timber
