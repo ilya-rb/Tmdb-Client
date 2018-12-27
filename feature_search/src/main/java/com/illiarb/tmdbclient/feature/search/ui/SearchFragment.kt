@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.illiarb.tmdbclient.feature.search.R
@@ -14,7 +15,6 @@ import com.illiarb.tmdbclient.feature.search.di.SearchComponent
 import com.illiarb.tmdbclient.feature.search.viewmodel.SearchViewModel
 import com.illiarb.tmdbclient.feature.search.viewmodel.ViewModelFactory
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDecoration
 import com.illiarb.tmdbexplorer.coreui.pipeline.MoviePipelineData
 import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData
 import com.illiarb.tmdblcient.core.di.Injectable
@@ -28,6 +28,7 @@ import io.reactivex.Observable
 import io.reactivex.functions.Consumer
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.android.synthetic.main.layout_empty_view.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -67,12 +68,10 @@ class SearchFragment : BaseFragment(), Injectable, SearchView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchSwipeRefresh.isEnabled = false
         searchResultsList.apply {
             adapter = searchAdapter
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
-            SpaceItemDecoration(0, resources.getDimensionPixelSize(R.dimen.margin_small))
         }
 
         uiEventsPipeline.observeEvents()
@@ -96,8 +95,25 @@ class SearchFragment : BaseFragment(), Injectable, SearchView {
         get() = Consumer { processSideEffects(it) }
 
     private fun render(state: SearchViewState) {
-        searchSwipeRefresh.isRefreshing = state.isSearchRunning
+        searchProgress.visibility = if (state.isSearchRunning) View.VISIBLE else View.GONE
+
+        val drawable =
+            if (searchQuery.text.isNullOrEmpty()) {
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_search)
+            } else {
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_clear_search)
+            }
+        searchIcon.setImageDrawable(drawable)
+
         searchAdapter.submitList(state.searchResults)
+
+        if (state.searchResults.isEmpty()) {
+            emptyView.visibility = View.VISIBLE
+            searchResultsList.visibility = View.GONE
+        } else {
+            emptyView.visibility = View.GONE
+            searchResultsList.visibility = View.VISIBLE
+        }
     }
 
     private fun processSideEffects(sideEffect: SearchInteractor.SideEffect) =

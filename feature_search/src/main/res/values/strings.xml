@@ -3,4 +3,5 @@
     <string name="app_name">Search</string>
 
     <string name="hint_search_query">Search…</string>
+    <string name="search_no_results_found">No results :(</string>
 </resources>
