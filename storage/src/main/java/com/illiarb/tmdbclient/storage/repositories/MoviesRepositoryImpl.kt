@@ -6,6 +6,7 @@ import com.illiarb.tmdbclient.storage.mappers.MovieMapper
 import com.illiarb.tmdbclient.storage.mappers.ReviewMapper
 import com.illiarb.tmdbclient.storage.model.MovieModel
 import com.illiarb.tmdbclient.storage.network.api.service.MovieService
+import com.illiarb.tmdbclient.storage.network.api.service.SearchService
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.entity.Review
@@ -21,6 +22,7 @@ import javax.inject.Singleton
 @Singleton
 class MoviesRepositoryImpl @Inject constructor(
     private val moviesService: MovieService,
+    private val searchService: SearchService,
     private val persistableStorage: PersistableStorage,
     private val movieMapper: MovieMapper,
     private val reviewMapper: ReviewMapper,
@@ -65,20 +67,13 @@ class MoviesRepositoryImpl @Inject constructor(
             .map(movieMapper::mapList)
     }
 
+    override fun searchMovies(query: String): Single<List<Movie>> =
+        searchService.searchMovies(query)
+            .map { it.results }
+            .map(movieMapper::mapList)
+
     override fun getMovieDetails(id: Int, appendToResponse: String): Single<Movie> =
         moviesService.getMovieDetails(id, appendToResponse)
-//        persistableStorage.getLastMovieDetails()
-//            .flatMap {
-//                // If Last stored differed of requested
-//                // Fetch from network and store it
-//                if (it.id != id) {
-//                    moviesService.getMovieDetails(id, appendToResponse)
-//                        .doOnSuccess { movie -> persistableStorage.storeLastMovieDetails(movie) }
-//                } else {
-//                    // Otherwise passed cached value
-//                    Single.just(it)
-//                }
-//            }
             .map(movieMapper::map)
 
     override fun getMovieReviews(id: Int): Single<List<Review>> =

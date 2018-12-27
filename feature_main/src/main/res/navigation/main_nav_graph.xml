@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.illiarb.tmdbclient.feature.search.SearchFragment"
+        android:name="com.illiarb.tmdbclient.feature.search.ui.SearchFragment"
         android:label="SearchFragment" />
 
     <action

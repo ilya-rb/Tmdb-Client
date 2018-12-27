@@ -32,5 +32,10 @@ dependencies {
     implementation project(':core')
     implementation project(':core_ui')
 
+    //noinspection GradleDependency
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.0.0-rc01"
+    //noinspection GradleDependency
+    implementation "androidx.lifecycle:lifecycle-extensions:2.0.0-rc01"
+
     implementation deps.dagger
 }

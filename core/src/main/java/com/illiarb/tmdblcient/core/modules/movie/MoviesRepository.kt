@@ -18,4 +18,5 @@ interface MoviesRepository {
 
     fun getMovieFilters(): Single<List<MovieFilter>>
 
+    fun searchMovies(query: String): Single<List<Movie>>
 }

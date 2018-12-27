@@ -17,13 +17,13 @@ interface AccountService {
     @GET("account")
     fun getAccountDetails(@Query("session_id") sessionId: String): Single<AccountModel>
 
-    @GET("account/{account_id}/favorite/movies")
+    @GET("account/{account_id}/favorite/results")
     fun getAccountFavoriteMovies(
         @Path("account_id") accountId: Int,
         @Query("session_id") sessionId: String
     ): Single<ResultsModel<MovieModel>>
 
-    @GET("account/{account_id}/rated/movies")
+    @GET("account/{account_id}/rated/results")
     fun getAccountRatedMovies(
         @Path("account_id") accountId: Int,
         @Query("session_id") sessionId: String

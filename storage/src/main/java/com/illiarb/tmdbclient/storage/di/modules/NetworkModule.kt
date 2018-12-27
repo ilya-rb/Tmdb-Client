@@ -10,6 +10,7 @@ import com.illiarb.tmdbclient.storage.network.api.service.AccountService
 import com.illiarb.tmdbclient.storage.network.api.service.AuthService
 import com.illiarb.tmdbclient.storage.network.api.service.ConfigurationService
 import com.illiarb.tmdbclient.storage.network.api.service.MovieService
+import com.illiarb.tmdbclient.storage.network.api.service.SearchService
 import com.illiarb.tmdbclient.storage.network.error.ApiCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -41,6 +42,12 @@ class NetworkModule {
         @Singleton
         fun provideMoviesService(retrofit: Retrofit): MovieService =
             retrofit.create(MovieService::class.java)
+
+        @Provides
+        @JvmStatic
+        @Singleton
+        fun provideSearchService(retrofit: Retrofit): SearchService =
+            retrofit.create(SearchService::class.java)
 
         @Provides
         @JvmStatic

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_movie_height"
+    android:contentDescription="@null"
+    tools:scaleType="fitXY"
+    tools:src="@tools:sample/backgrounds/scenic">
+
+    <include layout="@layout/layout_start_end_guidelines" />
+
+    <ImageView
+        android:id="@+id/itemSearchImage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:scaleType="fitXY"
+        tools:src="@tools:sample/backgrounds/scenic" />
+
+    <TextView
+        android:id="@+id/itemSearchTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/colorSurface"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@id/itemSearchTmdb"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Movie title" />
+
+    <ImageView
+        android:id="@+id/itemSearchTmdb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_tmdblogo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart" />
+
+    <TextView
+        android:id="@+id/itemSearchRating"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_default"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorSurface"
+        app:layout_constraintBottom_toBottomOf="@id/itemSearchTmdb"
+        app:layout_constraintStart_toEndOf="@id/itemSearchTmdb"
+        app:layout_constraintTop_toTopOf="@id/itemSearchTmdb"
+        tools:text="7.4" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
