@@ -39,7 +39,7 @@ class SearchViewModel @Inject constructor(
 
         searchInteractor.sideEffects
             .observeOn(schedulerProvider.provideMainThreadScheduler())
-            .subscribe()
+            .subscribe(view.sideEffects)
             .addTo(clearDisposable)
 
         searchInteractor.results
@@ -49,9 +49,13 @@ class SearchViewModel @Inject constructor(
             .addTo(clearDisposable)
     }
 
+    fun unbind() {
+        clearDisposable.clear()
+    }
+
     override fun onCleared() {
         super.onCleared()
-        clearDisposable.clear()
+        unbind()
     }
 
     private fun intentToCommand(intent: SearchIntent): SearchInteractor.Command =

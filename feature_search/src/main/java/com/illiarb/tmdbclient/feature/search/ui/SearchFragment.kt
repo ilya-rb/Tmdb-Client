@@ -21,6 +21,8 @@ import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.ext.addTo
+import com.illiarb.tmdblcient.core.modules.search.SearchInteractor
+import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.pipeline.EventPipeline
 import io.reactivex.Observable
 import io.reactivex.functions.Consumer
@@ -42,6 +44,9 @@ class SearchFragment : BaseFragment(), Injectable, SearchView {
 
     @Inject
     lateinit var uiEventsPipeline: EventPipeline<@JvmSuppressWildcards UiPipelineData>
+
+    @Inject
+    lateinit var router: Router
 
     private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel::class.java)
@@ -74,21 +79,30 @@ class SearchFragment : BaseFragment(), Injectable, SearchView {
             .map { it.movie }
             .subscribe { itemMovieClickSubject.onNext(it) }
             .addTo(destroyViewDisposable)
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         viewModel.bind(this)
     }
 
-    override val state: Consumer<in SearchViewState>
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.unbind()
+    }
+
+    override val state: Consumer<SearchViewState>
         get() = Consumer { render(it) }
+
+    override val sideEffects: Consumer<SearchInteractor.SideEffect>
+        get() = Consumer { processSideEffects(it) }
 
     private fun render(state: SearchViewState) {
         searchSwipeRefresh.isRefreshing = state.isSearchRunning
+        searchAdapter.submitList(state.searchResults)
+    }
 
-        if (state.searchResults.isNotEmpty()) {
-            searchAdapter.submitList(state.searchResults)
+    private fun processSideEffects(sideEffect: SearchInteractor.SideEffect) {
+        when (sideEffect) {
+            is SearchInteractor.SideEffect.ShowError -> showErrorDialog(sideEffect.message)
+            is SearchInteractor.SideEffect.ShowScreen -> router.navigateTo(sideEffect.screenData)
         }
     }
 
@@ -120,6 +134,7 @@ class SearchFragment : BaseFragment(), Injectable, SearchView {
                     searchQuery.removeTextChangedListener(watcher)
                 }
             }
+            .skip(1)
             .debounce(400, TimeUnit.MILLISECONDS)
             .filter { it.isNotEmpty() }
             .map(SearchIntent::Search)

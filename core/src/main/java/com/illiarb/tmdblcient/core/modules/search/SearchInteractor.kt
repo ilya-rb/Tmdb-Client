@@ -1,6 +1,7 @@
 package com.illiarb.tmdblcient.core.modules.search
 
 import com.illiarb.tmdblcient.core.entity.Movie
+import com.illiarb.tmdblcient.core.navigation.ScreenData
 import io.reactivex.Observable
 import io.reactivex.functions.Consumer
 
@@ -23,6 +24,7 @@ interface SearchInteractor {
 
     sealed class SideEffect {
         data class ShowError(val message: String) : SideEffect()
+        data class ShowScreen(val screenData: ScreenData) : SideEffect()
     }
 
     val results: Observable<SearchResult>
