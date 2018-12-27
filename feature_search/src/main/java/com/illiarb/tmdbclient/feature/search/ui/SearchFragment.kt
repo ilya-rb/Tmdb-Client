@@ -67,6 +67,7 @@ class SearchFragment : BaseFragment(), Injectable, SearchView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        searchSwipeRefresh.isEnabled = false
         searchResultsList.apply {
             adapter = searchAdapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -99,18 +100,17 @@ class SearchFragment : BaseFragment(), Injectable, SearchView {
         searchAdapter.submitList(state.searchResults)
     }
 
-    private fun processSideEffects(sideEffect: SearchInteractor.SideEffect) {
+    private fun processSideEffects(sideEffect: SearchInteractor.SideEffect) =
         when (sideEffect) {
             is SearchInteractor.SideEffect.ShowError -> showErrorDialog(sideEffect.message)
             is SearchInteractor.SideEffect.ShowScreen -> router.navigateTo(sideEffect.screenData)
         }
-    }
 
     private fun createItemMovieClickObservable(): Observable<SearchIntent> =
         itemMovieClickSubject.map { SearchIntent.ShowMovieDetails(it.id) }
 
-    private fun createSearchTextObservable(): Observable<SearchIntent> {
-        return Observable
+    private fun createSearchTextObservable(): Observable<SearchIntent> =
+        Observable
             .create<String> { emitter ->
                 val watcher = object : TextWatcher {
                     override fun afterTextChanged(s: Editable?) {
@@ -138,5 +138,4 @@ class SearchFragment : BaseFragment(), Injectable, SearchView {
             .debounce(400, TimeUnit.MILLISECONDS)
             .filter { it.isNotEmpty() }
             .map(SearchIntent::Search)
-    }
 }

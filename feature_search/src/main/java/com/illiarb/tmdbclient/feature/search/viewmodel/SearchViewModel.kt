@@ -45,6 +45,7 @@ class SearchViewModel @Inject constructor(
         searchInteractor.results
             .observeOn(schedulerProvider.provideMainThreadScheduler())
             .scan(SearchViewState.idle(), reducer)
+            .distinctUntilChanged()
             .subscribe(view.state)
             .addTo(clearDisposable)
     }

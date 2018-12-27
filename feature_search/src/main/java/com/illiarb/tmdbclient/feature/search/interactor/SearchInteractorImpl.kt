@@ -4,6 +4,7 @@ import com.illiarb.tmdblcient.core.ext.addTo
 import com.illiarb.tmdblcient.core.modules.movie.MoviesRepository
 import com.illiarb.tmdblcient.core.modules.search.SearchInteractor
 import com.illiarb.tmdblcient.core.modules.search.SearchInteractor.SearchResult
+import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
@@ -35,6 +36,9 @@ class SearchInteractorImpl @Inject constructor(
     override val command: Consumer<SearchInteractor.Command>
         get() = Consumer { command ->
             when (command) {
+                is SearchInteractor.Command.SearchMovieDetails ->
+                    sideEffectSubject.onNext(SearchInteractor.SideEffect.ShowScreen(MovieDetailsScreen(command.id)))
+
                 is SearchInteractor.Command.Search ->
                     moviesRepository.searchMovies(command.query)
                         .toObservable()
