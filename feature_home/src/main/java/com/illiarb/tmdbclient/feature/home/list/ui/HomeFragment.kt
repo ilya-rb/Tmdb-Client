@@ -58,6 +58,7 @@ class HomeFragment : MvpAppCompatFragment(), Injectable, MoviesView {
                 hasFixedSize(true)
                 spaceBetween {
                     horizontally = resources.getDimensionPixelSize(R.dimen.item_movie_spacing)
+                    addToFirst = false
                 }
             }
             .attachToRecyclerView(moviesList)
@@ -86,18 +87,17 @@ class HomeFragment : MvpAppCompatFragment(), Injectable, MoviesView {
     }
 
     override fun showMovieFilters(filters: List<MovieFilter>) {
-        filters
-            .map { filter ->
-                Chip(requireContext(), null, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Action)
-                    .apply {
-                        text = filter.name
-                        isCheckedIconVisible = true
-                        isCheckable = true
-                        isChecked = true
-                        setOnClickListener { presenter.onFilterSelected(filter) }
-                    }
-                    .also { movieFilters.addView(it) }
-            }
+        filters.map { filter ->
+            Chip(requireContext(), null, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Action)
+                .apply {
+                    text = filter.name
+                    isCheckedIconVisible = true
+                    isCheckable = true
+                    isChecked = true
+                    setOnClickListener { presenter.onFilterSelected(filter) }
+                }
+                .also { movieFilters.addView(it) }
+        }
     }
 
     override fun showProgress() {

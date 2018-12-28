@@ -8,7 +8,6 @@
         android:id="@+id/itemSectionTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_default"
         android:paddingTop="@dimen/margin_default"
         android:paddingBottom="@dimen/margin_default"
         android:textStyle="bold"
