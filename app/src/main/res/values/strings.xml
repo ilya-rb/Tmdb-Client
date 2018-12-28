@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">TmdbClient</string>
     <string name="dynamic_feature_account">account</string>
+    <string name="network_not_connected">Not connected to network</string>
 </resources>

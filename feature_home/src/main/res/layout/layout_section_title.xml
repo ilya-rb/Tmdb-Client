@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <include layout="@layout/layout_start_end_guidelines" />
+
+    <TextView
+        android:id="@+id/itemSectionTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/item_movie_section_vertical_padding"
+        android:paddingBottom="@dimen/item_movie_section_vertical_padding"
+        android:textAppearance="@style/TextAppearance.MovieSectionTitle"
+        app:layout_constraintEnd_toStartOf="@id/itemSectionMore"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Upcoming" />
+
+    <TextView
+        android:id="@+id/itemSectionMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/movie_section_more"
+        android:textAppearance="@style/TextAppearance.MovieSectionTitle"
+        android:textColor="@color/colorTextLink"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/itemSectionTitle"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+        app:layout_constraintTop_toTopOf="@id/itemSectionTitle" />
+
+</merge>

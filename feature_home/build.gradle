@@ -1,0 +1,42 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+apply from: dependenciesFilePath
+
+android {
+    compileSdkVersion projectInfo.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion projectInfo.minSdkVersion
+        targetSdkVersion projectInfo.targetSdkVersion
+
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    def moxyVersion = '1.5.5'
+
+    kapt deps.daggerCompiler
+    kapt "com.arello-mobile:moxy-compiler:$moxyVersion"
+
+    implementation project(':core')
+    implementation project(':core_ui')
+
+    implementation "com.arello-mobile:moxy:$moxyVersion"
+    implementation 'com.yarolegovich:discrete-scrollview:1.4.9'
+
+    implementation deps.dagger
+}

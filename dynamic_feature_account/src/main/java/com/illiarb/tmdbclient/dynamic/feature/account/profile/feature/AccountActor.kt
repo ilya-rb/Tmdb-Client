@@ -11,6 +11,7 @@ import io.reactivex.Observable
 import io.reactivex.ObservableSource
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
+import java.util.Collections
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -43,8 +44,11 @@ class AccountActor @Inject constructor(
             .flatMap { account ->
                 Single
                     .zip(
-                        accountRepository.getFavoriteMovies(account.id),
-                        accountRepository.getRatedMovies(account.id),
+                        accountRepository.getFavoriteMovies(account.id)
+                            .onErrorResumeNext(Single.just(Collections.emptyList())),
+
+                        accountRepository.getRatedMovies(account.id)
+                            .onErrorResumeNext(Single.just(Collections.emptyList())),
 
                         BiFunction { favoriteMovies: List<Movie>, ratedMovies: List<Movie> ->
                             account.copy(
@@ -53,7 +57,6 @@ class AccountActor @Inject constructor(
                             )
                         }
                     )
-                    .subscribeOn(schedulerProvider.provideIoScheduler())
             }
             .subscribeOn(schedulerProvider.provideIoScheduler())
             .observeOn(schedulerProvider.provideMainThreadScheduler())
@@ -64,5 +67,9 @@ class AccountActor @Inject constructor(
 
     private fun showMovieDetails(id: Int): Observable<out Effect> = Observable.just(Effect.ShowMovieDetails(id))
 
-    private fun createAverageRating(ratedMovies: List<Movie>): Int = ratedMovies.map { it.rating }.average().roundToInt() * 10
+    private fun createAverageRating(ratedMovies: List<Movie>): Int =
+        ratedMovies
+            .map { it.rating }
+            .average()
+            .roundToInt() * 10
 }

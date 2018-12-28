@@ -95,6 +95,7 @@ class AccountFragment : BaseFragment(), Injectable, Consumer<AccountState> {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = favoritesAdapter
             setHasFixedSize(true)
+            // TODO Fix this
 //            addItemDecoration(SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_small), 0, false, false))
         }
 
@@ -117,7 +118,7 @@ class AccountFragment : BaseFragment(), Injectable, Consumer<AccountState> {
         accountAvatar.text = account.username.first().toUpperCase().toString()
         accountUsername.text = getString(R.string.account_username, account.username)
         accountAverageScore.text = account.averageRating.toString()
-        accountAverageScoreProgress.progress = account.averageRating
+        accountAverageScoreProgress.progress = 100//account.averageRating
         accountName.text = if (account.name.isEmpty()) {
             getString(R.string.account_name_fallback)
         } else {

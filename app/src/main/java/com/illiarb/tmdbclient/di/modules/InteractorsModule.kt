@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.di.modules
 
-import com.illiarb.tmdbclient.feature.movies.details.interactor.MovieDetailsInteractorImpl
-import com.illiarb.tmdbclient.feature.movies.list.interactor.MoviesInteractorImpl
+import com.illiarb.tmdbclient.feature.home.details.interactor.MovieDetailsInteractorImpl
+import com.illiarb.tmdbclient.feature.home.list.interactor.MoviesInteractorImpl
 import com.illiarb.tmdbclient.feature.search.interactor.SearchInteractorImpl
 import com.illiarb.tmdblcient.core.modules.movie.MovieDetailsInteractor
 import com.illiarb.tmdblcient.core.modules.movie.MoviesInteractor
