@@ -5,6 +5,7 @@ import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy
 import com.arellomobile.mvp.viewstate.strategy.SingleStateStrategy
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
+import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.entity.MovieSection
 
 /**
@@ -12,8 +13,11 @@ import com.illiarb.tmdblcient.core.entity.MovieSection
  */
 interface MoviesView : MvpView {
 
-    @StateStrategyType(SingleStateStrategy::class)
+    @StateStrategyType(AddToEndSingleStrategy::class)
     fun showMovieSections(movies: List<MovieSection>)
+
+    @StateStrategyType(AddToEndSingleStrategy::class)
+    fun showMovieFilters(filters: List<MovieFilter>)
 
     @StateStrategyType(SkipStrategy::class)
     fun showError(message: String)

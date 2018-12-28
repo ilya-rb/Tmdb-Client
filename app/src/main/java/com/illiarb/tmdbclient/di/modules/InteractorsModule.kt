@@ -1,10 +1,10 @@
 package com.illiarb.tmdbclient.di.modules
 
 import com.illiarb.tmdbclient.feature.home.details.interactor.MovieDetailsInteractorImpl
-import com.illiarb.tmdbclient.feature.home.list.interactor.MoviesInteractorImpl
+import com.illiarb.tmdbclient.feature.home.list.interactor.HomeInteractorImpl
 import com.illiarb.tmdbclient.feature.search.interactor.SearchInteractorImpl
 import com.illiarb.tmdblcient.core.modules.movie.MovieDetailsInteractor
-import com.illiarb.tmdblcient.core.modules.movie.MoviesInteractor
+import com.illiarb.tmdblcient.core.modules.movie.HomeInteractor
 import com.illiarb.tmdblcient.core.modules.search.SearchInteractor
 import dagger.Binds
 import dagger.Module
@@ -16,7 +16,7 @@ import dagger.Module
 interface InteractorsModule {
 
     @Binds
-    fun bindMoviesInteractor(impl: MoviesInteractorImpl): MoviesInteractor
+    fun bindMoviesInteractor(impl: HomeInteractorImpl): HomeInteractor
 
     @Binds
     fun bindMovieDetailsInteractor(impl: MovieDetailsInteractorImpl): MovieDetailsInteractor

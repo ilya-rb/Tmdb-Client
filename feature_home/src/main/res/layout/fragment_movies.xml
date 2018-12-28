@@ -43,7 +43,7 @@
         app:layout_constraintTop_toTopOf="@id/movieTitle" />
 
     <ImageView
-        android:id="@+id/movieAccount"
+        android:id="@+id/homeAccount"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:contentDescription="@null"
@@ -53,11 +53,12 @@
         app:layout_constraintTop_toTopOf="@id/movieTitle" />
 
     <ImageView
+        android:id="@+id/homeSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@null"
         app:layout_constraintBottom_toBottomOf="@id/movieTitle"
-        app:layout_constraintEnd_toStartOf="@id/movieAccount"
+        app:layout_constraintEnd_toStartOf="@id/homeAccount"
         android:layout_marginEnd="@dimen/margin_default"
         app:layout_constraintTop_toTopOf="@id/movieTitle"
         android:src="@drawable/ic_search"

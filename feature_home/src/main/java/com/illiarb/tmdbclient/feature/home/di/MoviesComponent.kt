@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.feature.home.di
 
 import com.illiarb.tmdbclient.feature.home.details.ui.MovieDetailsFragment
-import com.illiarb.tmdbclient.feature.home.list.ui.MoviesFragment
+import com.illiarb.tmdbclient.feature.home.list.ui.HomeFragment
 import com.illiarb.tmdbexplorer.coreui.di.UiEventsModule
 import com.illiarb.tmdbexplorer.coreui.di.scope.FragmentScope
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
@@ -24,7 +24,7 @@ interface MoviesComponent {
                 .build()
     }
 
-    fun inject(fragment: MoviesFragment)
+    fun inject(fragment: HomeFragment)
 
     fun inject(fragment: MovieDetailsFragment)
 }
