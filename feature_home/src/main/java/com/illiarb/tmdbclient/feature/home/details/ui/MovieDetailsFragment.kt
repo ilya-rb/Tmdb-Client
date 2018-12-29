@@ -18,7 +18,9 @@ import com.illiarb.tmdbexplorer.coreui.base.recyclerview.LayoutOrientation
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.RecyclerViewBuilder
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
+import com.illiarb.tmdbexplorer.coreui.image.CropOptions
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
+import com.illiarb.tmdbexplorer.coreui.image.RequestOptions
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Movie
@@ -118,11 +120,10 @@ class MovieDetailsFragment : MvpAppCompatFragment(), Injectable, MovieDetailsVie
             movieDetailsTitle.text = title
 
             posterPath?.let {
-                val options = ImageLoader.RequestOptions
-                    .create {
-                        cornerRadius(resources.getDimensionPixelSize(R.dimen.image_corner_radius))
-                        cropOptions(ImageLoader.CropOptions.CENTER_CROP)
-                    }
+                val options = RequestOptions.create {
+                    cornerRadius(resources.getDimensionPixelSize(R.dimen.image_corner_radius))
+                    cropOptions(CropOptions.CENTER_CROP)
+                }
 
                 imageLoader.fromUrl(it, movieDetailsPosterSmall, options)
                 imageLoader.fromUrl(it, movieDetailsPoster, options.copy(cornerRadius = 0))

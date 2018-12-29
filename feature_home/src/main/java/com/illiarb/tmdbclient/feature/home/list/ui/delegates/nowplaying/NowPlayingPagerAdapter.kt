@@ -6,8 +6,9 @@ import com.illiarb.tmdbclient.feature.home.R
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.BaseAdapter
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.viewholder.BaseViewHolder
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
+import com.illiarb.tmdbexplorer.coreui.image.CropOptions
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
-import com.illiarb.tmdbexplorer.coreui.image.ImageLoader.RequestOptions
+import com.illiarb.tmdbexplorer.coreui.image.RequestOptions
 import com.illiarb.tmdbexplorer.coreui.pipeline.MoviePipelineData
 import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData
 import com.illiarb.tmdblcient.core.entity.Movie
@@ -41,7 +42,7 @@ class NowPlayingPagerAdapter(
         override fun bind(item: Movie) {
             imageLoader.fromUrl(item.posterPath, itemCover, RequestOptions.create {
                 cornerRadius(radius)
-                cropOptions(ImageLoader.CropOptions.CENTER_CROP)
+                cropOptions(CropOptions.CENTER_CROP)
             })
         }
 

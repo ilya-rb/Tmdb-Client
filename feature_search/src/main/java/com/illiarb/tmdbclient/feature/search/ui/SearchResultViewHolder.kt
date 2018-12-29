@@ -2,7 +2,9 @@ package com.illiarb.tmdbclient.feature.search.ui
 
 import android.view.View
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.viewholder.BaseViewHolder
+import com.illiarb.tmdbexplorer.coreui.image.CropOptions
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
+import com.illiarb.tmdbexplorer.coreui.image.RequestOptions
 import com.illiarb.tmdblcient.core.entity.Movie
 import kotlinx.android.synthetic.main.item_search_result.view.*
 
@@ -23,8 +25,8 @@ class SearchResultViewHolder(
         itemRating.text = item.voteAverage.toString()
 
         item.backdropPath?.let {
-            imageLoader.fromUrl(it, itemImage, ImageLoader.RequestOptions.create {
-                cropOptions(ImageLoader.CropOptions.CENTER_CROP)
+            imageLoader.fromUrl(it, itemImage, RequestOptions.create {
+                cropOptions(CropOptions.CENTER_CROP)
             })
         }
     }

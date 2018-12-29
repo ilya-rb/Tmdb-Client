@@ -1,4 +1,4 @@
-package com.illiarb.tmdbexplorer.coreui.image
+package com.illiarb.tmdbexplorer.coreui.image.blur
 
 import android.renderscript.RenderScript
 import android.os.Build

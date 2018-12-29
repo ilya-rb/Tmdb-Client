@@ -10,6 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.illiarb.tmdbexplorer.coreui.BuildConfig
+import com.illiarb.tmdbexplorer.coreui.image.blur.BlurTransformation
 import java.io.File
 import javax.inject.Inject
 
@@ -86,36 +87,5 @@ class ImageLoader @Inject constructor() {
         }
 
         return result
-    }
-
-    @Suppress("unused")
-    data class RequestOptions(
-        var cropOptions: CropOptions? = null,
-        var cornerRadius: Int = 0,
-        var blurParams: BlurParams? = null
-    ) {
-
-        companion object {
-            inline fun create(builder: RequestOptions.() -> RequestOptions) = builder(RequestOptions())
-        }
-
-        fun cropOptions(options: CropOptions) = apply { cropOptions = options }
-
-        fun cornerRadius(radius: Int) = apply { cornerRadius = radius }
-
-        fun blurParams(params: BlurParams) = apply { blurParams = params }
-    }
-
-    sealed class LoadData {
-        data class Url(val path: String?) : LoadData()
-        data class File(val file: java.io.File) : LoadData()
-        data class Uri(val uri: android.net.Uri) : LoadData()
-    }
-
-    enum class CropOptions {
-
-        CENTER_CROP,
-
-        FIT_CENTER
     }
 }

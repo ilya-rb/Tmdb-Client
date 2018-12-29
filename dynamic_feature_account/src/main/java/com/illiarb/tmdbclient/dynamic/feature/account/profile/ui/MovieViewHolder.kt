@@ -4,7 +4,9 @@ import android.view.View
 import android.widget.ImageView
 import com.illiarb.tmdbclient.dynamic.feature.account.R
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.viewholder.BaseViewHolder
+import com.illiarb.tmdbexplorer.coreui.image.CropOptions
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
+import com.illiarb.tmdbexplorer.coreui.image.RequestOptions
 import com.illiarb.tmdblcient.core.entity.Movie
 
 /**
@@ -19,9 +21,9 @@ class MovieViewHolder(
     private val imageCornerRadius = 10
 
     override fun bind(item: Movie) {
-        imageLoader.fromUrl(item.posterPath, itemImage, ImageLoader.RequestOptions.create {
+        imageLoader.fromUrl(item.posterPath, itemImage, RequestOptions.create {
             cornerRadius(imageCornerRadius)
-            cropOptions(ImageLoader.CropOptions.CENTER_CROP)
+            cropOptions(CropOptions.CENTER_CROP)
         })
     }
 
