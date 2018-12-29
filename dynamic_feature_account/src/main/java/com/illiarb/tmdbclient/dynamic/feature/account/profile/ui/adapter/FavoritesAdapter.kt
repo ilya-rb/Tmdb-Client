@@ -3,7 +3,7 @@ package com.illiarb.tmdbclient.dynamic.feature.account.profile.ui.adapter
 import android.view.ViewGroup
 import com.illiarb.tmdbclient.dynamic.feature.account.R
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.ui.MovieViewHolder
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.BaseAdapter
+import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.BaseAdapter
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.pipeline.MoviePipelineData

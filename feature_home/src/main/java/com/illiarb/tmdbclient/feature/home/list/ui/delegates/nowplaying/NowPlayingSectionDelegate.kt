@@ -3,8 +3,8 @@ package com.illiarb.tmdbclient.feature.home.list.ui.delegates.nowplaying
 import android.view.View
 import android.view.ViewGroup
 import com.illiarb.tmdbclient.feature.home.R
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.AdapterDelegate
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.viewholder.BaseDelegateViewHolder
+import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.AdapterDelegate
+import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseDelegateViewHolder
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData

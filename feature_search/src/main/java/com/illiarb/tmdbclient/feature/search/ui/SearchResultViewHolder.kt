@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.feature.search.ui
 
 import android.view.View
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.viewholder.BaseViewHolder
+import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseViewHolder
 import com.illiarb.tmdbexplorer.coreui.image.CropOptions
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.image.RequestOptions

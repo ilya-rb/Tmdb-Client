@@ -2,7 +2,7 @@ package com.illiarb.tmdbclient.feature.home.di
 
 import com.illiarb.tmdbclient.feature.home.list.ui.delegates.movie.MovieSectionDelegate
 import com.illiarb.tmdbclient.feature.home.list.ui.delegates.nowplaying.NowPlayingSectionDelegate
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.AdapterDelegate
+import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.AdapterDelegate
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoSet

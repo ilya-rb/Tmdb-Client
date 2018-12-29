@@ -4,7 +4,7 @@ import android.text.method.LinkMovementMethod
 import android.text.util.Linkify
 import android.util.Patterns
 import android.view.View
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.viewholder.BaseViewHolder
+import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseViewHolder
 import com.illiarb.tmdblcient.core.entity.Review
 import kotlinx.android.synthetic.main.item_review.view.*
 

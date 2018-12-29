@@ -1,7 +1,7 @@
-package com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter
+package com.illiarb.tmdbexplorer.coreui.recyclerview.adapter
 
 import android.view.ViewGroup
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.viewholder.BaseDelegateViewHolder
+import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseDelegateViewHolder
 
 /**
  * @author ilya-rb on 04.11.18.

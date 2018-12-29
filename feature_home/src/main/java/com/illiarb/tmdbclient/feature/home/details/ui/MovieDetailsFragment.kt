@@ -14,9 +14,9 @@ import com.illiarb.tmdbclient.feature.home.details.MovieDetailsView
 import com.illiarb.tmdbclient.feature.home.details.ui.photos.PhotosAdapter
 import com.illiarb.tmdbclient.feature.home.details.ui.reviews.ReviewsAdapter
 import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.LayoutOrientation
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.LayoutType
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.RecyclerViewBuilder
+import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutOrientation
+import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
+import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.image.CropOptions
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader

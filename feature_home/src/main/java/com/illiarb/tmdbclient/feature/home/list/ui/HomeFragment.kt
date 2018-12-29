@@ -10,10 +10,10 @@ import com.illiarb.tmdbclient.feature.home.R
 import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
 import com.illiarb.tmdbclient.feature.home.list.HomePresenter
 import com.illiarb.tmdbclient.feature.home.list.MoviesView
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.LayoutType
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.RecyclerViewBuilder
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.AdapterDelegate
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.DelegateAdapter
+import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
+import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
+import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.AdapterDelegate
+import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.DelegateAdapter
 import com.illiarb.tmdbexplorer.coreui.pipeline.MoviePipelineData
 import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData
 import com.illiarb.tmdblcient.core.di.Injectable

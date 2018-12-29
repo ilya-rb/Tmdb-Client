@@ -2,7 +2,7 @@ package com.illiarb.tmdbclient.feature.home.list.ui.delegates.movie
 
 import android.view.ViewGroup
 import com.illiarb.tmdbclient.feature.home.R
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.BaseAdapter
+import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.BaseAdapter
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.viewholder.MovieViewHolder

@@ -1,4 +1,4 @@
-package com.illiarb.tmdbexplorer.coreui.base.recyclerview.viewholder
+package com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

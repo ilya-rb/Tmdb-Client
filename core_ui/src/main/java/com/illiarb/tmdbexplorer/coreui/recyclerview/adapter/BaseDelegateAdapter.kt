@@ -1,4 +1,4 @@
-package com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter
+package com.illiarb.tmdbexplorer.coreui.recyclerview.adapter
 
 import android.view.View
 import android.view.ViewGroup
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.tmdbexplorer.coreui.R
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.viewholder.BaseDelegateViewHolder
+import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseDelegateViewHolder
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import javax.inject.Inject
 
@@ -28,7 +28,8 @@ class DelegateAdapter @Inject constructor() : RecyclerView.Adapter<BaseDelegateV
 
     private val asyncListDiffer = AsyncListDiffer<Any>(this, diffCallback)
 
-    private var fallbackDelegate: AdapterDelegate = DefaultFallbackDelegate()
+    private var fallbackDelegate: AdapterDelegate =
+        DefaultFallbackDelegate()
 
     private var clickEvent: (viewId: Int, position: Int, item: Any) -> Unit = { _, _, _ -> }
 

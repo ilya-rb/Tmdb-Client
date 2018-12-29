@@ -3,7 +3,7 @@ package com.illiarb.tmdbclient.feature.search.ui
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.illiarb.tmdbclient.feature.search.R
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.BaseDiffAdapter
+import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.BaseDiffAdapter
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.pipeline.MoviePipelineData

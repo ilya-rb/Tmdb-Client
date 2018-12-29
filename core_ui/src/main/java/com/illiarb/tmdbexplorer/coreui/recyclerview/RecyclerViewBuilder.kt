@@ -1,9 +1,9 @@
-package com.illiarb.tmdbexplorer.coreui.base.recyclerview
+package com.illiarb.tmdbexplorer.coreui.recyclerview
 
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDecoration
+import com.illiarb.tmdbexplorer.coreui.recyclerview.decoration.SpaceItemDecoration
 
 /**
  * @author ilya-rb on 28.12.18.
@@ -11,7 +11,8 @@ import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDec
 @Suppress("unused")
 class RecyclerViewBuilder {
 
-    private var orientation: LayoutOrientation = LayoutOrientation.VERTICAL
+    private var orientation: LayoutOrientation =
+        LayoutOrientation.VERTICAL
     private var type: LayoutType = LayoutType.Linear
     private var adapter: RecyclerView.Adapter<*>? = null
     private var hasFixedSize: Boolean = false
@@ -26,7 +27,8 @@ class RecyclerViewBuilder {
 
     fun hasFixedSize(hasFixedSize: Boolean) = apply { this.hasFixedSize = hasFixedSize }
 
-    fun spaceBetween(block: SpaceBetween.() -> Unit) = apply { this.spaceBetween = SpaceBetween().also(block) }
+    fun spaceBetween(block: SpaceBetween.() -> Unit) = apply { this.spaceBetween = SpaceBetween()
+        .also(block) }
 
     fun disableNestedScroll() = apply { this.nestedScrollEnabled = false }
 

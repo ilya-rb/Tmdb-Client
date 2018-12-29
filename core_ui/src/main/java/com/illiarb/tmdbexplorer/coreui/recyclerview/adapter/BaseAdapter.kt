@@ -1,8 +1,8 @@
-package com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter
+package com.illiarb.tmdbexplorer.coreui.recyclerview.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.viewholder.BaseViewHolder
+import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseViewHolder
 import java.util.Collections
 
 abstract class BaseAdapter<T, VH : BaseViewHolder<T>> : RecyclerView.Adapter<VH>() {
