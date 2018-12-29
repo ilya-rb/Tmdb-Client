@@ -6,6 +6,7 @@ import com.illiarb.tmdbclient.feature.home.R
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.AdapterDelegate
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.viewholder.BaseDelegateViewHolder
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
+import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData
 import com.illiarb.tmdblcient.core.entity.NowPlayingSection
 import com.illiarb.tmdblcient.core.pipeline.EventPipeline
@@ -16,7 +17,8 @@ import kotlinx.android.synthetic.main.item_now_playing_section.view.*
 import javax.inject.Inject
 
 class NowPlayingSectionDelegate @Inject constructor(
-    private val uiEventsPipeline: EventPipeline<@JvmSuppressWildcards UiPipelineData>
+    private val uiEventsPipeline: EventPipeline<@JvmSuppressWildcards UiPipelineData>,
+    private val imageLoader: ImageLoader
 ) : AdapterDelegate {
 
     override fun isForViewType(item: Any): Boolean = item is NowPlayingSection
@@ -24,15 +26,17 @@ class NowPlayingSectionDelegate @Inject constructor(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseDelegateViewHolder =
         ViewHolder(
             parent.inflate(R.layout.item_now_playing_section),
-            uiEventsPipeline
+            uiEventsPipeline,
+            imageLoader
         )
 
     class ViewHolder(
         containerView: View,
-        uiEventsPipeline: EventPipeline<UiPipelineData>
+        uiEventsPipeline: EventPipeline<UiPipelineData>,
+        imageLoader: ImageLoader
     ) : BaseDelegateViewHolder(containerView) {
 
-        private val adapter = NowPlayingPagerAdapter(uiEventsPipeline)
+        private val adapter = NowPlayingPagerAdapter(uiEventsPipeline, imageLoader)
         private val sectionPager = itemView.itemNowPlayingSectionPager
 
         init {

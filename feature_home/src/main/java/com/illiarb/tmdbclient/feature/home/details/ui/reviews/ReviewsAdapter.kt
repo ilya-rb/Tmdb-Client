@@ -1,7 +1,6 @@
 package com.illiarb.tmdbclient.feature.home.details.ui.reviews
 
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import com.illiarb.tmdbclient.feature.home.R
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.BaseAdapter
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
@@ -11,16 +10,7 @@ import javax.inject.Inject
 /**
  * @author ilya-rb on 18.10.18.
  */
-class ReviewsAdapter @Inject constructor() : BaseAdapter<Review, ReviewViewHolder>(diffCallback) {
-
-    companion object {
-
-        @JvmStatic
-        private val diffCallback = object : DiffUtil.ItemCallback<Review>() {
-            override fun areItemsTheSame(oldItem: Review, newItem: Review): Boolean = oldItem == newItem
-            override fun areContentsTheSame(oldItem: Review, newItem: Review): Boolean = oldItem == newItem
-        }
-    }
+class ReviewsAdapter @Inject constructor() : BaseAdapter<Review, ReviewViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder =
         ReviewViewHolder(parent.inflate(R.layout.item_review))

@@ -61,7 +61,7 @@ class HomeFragment : MvpAppCompatFragment(), Injectable, MoviesView {
                     addToFirst = false
                 }
             }
-            .attachToRecyclerView(moviesList)
+            .setupWith(moviesList)
 
         homeSearch.setOnClickListener {
             presenter.onSearchClicked()

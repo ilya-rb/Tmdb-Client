@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.core.view.ViewCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.material.chip.Chip
@@ -15,7 +14,9 @@ import com.illiarb.tmdbclient.feature.home.details.MovieDetailsView
 import com.illiarb.tmdbclient.feature.home.details.ui.photos.PhotosAdapter
 import com.illiarb.tmdbclient.feature.home.details.ui.reviews.ReviewsAdapter
 import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
-import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDecoration
+import com.illiarb.tmdbexplorer.coreui.base.recyclerview.LayoutOrientation
+import com.illiarb.tmdbexplorer.coreui.base.recyclerview.LayoutType
+import com.illiarb.tmdbexplorer.coreui.base.recyclerview.RecyclerViewBuilder
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdblcient.core.di.Injectable
@@ -32,6 +33,9 @@ class MovieDetailsFragment : MvpAppCompatFragment(), Injectable, MovieDetailsVie
 
     @Inject
     lateinit var reviewsAdapter: ReviewsAdapter
+
+    @Inject
+    lateinit var imageLoader: ImageLoader
 
     @Inject
     @InjectPresenter
@@ -70,31 +74,27 @@ class MovieDetailsFragment : MvpAppCompatFragment(), Injectable, MovieDetailsVie
             }
         }
 
-        movieDetailsPhotos.apply {
-            adapter = photosAdapter
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            addItemDecoration(
-                SpaceItemDecoration(
-                    resources.getDimensionPixelSize(R.dimen.margin_small) / 2,
-                    0,
-                    false,
-                    false
-                )
-            )
-        }
+        RecyclerViewBuilder
+            .create {
+                adapter(photosAdapter)
+                hasFixedSize(true)
+                type(LayoutType.Linear)
+                orientation(LayoutOrientation.HORIZONTAL)
+                spaceBetween { horizontally = resources.getDimensionPixelSize(R.dimen.margin_small) / 2 }
+            }
+            .setupWith(movieDetailsPhotos)
 
-        movieDetailsReviews.apply {
-            adapter = reviewsAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-            isNestedScrollingEnabled = false
-            addItemDecoration(
-                SpaceItemDecoration(
-                    resources.getDimensionPixelSize(R.dimen.margin_default),
-                    resources.getDimensionPixelSize(R.dimen.margin_small)
-                )
-            )
-        }
+        RecyclerViewBuilder
+            .create {
+                adapter(reviewsAdapter)
+                type(LayoutType.Linear)
+                disableNestedScroll()
+                spaceBetween {
+                    horizontally = resources.getDimensionPixelSize(R.dimen.margin_default)
+                    vertically = resources.getDimensionPixelSize(R.dimen.margin_small)
+                }
+            }
+            .setupWith(movieDetailsReviews)
 
         ViewCompat.requestApplyInsets(view)
     }
@@ -118,13 +118,14 @@ class MovieDetailsFragment : MvpAppCompatFragment(), Injectable, MovieDetailsVie
             movieDetailsTitle.text = title
 
             posterPath?.let {
-                ImageLoader.loadImage(movieDetailsPoster, it, true)
-                ImageLoader.loadImage(
-                    movieDetailsPosterSmall,
-                    it,
-                    true,
-                    resources.getDimensionPixelSize(R.dimen.image_corner_radius)
-                )
+                val options = ImageLoader.RequestOptions
+                    .create {
+                        cornerRadius(resources.getDimensionPixelSize(R.dimen.image_corner_radius))
+                        cropOptions(ImageLoader.CropOptions.CENTER_CROP)
+                    }
+
+                imageLoader.fromUrl(it, movieDetailsPosterSmall, options)
+                imageLoader.fromUrl(it, movieDetailsPoster, options.copy(cornerRadius = 0))
             }
 
             movieDetailsRating.text = voteAverage.toString()

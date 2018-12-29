@@ -8,6 +8,7 @@ import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.AdapterDelegate
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.decoration.SpaceItemDecoration
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.viewholder.BaseDelegateViewHolder
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
+import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.pipeline.MoviePipelineData
 import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData
 import com.illiarb.tmdblcient.core.entity.ListSection
@@ -21,7 +22,8 @@ import javax.inject.Inject
  * @author ilya-rb on 04.11.18.
  */
 class MovieSectionDelegate @Inject constructor(
-    private val uiEventsPipeline: EventPipeline<@JvmSuppressWildcards UiPipelineData>
+    private val uiEventsPipeline: EventPipeline<@JvmSuppressWildcards UiPipelineData>,
+    private val imageLoader: ImageLoader
 ) : AdapterDelegate {
 
     override fun isForViewType(item: Any): Boolean = item is ListSection
@@ -29,12 +31,14 @@ class MovieSectionDelegate @Inject constructor(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseDelegateViewHolder {
         return ViewHolder(
             parent.inflate(R.layout.item_movie_section),
+            imageLoader,
             uiEventsPipeline
         )
     }
 
     class ViewHolder(
         containerView: View,
+        imageLoader: ImageLoader,
         private val uiEventsPipeline: EventPipeline<UiPipelineData>
     ) : BaseDelegateViewHolder(containerView) {
 
@@ -46,7 +50,7 @@ class MovieSectionDelegate @Inject constructor(
         private val sectionTitle = itemView.itemSectionTitle
 
         private val itemSpacing = itemView.resources.getDimensionPixelSize(R.dimen.item_movie_spacing)
-        private val adapter = MovieAdapter()
+        private val adapter = MovieAdapter(imageLoader)
             .apply {
                 clickEvent = { _, _, item ->
                     uiEventsPipeline.dispatchEvent(MoviePipelineData(item))

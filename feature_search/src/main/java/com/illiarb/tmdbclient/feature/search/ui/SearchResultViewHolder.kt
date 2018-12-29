@@ -9,7 +9,10 @@ import kotlinx.android.synthetic.main.item_search_result.view.*
 /**
  * @author ilya-rb on 27.12.18.
  */
-class SearchResultViewHolder(containerView: View) : BaseViewHolder<Movie>(containerView) {
+class SearchResultViewHolder(
+    containerView: View,
+    private val imageLoader: ImageLoader
+) : BaseViewHolder<Movie>(containerView) {
 
     private val itemTitle = itemView.itemSearchTitle
     private val itemImage = itemView.itemSearchImage
@@ -20,11 +23,13 @@ class SearchResultViewHolder(containerView: View) : BaseViewHolder<Movie>(contai
         itemRating.text = item.voteAverage.toString()
 
         item.backdropPath?.let {
-            ImageLoader.loadImage(itemImage, it, centerCrop = true)
+            imageLoader.fromUrl(it, itemImage, ImageLoader.RequestOptions.create {
+                cropOptions(ImageLoader.CropOptions.CENTER_CROP)
+            })
         }
     }
 
     override fun onViewRecycled() {
-        ImageLoader.clearImageView(itemImage)
+        imageLoader.clearTarget(itemImage)
     }
 }

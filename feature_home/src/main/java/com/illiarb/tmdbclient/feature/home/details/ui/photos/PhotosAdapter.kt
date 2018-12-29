@@ -1,26 +1,17 @@
 package com.illiarb.tmdbclient.feature.home.details.ui.photos
 
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import com.illiarb.tmdbclient.feature.home.R
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.BaseAdapter
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
+import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import javax.inject.Inject
 
 /**
  * @author ilya-rb on 26.10.18.
  */
-class PhotosAdapter @Inject constructor() : BaseAdapter<String, PhotoViewHolder>(diffCallback) {
-
-    companion object {
-
-        @JvmStatic
-        private val diffCallback = object : DiffUtil.ItemCallback<String>() {
-            override fun areItemsTheSame(oldItem: String, newItem: String): Boolean = oldItem == newItem
-            override fun areContentsTheSame(oldItem: String, newItem: String): Boolean = oldItem == newItem
-        }
-    }
+class PhotosAdapter @Inject constructor(private val imageLoader: ImageLoader) : BaseAdapter<String, PhotoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder =
-        PhotoViewHolder(parent.inflate(R.layout.item_photo))
+        PhotoViewHolder(parent.inflate(R.layout.item_photo), imageLoader)
 }

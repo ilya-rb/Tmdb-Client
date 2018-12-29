@@ -1,12 +1,13 @@
 package com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter
 
 import android.view.View
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.viewholder.BaseViewHolder
+import java.util.Collections
 
-abstract class BaseAdapter<T, VH : BaseViewHolder<T>>(diffCallback: DiffUtil.ItemCallback<T>) : ListAdapter<T, VH>(diffCallback) {
+abstract class BaseAdapter<T, VH : BaseViewHolder<T>> : RecyclerView.Adapter<VH>() {
+
+    private val currentList = mutableListOf<T>()
 
     var clickEvent: (viewId: Int, position: Int, item: T) -> Unit = { _, _, _ -> }
 
@@ -14,7 +15,7 @@ abstract class BaseAdapter<T, VH : BaseViewHolder<T>>(diffCallback: DiffUtil.Ite
         holder.bindClickListener(View.OnClickListener { view ->
             val adapterPosition = holder.adapterPosition
             if (adapterPosition != RecyclerView.NO_POSITION && adapterPosition < itemCount) {
-                val item = getItem(adapterPosition)
+                val item = getItemAt(adapterPosition)
                 if (item != null) {
                     clickEvent(view.id, adapterPosition, item)
                 }
@@ -22,14 +23,22 @@ abstract class BaseAdapter<T, VH : BaseViewHolder<T>>(diffCallback: DiffUtil.Ite
         })
 
         if (position != RecyclerView.NO_POSITION && position < itemCount) {
-            val item = getItem(position)
+            val item = getItemAt(position)
             if (item != null) {
                 holder.bind(item)
             }
         }
     }
 
-    fun getItemAt(position: Int) : T {
-        return getItem(position)
+    override fun getItemCount(): Int = currentList.size
+
+    fun getItemAt(position: Int): T = currentList[position]
+
+    fun readOnlyList(): List<T> = Collections.unmodifiableList(currentList)
+
+    fun submitList(items: List<T>) {
+        currentList.clear()
+        currentList.addAll(items)
+        notifyDataSetChanged()
     }
 }

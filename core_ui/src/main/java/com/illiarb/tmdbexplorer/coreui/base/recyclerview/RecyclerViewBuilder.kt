@@ -16,33 +16,21 @@ class RecyclerViewBuilder {
     private var adapter: RecyclerView.Adapter<*>? = null
     private var hasFixedSize: Boolean = false
     private var spaceBetween: SpaceBetween? = null
+    private var nestedScrollEnabled = true
 
-    fun orientation(orientation: LayoutOrientation): RecyclerViewBuilder {
-        this.orientation = orientation
-        return this
-    }
+    fun orientation(orientation: LayoutOrientation) = apply { this.orientation = orientation }
 
-    fun type(type: LayoutType): RecyclerViewBuilder {
-        this.type = type
-        return this
-    }
+    fun type(type: LayoutType) = apply { this.type = type }
 
-    fun adapter(adapter: RecyclerView.Adapter<*>): RecyclerViewBuilder {
-        this.adapter = adapter
-        return this
-    }
+    fun adapter(adapter: RecyclerView.Adapter<*>) = apply { this.adapter = adapter }
 
-    fun hasFixedSize(hasFixedSize: Boolean): RecyclerViewBuilder {
-        this.hasFixedSize = hasFixedSize
-        return this
-    }
+    fun hasFixedSize(hasFixedSize: Boolean) = apply { this.hasFixedSize = hasFixedSize }
 
-    fun spaceBetween(block: SpaceBetween.() -> Unit): RecyclerViewBuilder {
-        spaceBetween = SpaceBetween().also(block)
-        return this
-    }
+    fun spaceBetween(block: SpaceBetween.() -> Unit) = apply { this.spaceBetween = SpaceBetween().also(block) }
 
-    fun attachToRecyclerView(recyclerView: RecyclerView) {
+    fun disableNestedScroll() = apply { this.nestedScrollEnabled = false }
+
+    fun setupWith(recyclerView: RecyclerView) {
         recyclerView.apply {
             val context = recyclerView.context
 
@@ -54,6 +42,8 @@ class RecyclerViewBuilder {
                     GridLayoutManager(context, grid.spanCount, createGridOrientation(), false)
                 }
             }
+
+            isNestedScrollingEnabled = nestedScrollEnabled
 
             spaceBetween?.let {
                 addItemDecoration(SpaceItemDecoration(it.horizontally, it.vertically))

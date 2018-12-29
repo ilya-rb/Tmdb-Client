@@ -1,24 +1,15 @@
 package com.illiarb.tmdbclient.feature.home.list.ui.delegates.movie
 
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import com.illiarb.tmdbclient.feature.home.R
 import com.illiarb.tmdbexplorer.coreui.base.recyclerview.adapter.BaseAdapter
-import com.illiarb.tmdbexplorer.coreui.viewholder.MovieViewHolder
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
+import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
+import com.illiarb.tmdbexplorer.coreui.viewholder.MovieViewHolder
 import com.illiarb.tmdblcient.core.entity.Movie
 
-class MovieAdapter : BaseAdapter<Movie, MovieViewHolder>(diffCallback) {
-
-    companion object {
-
-        @JvmStatic
-        private val diffCallback = object : DiffUtil.ItemCallback<Movie>() {
-            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean = oldItem == newItem
-            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean = oldItem == newItem
-        }
-    }
+class MovieAdapter(private val imageLoader: ImageLoader) : BaseAdapter<Movie, MovieViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder =
-        MovieViewHolder(parent.inflate(R.layout.item_movie))
+        MovieViewHolder(parent.inflate(R.layout.item_movie), imageLoader)
 }
