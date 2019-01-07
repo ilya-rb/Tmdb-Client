@@ -4,9 +4,10 @@ import com.illiarb.tmdbclient.storage.local.PersistableStorage
 import com.illiarb.tmdbclient.storage.network.api.service.AuthService
 import com.illiarb.tmdbclient.storage.network.request.CreateSessionRequest
 import com.illiarb.tmdbclient.storage.network.request.ValidateTokenRequest
-import com.illiarb.tmdblcient.core.modules.auth.Authenticator
-import io.reactivex.Completable
-import io.reactivex.Observable
+import com.illiarb.tmdblcient.core.domain.auth.Authenticator
+import com.illiarb.tmdblcient.core.system.DispatcherProvider
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -14,15 +15,31 @@ import javax.inject.Inject
  */
 class TmdbAuthenticator @Inject constructor(
     private val persistableStorage: PersistableStorage,
-    private val authService: AuthService
+    private val authService: AuthService,
+    private val dispatcherProvider: DispatcherProvider
 ) : Authenticator {
 
-    override fun authorize(username: String, password: String): Completable =
-        authService.requestAuthToken()
-            .flatMap { authService.validateTokenWithCredentials(ValidateTokenRequest(username, password, it.requestToken)) }
-            .flatMap { authService.createNewSession(CreateSessionRequest(it.requestToken)) }
-            .doOnSuccess { persistableStorage.storeSessionId(it.sessionId) }
-            .ignoreElement()
+    override suspend fun authorize(username: String, password: String): Boolean = coroutineScope {
+        withContext(dispatcherProvider.ioDispatcher) {
+            try {
+                val authToken = authService.requestAuthToken().await()
 
-    override fun isAuthenticated(): Boolean = persistableStorage.isAuthorized()
+                val request = ValidateTokenRequest(username, password, authToken.requestToken)
+                val validatedToken = authService.validateTokenWithCredentials(request).await()
+
+                val session = authService.createNewSession(CreateSessionRequest(validatedToken.requestToken)).await()
+
+                persistableStorage.storeSessionId(session.sessionId)
+            } catch (e: Exception) {
+                return@withContext false
+            }
+            true
+        }
+    }
+
+    override suspend fun isAuthenticated(): Boolean = coroutineScope {
+        withContext(dispatcherProvider.ioDispatcher) {
+            persistableStorage.isAuthorized()
+        }
+    }
 }

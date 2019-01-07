@@ -5,7 +5,7 @@ import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.entity.MovieSection
 import com.illiarb.tmdblcient.core.entity.NowPlayingSection
-import com.illiarb.tmdblcient.core.modules.auth.Authenticator
+import com.illiarb.tmdblcient.core.domain.auth.Authenticator
 import com.illiarb.tmdblcient.core.modules.movie.HomeInteractor
 import com.illiarb.tmdblcient.core.modules.movie.MoviesRepository
 import com.illiarb.tmdblcient.core.navigation.AccountScreen

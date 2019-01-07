@@ -6,11 +6,15 @@ import com.illiarb.tmdbclient.storage.model.MovieModel
 import com.illiarb.tmdbclient.storage.network.api.config.Configuration
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.entity.MovieFilter
+import com.illiarb.tmdblcient.core.modules.account.AccountRepository
 import com.illiarb.tmdblcient.core.system.Logger
 import com.ironz.binaryprefs.BinaryPreferencesBuilder
 import com.ironz.binaryprefs.Preferences
 import com.ironz.binaryprefs.serialization.serializer.persistable.Persistable
 import io.reactivex.Single
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
 /**
@@ -40,6 +44,10 @@ class PersistableStorage @Inject constructor(app: App) {
     fun isAuthorized(): Boolean = store.getString(KEY_SESSION_ID, null) != null
 
     fun getMoviesByType(type: String): Single<List<MovieModel>> = Single.just(getValue(type, MovieListModel()).movies)
+
+    suspend fun getCurrentAccountDeferred(): Deferred<AccountModel> = coroutineScope {
+        async { getValue(KEY_ACCOUNT, AccountModel()) }
+    }
 
     fun getCurrentAccount(): Single<AccountModel> = Single.just(getValue(KEY_ACCOUNT, AccountModel()))
 

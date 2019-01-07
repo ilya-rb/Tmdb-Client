@@ -5,6 +5,7 @@ import com.illiarb.tmdbclient.storage.model.MovieModel
 import com.illiarb.tmdbclient.storage.model.ResultsModel
 import com.illiarb.tmdblcient.core.entity.Movie
 import io.reactivex.Single
+import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -15,17 +16,17 @@ import retrofit2.http.Query
 interface AccountService {
 
     @GET("account")
-    fun getAccountDetails(@Query("session_id") sessionId: String): Single<AccountModel>
+    fun getAccountDetails(@Query("session_id") sessionId: String): Deferred<AccountModel>
 
     @GET("account/{account_id}/favorite/movies")
     fun getAccountFavoriteMovies(
         @Path("account_id") accountId: Int,
         @Query("session_id") sessionId: String
-    ): Single<ResultsModel<MovieModel>>
+    ): Deferred<ResultsModel<MovieModel>>
 
     @GET("account/{account_id}/rated/movies")
     fun getAccountRatedMovies(
         @Path("account_id") accountId: Int,
         @Query("session_id") sessionId: String
-    ): Single<ResultsModel<MovieModel>>
+    ): Deferred<ResultsModel<MovieModel>>
 }

@@ -7,8 +7,8 @@ import com.illiarb.tmdbclient.storage.network.api.service.AccountService
 import com.illiarb.tmdblcient.core.entity.Account
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.modules.account.AccountRepository
-import io.reactivex.Completable
-import io.reactivex.Single
+import com.illiarb.tmdblcient.core.system.DispatcherProvider
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -18,33 +18,35 @@ class AccountRepositoryImpl @Inject constructor(
     private val accountService: AccountService,
     private val persistableStorage: PersistableStorage,
     private val accountMapper: AccountMapper,
+    private val dispatcherProvider: DispatcherProvider,
     private val movieMapper: MovieMapper
 ) : AccountRepository {
 
-    override fun getCurrentAccount(): Single<Account> =
-        persistableStorage.getCurrentAccount()
-            .flatMap { cachedAccount ->
-                if (cachedAccount.isNonExistent()) {
-                    accountService.getAccountDetails(persistableStorage.getSessionId())
-                        .doOnSuccess { accountFromService -> persistableStorage.storeAccount(accountFromService) }
-                } else {
-                    Single.just(cachedAccount)
-                }
-            }
-            .map(accountMapper::map)
+    override suspend fun getCurrentAccount(): Account = withContext(dispatcherProvider.ioDispatcher) {
+        val cachedAccount = persistableStorage.getCurrentAccountDeferred().await()
+        if (cachedAccount.isNonExistent()) {
+            val account = accountService.getAccountDetails(persistableStorage.getSessionId()).await()
+            persistableStorage.storeAccount(account)
 
-    override fun getRatedMovies(accountId: Int): Single<List<Movie>> =
-        accountService.getAccountRatedMovies(accountId, getSessionId())
-            .map { it.results }
-            .map { movieMapper.mapList(it) }
+            accountMapper.map(account)
+        } else {
+            accountMapper.map(cachedAccount)
+        }
+    }
 
-    override fun getFavoriteMovies(accountId: Int): Single<List<Movie>> =
-        accountService.getAccountFavoriteMovies(accountId, getSessionId())
-            .map { it.results }
-            .map { movieMapper.mapList(it) }
+    override suspend fun getRatedMovies(accountId: Int): List<Movie> = withContext(dispatcherProvider.ioDispatcher) {
+        val ratedMovies = accountService.getAccountRatedMovies(accountId, getSessionId()).await()
+        movieMapper.mapList(ratedMovies.results)
+    }
 
-    override fun clearAccountData(): Completable = Completable.fromAction {
+    override suspend fun getFavoriteMovies(accountId: Int): List<Movie> = withContext(dispatcherProvider.ioDispatcher) {
+        val favoriteMovies = accountService.getAccountFavoriteMovies(accountId, getSessionId()).await()
+        movieMapper.mapList(favoriteMovies.results)
+    }
+
+    override suspend fun clearAccountData(): Boolean = withContext(dispatcherProvider.ioDispatcher) {
         persistableStorage.clearAccountData()
+        true
     }
 
     private fun getSessionId(): String = persistableStorage.getSessionId()

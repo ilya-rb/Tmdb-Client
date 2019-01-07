@@ -4,12 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.badoo.mvicore.binder.Binder
 import com.illiarb.tmdbclient.dynamic.feature.account.R
 import com.illiarb.tmdbclient.dynamic.feature.account.di.AccountComponent
-import com.illiarb.tmdbclient.dynamic.feature.account.profile.feature.AccountFeature
-import com.illiarb.tmdbclient.dynamic.feature.account.profile.feature.AccountFeature.Wish.*
-import com.illiarb.tmdbclient.dynamic.feature.account.profile.feature.AccountState
+import com.illiarb.tmdbclient.dynamic.feature.account.profile.AccountModel
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.ui.adapter.FavoritesAdapter
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
@@ -19,18 +16,18 @@ import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Account
 import com.illiarb.tmdblcient.core.ext.addTo
-import com.illiarb.tmdblcient.core.navigation.AuthScreen
-import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
-import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.pipeline.EventPipeline
-import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.fragment_account.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 /**
  * @author ilya-rb on 20.11.18.
  */
-class AccountFragment : BaseFragment(), Injectable, Consumer<AccountState> {
+class AccountFragment : BaseFragment(), Injectable, CoroutineScope {
 
     @Inject
     lateinit var favoritesAdapter: FavoritesAdapter
@@ -39,19 +36,9 @@ class AccountFragment : BaseFragment(), Injectable, Consumer<AccountState> {
     lateinit var uiEventPipeline: EventPipeline<@JvmSuppressWildcards UiPipelineData>
 
     @Inject
-    lateinit var feature: AccountFeature
+    lateinit var profileModel: AccountModel
 
-    @Inject
-    lateinit var router: Router
-
-    private val binder = Binder()
-
-    private val newsHandler = Consumer<AccountFeature.News> { news ->
-        when (news) {
-            is AccountFeature.News.ShowAuthScreen -> router.navigateTo(AuthScreen)
-            is AccountFeature.News.ShowMovieDetails -> router.navigateTo(MovieDetailsScreen(news.id))
-        }
-    }
+    override val coroutineContext: CoroutineContext = Job() + Dispatchers.Main
 
     override fun getContentView(): Int = R.layout.fragment_account
 
@@ -60,26 +47,6 @@ class AccountFragment : BaseFragment(), Injectable, Consumer<AccountState> {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUi(view)
-        setupBindings()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binder.clear()
-    }
-
-    override fun accept(state: AccountState) {
-        accountSwipeRefreshLayout.isRefreshing = state.isLoading
-
-        if (state.isBlockingLoading) {
-            showBlockingProgress()
-        } else {
-            hideBlockingProgress()
-        }
-
-        state.account?.let {
-            showAccount(it)
-        }
     }
 
     private fun setupUi(view: View) {
@@ -87,7 +54,7 @@ class AccountFragment : BaseFragment(), Injectable, Consumer<AccountState> {
         accountSwipeRefreshLayout.awareOfWindowInsets()
 
         btnAccountLogout.setOnClickListener {
-            feature.accept(SignOut)
+            // TODO
         }
 
         accountFavoritesList.apply {
@@ -95,22 +62,23 @@ class AccountFragment : BaseFragment(), Injectable, Consumer<AccountState> {
             adapter = favoritesAdapter
             setHasFixedSize(true)
             // TODO Fix this
-//            addItemDecoration(SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_small), 0, false, false))
+            // addItemDecoration(SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_small), 0, false, false))
         }
 
         uiEventPipeline.observeEvents()
             .ofType(MoviePipelineData::class.java)
-            .subscribe({ feature.accept(ShowMovieDetails(it.movie.id)) }, Throwable::printStackTrace)
+            .subscribe({}, Throwable::printStackTrace)
             .addTo(destroyViewDisposable)
 
         ViewCompat.requestApplyInsets(view)
     }
 
-    private fun setupBindings() {
-        binder.bind(feature to this)
-        binder.bind(feature.news to newsHandler)
+    private fun render(state: AccountModel.ProfileState) {
+        accountSwipeRefreshLayout.isRefreshing = state.isLoading
 
-        feature.accept(ShowAccount)
+        state.account?.let {
+            showAccount(it)
+        }
     }
 
     private fun showAccount(account: Account) {

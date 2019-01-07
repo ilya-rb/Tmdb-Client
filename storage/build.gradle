@@ -47,6 +47,7 @@ dependencies {
     implementation deps.retrofit
     implementation deps.converterGson
     implementation deps.rxJavaAdapter
+    implementation deps.coroutinesAdapter
     implementation deps.okHttpLogger
     implementation deps.workManager
 }
