@@ -6,8 +6,9 @@ import com.illiarb.tmdbclient.storage.mappers.MovieMapper
 import com.illiarb.tmdbclient.storage.network.api.service.AccountService
 import com.illiarb.tmdblcient.core.entity.Account
 import com.illiarb.tmdblcient.core.entity.Movie
-import com.illiarb.tmdblcient.core.modules.account.AccountRepository
+import com.illiarb.tmdblcient.core.repository.AccountRepository
 import com.illiarb.tmdblcient.core.system.DispatcherProvider
+import com.illiarb.tmdblcient.core.system.NonBlocking
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -22,8 +23,9 @@ class AccountRepositoryImpl @Inject constructor(
     private val movieMapper: MovieMapper
 ) : AccountRepository {
 
+    @NonBlocking
     override suspend fun getCurrentAccount(): Account = withContext(dispatcherProvider.ioDispatcher) {
-        val cachedAccount = persistableStorage.getCurrentAccountDeferred().await()
+        val cachedAccount = persistableStorage.getCurrentAccount()
         if (cachedAccount.isNonExistent()) {
             val account = accountService.getAccountDetails(persistableStorage.getSessionId()).await()
             persistableStorage.storeAccount(account)
@@ -34,16 +36,19 @@ class AccountRepositoryImpl @Inject constructor(
         }
     }
 
+    @NonBlocking
     override suspend fun getRatedMovies(accountId: Int): List<Movie> = withContext(dispatcherProvider.ioDispatcher) {
         val ratedMovies = accountService.getAccountRatedMovies(accountId, getSessionId()).await()
         movieMapper.mapList(ratedMovies.results)
     }
 
+    @NonBlocking
     override suspend fun getFavoriteMovies(accountId: Int): List<Movie> = withContext(dispatcherProvider.ioDispatcher) {
         val favoriteMovies = accountService.getAccountFavoriteMovies(accountId, getSessionId()).await()
         movieMapper.mapList(favoriteMovies.results)
     }
 
+    @NonBlocking
     override suspend fun clearAccountData(): Boolean = withContext(dispatcherProvider.ioDispatcher) {
         persistableStorage.clearAccountData()
         true

@@ -3,12 +3,6 @@ package com.illiarb.tmdbclient.storage.network.error
 import com.google.gson.JsonParser
 import com.illiarb.tmdblcient.core.exception.ApiException
 import com.illiarb.tmdblcient.core.system.Logger
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Maybe
-import io.reactivex.Observable
-import io.reactivex.Single
-import io.reactivex.functions.Function
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.HttpException
@@ -26,11 +20,7 @@ class ApiCallAdapter(
 
     override fun adapt(call: Call<Any>): Any =
         when (val result = originalAdapter.adapt(call)) {
-            is Observable<*> -> result.onErrorResumeNext(Function { Observable.error(processError(it)) })
-            is Single<*> -> result.onErrorResumeNext(Function { Single.error(processError(it)) })
-            is Flowable<*> -> result.onErrorResumeNext(Function { Flowable.error(processError(it)) })
-            is Maybe<*> -> result.onErrorResumeNext(Function { Maybe.error(processError(it)) })
-            is Completable -> result.onErrorResumeNext(Function { Completable.error(processError(it)) })
+            // TODO
             else -> result
         }
 

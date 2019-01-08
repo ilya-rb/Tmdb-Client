@@ -1,6 +1,6 @@
 package com.illiarb.tmdbclient.di.modules
 
-import com.illiarb.tmdbclient.system.RxFeatureInstaller
+import com.illiarb.tmdbclient.system.AppFeatureInstaller
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.system.ResourceResolver
 import com.illiarb.tmdblcient.core.system.feature.FeatureInstaller
@@ -18,5 +18,5 @@ class AppModule(val app: App) {
 
     @Provides
     fun provideFeatureInstaller(resourceResolver: ResourceResolver): FeatureInstaller =
-        RxFeatureInstaller(app, resourceResolver)
+        AppFeatureInstaller(app, resourceResolver)
 }

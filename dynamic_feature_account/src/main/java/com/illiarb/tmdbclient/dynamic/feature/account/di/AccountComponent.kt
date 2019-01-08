@@ -2,7 +2,7 @@ package com.illiarb.tmdbclient.dynamic.feature.account.di
 
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.ui.AuthFragment
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.ui.AccountFragment
-import com.illiarb.tmdbexplorer.coreui.di.UiEventsModule
+import com.illiarb.tmdbexplorer.coreui.di.modules.ViewModelModule
 import com.illiarb.tmdbexplorer.coreui.di.scope.FragmentScope
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import dagger.Component
@@ -12,7 +12,10 @@ import dagger.Component
  */
 @Component(
     dependencies = [AppProvider::class],
-    modules = [UiEventsModule::class]
+    modules = [
+        AccountModule::class,
+        ViewModelModule::class
+    ]
 )
 @FragmentScope
 interface AccountComponent {

@@ -2,19 +2,22 @@ package com.illiarb.tmdblcient.core.repository
 
 import com.illiarb.tmdblcient.core.entity.Account
 import com.illiarb.tmdblcient.core.entity.Movie
-import io.reactivex.Completable
-import io.reactivex.Single
+import com.illiarb.tmdblcient.core.system.NonBlocking
 
 /**
  * @author ilya-rb on 21.11.18.
  */
 interface AccountRepository {
 
-    fun getCurrentAccount(): Single<Account>
+    @NonBlocking
+    suspend fun getCurrentAccount(): Account
 
-    fun getRatedMovies(accountId: Int): Single<List<Movie>>
+    @NonBlocking
+    suspend fun getRatedMovies(accountId: Int): List<Movie>
 
-    fun getFavoriteMovies(accountId: Int): Single<List<Movie>>
+    @NonBlocking
+    suspend fun getFavoriteMovies(accountId: Int): List<Movie>
 
-    fun clearAccountData(): Completable
+    @NonBlocking
+    suspend fun clearAccountData(): Boolean
 }

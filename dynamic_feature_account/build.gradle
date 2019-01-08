@@ -28,13 +28,9 @@ dependencies {
     kapt deps.daggerCompiler
 
     implementation project(':app')
+
     implementation project(':core')
     implementation project(':core_ui')
 
     implementation deps.dagger
-
-    implementation ('com.github.badoo.mvicore:mvicore:1.1.4')
-    implementation ('com.github.badoo.mvicore:mvicore-android:1.1.4') {
-        transitive false
-    }
 }

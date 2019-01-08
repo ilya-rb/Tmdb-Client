@@ -27,15 +27,11 @@ android {
 }
 
 dependencies {
-    def moxyVersion = '1.5.5'
-
     kapt deps.daggerCompiler
-    kapt "com.arello-mobile:moxy-compiler:$moxyVersion"
 
     implementation project(':core')
     implementation project(':core_ui')
 
-    implementation "com.arello-mobile:moxy:$moxyVersion"
     implementation 'com.yarolegovich:discrete-scrollview:1.4.9'
 
     implementation deps.dagger

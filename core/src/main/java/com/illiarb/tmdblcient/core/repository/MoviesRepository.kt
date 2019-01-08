@@ -3,20 +3,25 @@ package com.illiarb.tmdblcient.core.repository
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.entity.Review
-import io.reactivex.Single
+import com.illiarb.tmdblcient.core.system.NonBlocking
 
 /**
  * @author ilya-rb on 25.10.18.
  */
 interface MoviesRepository {
 
-    fun getMoviesByType(type: String): Single<List<Movie>>
+    @NonBlocking
+    suspend fun getMoviesByType(type: String, refresh: Boolean): List<Movie>
 
-    fun getMovieDetails(id: Int, appendToResponse: String): Single<Movie>
+    @NonBlocking
+    suspend fun getMovieDetails(id: Int, appendToResponse: String): Movie
 
-    fun getMovieReviews(id: Int): Single<List<Review>>
+    @NonBlocking
+    suspend fun getMovieReviews(id: Int): List<Review>
 
-    fun getMovieFilters(): Single<List<MovieFilter>>
+    @NonBlocking
+    suspend fun getMovieFilters(): List<MovieFilter>
 
-    fun searchMovies(query: String): Single<List<Movie>>
+    @NonBlocking
+    suspend fun searchMovies(query: String): List<Movie>
 }

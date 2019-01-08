@@ -6,7 +6,7 @@ import com.illiarb.tmdblcient.core.system.ResourceResolver
 /**
  * @author ilya-rb on 31.10.18.
  */
-class AndroidResourceResolver constructor(app: App) : ResourceResolver {
+class AndroidResourceResolver(app: App) : ResourceResolver {
 
     private val resources = app.getApplication().resources
 

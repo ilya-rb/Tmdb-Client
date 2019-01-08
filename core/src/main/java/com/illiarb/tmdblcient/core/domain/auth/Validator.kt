@@ -16,25 +16,4 @@ class Validator @Inject constructor() {
     companion object {
         const val MIN_PASSWORD_LENGTH = 4
     }
-
-//    private fun validateCredentials(username: String, password: String): Observable<out Effect> =
-//        Observable.create { emitter ->
-//            val errors = mutableListOf<Pair<Int, String>>()
-//
-//            if (validator.isUsernameEmpty(username)) {
-//                errors.add(Pair(ErrorCodes.ERROR_USERNAME_EMPTY, errorMessageBag.getUsernameEmptyMessage()))
-//            }
-//
-//            if (validator.isPasswordEmpty(password)) {
-//                errors.add(Pair(ErrorCodes.ERROR_PASSWORD_EMPTY, errorMessageBag.getPasswordEmptyMessage()))
-//            } else if (!validator.isPasswordLengthCorrect(password)) {
-//                errors.add(Pair(ErrorCodes.ERROR_PASSWORD_LENGTH, errorMessageBag.getIncorrectPasswordLengthMessage()))
-//            }
-//
-//            if (errors.isNotEmpty()) {
-//                emitter.onNext(Effect.CheckCredentialsResult.Invalid(ValidationException(errors)))
-//            } else {
-//                emitter.onNext(Effect.CheckCredentialsResult.Valid)
-//            }
-//        }
 }

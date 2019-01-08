@@ -10,13 +10,9 @@ import com.illiarb.tmdbclient.dynamic.feature.account.profile.AccountModel
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.ui.adapter.FavoritesAdapter
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
-import com.illiarb.tmdbexplorer.coreui.pipeline.MoviePipelineData
-import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Account
-import com.illiarb.tmdblcient.core.ext.addTo
-import com.illiarb.tmdblcient.core.pipeline.EventPipeline
 import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,9 +27,6 @@ class AccountFragment : BaseFragment(), Injectable, CoroutineScope {
 
     @Inject
     lateinit var favoritesAdapter: FavoritesAdapter
-
-    @Inject
-    lateinit var uiEventPipeline: EventPipeline<@JvmSuppressWildcards UiPipelineData>
 
     @Inject
     lateinit var profileModel: AccountModel
@@ -64,11 +57,6 @@ class AccountFragment : BaseFragment(), Injectable, CoroutineScope {
             // TODO Fix this
             // addItemDecoration(SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_small), 0, false, false))
         }
-
-        uiEventPipeline.observeEvents()
-            .ofType(MoviePipelineData::class.java)
-            .subscribe({}, Throwable::printStackTrace)
-            .addTo(destroyViewDisposable)
 
         ViewCompat.requestApplyInsets(view)
     }

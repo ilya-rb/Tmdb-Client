@@ -10,6 +10,7 @@ import androidx.work.WorkerParameters
 import com.illiarb.tmdbclient.storage.local.PersistableStorage
 import com.illiarb.tmdbclient.storage.network.api.service.ConfigurationService
 import com.illiarb.tmdblcient.core.system.Logger
+import kotlinx.coroutines.runBlocking
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
@@ -43,11 +44,10 @@ class ConfigurationFetchWork constructor(
         Logger.i("Starting configuration fetch work..")
 
         return try {
-            configurationService
-                .getConfiguration()
-                .blockingGet()
-                .also { persistableStorage.storeConfiguration(it) }
-
+            runBlocking {
+                val configuration = configurationService.getConfiguration().await()
+                persistableStorage.storeConfiguration(configuration)
+            }
             Logger.i("Successful configuration fetch")
             Result.SUCCESS
         } catch (e: IOException) {

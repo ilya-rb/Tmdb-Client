@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.dynamic.feature.account.profile
 
 import androidx.lifecycle.ViewModel
-import com.illiarb.tmdblcient.core.domain.profile.GetProfileUseCase
+import com.illiarb.tmdblcient.core.domain.profile.GetProfile
 import com.illiarb.tmdblcient.core.entity.Account
 import com.illiarb.tmdblcient.core.system.DispatcherProvider
 import kotlinx.coroutines.CoroutineScope
@@ -15,7 +15,7 @@ import kotlin.coroutines.CoroutineContext
  */
 class AccountModel @Inject constructor(
     dispatcherProvider: DispatcherProvider,
-    private val getProfileUseCase: GetProfileUseCase
+    private val getProfileUseCase: GetProfile
 ) : ViewModel(), CoroutineScope {
 
     private val job = SupervisorJob()

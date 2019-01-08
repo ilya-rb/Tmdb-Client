@@ -24,6 +24,7 @@ versions.with {
     rxJava = "2.2.2"
     rxAndroid = "2.1.0"
     retrofit = "2.4.0"
+    coroutinesAdapter = "0.9.2"
     okHttpLogger = "3.11.0"
     javax = "1"
     binaryPrefs = "1.0.0"

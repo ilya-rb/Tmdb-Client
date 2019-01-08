@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.storage.network.api.service
 
 import com.illiarb.tmdbclient.storage.network.api.config.Configuration
-import io.reactivex.Single
+import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 
 /**
@@ -10,6 +10,5 @@ import retrofit2.http.GET
 interface ConfigurationService {
 
     @GET("configuration")
-    fun getConfiguration() : Single<Configuration>
-
+    fun getConfiguration(): Deferred<Configuration>
 }

@@ -4,7 +4,6 @@ import com.illiarb.tmdbclient.storage.network.request.CreateSessionRequest
 import com.illiarb.tmdbclient.storage.network.request.ValidateTokenRequest
 import com.illiarb.tmdbclient.storage.network.response.AuthTokenResponse
 import com.illiarb.tmdbclient.storage.network.response.CreateSessionResponse
-import io.reactivex.Single
 import kotlinx.coroutines.Deferred
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -23,5 +22,4 @@ interface AuthService {
 
     @POST("authentication/session/new")
     fun createNewSession(@Body request: CreateSessionRequest): Deferred<CreateSessionResponse>
-
 }

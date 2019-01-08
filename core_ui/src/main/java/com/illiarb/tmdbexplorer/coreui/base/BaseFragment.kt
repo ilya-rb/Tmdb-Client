@@ -8,11 +8,8 @@ import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import com.illiarb.tmdbexplorer.coreui.uiactions.UiActionImpl
 import com.illiarb.tmdbexplorer.coreui.uiactions.UiActions
-import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseFragment : Fragment(), UiActions {
-
-    protected val destroyViewDisposable by lazy { CompositeDisposable() }
 
     private val uiActions by lazy { UiActionImpl(requireActivity()) }
 
@@ -27,11 +24,6 @@ abstract class BaseFragment : Fragment(), UiActions {
         } else {
             null
         }
-    }
-
-    override fun onDestroyView() {
-        destroyViewDisposable.clear()
-        super.onDestroyView()
     }
 
     override fun showToast(message: String) = uiActions.showToast(message)

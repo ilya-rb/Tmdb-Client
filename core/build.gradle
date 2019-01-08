@@ -28,7 +28,6 @@ dependencies {
 
     api deps.kotlin
     api deps.kotlinCoroutines
-    api deps.rxJava
 
     implementation deps.javax
 

@@ -12,6 +12,7 @@ import com.illiarb.tmdbclient.storage.network.api.service.ConfigurationService
 import com.illiarb.tmdbclient.storage.network.api.service.MovieService
 import com.illiarb.tmdbclient.storage.network.api.service.SearchService
 import com.illiarb.tmdbclient.storage.network.error.ApiCallAdapterFactory
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -19,7 +20,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -99,7 +99,7 @@ class NetworkModule {
         @Provides
         @JvmStatic
         fun provideApiCallAdapterFactory(): CallAdapter.Factory =
-            ApiCallAdapterFactory(RxJava2CallAdapterFactory.create(), JsonParser())
+            ApiCallAdapterFactory(CoroutineCallAdapterFactory.invoke(), JsonParser())
 
         @Provides
         @JvmStatic

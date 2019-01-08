@@ -1,4 +1,4 @@
-package com.illiarb.tmdbexplorer.coreui.viewholder
+package com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder
 
 import android.view.View
 import com.illiarb.tmdbexplorer.coreui.R

@@ -10,9 +10,12 @@ import com.illiarb.tmdbclient.storage.network.api.service.SearchService
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.entity.Review
-import com.illiarb.tmdblcient.core.modules.movie.MoviesRepository
+import com.illiarb.tmdblcient.core.repository.MoviesRepository
+import com.illiarb.tmdblcient.core.system.DispatcherProvider
+import com.illiarb.tmdblcient.core.system.NonBlocking
 import com.illiarb.tmdblcient.core.system.ResourceResolver
-import io.reactivex.Single
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,68 +26,58 @@ import javax.inject.Singleton
 class MoviesRepositoryImpl @Inject constructor(
     private val moviesService: MovieService,
     private val searchService: SearchService,
+    private val dispatcherProvider: DispatcherProvider,
     private val persistableStorage: PersistableStorage,
     private val movieMapper: MovieMapper,
     private val reviewMapper: ReviewMapper,
     private val resourceResolver: ResourceResolver
 ) : MoviesRepository {
 
-    /**
-     * As repository is a singleton
-     * data refresh will be once per app starting
-     */
-    private var needsRefresh = true
-
-    override fun getMoviesByType(type: String): Single<List<Movie>> {
-        val onSuccessAction: (List<MovieModel>) -> Unit = {
-            persistableStorage.storeMovies(type, it)
-            needsRefresh = false
+    @NonBlocking
+    override suspend fun getMoviesByType(type: String, refresh: Boolean): List<Movie> = withContext(dispatcherProvider.ioDispatcher) {
+        if (refresh) {
+            return@withContext movieMapper.mapList(fetchFromNetworkAndStore(type))
         }
 
-        return persistableStorage.getMoviesByType(type)
-            .flatMap { movies ->
-                if (needsRefresh) {
-                    moviesService.getMoviesByType(type)
-                        .map { it.results }
-                        .doOnSuccess(onSuccessAction)
-                        .onErrorResumeNext {
-                            if (movies.isNotEmpty()) {
-                                Single.just(movies)
-                            } else {
-                                Single.error(it)
-                            }
-                        }
-                } else {
-                    if (movies.isNotEmpty()) {
-                        Single.just(movies)
-                    } else {
-                        moviesService.getMoviesByType(type)
-                            .map { it.results }
-                            .doOnSuccess(onSuccessAction)
-                    }
-                }
-            }
-            .map(movieMapper::mapList)
+        val cached = persistableStorage.getMoviesByType(type)
+        if (cached.isEmpty()) {
+            movieMapper.mapList(fetchFromNetworkAndStore(type))
+        } else {
+            movieMapper.mapList(cached)
+        }
     }
 
-    override fun searchMovies(query: String): Single<List<Movie>> =
-        searchService.searchMovies(query)
-            .map { it.results }
-            .map(movieMapper::mapList)
+    @NonBlocking
+    override suspend fun getMovieDetails(id: Int, appendToResponse: String): Movie = withContext(dispatcherProvider.ioDispatcher) {
+        val details = moviesService.getMovieDetails(id, appendToResponse).await()
+        movieMapper.map(details)
+    }
 
-    override fun getMovieDetails(id: Int, appendToResponse: String): Single<Movie> =
-        moviesService.getMovieDetails(id, appendToResponse)
-            .map(movieMapper::map)
+    @NonBlocking
+    override suspend fun getMovieReviews(id: Int): List<Review> = withContext(dispatcherProvider.ioDispatcher) {
+        val reviews = moviesService.getMovieReviews(id).await()
+        reviewMapper.mapList(reviews.results)
+    }
 
-    override fun getMovieReviews(id: Int): Single<List<Review>> =
-        moviesService.getMovieReviews(id)
-            .map { it.results }
-            .map(reviewMapper::mapList)
+    @NonBlocking
+    override suspend fun getMovieFilters(): List<MovieFilter> = withContext(dispatcherProvider.ioDispatcher) {
+        resourceResolver
+            .getStringArray(R.array.movie_filters)
+            .map {
+                MovieFilter(it, it.toLowerCase().replace(" ", "_"))
+            }
+    }
 
-    override fun getMovieFilters(): Single<List<MovieFilter>> =
-        Single.just(
-            resourceResolver
-                .getStringArray(R.array.movie_filters)
-                .map { MovieFilter(it, it.toLowerCase().replace(" ", "_")) }
-        )
+    // TODO: Move to search repository
+    @NonBlocking
+    override suspend fun searchMovies(query: String): List<Movie> = withContext(dispatcherProvider.ioDispatcher) {
+        val movies = searchService.searchMovies(query).await()
+        movieMapper.mapList(movies.results)
+    }
+
+    private suspend fun fetchFromNetworkAndStore(type: String): List<MovieModel> = coroutineScope {
+        val result = moviesService.getMoviesByType(type).await().results
+        persistableStorage.storeMovies(type, result)
+        result
+    }
 }

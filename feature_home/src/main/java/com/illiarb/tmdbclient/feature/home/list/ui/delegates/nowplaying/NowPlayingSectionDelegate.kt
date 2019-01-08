@@ -3,13 +3,11 @@ package com.illiarb.tmdbclient.feature.home.list.ui.delegates.nowplaying
 import android.view.View
 import android.view.ViewGroup
 import com.illiarb.tmdbclient.feature.home.R
-import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.AdapterDelegate
-import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseDelegateViewHolder
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
-import com.illiarb.tmdbexplorer.coreui.pipeline.UiPipelineData
+import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.AdapterDelegate
+import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseDelegateViewHolder
 import com.illiarb.tmdblcient.core.entity.NowPlayingSection
-import com.illiarb.tmdblcient.core.pipeline.EventPipeline
 import com.yarolegovich.discretescrollview.DiscreteScrollView
 import com.yarolegovich.discretescrollview.transform.Pivot
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer
@@ -17,26 +15,20 @@ import kotlinx.android.synthetic.main.item_now_playing_section.view.*
 import javax.inject.Inject
 
 class NowPlayingSectionDelegate @Inject constructor(
-    private val uiEventsPipeline: EventPipeline<@JvmSuppressWildcards UiPipelineData>,
     private val imageLoader: ImageLoader
 ) : AdapterDelegate {
 
     override fun isForViewType(item: Any): Boolean = item is NowPlayingSection
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseDelegateViewHolder =
-        ViewHolder(
-            parent.inflate(R.layout.item_now_playing_section),
-            uiEventsPipeline,
-            imageLoader
-        )
+        ViewHolder(parent.inflate(R.layout.item_now_playing_section), imageLoader)
 
     class ViewHolder(
         containerView: View,
-        uiEventsPipeline: EventPipeline<UiPipelineData>,
         imageLoader: ImageLoader
     ) : BaseDelegateViewHolder(containerView) {
 
-        private val adapter = NowPlayingPagerAdapter(uiEventsPipeline, imageLoader)
+        private val adapter = NowPlayingPagerAdapter(imageLoader)
         private val sectionPager = itemView.itemNowPlayingSectionPager
 
         init {

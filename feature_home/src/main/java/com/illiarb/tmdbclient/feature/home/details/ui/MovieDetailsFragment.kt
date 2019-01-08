@@ -4,31 +4,26 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.core.view.ViewCompat
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.material.chip.Chip
-import com.illiarb.tmdbclient.feature.home.MvpAppCompatFragment
 import com.illiarb.tmdbclient.feature.home.R
-import com.illiarb.tmdbclient.feature.home.details.MovieDetailsPresenter
-import com.illiarb.tmdbclient.feature.home.details.MovieDetailsView
 import com.illiarb.tmdbclient.feature.home.details.ui.photos.PhotosAdapter
 import com.illiarb.tmdbclient.feature.home.details.ui.reviews.ReviewsAdapter
 import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
-import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutOrientation
-import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
-import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
+import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.image.CropOptions
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.image.RequestOptions
+import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutOrientation
+import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
+import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Movie
-import com.illiarb.tmdblcient.core.navigation.NavigationKeys
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import javax.inject.Inject
 
-class MovieDetailsFragment : MvpAppCompatFragment(), Injectable, MovieDetailsView {
+class MovieDetailsFragment : BaseFragment(), Injectable {
 
     @Inject
     lateinit var photosAdapter: PhotosAdapter
@@ -39,10 +34,6 @@ class MovieDetailsFragment : MvpAppCompatFragment(), Injectable, MovieDetailsVie
     @Inject
     lateinit var imageLoader: ImageLoader
 
-    @Inject
-    @InjectPresenter
-    lateinit var presenter: MovieDetailsPresenter
-
     private val containerScrollListener by lazy(LazyThreadSafetyMode.NONE) {
         ViewTreeObserver.OnScrollChangedListener {
             if (movieDetailsContainer.scrollY > 0) {
@@ -52,15 +43,6 @@ class MovieDetailsFragment : MvpAppCompatFragment(), Injectable, MovieDetailsVie
             }
         }
     }
-
-    @Suppress("unused")
-    @ProvidePresenter
-    fun providePresenter(): MovieDetailsPresenter =
-        presenter.apply {
-            arguments?.let { arguments ->
-                id = arguments.getInt(NavigationKeys.EXTRA_MOVIE_DETAILS_ID)
-            }
-        }
 
     override fun getContentView(): Int = R.layout.fragment_movie_details
 
@@ -111,11 +93,7 @@ class MovieDetailsFragment : MvpAppCompatFragment(), Injectable, MovieDetailsVie
         movieDetailsContainer.viewTreeObserver.removeOnScrollChangedListener(containerScrollListener)
     }
 
-    override fun showError(message: String) {
-        showErrorDialog(message)
-    }
-
-    override fun showMovieDetails(movie: Movie) {
+    private fun showMovieDetails(movie: Movie) {
         with(movie) {
             movieDetailsTitle.text = title
 
@@ -140,7 +118,7 @@ class MovieDetailsFragment : MvpAppCompatFragment(), Injectable, MovieDetailsVie
                     .apply {
                         text = genre.name
                         setOnClickListener {
-                            presenter.onGenreClicked(genre.id)
+                            //
                         }
                     }
                     .also { movieDetailsTags.addView(it) }

@@ -3,8 +3,6 @@ package com.illiarb.tmdbclient.storage.network.api.service
 import com.illiarb.tmdbclient.storage.model.AccountModel
 import com.illiarb.tmdbclient.storage.model.MovieModel
 import com.illiarb.tmdbclient.storage.model.ResultsModel
-import com.illiarb.tmdblcient.core.entity.Movie
-import io.reactivex.Single
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Path

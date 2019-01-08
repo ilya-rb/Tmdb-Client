@@ -1,14 +1,11 @@
 package com.illiarb.tmdbclient
 
 import android.app.Application
-import android.os.Looper
 import com.illiarb.tmdbclient.di.AppComponent
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.system.Logger
 import com.illiarb.tmdblcient.core.system.WorkManager
-import io.reactivex.android.plugins.RxAndroidPlugins
-import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -22,7 +19,6 @@ class MobileApplication : Application(), App {
     override fun onCreate() {
         super.onCreate()
 
-        configureRxJava()
         configureDi()
         configureLogger()
 
@@ -39,13 +35,6 @@ class MobileApplication : Application(), App {
 
     private fun configureDi() {
         MobileAppInjector(this).registerLifecycleCallbacks()
-    }
-
-    private fun configureRxJava() {
-        val asyncMainThreadScheduler = AndroidSchedulers.from(Looper.getMainLooper(), true)
-
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler { asyncMainThreadScheduler }
-        RxAndroidPlugins.setMainThreadSchedulerHandler { asyncMainThreadScheduler }
     }
 
     private fun configureLogger() {

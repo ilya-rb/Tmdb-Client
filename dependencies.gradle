@@ -39,6 +39,7 @@ deps.lottie = "com.airbnb.android:lottie:$versions.lottie"
 deps.retrofit = "com.squareup.retrofit2:retrofit:$versions.retrofit"
 deps.converterGson = "com.squareup.retrofit2:converter-gson:$versions.retrofit"
 deps.rxJavaAdapter = "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
+deps.coroutinesAdapter = "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
 deps.okHttpLogger = "com.squareup.okhttp3:logging-interceptor:$versions.okHttpLogger"
 
 // ReactiveX

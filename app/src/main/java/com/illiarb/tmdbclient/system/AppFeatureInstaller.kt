@@ -12,16 +12,15 @@ import com.illiarb.tmdblcient.core.system.feature.DynamicFeatureName
 import com.illiarb.tmdblcient.core.system.feature.FeatureDownloadStatus.*
 import com.illiarb.tmdblcient.core.system.feature.FeatureInstallState
 import com.illiarb.tmdblcient.core.system.feature.FeatureInstaller
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.Single
+import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
-import kotlin.LazyThreadSafetyMode.NONE
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 /**
- * Rx Wrapper of [SplitInstallManagerFactory]
+ * Coroutine Wrapper of [SplitInstallManagerFactory]
  *
  * TODO:
  * 1. Add error handling
@@ -30,7 +29,7 @@ import kotlin.LazyThreadSafetyMode.NONE
  *
  * @author ilya-rb on 24.12.18.
  */
-class RxFeatureInstaller @Inject constructor(
+class AppFeatureInstaller @Inject constructor(
     app: App,
     private val resourceResolver: ResourceResolver
 ) : FeatureInstaller {
@@ -40,12 +39,12 @@ class RxFeatureInstaller @Inject constructor(
     /**
      * Set for keeping current downloads
      */
-    private val currentDownloads by lazy(NONE) {
+    private val currentDownloads by lazy {
         Collections.newSetFromMap(ConcurrentHashMap<Int, Boolean>())
     }
 
-    override fun installFeatures(vararg featureName: DynamicFeatureName): Observable<FeatureInstallState> =
-        Observable.create { emitter ->
+    override suspend fun installFeatures(vararg featureName: DynamicFeatureName): FeatureInstallState {
+        return suspendCancellableCoroutine { continuation ->
             val builder = SplitInstallRequest.newBuilder()
 
             featureName.forEach {
@@ -55,9 +54,7 @@ class RxFeatureInstaller @Inject constructor(
             val request = builder.build()
             val installStateUpdateListener = SplitInstallStateUpdatedListener { newState ->
                 if (currentDownloads.contains(newState.sessionId())) {
-                    if (!emitter.isDisposed) {
-                        emitter.onNext(createFeatureInstallState(createFeatureName(*featureName), newState))
-                    }
+                    continuation.resume(createFeatureInstallState(createFeatureName(*featureName), newState))
                 }
             }
 
@@ -67,34 +64,24 @@ class RxFeatureInstaller @Inject constructor(
                 // an on demand module, it binds it to the following session ID.
                 // You use this ID to track further status updates for the request.
                 .addOnSuccessListener { id -> currentDownloads.add(id) }
-                .addOnFailureListener {
-                    if (!emitter.isDisposed) {
-                        emitter.onError(it)
-                    }
-                }
-                .addOnCompleteListener {
-                    if (!emitter.isDisposed) {
-                        emitter.onComplete()
-                    }
-                }
+                .addOnFailureListener { continuation.resumeWithException(it) }
 
-            emitter.setCancellable {
+            continuation.invokeOnCancellation {
                 splitInstallManager.unregisterListener(installStateUpdateListener)
             }
         }
+    }
 
-    override fun mockInstallFeatures(vararg featureName: DynamicFeatureName): Observable<FeatureInstallState> =
-        Observable.just(
-            FeatureInstallState(
-                featureName = createFeatureName(*featureName),
-                percentDownloaded = 100,
-                status = INSTALLED
-            )
+    override fun mockInstallFeatures(vararg featureName: DynamicFeatureName): FeatureInstallState =
+        FeatureInstallState(
+            featureName = createFeatureName(*featureName),
+            percentDownloaded = 100,
+            status = INSTALLED
         )
 
-    override fun deleteFeature(): Completable = TODO()
+    override fun deleteFeature(): Boolean = TODO()
 
-    override fun isFeatureInstalled(): Single<Boolean> = TODO()
+    override fun isFeatureInstalled(): Boolean = TODO()
 
     private fun createFeatureName(vararg features: DynamicFeatureName): String = features.joinToString(",") { it.name }
 

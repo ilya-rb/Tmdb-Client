@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.feature.search.di
 
 import com.illiarb.tmdbclient.feature.search.ui.SearchFragment
-import com.illiarb.tmdbexplorer.coreui.di.UiEventsModule
+import com.illiarb.tmdbexplorer.coreui.di.modules.ViewModelModule
 import com.illiarb.tmdbexplorer.coreui.di.scope.FragmentScope
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import dagger.Component
@@ -11,7 +11,10 @@ import dagger.Component
  */
 @Component(
     dependencies = [AppProvider::class],
-    modules = [UiEventsModule::class]
+    modules = [
+        SearchModule::class,
+        ViewModelModule::class
+    ]
 )
 @FragmentScope
 interface SearchComponent {

@@ -6,7 +6,7 @@ import com.illiarb.tmdblcient.core.system.NonBlocking
 /**
  * @author ilya-rb on 07.01.19.
  */
-interface GetProfileUseCase {
+interface GetProfile {
 
     @NonBlocking
     suspend operator fun invoke(): Account

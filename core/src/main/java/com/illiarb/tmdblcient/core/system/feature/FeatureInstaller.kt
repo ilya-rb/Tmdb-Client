@@ -1,8 +1,6 @@
 package com.illiarb.tmdblcient.core.system.feature
 
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.Single
+import com.illiarb.tmdblcient.core.system.NonBlocking
 
 /**
  * Interface for interacting
@@ -12,11 +10,12 @@ import io.reactivex.Single
  */
 interface FeatureInstaller {
 
-    fun installFeatures(vararg featureName: DynamicFeatureName): Observable<FeatureInstallState>
+    @NonBlocking
+    suspend fun installFeatures(vararg featureName: DynamicFeatureName): FeatureInstallState
 
-    fun deleteFeature(): Completable
+    fun mockInstallFeatures(vararg featureName: DynamicFeatureName): FeatureInstallState
 
-    fun isFeatureInstalled(): Single<Boolean>
+    fun deleteFeature(): Boolean
 
-    fun mockInstallFeatures(vararg featureName: DynamicFeatureName): Observable<FeatureInstallState>
+    fun isFeatureInstalled(): Boolean
 }

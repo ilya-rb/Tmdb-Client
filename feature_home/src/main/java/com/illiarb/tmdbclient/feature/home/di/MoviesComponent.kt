@@ -2,7 +2,7 @@ package com.illiarb.tmdbclient.feature.home.di
 
 import com.illiarb.tmdbclient.feature.home.details.ui.MovieDetailsFragment
 import com.illiarb.tmdbclient.feature.home.list.ui.HomeFragment
-import com.illiarb.tmdbexplorer.coreui.di.UiEventsModule
+import com.illiarb.tmdbexplorer.coreui.di.modules.ViewModelModule
 import com.illiarb.tmdbexplorer.coreui.di.scope.FragmentScope
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import dagger.Component
@@ -10,8 +10,10 @@ import dagger.Component
 @Component(
     dependencies = [AppProvider::class],
     modules = [
-        UiEventsModule::class,
-        DelegatesModule::class
+        DelegatesModule::class,
+        HomeModule::class,
+        MovieDetailsModule::class,
+        ViewModelModule::class
     ]
 )
 @FragmentScope

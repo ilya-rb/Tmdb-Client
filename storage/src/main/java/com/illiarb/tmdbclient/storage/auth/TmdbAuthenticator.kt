@@ -6,7 +6,6 @@ import com.illiarb.tmdbclient.storage.network.request.CreateSessionRequest
 import com.illiarb.tmdbclient.storage.network.request.ValidateTokenRequest
 import com.illiarb.tmdblcient.core.domain.auth.Authenticator
 import com.illiarb.tmdblcient.core.system.DispatcherProvider
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -19,27 +18,24 @@ class TmdbAuthenticator @Inject constructor(
     private val dispatcherProvider: DispatcherProvider
 ) : Authenticator {
 
-    override suspend fun authorize(username: String, password: String): Boolean = coroutineScope {
-        withContext(dispatcherProvider.ioDispatcher) {
-            try {
-                val authToken = authService.requestAuthToken().await()
+    override suspend fun authorize(username: String, password: String): Boolean = withContext(dispatcherProvider.ioDispatcher) {
+        try {
+            val authToken = authService.requestAuthToken().await()
 
-                val request = ValidateTokenRequest(username, password, authToken.requestToken)
-                val validatedToken = authService.validateTokenWithCredentials(request).await()
+            val request = ValidateTokenRequest(username, password, authToken.requestToken)
+            val validatedToken = authService.validateTokenWithCredentials(request).await()
 
-                val session = authService.createNewSession(CreateSessionRequest(validatedToken.requestToken)).await()
+            val session = authService.createNewSession(CreateSessionRequest(validatedToken.requestToken)).await()
 
-                persistableStorage.storeSessionId(session.sessionId)
-            } catch (e: Exception) {
-                return@withContext false
-            }
-            true
+            persistableStorage.storeSessionId(session.sessionId)
+        } catch (e: Exception) {
+            return@withContext false
         }
+
+        true
     }
 
-    override suspend fun isAuthenticated(): Boolean = coroutineScope {
-        withContext(dispatcherProvider.ioDispatcher) {
-            persistableStorage.isAuthorized()
-        }
+    override suspend fun isAuthenticated(): Boolean = withContext(dispatcherProvider.ioDispatcher) {
+        persistableStorage.isAuthorized()
     }
 }
