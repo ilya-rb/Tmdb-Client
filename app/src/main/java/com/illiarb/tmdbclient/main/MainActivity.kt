@@ -11,10 +11,14 @@ import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.navigation.Navigator
 import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
 import com.illiarb.tmdblcient.core.system.ConnectivityStatus
+import com.illiarb.tmdblcient.core.system.DispatcherProvider
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
-class MainActivity : AppCompatActivity(), Injectable {
+class MainActivity : AppCompatActivity(), Injectable, CoroutineScope {
 
     @Inject
     lateinit var navigator: Navigator
@@ -23,21 +27,18 @@ class MainActivity : AppCompatActivity(), Injectable {
     lateinit var navigatorHolder: NavigatorHolder
 
     @Inject
-    lateinit var connectivityStatus: ConnectivityStatus
+    lateinit var dispatcherProvider: DispatcherProvider
+
+    private val coroutineJob = Job()
+
+    override val coroutineContext: CoroutineContext
+        get() = coroutineJob + dispatcherProvider.mainDispatcher
 
     override fun inject(appProvider: AppProvider) = MainComponent.get(appProvider, this).inject(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-//        connectivityStatus.connectionState()
-//            .subscribe(::onConnectionStateChanged)
-//            .addTo(destroyDisposable)
     }
 
     override fun onResumeFragments() {

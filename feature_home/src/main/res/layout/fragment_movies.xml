@@ -20,19 +20,6 @@
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/movieFilters"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginTop="@dimen/margin_default"
-        android:drawableEnd="@drawable/ic_keyboard_arrow_down_black_24dp"
-        android:gravity="center_vertical"
-        android:text="Now playing"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-        android:textColor="@color/colorSecondary"
-        app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@id/movieTitle" />
-
     <ProgressBar
         android:id="@+id/movieProgress"
         android:layout_width="24dp"
@@ -75,7 +62,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieFilters"
+        app:layout_constraintTop_toBottomOf="@id/movieTitle"
         tools:listitem="@layout/item_movie_section" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

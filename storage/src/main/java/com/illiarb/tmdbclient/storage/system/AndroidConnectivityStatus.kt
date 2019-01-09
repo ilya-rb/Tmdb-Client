@@ -8,6 +8,11 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import com.illiarb.tmdblcient.core.system.ConnectivityStatus
 import com.illiarb.tmdblcient.core.system.ConnectivityStatus.ConnectionState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 /**
@@ -22,21 +27,32 @@ class AndroidConnectivityStatus @Inject constructor(private val context: Context
     private val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-//    private val connectionSubject = PublishSubject.create<ConnectionState>()
+    private val statusChannel: Channel<ConnectionState> = Channel(Channel.RENDEZVOUS)
 
     @SuppressLint("MissingPermission")
     private val connectionReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val info = connectivityManager.activeNetworkInfo
             if (info != null && info.isConnected) {
-//                connectionSubject.onNext(ConnectionState.CONNECTED)
+//                statusChannel.send(ConnectionState.CONNECTED)
             } else {
-//                connectionSubject.onNext(ConnectionState.NOT_CONNECTED)
+//                statusChannel.send(ConnectionState.NOT_CONNECTED)
             }
         }
     }
 
-    override fun connectionState(): ConnectionState = TODO()
+    @ExperimentalCoroutinesApi
+    override fun connectionState(): ReceiveChannel<ConnectionState> {
+        registerReceiver()
+
+        statusChannel.invokeOnClose {
+            unregisterReceiver()
+        }
+
+        return statusChannel.also { channel ->
+            // channel.send(getConnectionStatus())
+        }
+    }
 
     private fun getConnectionStatus() =
         if (connectivityManager.isDefaultNetworkActive) {
