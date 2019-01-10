@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Available values
+         1. Now Playing
+         2. Upcoming
+         3. Popular
+         4. Top Rated
+     -->
     <string-array name="movie_filters">
         <item>Now Playing</item>
         <item>Popular</item>
+        <item>Top Rated</item>
     </string-array>
 
 </resources>

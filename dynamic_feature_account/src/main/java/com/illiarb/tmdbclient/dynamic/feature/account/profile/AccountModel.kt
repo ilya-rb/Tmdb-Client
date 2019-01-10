@@ -19,9 +19,15 @@ class AccountModel @Inject constructor(
 ) : BasePresentationModel<AccountUiState>(), CoroutineScope {
 
     init {
+        setState {
+            AccountUiState(true, false, it.account)
+        }
+
         launch(context = coroutineContext) {
             val account = getProfileUseCase.execute(Unit)
-            setState(AccountUiState(false, false, account))
+            setState {
+                AccountUiState(false, it.isBlockingLoading, account)
+            }
         }
     }
 

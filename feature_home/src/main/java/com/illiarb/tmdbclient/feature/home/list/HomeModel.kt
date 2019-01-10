@@ -2,8 +2,8 @@ package com.illiarb.tmdbclient.feature.home.list
 
 import com.illiarb.tmdbclient.feature.home.domain.GetAllMovies
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
-import com.illiarb.tmdblcient.core.common.Result
 import com.illiarb.tmdblcient.core.auth.Authenticator
+import com.illiarb.tmdblcient.core.common.Result
 import com.illiarb.tmdblcient.core.entity.ListSection
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter
@@ -15,6 +15,7 @@ import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.navigation.SearchScreen
 import kotlinx.coroutines.launch
+import java.util.Collections
 import javax.inject.Inject
 
 /**
@@ -27,7 +28,7 @@ class HomeModel @Inject constructor(
 ) : BasePresentationModel<HomeUiState>() {
 
     init {
-        setState(HomeUiState.idle())
+        setIdleState(HomeUiState(true, Collections.emptyList()))
 
         launch(context = coroutineContext) {
             val result = getAllMovies.execute(Unit)
@@ -35,7 +36,9 @@ class HomeModel @Inject constructor(
             when (result) {
                 is Result.Success -> {
                     val movies = createMovieSections(result.result)
-                    setState(HomeUiState(false, movies))
+                    setState {
+                        HomeUiState(false, movies)
+                    }
                 }
                 is Result.Error -> {
                     // Process error

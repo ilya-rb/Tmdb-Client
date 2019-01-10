@@ -12,9 +12,5 @@ data class AccountUiState(
     val account: Account? = null
 ) : Cloneable<AccountUiState> {
 
-    companion object {
-        fun idle() = AccountUiState()
-    }
-
     override fun clone(): AccountUiState = copy()
 }

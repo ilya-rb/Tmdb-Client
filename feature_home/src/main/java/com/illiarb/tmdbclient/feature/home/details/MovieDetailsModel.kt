@@ -13,11 +13,13 @@ class MovieDetailsModel @Inject constructor(
 ) : BasePresentationModel<MovieDetailsUiState>() {
 
     fun getMovieDetails(id: Int) = launch(context = coroutineContext) {
-        setState(MovieDetailsUiState(true, null))
+        setState { MovieDetailsUiState(true, it.movie) }
 
         try {
             val movie = getMovieDetails.execute(id)
-            setState(MovieDetailsUiState(false, movie))
+            setState {
+                MovieDetailsUiState(false, movie)
+            }
         } catch (e: Exception) {
             // Process error
         }

@@ -6,7 +6,6 @@ import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import com.illiarb.tmdblcient.core.navigation.Router
 import kotlinx.coroutines.launch
-import java.util.Collections
 import javax.inject.Inject
 
 /**
@@ -18,14 +17,19 @@ class SearchModel @Inject constructor(
 ) : BasePresentationModel<SearchUiState>() {
 
     init {
-        setState(SearchUiState.idle())
+        setState { SearchUiState.idle() }
     }
 
     fun search(query: String) = launch(context = coroutineContext) {
-        setState(SearchUiState(true, Collections.emptyList(), null))
+        setState {
+            SearchUiState(true, it.searchResults, it.error)
+        }
+
         try {
             val results = searchMovies.execute(query)
-            setState(SearchUiState(false, results, null))
+            setState {
+                SearchUiState(false, results, it.error)
+            }
         } catch (e: Exception) {
             // Process error
         }
