@@ -7,7 +7,7 @@ import androidx.core.view.ViewCompat
 import com.google.android.material.chip.Chip
 import com.illiarb.tmdbclient.feature.home.R
 import com.illiarb.tmdbclient.feature.home.details.MovieDetailsModel
-import com.illiarb.tmdbclient.feature.home.details.MovieDetailsState
+import com.illiarb.tmdbclient.feature.home.details.MovieDetailsUiState
 import com.illiarb.tmdbclient.feature.home.details.ui.photos.PhotosAdapter
 import com.illiarb.tmdbclient.feature.home.details.ui.reviews.ReviewsAdapter
 import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
@@ -27,7 +27,7 @@ import com.illiarb.tmdblcient.core.navigation.NavigationKeys
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import javax.inject.Inject
 
-class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable, StateObserver<MovieDetailsState> {
+class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable, StateObserver<MovieDetailsUiState> {
 
     @Inject
     lateinit var photosAdapter: PhotosAdapter
@@ -100,7 +100,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable, Stat
 
     override fun onStart() {
         super.onStart()
-        presentationModel.stateObservable().addObserver(this)
+        presentationModel.observeState(this)
     }
 
     override fun onResume() {
@@ -115,10 +115,10 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable, Stat
 
     override fun onStop() {
         super.onStop()
-        presentationModel.stateObservable().removeObserver(this)
+        presentationModel.stopObserving(this)
     }
 
-    override fun onStateChanged(state: MovieDetailsState) {
+    override fun onStateChanged(state: MovieDetailsUiState) {
         state.movie?.let {
             showMovieDetails(it)
         }

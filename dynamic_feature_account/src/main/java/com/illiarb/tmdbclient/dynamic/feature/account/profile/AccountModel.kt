@@ -1,54 +1,36 @@
 package com.illiarb.tmdbclient.dynamic.feature.account.profile
 
-import androidx.lifecycle.ViewModel
-import com.illiarb.tmdblcient.core.domain.profile.GetProfile
-import com.illiarb.tmdblcient.core.entity.Account
-import com.illiarb.tmdblcient.core.system.DispatcherProvider
+import com.illiarb.tmdbclient.dynamic.feature.account.profile.domain.GetProfileUseCase
+import com.illiarb.tmdbclient.dynamic.feature.account.profile.domain.SignOutUseCase
+import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
+import com.illiarb.tmdblcient.core.navigation.AuthScreen
+import com.illiarb.tmdblcient.core.navigation.Router
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 /**
  * @author ilya-rb on 07.01.19.
  */
 class AccountModel @Inject constructor(
-    dispatcherProvider: DispatcherProvider,
-    private val getProfileUseCase: GetProfile
-) : ViewModel(), CoroutineScope {
-
-    private val job = SupervisorJob()
-
-    private val stateHolder = StateHolder()
-
-    override val coroutineContext: CoroutineContext = job + dispatcherProvider.mainDispatcher
+    private val getProfileUseCase: GetProfileUseCase,
+    private val signOutUseCase: SignOutUseCase,
+    private val router: Router
+) : BasePresentationModel<AccountUiState>(), CoroutineScope {
 
     init {
         launch(context = coroutineContext) {
-            val account = getProfileUseCase()
-            stateHolder.setValue(ProfileState(false, account))
+            val account = getProfileUseCase.execute(Unit)
+            setState(AccountUiState(false, false, account))
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        job.cancel()
-    }
-
-    class StateHolder {
-
-        private var _state: ProfileState? = null
-
-        val state: ProfileState
-            get() = _state ?: ProfileState(false, null)
-
-        fun setValue(newState: ProfileState) {
-            this._state = ProfileState(newState.isLoading, newState.account)
+    fun onLogoutClick() {
+        launch(context = coroutineContext) {
+            val success = signOutUseCase.execute(Unit)
+            if (success) {
+                router.navigateTo(AuthScreen)
+            }
         }
-
-        fun getValue(): ProfileState = state.copy()
     }
-
-    data class ProfileState(val isLoading: Boolean, val account: Account? = null)
 }

@@ -8,17 +8,15 @@ import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.di.providers.StorageProvider
 import com.illiarb.tmdblcient.core.di.providers.ToolsProvider
-import com.illiarb.tmdblcient.core.di.providers.UseCaseProvider
 import dagger.Component
 import javax.inject.Singleton
 
 @Component(
+    modules = [AppModule::class],
     dependencies = [
-        UseCaseProvider::class,
         StorageProvider::class,
         ToolsProvider::class
-    ],
-    modules = [AppModule::class]
+    ]
 )
 @Singleton
 interface AppComponent : AppProvider {
@@ -28,11 +26,9 @@ interface AppComponent : AppProvider {
         fun get(app: App): AppProvider {
             val toolsProvider = ToolsComponent.get()
             val storageProvider = StorageComponent.get(app, toolsProvider)
-            val useCaseProvider = UseCaseComponent.get(storageProvider, toolsProvider)
 
             return DaggerAppComponent.builder()
                 .storageProvider(storageProvider)
-                .useCaseProvider(useCaseProvider)
                 .toolsProvider(toolsProvider)
                 .appModule(AppModule(app))
                 .build()

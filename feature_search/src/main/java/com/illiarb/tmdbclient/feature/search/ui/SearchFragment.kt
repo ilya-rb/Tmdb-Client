@@ -6,7 +6,7 @@ import androidx.core.content.ContextCompat
 import com.illiarb.tmdbclient.feature.search.DebounceTextWatcher
 import com.illiarb.tmdbclient.feature.search.R
 import com.illiarb.tmdbclient.feature.search.SearchModel
-import com.illiarb.tmdbclient.feature.search.SearchState
+import com.illiarb.tmdbclient.feature.search.SearchUiState
 import com.illiarb.tmdbclient.feature.search.di.SearchComponent
 import com.illiarb.tmdbexplorer.coreui.StateObserver
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
@@ -21,7 +21,7 @@ import javax.inject.Inject
 /**
  * @author ilya-rb on 26.12.18.
  */
-class SearchFragment : BaseFragment<SearchModel>(), Injectable, StateObserver<SearchState> {
+class SearchFragment : BaseFragment<SearchModel>(), Injectable, StateObserver<SearchUiState> {
 
     @Inject
     lateinit var searchAdapter: SearchAdapter
@@ -54,17 +54,17 @@ class SearchFragment : BaseFragment<SearchModel>(), Injectable, StateObserver<Se
 
     override fun onStart() {
         super.onStart()
-        presentationModel.stateObservable().addObserver(this)
+        presentationModel.observeState(this)
         searchQuery.addTextChangedListener(searchTextWatcher)
     }
 
     override fun onStop() {
         super.onStop()
-        presentationModel.stateObservable().removeObserver(this)
+        presentationModel.stopObserving(this)
         searchQuery.removeTextChangedListener(searchTextWatcher)
     }
 
-    override fun onStateChanged(state: SearchState) {
+    override fun onStateChanged(state: SearchUiState) {
         searchProgress.visibility = if (state.isSearchRunning) View.VISIBLE else View.GONE
 
         val drawable =

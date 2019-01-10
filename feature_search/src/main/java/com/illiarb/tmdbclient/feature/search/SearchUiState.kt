@@ -7,15 +7,15 @@ import java.util.Collections
 /**
  * @author ilya-rb on 27.12.18.
  */
-data class SearchState(
+data class SearchUiState(
     val isSearchRunning: Boolean,
     val searchResults: List<Movie>,
     val error: Throwable?
-) : Cloneable<SearchState> {
+) : Cloneable<SearchUiState> {
 
     companion object {
-        fun idle() = SearchState(false, Collections.emptyList(), null)
+        fun idle() = SearchUiState(false, Collections.emptyList(), null)
     }
 
-    override fun clone(): SearchState = copy()
+    override fun clone(): SearchUiState = copy()
 }

@@ -6,11 +6,11 @@ import com.illiarb.tmdblcient.core.entity.Movie
 /**
  * @author ilya-rb on 09.01.19.
  */
-data class MovieDetailsState(val isLoading: Boolean, val movie: Movie?) : Cloneable<MovieDetailsState> {
+data class MovieDetailsUiState(val isLoading: Boolean, val movie: Movie?) : Cloneable<MovieDetailsUiState> {
 
     companion object {
-        fun idle() = MovieDetailsState(false, null)
+        fun idle() = MovieDetailsUiState(false, null)
     }
 
-    override fun clone(): MovieDetailsState = copy()
+    override fun clone(): MovieDetailsUiState = copy()
 }

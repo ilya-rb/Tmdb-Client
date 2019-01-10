@@ -1,9 +1,9 @@
-package com.illiarb.tmdblcient.core.domain.auth
+package com.illiarb.tmdbclient.dynamic.feature.account.auth.domain
 
 import javax.inject.Inject
 
 /**
- * @author ilya-rb on 23.12.18.
+ * @author ilya-rb on 10.01.19.
  */
 class Validator @Inject constructor() {
 

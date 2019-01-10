@@ -1,5 +1,6 @@
-package com.illiarb.tmdblcient.core.domain.auth
+package com.illiarb.tmdblcient.core.auth
 
+import com.illiarb.tmdblcient.core.entity.UserCredentials
 import com.illiarb.tmdblcient.core.system.NonBlocking
 
 /**
@@ -8,7 +9,7 @@ import com.illiarb.tmdblcient.core.system.NonBlocking
 interface Authenticator {
 
     @NonBlocking
-    suspend fun authorize(username: String, password: String): Boolean
+    suspend fun authorize(credentials: UserCredentials): Boolean
 
     @NonBlocking
     suspend fun isAuthenticated(): Boolean

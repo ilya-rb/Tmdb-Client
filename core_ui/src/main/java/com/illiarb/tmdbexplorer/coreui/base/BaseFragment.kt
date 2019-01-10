@@ -12,7 +12,7 @@ import com.illiarb.tmdbexplorer.coreui.uiactions.UiActionImpl
 import com.illiarb.tmdbexplorer.coreui.uiactions.UiActions
 import javax.inject.Inject
 
-abstract class BaseFragment<T : BaseViewModel> : Fragment(), UiActions {
+abstract class BaseFragment<T : BasePresentationModel<*>> : Fragment(), UiActions {
 
     private val uiActions by lazy { UiActionImpl(requireActivity()) }
 

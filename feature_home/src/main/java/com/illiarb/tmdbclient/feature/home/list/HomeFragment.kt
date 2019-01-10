@@ -16,7 +16,7 @@ import com.illiarb.tmdblcient.core.entity.Movie
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
 
-class HomeFragment : BaseFragment<HomeModel>(), Injectable, StateObserver<HomeState> {
+class HomeFragment : BaseFragment<HomeModel>(), Injectable, StateObserver<HomeUiState> {
 
     @Inject
     lateinit var delegateAdapter: DelegateAdapter
@@ -62,15 +62,15 @@ class HomeFragment : BaseFragment<HomeModel>(), Injectable, StateObserver<HomeSt
 
     override fun onStart() {
         super.onStart()
-        presentationModel.getStateObservable().addObserver(this)
+        presentationModel.observeState(this)
     }
 
     override fun onStop() {
         super.onStop()
-        presentationModel.getStateObservable().removeObserver(this)
+        presentationModel.stopObserving(this)
     }
 
-    override fun onStateChanged(state: HomeState) {
+    override fun onStateChanged(state: HomeUiState) {
         movieProgress.visibility = if (state.isLoading) View.VISIBLE else View.GONE
 
         if (state.movies.isNotEmpty()) {
