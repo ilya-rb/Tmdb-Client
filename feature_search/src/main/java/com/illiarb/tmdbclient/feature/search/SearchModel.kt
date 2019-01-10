@@ -17,6 +17,10 @@ class SearchModel @Inject constructor(
     private val router: Router
 ) : BasePresentationModel<SearchUiState>() {
 
+    init {
+        setState(SearchUiState.idle())
+    }
+
     fun search(query: String) = launch(context = coroutineContext) {
         setState(SearchUiState(true, Collections.emptyList(), null))
         try {
