@@ -3,7 +3,6 @@ package com.illiarb.tmdbclient.storage.di.modules
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.google.gson.JsonParser
 import com.illiarb.tmdbclient.storage.BuildConfig
 import com.illiarb.tmdbclient.storage.network.api.ApiKeyInterceptor
 import com.illiarb.tmdbclient.storage.network.api.service.AccountService
@@ -11,7 +10,6 @@ import com.illiarb.tmdbclient.storage.network.api.service.AuthService
 import com.illiarb.tmdbclient.storage.network.api.service.ConfigurationService
 import com.illiarb.tmdbclient.storage.network.api.service.MovieService
 import com.illiarb.tmdbclient.storage.network.api.service.SearchService
-import com.illiarb.tmdbclient.storage.network.error.ApiCallAdapterFactory
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -98,8 +96,7 @@ class NetworkModule {
 
         @Provides
         @JvmStatic
-        fun provideApiCallAdapterFactory(): CallAdapter.Factory =
-            ApiCallAdapterFactory(CoroutineCallAdapterFactory.invoke(), JsonParser())
+        fun provideApiCallAdapterFactory(): CallAdapter.Factory = CoroutineCallAdapterFactory.invoke()
 
         @Provides
         @JvmStatic

@@ -7,6 +7,8 @@ import com.illiarb.tmdbclient.storage.mappers.ReviewMapper
 import com.illiarb.tmdbclient.storage.model.MovieModel
 import com.illiarb.tmdbclient.storage.network.api.service.MovieService
 import com.illiarb.tmdbclient.storage.network.api.service.SearchService
+import com.illiarb.tmdblcient.core.common.Result
+import com.illiarb.tmdblcient.core.common.invokeForResult
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.entity.Review
@@ -34,16 +36,18 @@ class MoviesRepositoryImpl @Inject constructor(
 ) : MoviesRepository {
 
     @NonBlocking
-    override suspend fun getMoviesByType(type: String, refresh: Boolean): List<Movie> = withContext(dispatcherProvider.ioDispatcher) {
-        if (refresh) {
-            return@withContext movieMapper.mapList(fetchFromNetworkAndStore(type))
-        }
+    override suspend fun getMoviesByType(type: String, refresh: Boolean): Result<List<Movie>> = invokeForResult {
+        withContext(dispatcherProvider.ioDispatcher) {
+            if (refresh) {
+                return@withContext movieMapper.mapList(fetchFromNetworkAndStore(type))
+            }
 
-        val cached = persistableStorage.getMoviesByType(type)
-        if (cached.isEmpty()) {
-            movieMapper.mapList(fetchFromNetworkAndStore(type))
-        } else {
-            movieMapper.mapList(cached)
+            val cached = persistableStorage.getMoviesByType(type)
+            if (cached.isEmpty()) {
+                movieMapper.mapList(fetchFromNetworkAndStore(type))
+            } else {
+                movieMapper.mapList(cached)
+            }
         }
     }
 

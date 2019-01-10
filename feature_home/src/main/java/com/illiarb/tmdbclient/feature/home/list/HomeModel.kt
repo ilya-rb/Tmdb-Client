@@ -1,13 +1,19 @@
 package com.illiarb.tmdbclient.feature.home.list
 
+import com.illiarb.tmdbclient.feature.home.domain.GetAllMovies
+import com.illiarb.tmdbexplorer.coreui.SimpleStateObservable
+import com.illiarb.tmdbexplorer.coreui.StateObservable
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewModel
+import com.illiarb.tmdblcient.core.common.Result
 import com.illiarb.tmdblcient.core.domain.auth.Authenticator
-import com.illiarb.tmdblcient.core.domain.movie.GetAllMovies
 import com.illiarb.tmdblcient.core.entity.ListSection
+import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter
+import com.illiarb.tmdblcient.core.entity.MovieSection
 import com.illiarb.tmdblcient.core.entity.NowPlayingSection
 import com.illiarb.tmdblcient.core.navigation.AccountScreen
 import com.illiarb.tmdblcient.core.navigation.AuthScreen
+import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.navigation.SearchScreen
 import com.illiarb.tmdblcient.core.system.DispatcherProvider
@@ -31,16 +37,13 @@ class HomeModel @Inject constructor(
         stateObservable.accept(HomeState.idle())
 
         launch(context = coroutineContext) {
-            val movies = getAllMovies()
-                .map { (filter, movies) ->
-                    if (filter.code == MovieFilter.TYPE_NOW_PLAYING) {
-                        NowPlayingSection(filter.name, movies)
-                    } else {
-                        ListSection(filter.name, movies)
-                    }
+            val result = getAllMovies.execute(Unit)
+            when (result) {
+                is Result.Success -> {
+                    val movies = createMovieSections(result.result)
+                    stateObservable.accept(HomeState(false, movies))
                 }
-
-            stateObservable.accept(HomeState(false, movies))
+            }
         }
     }
 
@@ -48,10 +51,16 @@ class HomeModel @Inject constructor(
 
     fun getStateObservable(): StateObservable<HomeState> = stateObservable
 
-    fun onSearchClick() = router.navigateTo(SearchScreen)
+    fun onSearchClick() {
+        router.navigateTo(SearchScreen)
+    }
+
+    fun onMovieClick(movie: Movie) {
+        router.navigateTo(MovieDetailsScreen(movie.id))
+    }
 
     fun onAccountClick() {
-        launch {
+        launch(context = coroutineContext) {
             if (authenticator.isAuthenticated()) {
                 router.navigateTo(AccountScreen)
             } else {
@@ -59,4 +68,13 @@ class HomeModel @Inject constructor(
             }
         }
     }
+
+    private fun createMovieSections(movies: List<Pair<MovieFilter, List<Movie>>>): List<MovieSection> =
+        movies.map { (filter, movies) ->
+            if (filter.code == MovieFilter.TYPE_NOW_PLAYING) {
+                NowPlayingSection(filter.name, movies)
+            } else {
+                ListSection(filter.name, movies)
+            }
+        }
 }

@@ -28,8 +28,7 @@ class DelegateAdapter @Inject constructor() : RecyclerView.Adapter<BaseDelegateV
 
     private val asyncListDiffer = AsyncListDiffer<Any>(this, diffCallback)
 
-    private var fallbackDelegate: AdapterDelegate =
-        DefaultFallbackDelegate()
+    private var fallbackDelegate: AdapterDelegate = DefaultFallbackDelegate()
 
     private var clickEvent: (viewId: Int, position: Int, item: Any) -> Unit = { _, _, _ -> }
 

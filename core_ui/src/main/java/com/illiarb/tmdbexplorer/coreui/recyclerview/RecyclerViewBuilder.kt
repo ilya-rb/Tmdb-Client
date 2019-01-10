@@ -13,7 +13,7 @@ class RecyclerViewBuilder {
 
     private var orientation: LayoutOrientation =
         LayoutOrientation.VERTICAL
-    private var type: LayoutType = LayoutType.Linear
+    private var type: LayoutType = LayoutType.Linear()
     private var adapter: RecyclerView.Adapter<*>? = null
     private var hasFixedSize: Boolean = false
     private var spaceBetween: SpaceBetween? = null
@@ -86,6 +86,11 @@ enum class LayoutOrientation {
 }
 
 sealed class LayoutType {
-    object Linear : LayoutType()
+
+    companion object {
+        const val DEFAULT_PREFETCH_COUNT = 4
+    }
+
+    data class Linear(val prefetchCount: Int = -1) : LayoutType()
     data class Grid(val spanCount: Int) : LayoutType()
 }

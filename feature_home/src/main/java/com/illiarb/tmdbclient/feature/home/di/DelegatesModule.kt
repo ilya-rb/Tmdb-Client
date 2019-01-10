@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.feature.home.di
 
-import com.illiarb.tmdbclient.feature.home.list.ui.delegates.movie.MovieSectionDelegate
-import com.illiarb.tmdbclient.feature.home.list.ui.delegates.nowplaying.NowPlayingSectionDelegate
+import com.illiarb.tmdbclient.feature.home.list.delegates.movie.MovieSectionDelegate
+import com.illiarb.tmdbclient.feature.home.list.delegates.nowplaying.NowPlayingSectionDelegate
 import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.AdapterDelegate
 import dagger.Binds
 import dagger.Module

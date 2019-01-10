@@ -6,9 +6,12 @@ import android.view.ViewTreeObserver
 import androidx.core.view.ViewCompat
 import com.google.android.material.chip.Chip
 import com.illiarb.tmdbclient.feature.home.R
+import com.illiarb.tmdbclient.feature.home.details.MovieDetailsModel
+import com.illiarb.tmdbclient.feature.home.details.MovieDetailsState
 import com.illiarb.tmdbclient.feature.home.details.ui.photos.PhotosAdapter
 import com.illiarb.tmdbclient.feature.home.details.ui.reviews.ReviewsAdapter
 import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
+import com.illiarb.tmdbexplorer.coreui.StateObserver
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.image.CropOptions
@@ -20,10 +23,11 @@ import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Movie
+import com.illiarb.tmdblcient.core.navigation.NavigationKeys
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import javax.inject.Inject
 
-class MovieDetailsFragment : BaseFragment(), Injectable {
+class MovieDetailsFragment : BaseFragment(), Injectable, StateObserver<MovieDetailsState> {
 
     @Inject
     lateinit var photosAdapter: PhotosAdapter
@@ -33,6 +37,9 @@ class MovieDetailsFragment : BaseFragment(), Injectable {
 
     @Inject
     lateinit var imageLoader: ImageLoader
+
+    @Inject
+    lateinit var movieDetailsModel: MovieDetailsModel
 
     private val containerScrollListener by lazy(LazyThreadSafetyMode.NONE) {
         ViewTreeObserver.OnScrollChangedListener {
@@ -62,7 +69,7 @@ class MovieDetailsFragment : BaseFragment(), Injectable {
             .create {
                 adapter(photosAdapter)
                 hasFixedSize(true)
-                type(LayoutType.Linear)
+                type(LayoutType.Linear())
                 orientation(LayoutOrientation.HORIZONTAL)
                 spaceBetween { horizontally = resources.getDimensionPixelSize(R.dimen.margin_small) / 2 }
             }
@@ -71,7 +78,7 @@ class MovieDetailsFragment : BaseFragment(), Injectable {
         RecyclerViewBuilder
             .create {
                 adapter(reviewsAdapter)
-                type(LayoutType.Linear)
+                type(LayoutType.Linear())
                 disableNestedScroll()
                 spaceBetween {
                     horizontally = resources.getDimensionPixelSize(R.dimen.margin_default)
@@ -83,6 +90,20 @@ class MovieDetailsFragment : BaseFragment(), Injectable {
         ViewCompat.requestApplyInsets(view)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        arguments?.let {
+            val id = it.getInt(NavigationKeys.EXTRA_MOVIE_DETAILS_ID)
+            movieDetailsModel.getMovieDetails(id)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        movieDetailsModel.stateObservable().addObserver(this)
+    }
+
     override fun onResume() {
         super.onResume()
         movieDetailsContainer.viewTreeObserver.addOnScrollChangedListener(containerScrollListener)
@@ -91,6 +112,17 @@ class MovieDetailsFragment : BaseFragment(), Injectable {
     override fun onPause() {
         super.onPause()
         movieDetailsContainer.viewTreeObserver.removeOnScrollChangedListener(containerScrollListener)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        movieDetailsModel.stateObservable().removeObserver(this)
+    }
+
+    override fun onStateChanged(state: MovieDetailsState) {
+        state.movie?.let {
+            showMovieDetails(it)
+        }
     }
 
     private fun showMovieDetails(movie: Movie) {

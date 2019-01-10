@@ -1,13 +1,13 @@
-package com.illiarb.tmdbclient.feature.home.list.ui.delegates.movie
+package com.illiarb.tmdbclient.feature.home.list.delegates.movie
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.illiarb.tmdbclient.feature.home.R
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
+import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
+import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
 import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.AdapterDelegate
-import com.illiarb.tmdbexplorer.coreui.recyclerview.decoration.SpaceItemDecoration
 import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseDelegateViewHolder
 import com.illiarb.tmdblcient.core.entity.ListSection
 import com.illiarb.tmdblcient.core.entity.MovieSection
@@ -33,32 +33,25 @@ class MovieSectionDelegate @Inject constructor(
         imageLoader: ImageLoader
     ) : BaseDelegateViewHolder(containerView) {
 
-        companion object {
-            const val PREFETCH_ITEM_COUNT = 4
-        }
-
         private val sectionList = itemView.itemMovieSectionList
         private val sectionTitle = itemView.itemSectionTitle
 
         private val itemSpacing = itemView.resources.getDimensionPixelSize(R.dimen.item_movie_spacing)
-        private val adapter = MovieAdapter(imageLoader)
-            .apply {
-                clickEvent = { _, _, item ->
-                    //
-                }
-            }
+        private val movieAdapter = MovieAdapter(imageLoader)
 
         init {
-            sectionList.let {
-                it.adapter = adapter
-                it.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-                    .apply {
-                        initialPrefetchItemCount =
-                            PREFETCH_ITEM_COUNT
+            RecyclerViewBuilder
+                .create {
+                    adapter(movieAdapter)
+                    type(LayoutType.Linear(LayoutType.DEFAULT_PREFETCH_COUNT))
+                    hasFixedSize(true)
+                    spaceBetween {
+                        horizontally = itemSpacing / 2
+                        addToFirst = true
+                        addToLast = true
                     }
-                it.addItemDecoration(SpaceItemDecoration(itemSpacing / 2, 0, true, true))
-                it.setHasFixedSize(true)
-            }
+                }
+                .setupWith(sectionList)
         }
 
         override fun bind(item: Any) {
@@ -68,7 +61,13 @@ class MovieSectionDelegate @Inject constructor(
 
             sectionTitle.text = item.title
 
-            adapter.submitList(item.movies)
+            movieAdapter.submitList(item.movies)
+        }
+
+        override fun bindClickListener(clickListener: View.OnClickListener) {
+            super.bindClickListener(clickListener)
+            itemView.setOnClickListener {
+            }
         }
 
         override fun onViewRecycled() {
