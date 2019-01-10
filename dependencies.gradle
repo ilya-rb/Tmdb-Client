@@ -15,6 +15,8 @@ deps.recyclerView = "androidx.recyclerview:recyclerview:$versions.supportLibrary
 deps.constraintLayout = "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
 
 // Arch components
+deps.viewmodel = "androidx.lifecycle:lifecycle-viewmodel:$versions.archComponents"
+deps.viewModelExt = "androidx.lifecycle:lifecycle-extensions:$versions.archComponents"
 deps.navigation = "android.arch.navigation:navigation-fragment:$versions.navigation"
 deps.workManager = "android.arch.work:work-runtime-ktx:$versions.workManager"
 

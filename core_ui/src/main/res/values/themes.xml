@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Main Application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
 
         <!-- Theme colors -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -16,11 +16,11 @@
 
         <!-- Text colors -->
         <item name="android:fontFamily">@font/montserrat</item>
-        <item name="android:textColor">@color/colorOnSecondary</item>
+        <item name="android:textColor">@color/colorOnSurface</item>
         <item name="android:textColorLink">@color/colorTextLink</item>
 
         <!-- Misc -->
-        <!--<item name="android:windowTranslucentStatus">true</item>-->
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="Theme.Transparent" parent="Theme.AppCompat.NoActionBar">
