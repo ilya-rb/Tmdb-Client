@@ -25,9 +25,4 @@ class SearchAdapter @Inject constructor(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultViewHolder =
         SearchResultViewHolder(parent.inflate(R.layout.item_search_result), imageLoader)
-            .apply {
-                itemView.setOnClickListener {
-                    //
-                }
-            }
 }

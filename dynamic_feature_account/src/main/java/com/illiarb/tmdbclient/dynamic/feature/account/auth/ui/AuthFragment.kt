@@ -8,6 +8,7 @@ import com.illiarb.tmdbclient.dynamic.feature.account.auth.AuthModel
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.AuthViewState
 import com.illiarb.tmdbclient.dynamic.feature.account.di.AccountComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
+import com.illiarb.tmdbexplorer.coreui.base.BaseViewModel
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.exception.ApiException
@@ -19,7 +20,7 @@ import javax.inject.Inject
 /**
  * @author ilya-rb on 20.11.18.
  */
-class AuthFragment : BaseFragment(), Injectable {
+class AuthFragment : BaseFragment<BaseViewModel>(), Injectable {
 
     @Inject
     lateinit var authModel: AuthModel
@@ -27,6 +28,8 @@ class AuthFragment : BaseFragment(), Injectable {
     override fun getContentView(): Int = R.layout.fragment_auth
 
     override fun inject(appProvider: AppProvider) = AccountComponent.get(appProvider).inject(this)
+
+    override fun getModelClass(): Class<BaseViewModel> = BaseViewModel::class.java
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

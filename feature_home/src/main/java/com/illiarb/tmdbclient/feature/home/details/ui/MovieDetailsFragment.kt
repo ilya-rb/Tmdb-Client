@@ -27,7 +27,7 @@ import com.illiarb.tmdblcient.core.navigation.NavigationKeys
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import javax.inject.Inject
 
-class MovieDetailsFragment : BaseFragment(), Injectable, StateObserver<MovieDetailsState> {
+class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable, StateObserver<MovieDetailsState> {
 
     @Inject
     lateinit var photosAdapter: PhotosAdapter
@@ -37,9 +37,6 @@ class MovieDetailsFragment : BaseFragment(), Injectable, StateObserver<MovieDeta
 
     @Inject
     lateinit var imageLoader: ImageLoader
-
-    @Inject
-    lateinit var movieDetailsModel: MovieDetailsModel
 
     private val containerScrollListener by lazy(LazyThreadSafetyMode.NONE) {
         ViewTreeObserver.OnScrollChangedListener {
@@ -54,6 +51,8 @@ class MovieDetailsFragment : BaseFragment(), Injectable, StateObserver<MovieDeta
     override fun getContentView(): Int = R.layout.fragment_movie_details
 
     override fun inject(appProvider: AppProvider) = MoviesComponent.get(appProvider).inject(this)
+
+    override fun getModelClass(): Class<MovieDetailsModel> = MovieDetailsModel::class.java
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -95,13 +94,13 @@ class MovieDetailsFragment : BaseFragment(), Injectable, StateObserver<MovieDeta
 
         arguments?.let {
             val id = it.getInt(NavigationKeys.EXTRA_MOVIE_DETAILS_ID)
-            movieDetailsModel.getMovieDetails(id)
+            presentationModel.getMovieDetails(id)
         }
     }
 
     override fun onStart() {
         super.onStart()
-        movieDetailsModel.stateObservable().addObserver(this)
+        presentationModel.stateObservable().addObserver(this)
     }
 
     override fun onResume() {
@@ -116,7 +115,7 @@ class MovieDetailsFragment : BaseFragment(), Injectable, StateObserver<MovieDeta
 
     override fun onStop() {
         super.onStop()
-        movieDetailsModel.stateObservable().removeObserver(this)
+        presentationModel.stateObservable().removeObserver(this)
     }
 
     override fun onStateChanged(state: MovieDetailsState) {

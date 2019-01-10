@@ -6,15 +6,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.illiarb.tmdbexplorer.coreui.uiactions.UiActionImpl
 import com.illiarb.tmdbexplorer.coreui.uiactions.UiActions
+import javax.inject.Inject
 
-abstract class BaseFragment : Fragment(), UiActions {
+abstract class BaseFragment<T : BaseViewModel> : Fragment(), UiActions {
 
     private val uiActions by lazy { UiActionImpl(requireActivity()) }
 
+    protected lateinit var presentationModel: T
+        private set
+
+    @Inject
+    lateinit var modelFactory: ViewModelProvider.Factory
+
     @LayoutRes
     protected abstract fun getContentView(): Int
+
+    protected abstract fun getModelClass(): Class<T>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val contentView = getContentView()
@@ -26,6 +37,11 @@ abstract class BaseFragment : Fragment(), UiActions {
         }
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        createPresentationModel()
+    }
+
     override fun showToast(message: String) = uiActions.showToast(message)
 
     override fun showErrorDialog(message: String) = uiActions.showErrorDialog(message)
@@ -33,4 +49,10 @@ abstract class BaseFragment : Fragment(), UiActions {
     override fun showBlockingProgress() = uiActions.showBlockingProgress()
 
     override fun hideBlockingProgress() = uiActions.hideBlockingProgress()
+
+    private fun createPresentationModel() {
+        if (::modelFactory.isInitialized) {
+            presentationModel = ViewModelProviders.of(this, modelFactory).get(getModelClass())
+        }
+    }
 }

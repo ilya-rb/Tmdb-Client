@@ -45,4 +45,5 @@ dependencies {
     implementation deps.dagger
     implementation deps.glide
     implementation deps.lottie
+    implementation deps.viewModelExt
 }

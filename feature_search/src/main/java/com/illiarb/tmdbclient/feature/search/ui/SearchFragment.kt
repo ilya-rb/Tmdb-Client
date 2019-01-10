@@ -3,6 +3,7 @@ package com.illiarb.tmdbclient.feature.search.ui
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import com.illiarb.tmdbclient.feature.search.DebounceTextWatcher
 import com.illiarb.tmdbclient.feature.search.R
 import com.illiarb.tmdbclient.feature.search.SearchModel
 import com.illiarb.tmdbclient.feature.search.SearchState
@@ -20,17 +21,20 @@ import javax.inject.Inject
 /**
  * @author ilya-rb on 26.12.18.
  */
-class SearchFragment : BaseFragment(), Injectable, StateObserver<SearchState> {
+class SearchFragment : BaseFragment<SearchModel>(), Injectable, StateObserver<SearchState> {
 
     @Inject
     lateinit var searchAdapter: SearchAdapter
 
-    @Inject
-    lateinit var searchModel: SearchModel
+    private val searchTextWatcher = DebounceTextWatcher {
+        presentationModel.search(it)
+    }
 
     override fun getContentView(): Int = R.layout.fragment_search
 
     override fun inject(appProvider: AppProvider) = SearchComponent.get(appProvider).inject(this)
+
+    override fun getModelClass(): Class<SearchModel> = SearchModel::class.java
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,18 +48,20 @@ class SearchFragment : BaseFragment(), Injectable, StateObserver<SearchState> {
             .setupWith(searchResultsList)
 
         searchAdapter.clickEvent = { _, _, item ->
-            searchModel.onMovieClicked(item)
+            presentationModel.onMovieClicked(item)
         }
     }
 
     override fun onStart() {
         super.onStart()
-        searchModel.stateObservable().addObserver(this)
+        presentationModel.stateObservable().addObserver(this)
+        searchQuery.addTextChangedListener(searchTextWatcher)
     }
 
     override fun onStop() {
         super.onStop()
-        searchModel.stateObservable().removeObserver(this)
+        presentationModel.stateObservable().removeObserver(this)
+        searchQuery.removeTextChangedListener(searchTextWatcher)
     }
 
     override fun onStateChanged(state: SearchState) {

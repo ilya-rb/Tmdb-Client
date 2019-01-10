@@ -16,13 +16,10 @@ import com.illiarb.tmdblcient.core.entity.Movie
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
 
-class HomeFragment : BaseFragment(), Injectable, StateObserver<HomeState> {
+class HomeFragment : BaseFragment<HomeModel>(), Injectable, StateObserver<HomeState> {
 
     @Inject
     lateinit var delegateAdapter: DelegateAdapter
-
-    @Inject
-    lateinit var homeModel: HomeModel
 
     @Inject
     lateinit var delegatesSet: Set<@JvmSuppressWildcards AdapterDelegate>
@@ -30,6 +27,8 @@ class HomeFragment : BaseFragment(), Injectable, StateObserver<HomeState> {
     override fun getContentView(): Int = R.layout.fragment_movies
 
     override fun inject(appProvider: AppProvider) = MoviesComponent.get(appProvider).inject(this)
+
+    override fun getModelClass(): Class<HomeModel> = HomeModel::class.java
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,27 +47,27 @@ class HomeFragment : BaseFragment(), Injectable, StateObserver<HomeState> {
 
         delegateAdapter.setClickEvent { _, _, item ->
             when (item) {
-                is Movie -> homeModel.onMovieClick(item)
+                is Movie -> presentationModel.onMovieClick(item)
             }
         }
 
         homeSearch.setOnClickListener {
-            homeModel.onSearchClick()
+            presentationModel.onSearchClick()
         }
 
         homeAccount.setOnClickListener {
-            homeModel.onAccountClick()
+            presentationModel.onAccountClick()
         }
     }
 
     override fun onStart() {
         super.onStart()
-        homeModel.getStateObservable().addObserver(this)
+        presentationModel.getStateObservable().addObserver(this)
     }
 
     override fun onStop() {
         super.onStop()
-        homeModel.getStateObservable().removeObserver(this)
+        presentationModel.getStateObservable().removeObserver(this)
     }
 
     override fun onStateChanged(state: HomeState) {

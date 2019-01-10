@@ -9,6 +9,7 @@ import com.illiarb.tmdbclient.dynamic.feature.account.di.AccountComponent
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.AccountModel
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.ui.adapter.FavoritesAdapter
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
+import com.illiarb.tmdbexplorer.coreui.base.BaseViewModel
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
@@ -23,7 +24,7 @@ import kotlin.coroutines.CoroutineContext
 /**
  * @author ilya-rb on 20.11.18.
  */
-class AccountFragment : BaseFragment(), Injectable, CoroutineScope {
+class AccountFragment : BaseFragment<BaseViewModel>(), Injectable, CoroutineScope {
 
     @Inject
     lateinit var favoritesAdapter: FavoritesAdapter
@@ -36,6 +37,8 @@ class AccountFragment : BaseFragment(), Injectable, CoroutineScope {
     override fun getContentView(): Int = R.layout.fragment_account
 
     override fun inject(appProvider: AppProvider) = AccountComponent.get(appProvider).inject(this)
+
+    override fun getModelClass(): Class<BaseViewModel> = BaseViewModel::class.java
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
