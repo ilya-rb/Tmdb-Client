@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import com.illiarb.tmdbclient.feature.home.R
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
+import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutOrientation
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
 import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.AdapterDelegate
@@ -44,6 +45,7 @@ class MovieSectionDelegate @Inject constructor(
                 .create {
                     adapter(movieAdapter)
                     type(LayoutType.Linear(LayoutType.DEFAULT_PREFETCH_COUNT))
+                    orientation(LayoutOrientation.HORIZONTAL)
                     hasFixedSize(true)
                     spaceBetween {
                         horizontally = itemSpacing / 2
