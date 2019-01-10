@@ -12,6 +12,10 @@ class MovieDetailsModel @Inject constructor(
     private val getMovieDetails: GetMovieDetails
 ) : BasePresentationModel<MovieDetailsUiState>() {
 
+    init {
+        setIdleState(MovieDetailsUiState.idle())
+    }
+
     fun getMovieDetails(id: Int) = launch(context = coroutineContext) {
         setState { MovieDetailsUiState(true, it.movie) }
 

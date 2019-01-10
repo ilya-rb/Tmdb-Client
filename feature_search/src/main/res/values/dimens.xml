@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="search_empty_icon_view_size">150dp</dimen>
+
+</resources>

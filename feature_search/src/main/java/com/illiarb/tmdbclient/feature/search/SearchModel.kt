@@ -1,5 +1,7 @@
 package com.illiarb.tmdbclient.feature.search
 
+import com.illiarb.tmdbclient.feature.search.SearchUiState.SearchIcon
+import com.illiarb.tmdbclient.feature.search.SearchUiState.SearchResult
 import com.illiarb.tmdbclient.feature.search.domain.SearchMovies
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import com.illiarb.tmdblcient.core.entity.Movie
@@ -17,21 +19,33 @@ class SearchModel @Inject constructor(
 ) : BasePresentationModel<SearchUiState>() {
 
     init {
-        setState { SearchUiState.idle() }
+        setIdleState(SearchUiState.idle())
     }
 
     fun search(query: String) = launch(context = coroutineContext) {
         setState {
-            SearchUiState(true, it.searchResults, it.error)
+            SearchUiState(SearchIcon.Cross, true, it.result, it.error)
         }
 
         try {
-            val results = searchMovies.execute(query)
+            val movies = searchMovies.execute(query)
+            val result = if (movies.isEmpty()) {
+                SearchResult.Empty
+            } else {
+                SearchResult.Success(movies)
+            }
+
             setState {
-                SearchUiState(false, results, it.error)
+                SearchUiState(it.icon, false, result, it.error)
             }
         } catch (e: Exception) {
             // Process error
+        }
+    }
+
+    fun onClearClicked() {
+        setState {
+            SearchUiState(SearchIcon.Search, it.isSearchRunning, it.result, it.error)
         }
     }
 

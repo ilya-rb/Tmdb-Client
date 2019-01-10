@@ -7,6 +7,8 @@ import com.illiarb.tmdbclient.feature.search.DebounceTextWatcher
 import com.illiarb.tmdbclient.feature.search.R
 import com.illiarb.tmdbclient.feature.search.SearchModel
 import com.illiarb.tmdbclient.feature.search.SearchUiState
+import com.illiarb.tmdbclient.feature.search.SearchUiState.SearchIcon
+import com.illiarb.tmdbclient.feature.search.SearchUiState.SearchResult
 import com.illiarb.tmdbclient.feature.search.di.SearchComponent
 import com.illiarb.tmdbexplorer.coreui.StateObserver
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
@@ -47,6 +49,10 @@ class SearchFragment : BaseFragment<SearchModel>(), Injectable, StateObserver<Se
             }
             .setupWith(searchResultsList)
 
+        searchIcon.setOnClickListener {
+            presentationModel.onClearClicked()
+        }
+
         searchAdapter.clickEvent = { _, _, item ->
             presentationModel.onMovieClicked(item)
         }
@@ -67,22 +73,35 @@ class SearchFragment : BaseFragment<SearchModel>(), Injectable, StateObserver<Se
     override fun onStateChanged(state: SearchUiState) {
         searchProgress.visibility = if (state.isSearchRunning) View.VISIBLE else View.GONE
 
-        val drawable =
-            if (searchQuery.text.isNullOrEmpty()) {
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_search)
-            } else {
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_clear_search)
-            }
+        val drawable = when (state.icon) {
+            SearchIcon.Search -> ContextCompat.getDrawable(requireContext(), R.drawable.ic_search)
+            SearchIcon.Cross -> ContextCompat.getDrawable(requireContext(), R.drawable.ic_clear_search)
+        }
+
         searchIcon.setImageDrawable(drawable)
 
-        searchAdapter.submitList(state.searchResults)
+        // If now icon are search search query was cleared
+        if (state.icon is SearchIcon.Search) {
+            searchQuery.setText("")
+        }
 
-        if (state.searchResults.isEmpty()) {
-            emptyView.visibility = View.VISIBLE
-            searchResultsList.visibility = View.GONE
-        } else {
-            emptyView.visibility = View.GONE
-            searchResultsList.visibility = View.VISIBLE
+        when (state.result) {
+            is SearchResult.Success -> {
+                searchAdapter.submitList(state.result.movies)
+
+                searchResultsList.visibility = View.VISIBLE
+                emptyView.visibility = View.GONE
+            }
+
+            else -> {
+                searchResultsList.visibility = View.GONE
+                emptyView.visibility = View.VISIBLE
+
+                when (state.result) {
+                    is SearchResult.Initial -> emptyViewText.text = getString(R.string.search_initial)
+                    is SearchResult.Empty -> emptyViewText.text = getString(R.string.search_no_results_found)
+                }
+            }
         }
     }
 }

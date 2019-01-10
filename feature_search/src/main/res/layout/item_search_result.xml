@@ -22,15 +22,24 @@
         tools:scaleType="fitXY"
         tools:src="@tools:sample/backgrounds/scenic" />
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/bg_search_result_overlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/itemSearchTitle" />
+
     <TextView
         android:id="@+id/itemSearchTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_default"
-        android:layout_marginBottom="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_small"
         android:ellipsize="end"
         android:maxLines="2"
-        android:textColor="@color/colorSurface"
+        android:textColor="@color/colorOnSurface"
         android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@id/itemSearchTmdb"
         app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
@@ -53,7 +62,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/margin_default"
         android:gravity="center_vertical"
-        android:textColor="@color/colorSurface"
+        android:textColor="@color/colorOnSurface"
         app:layout_constraintBottom_toBottomOf="@id/itemSearchTmdb"
         app:layout_constraintStart_toEndOf="@id/itemSearchTmdb"
         app:layout_constraintTop_toTopOf="@id/itemSearchTmdb"
