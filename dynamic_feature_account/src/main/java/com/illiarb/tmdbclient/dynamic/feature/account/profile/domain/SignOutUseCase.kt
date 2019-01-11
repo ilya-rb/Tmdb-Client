@@ -14,6 +14,6 @@ class SignOutUseCase @Inject constructor(
 
     @NonBlocking
     override suspend fun execute(payload: Unit): Boolean {
-        return false
+        return accountRepository.clearAccountData()
     }
 }

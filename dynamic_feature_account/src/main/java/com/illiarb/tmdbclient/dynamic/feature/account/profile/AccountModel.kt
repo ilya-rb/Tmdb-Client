@@ -5,6 +5,7 @@ import com.illiarb.tmdbclient.dynamic.feature.account.profile.domain.SignOutUseC
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.navigation.AuthScreen
+import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import com.illiarb.tmdblcient.core.navigation.Router
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -31,14 +32,17 @@ class AccountModel @Inject constructor(
     }
 
     fun onFavoriteMovieClick(movie: Movie) {
-
+        router.navigateTo(MovieDetailsScreen(movie.id))
     }
 
     fun onLogoutClick() {
         launch(context = coroutineContext) {
-            val success = signOutUseCase.execute(Unit)
-            if (success) {
+            try {
+                signOutUseCase.execute(Unit)
                 router.navigateTo(AuthScreen)
+            } catch (e: Exception) {
+                // TODO Handle exception
+                e.printStackTrace()
             }
         }
     }
