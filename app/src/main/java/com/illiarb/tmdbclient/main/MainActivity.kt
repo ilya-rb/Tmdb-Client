@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.main.di.MainComponent
+import com.illiarb.tmdbexplorer.coreui.keyboard.KeyboardContentResizer
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.navigation.Navigator
@@ -39,6 +40,8 @@ class MainActivity : AppCompatActivity(), Injectable, CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        KeyboardContentResizer.listen(this)
     }
 
     override fun onResumeFragments() {
