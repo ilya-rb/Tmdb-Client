@@ -6,5 +6,6 @@
     <string name="auth_username_hint">Username</string>
     <string name="auth_password_hint">Password</string>
     <string name="auth_btn_authorize">Sign in</string>
+    <string name="auth_title">Sign in into account</string>
 
 </resources>

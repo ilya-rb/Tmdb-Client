@@ -1,25 +1,22 @@
 package com.illiarb.tmdbclient.dynamic.feature.account.auth.domain
 
-import com.illiarb.tmdblcient.core.domain.UseCase
+import com.illiarb.tmdblcient.core.domain.BlockingUseCase
 import com.illiarb.tmdblcient.core.entity.UserCredentials
 import com.illiarb.tmdblcient.core.exception.ErrorCodes
-import com.illiarb.tmdblcient.core.system.DispatcherProvider
+import com.illiarb.tmdblcient.core.system.Blocking
 import com.illiarb.tmdblcient.core.system.ErrorMessageBag
-import com.illiarb.tmdblcient.core.system.NonBlocking
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
  * @author ilya-rb on 10.01.19.
  */
 class ValidateCredentials @Inject constructor(
-    private val dispatcherProvider: DispatcherProvider,
     private val validator: Validator,
     private val errorMessageBag: ErrorMessageBag
-) : UseCase<Boolean, UserCredentials> {
+) : BlockingUseCase<Boolean, UserCredentials> {
 
-    @NonBlocking
-    override suspend fun execute(payload: UserCredentials): Boolean = withContext(dispatcherProvider.ioDispatcher) {
+    @Blocking
+    override fun execute(payload: UserCredentials): Boolean {
         val errors = mutableListOf<Pair<Int, String>>()
 
         if (validator.isUsernameEmpty(payload.username)) {
@@ -33,6 +30,6 @@ class ValidateCredentials @Inject constructor(
         }
 
         // If errors is empty - credentials are valid
-        errors.isEmpty()
+        return errors.isEmpty()
     }
 }

@@ -4,20 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
     android:orientation="vertical"
     tools:layout_marginTop="24dp">
+
+    <include layout="@layout/layout_start_end_guidelines" />
 
     <ImageView
         android:id="@+id/tmdbLogo"
         android:layout_width="@dimen/auth_logo_size"
         android:layout_height="@dimen/auth_logo_size"
+        android:layout_marginStart="@dimen/margin_default"
         android:layout_marginTop="@dimen/margin_large"
         android:contentDescription="@null"
         android:src="@drawable/ic_tmdblogo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/authTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginTop="@dimen/margin_default"
+        android:text="@string/auth_title"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintTop_toBottomOf="@id/tmdbLogo" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textUsernameLayout"
@@ -26,16 +40,16 @@
         android:layout_marginStart="@dimen/margin_default"
         android:layout_marginTop="@dimen/margin_large"
         android:layout_marginEnd="@dimen/margin_default"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tmdbLogo">
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintTop_toBottomOf="@id/authTitle">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textUsername"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="@string/auth_username_hint"
-            android:textColorHint="@color/colorOnSecondary" />
+            android:textColorHint="@color/colorOnSurface" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -46,8 +60,8 @@
         android:layout_marginStart="@dimen/margin_default"
         android:layout_marginTop="@dimen/margin_default"
         android:layout_marginEnd="@dimen/margin_default"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
         app:layout_constraintTop_toBottomOf="@id/textUsernameLayout">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -56,8 +70,7 @@
             android:layout_height="50dp"
             android:hint="@string/auth_password_hint"
             android:inputType="textPassword"
-
-            android:textColorHint="@color/colorOnSecondary" />
+            android:textColorHint="@color/colorOnSurface" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,9 +80,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_default"
         android:layout_marginBottom="@dimen/margin_large"
+        android:enabled="false"
         android:text="@string/auth_btn_authorize"
         android:textAllCaps="false"
-        android:enabled="false"
+        android:textColor="@color/colorOnSecondary"
+        app:backgroundTint="@color/colorSecondary"
         app:layout_constraintEnd_toEndOf="@id/textPasswordLayout"
         app:layout_constraintStart_toStartOf="@id/textPasswordLayout"
         app:layout_constraintTop_toBottomOf="@id/textPasswordLayout" />

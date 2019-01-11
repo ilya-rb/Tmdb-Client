@@ -29,11 +29,7 @@ class SearchModel @Inject constructor(
 
         try {
             val movies = searchMovies.execute(query)
-            val result = if (movies.isEmpty()) {
-                SearchResult.Empty
-            } else {
-                SearchResult.Success(movies)
-            }
+            val result = if (movies.isEmpty()) SearchResult.Empty else SearchResult.Success(movies)
 
             setState {
                 SearchUiState(it.icon, false, result, it.error)
