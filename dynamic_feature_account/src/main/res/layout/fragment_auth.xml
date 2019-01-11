@@ -48,6 +48,7 @@
             android:id="@+id/textUsername"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:maxLines="1"
             android:hint="@string/auth_username_hint"
             android:textColorHint="@color/colorOnSurface" />
 
@@ -69,6 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="@string/auth_password_hint"
+            android:maxLines="1"
             android:inputType="textPassword"
             android:textColorHint="@color/colorOnSurface" />
 

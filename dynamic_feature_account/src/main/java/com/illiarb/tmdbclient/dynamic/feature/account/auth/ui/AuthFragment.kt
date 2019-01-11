@@ -38,14 +38,14 @@ class AuthFragment : BaseFragment<AuthModel>(), Injectable, StateObserver<AuthUi
         textUsername.addTextChangedListener(object : TextWatcherAdapter() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 super.onTextChanged(s, start, before, count)
-                presentationModel.onTextChanged(username = s?.toString())
+                presentationModel.onTextChanged(getInputValues())
             }
         })
 
         textPassword.addTextChangedListener(object : TextWatcherAdapter() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 super.onTextChanged(s, start, before, count)
-                presentationModel.onTextChanged(password = s?.toString())
+                presentationModel.onTextChanged(getInputValues())
             }
         })
 
@@ -78,9 +78,6 @@ class AuthFragment : BaseFragment<AuthModel>(), Injectable, StateObserver<AuthUi
                 is ValidationException -> showValidationErrors(state.error.errors)
                 is ApiException -> showErrorDialog(state.error.message)
             }
-        } else {
-            textUsername.error = null
-            textPassword.error = null
         }
 
         btnAuthorize.isEnabled = state.authButtonEnabled
@@ -95,4 +92,10 @@ class AuthFragment : BaseFragment<AuthModel>(), Injectable, StateObserver<AuthUi
             }
         }
     }
+
+    private fun getInputValues(): Array<String> =
+        arrayOf(
+            textUsername.toString(),
+            textPassword.toString()
+        )
 }

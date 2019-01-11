@@ -20,9 +20,9 @@ class AuthModel @Inject constructor(
         setIdleState(AuthUiState.idle())
     }
 
-    fun onTextChanged(username: String? = null, password: String? = null) {
-        setState {
-            AuthUiState(it.isLoading, it.error, username != null && password != null)
+    fun onTextChanged(inputs: Array<String>) {
+        setState { current ->
+            AuthUiState(current.isLoading, current.error, inputs.all { it.isNotEmpty() })
         }
     }
 
