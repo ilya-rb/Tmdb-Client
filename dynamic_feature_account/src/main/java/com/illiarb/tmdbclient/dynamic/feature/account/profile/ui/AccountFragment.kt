@@ -3,7 +3,6 @@ package com.illiarb.tmdbclient.dynamic.feature.account.profile.ui
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.ViewCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.illiarb.tmdbclient.dynamic.feature.account.R
 import com.illiarb.tmdbclient.dynamic.feature.account.di.AccountComponent
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.AccountModel
@@ -12,6 +11,9 @@ import com.illiarb.tmdbclient.dynamic.feature.account.profile.ui.adapter.Favorit
 import com.illiarb.tmdbexplorer.coreui.StateObserver
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
+import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutOrientation
+import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
+import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Account
@@ -44,13 +46,23 @@ class AccountFragment : BaseFragment<AccountModel>(), Injectable, StateObserver<
             presentationModel.onLogoutClick()
         }
 
-        accountFavoritesList.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = favoritesAdapter
-            setHasFixedSize(true)
-            // TODO Fix this
-            // addItemDecoration(SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_small), 0, false, false))
+        favoritesAdapter.clickEvent = { _, _, movie ->
+            presentationModel.onFavoriteMovieClick(movie)
         }
+
+        RecyclerViewBuilder
+            .create {
+                adapter(favoritesAdapter)
+                type(LayoutType.Linear())
+                orientation(LayoutOrientation.HORIZONTAL)
+                hasFixedSize(true)
+                spaceBetween {
+                    horizontally = 16
+                    addToFirst = true
+                    addToLast = true
+                }
+            }
+            .setupWith(accountFavoritesList)
 
         ViewCompat.requestApplyInsets(view)
     }
@@ -77,7 +89,6 @@ class AccountFragment : BaseFragment<AccountModel>(), Injectable, StateObserver<
         accountAvatar.text = account.username.first().toUpperCase().toString()
         accountUsername.text = getString(R.string.account_username, account.username)
         accountAverageScore.text = account.averageRating.toString()
-        accountAverageScoreProgress.progress = account.averageRating
         accountName.text = if (account.name.isEmpty()) {
             getString(R.string.account_name_fallback)
         } else {

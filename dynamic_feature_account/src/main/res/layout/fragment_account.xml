@@ -51,27 +51,16 @@
             app:layout_constraintTop_toBottomOf="@id/accountUsername"
             tools:text="User name" />
 
-        <ProgressBar
-            android:id="@+id/accountAverageScoreProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_default"
-            android:indeterminate="true"
-            android:progress="100"
-            android:visibility="invisible"
-            android:indeterminateBehavior="cycle"
-            app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/accountAvatar" />
-
         <TextView
             android:id="@+id/accountAverageScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/accountAverageScoreProgress"
-            app:layout_constraintEnd_toEndOf="@id/accountAverageScoreProgress"
-            app:layout_constraintStart_toStartOf="@id/accountAverageScoreProgress"
-            app:layout_constraintTop_toTopOf="@id/accountAverageScoreProgress"
-            tools:text="45" />
+            android:layout_marginTop="@dimen/margin_default"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/accountAvatar"
+            tools:text="45 %" />
 
         <TextView
             android:id="@+id/accountAverageScoreLabel"
@@ -79,9 +68,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_small"
             android:text="@string/account_average_score"
-            app:layout_constraintBottom_toBottomOf="@id/accountAverageScoreProgress"
-            app:layout_constraintStart_toEndOf="@id/accountAverageScoreProgress"
-            app:layout_constraintTop_toTopOf="@id/accountAverageScoreProgress" />
+            app:layout_constraintBottom_toBottomOf="@id/accountAverageScore"
+            app:layout_constraintStart_toEndOf="@id/accountAverageScore"
+            app:layout_constraintTop_toTopOf="@id/accountAverageScore" />
 
         <TextView
             android:id="@+id/accountFavorites"
@@ -92,16 +81,13 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/accountAverageScoreProgress" />
+            app:layout_constraintTop_toBottomOf="@id/accountAverageScore" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/accountFavoritesList"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_default"
-            android:paddingStart="@dimen/margin_default"
-            android:paddingEnd="@dimen/margin_default"
-            android:clipToPadding="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/accountFavorites"

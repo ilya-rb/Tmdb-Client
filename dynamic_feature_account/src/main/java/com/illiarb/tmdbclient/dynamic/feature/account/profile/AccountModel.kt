@@ -3,6 +3,7 @@ package com.illiarb.tmdbclient.dynamic.feature.account.profile
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.domain.GetProfileUseCase
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.domain.SignOutUseCase
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
+import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.navigation.AuthScreen
 import com.illiarb.tmdblcient.core.navigation.Router
 import kotlinx.coroutines.CoroutineScope
@@ -19,9 +20,7 @@ class AccountModel @Inject constructor(
 ) : BasePresentationModel<AccountUiState>(), CoroutineScope {
 
     init {
-        setState {
-            AccountUiState(true, false, it.account)
-        }
+        setIdleState(AccountUiState(true, false, null))
 
         launch(context = coroutineContext) {
             val account = getProfileUseCase.execute(Unit)
@@ -29,6 +28,10 @@ class AccountModel @Inject constructor(
                 AccountUiState(false, it.isBlockingLoading, account)
             }
         }
+    }
+
+    fun onFavoriteMovieClick(movie: Movie) {
+
     }
 
     fun onLogoutClick() {

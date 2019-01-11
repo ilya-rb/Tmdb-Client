@@ -6,7 +6,7 @@
     <string name="account_username">\@%1$s</string>
     <string name="account_name_fallback">Name not provided</string>
     <string name="account_exit">Sign out</string>
-    <string name="account_average_score">Movie average score \%</string>
+    <string name="account_average_score">Movie average score</string>
     <string name="account_favorites">Favorite movies</string>
 
 </resources>
