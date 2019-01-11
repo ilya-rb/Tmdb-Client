@@ -20,6 +20,7 @@
         <item name="android:textColorLink">@color/colorTextLink</item>
 
         <!-- Misc -->
+        <item name="android:windowBackground">@color/colorPrimaryVariant</item>
         <!--<item name="android:windowTranslucentStatus">true</item>-->
     </style>
 
