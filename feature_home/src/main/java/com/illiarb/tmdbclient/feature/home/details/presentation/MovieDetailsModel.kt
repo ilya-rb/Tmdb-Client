@@ -1,6 +1,6 @@
-package com.illiarb.tmdbclient.feature.home.details
+package com.illiarb.tmdbclient.feature.home.details.presentation
 
-import com.illiarb.tmdbclient.feature.home.domain.GetMovieDetails
+import com.illiarb.tmdbclient.feature.home.details.domain.GetMovieDetails
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,13 +17,11 @@ class MovieDetailsModel @Inject constructor(
     }
 
     fun getMovieDetails(id: Int) = launch(context = coroutineContext) {
-        setState { MovieDetailsUiState(true, it.movie) }
+        setState { it.copy(isLoading = true) }
 
         try {
-            val movie = getMovieDetails.execute(id)
-            setState {
-                MovieDetailsUiState(false, movie)
-            }
+            val movie = getMovieDetails.executeAsync(id)
+            setState { it.copy(isLoading = false, movie = movie) }
         } catch (e: Exception) {
             // Process error
         }

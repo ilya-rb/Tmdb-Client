@@ -1,8 +1,8 @@
-package com.illiarb.tmdbclient.feature.home.domain
+package com.illiarb.tmdbclient.feature.home.list.domain
 
 import com.illiarb.tmdblcient.core.common.Result
 import com.illiarb.tmdblcient.core.common.invokeForResult
-import com.illiarb.tmdblcient.core.domain.UseCase
+import com.illiarb.tmdblcient.core.domain.NonBlockingUseCase
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.repository.MoviesRepository
@@ -13,9 +13,9 @@ import javax.inject.Inject
  */
 class GetAllMovies @Inject constructor(
     private val moviesRepository: MoviesRepository
-) : UseCase<Result<List<Pair<MovieFilter, List<Movie>>>>, Unit> {
+) : NonBlockingUseCase<Result<List<Pair<MovieFilter, List<Movie>>>>, Unit> {
 
-    override suspend fun execute(payload: Unit): Result<List<Pair<MovieFilter, List<Movie>>>> =
+    override suspend fun executeAsync(payload: Unit): Result<List<Pair<MovieFilter, List<Movie>>>> =
         invokeForResult {
             moviesRepository.getMovieFilters().map { filter ->
                 Pair(filter, getMoviesByType(filter))

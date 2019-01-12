@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.feature.home.list.delegates.movie
+package com.illiarb.tmdbclient.feature.home.list.ui.delegates.movie
 
 import android.view.View
 import android.view.ViewGroup

@@ -1,9 +1,11 @@
-package com.illiarb.tmdbclient.feature.home.list
+package com.illiarb.tmdbclient.feature.home.list.ui
 
 import android.os.Bundle
 import android.view.View
 import com.illiarb.tmdbclient.feature.home.R
 import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
+import com.illiarb.tmdbclient.feature.home.list.presentation.HomeModel
+import com.illiarb.tmdbclient.feature.home.list.presentation.HomeUiState
 import com.illiarb.tmdbexplorer.coreui.StateObserver
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType

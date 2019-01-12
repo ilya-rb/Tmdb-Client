@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.feature.search
+package com.illiarb.tmdbclient.feature.search.ui
 
 import android.text.Editable
 import android.text.TextWatcher

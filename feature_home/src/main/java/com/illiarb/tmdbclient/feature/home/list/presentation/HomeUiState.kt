@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.feature.home.list
+package com.illiarb.tmdbclient.feature.home.list.presentation
 
 import com.illiarb.tmdbexplorer.coreui.Cloneable
 import com.illiarb.tmdblcient.core.entity.MovieSection

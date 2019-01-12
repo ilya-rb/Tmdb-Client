@@ -8,5 +8,5 @@ import com.illiarb.tmdblcient.core.system.Blocking
 interface BlockingUseCase<T, P> {
 
     @Blocking
-    fun execute(payload: P): T
+    fun executeBlocking(payload: P): T
 }

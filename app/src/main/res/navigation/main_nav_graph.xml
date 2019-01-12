@@ -4,7 +4,7 @@
 
     <fragment
         android:id="@+id/moviesFragment"
-        android:name="com.illiarb.tmdbclient.feature.home.list.HomeFragment"
+        android:name="com.illiarb.tmdbclient.feature.home.list.ui.HomeFragment"
         android:label="MoviesFragment" />
 
     <fragment

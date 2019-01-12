@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.dynamic.feature.account.auth
+package com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation
 
 import com.illiarb.tmdbexplorer.coreui.Cloneable
 

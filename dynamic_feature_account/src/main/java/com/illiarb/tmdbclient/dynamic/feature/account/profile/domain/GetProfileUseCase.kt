@@ -1,6 +1,6 @@
 package com.illiarb.tmdbclient.dynamic.feature.account.profile.domain
 
-import com.illiarb.tmdblcient.core.domain.UseCase
+import com.illiarb.tmdblcient.core.domain.NonBlockingUseCase
 import com.illiarb.tmdblcient.core.entity.Account
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.repository.AccountRepository
@@ -13,10 +13,10 @@ import kotlin.math.roundToInt
  */
 class GetProfileUseCase @Inject constructor(
     private val accountRepository: AccountRepository
-) : UseCase<Account, Unit> {
+) : NonBlockingUseCase<Account, Unit> {
 
     @NonBlocking
-    override suspend fun execute(payload: Unit): Account {
+    override suspend fun executeAsync(payload: Unit): Account {
         val currentAccount = accountRepository.getCurrentAccount()
 
         val favorite = accountRepository.getFavoriteMovies(currentAccount.id)

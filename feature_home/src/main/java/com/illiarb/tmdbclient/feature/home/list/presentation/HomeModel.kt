@@ -1,6 +1,6 @@
-package com.illiarb.tmdbclient.feature.home.list
+package com.illiarb.tmdbclient.feature.home.list.presentation
 
-import com.illiarb.tmdbclient.feature.home.domain.GetAllMovies
+import com.illiarb.tmdbclient.feature.home.list.domain.GetAllMovies
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import com.illiarb.tmdblcient.core.auth.Authenticator
 import com.illiarb.tmdblcient.core.common.Result
@@ -31,14 +31,12 @@ class HomeModel @Inject constructor(
         setIdleState(HomeUiState(true, Collections.emptyList()))
 
         launch(context = coroutineContext) {
-            val result = getAllMovies.execute(Unit)
+            val result = getAllMovies.executeAsync(Unit)
 
             when (result) {
                 is Result.Success -> {
                     val movies = createMovieSections(result.result)
-                    setState {
-                        HomeUiState(false, movies)
-                    }
+                    setState { it.copy(isLoading = false, movies = movies) }
                 }
                 is Result.Error -> {
                     // Process error

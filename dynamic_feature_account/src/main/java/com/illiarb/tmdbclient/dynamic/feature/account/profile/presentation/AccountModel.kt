@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.dynamic.feature.account.profile
+package com.illiarb.tmdbclient.dynamic.feature.account.profile.presentation
 
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.domain.GetProfileUseCase
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.domain.SignOutUseCase
@@ -24,10 +24,8 @@ class AccountModel @Inject constructor(
         setIdleState(AccountUiState(true, false, null))
 
         launch(context = coroutineContext) {
-            val account = getProfileUseCase.execute(Unit)
-            setState {
-                AccountUiState(false, it.isBlockingLoading, account)
-            }
+            val account = getProfileUseCase.executeAsync(Unit)
+            setState { it.copy(isLoading = false, account = account) }
         }
     }
 
@@ -38,7 +36,7 @@ class AccountModel @Inject constructor(
     fun onLogoutClick() {
         launch(context = coroutineContext) {
             try {
-                signOutUseCase.execute(Unit)
+                signOutUseCase.executeAsync(Unit)
                 router.navigateTo(AuthScreen)
             } catch (e: Exception) {
                 // TODO Handle exception

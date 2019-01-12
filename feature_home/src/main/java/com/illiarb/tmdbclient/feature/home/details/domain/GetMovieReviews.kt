@@ -1,6 +1,6 @@
-package com.illiarb.tmdbclient.feature.home.domain
+package com.illiarb.tmdbclient.feature.home.details.domain
 
-import com.illiarb.tmdblcient.core.domain.UseCase
+import com.illiarb.tmdblcient.core.domain.NonBlockingUseCase
 import com.illiarb.tmdblcient.core.entity.Review
 import com.illiarb.tmdblcient.core.repository.MoviesRepository
 import com.illiarb.tmdblcient.core.system.NonBlocking
@@ -11,10 +11,10 @@ import javax.inject.Inject
  */
 class GetMovieReviews @Inject constructor(
     private val moviesRepository: MoviesRepository
-) : UseCase<List<Review>, Int> {
+) : NonBlockingUseCase<List<Review>, Int> {
 
     @NonBlocking
-    override suspend fun execute(payload: Int): List<Review> {
+    override suspend fun executeAsync(payload: Int): List<Review> {
         return moviesRepository.getMovieReviews(payload)
     }
 }

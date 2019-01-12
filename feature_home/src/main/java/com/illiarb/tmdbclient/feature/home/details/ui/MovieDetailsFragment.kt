@@ -6,8 +6,8 @@ import android.view.ViewTreeObserver
 import androidx.core.view.ViewCompat
 import com.google.android.material.chip.Chip
 import com.illiarb.tmdbclient.feature.home.R
-import com.illiarb.tmdbclient.feature.home.details.MovieDetailsModel
-import com.illiarb.tmdbclient.feature.home.details.MovieDetailsUiState
+import com.illiarb.tmdbclient.feature.home.details.presentation.MovieDetailsModel
+import com.illiarb.tmdbclient.feature.home.details.presentation.MovieDetailsUiState
 import com.illiarb.tmdbclient.feature.home.details.ui.photos.PhotosAdapter
 import com.illiarb.tmdbclient.feature.home.details.ui.reviews.ReviewsAdapter
 import com.illiarb.tmdbclient.feature.home.di.MoviesComponent

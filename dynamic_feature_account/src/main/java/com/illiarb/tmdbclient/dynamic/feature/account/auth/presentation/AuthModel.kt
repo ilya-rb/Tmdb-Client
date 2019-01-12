@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.dynamic.feature.account.auth
+package com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation
 
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.domain.Authenticate
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
@@ -21,19 +21,19 @@ class AuthModel @Inject constructor(
     }
 
     fun onTextChanged(inputs: Array<String>) {
-        setState { current ->
-            AuthUiState(current.isLoading, current.error, inputs.all { it.isNotEmpty() })
+        setState {
+            it.copy(authButtonEnabled = inputs.all { input -> input.isNotEmpty() })
         }
     }
 
     fun authenticate(username: String, password: String) = launch(context = coroutineContext) {
-        setState { AuthUiState(true, it.error, false) }
+        setState { it.copy(isLoading = true, authButtonEnabled = false) }
 
         try {
-            authenticate.execute(UserCredentials(username, password))
+            authenticate.executeAsync(UserCredentials(username, password))
             router.navigateTo(AccountScreen)
         } catch (e: Exception) {
-            setState { AuthUiState(false, e, true) }
+            setState { it.copy(isLoading = false, error = e, authButtonEnabled = true) }
         }
     }
 }

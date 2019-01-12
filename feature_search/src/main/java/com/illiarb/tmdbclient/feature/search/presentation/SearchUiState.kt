@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.feature.search
+package com.illiarb.tmdbclient.feature.search.presentation
 
 import com.illiarb.tmdbexplorer.coreui.Cloneable
 import com.illiarb.tmdblcient.core.entity.Movie
@@ -14,7 +14,12 @@ data class SearchUiState(
 ) : Cloneable<SearchUiState> {
 
     companion object {
-        fun idle() = SearchUiState(SearchIcon.Search, false, SearchResult.Initial, null)
+        fun idle() = SearchUiState(
+            SearchIcon.Search,
+            false,
+            SearchResult.Initial,
+            null
+        )
     }
 
     sealed class SearchIcon {

@@ -16,7 +16,7 @@ class ValidateCredentials @Inject constructor(
 ) : BlockingUseCase<Boolean, UserCredentials> {
 
     @Blocking
-    override fun execute(payload: UserCredentials): Boolean {
+    override fun executeBlocking(payload: UserCredentials): Boolean {
         val errors = mutableListOf<Pair<Int, String>>()
 
         if (validator.isUsernameEmpty(payload.username)) {

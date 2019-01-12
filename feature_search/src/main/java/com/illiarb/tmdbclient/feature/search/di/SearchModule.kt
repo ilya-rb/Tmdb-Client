@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.feature.search.di
 
 import androidx.lifecycle.ViewModel
-import com.illiarb.tmdbclient.feature.search.SearchModel
+import com.illiarb.tmdbclient.feature.search.presentation.SearchModel
 import com.illiarb.tmdbexplorer.coreui.di.modules.ViewModelKey
 import dagger.Binds
 import dagger.Module

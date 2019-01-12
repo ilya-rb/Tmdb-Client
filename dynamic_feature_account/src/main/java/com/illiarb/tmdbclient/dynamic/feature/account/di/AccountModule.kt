@@ -1,8 +1,8 @@
 package com.illiarb.tmdbclient.dynamic.feature.account.di
 
 import androidx.lifecycle.ViewModel
-import com.illiarb.tmdbclient.dynamic.feature.account.auth.AuthModel
-import com.illiarb.tmdbclient.dynamic.feature.account.profile.AccountModel
+import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthModel
+import com.illiarb.tmdbclient.dynamic.feature.account.profile.presentation.AccountModel
 import com.illiarb.tmdbexplorer.coreui.di.modules.ViewModelKey
 import dagger.Binds
 import dagger.Module

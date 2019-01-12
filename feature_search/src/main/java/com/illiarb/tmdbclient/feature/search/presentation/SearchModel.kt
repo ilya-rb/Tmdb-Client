@@ -1,7 +1,7 @@
-package com.illiarb.tmdbclient.feature.search
+package com.illiarb.tmdbclient.feature.search.presentation
 
-import com.illiarb.tmdbclient.feature.search.SearchUiState.SearchIcon
-import com.illiarb.tmdbclient.feature.search.SearchUiState.SearchResult
+import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchIcon
+import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchResult
 import com.illiarb.tmdbclient.feature.search.domain.SearchMovies
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import com.illiarb.tmdblcient.core.entity.Movie
@@ -23,26 +23,19 @@ class SearchModel @Inject constructor(
     }
 
     fun search(query: String) = launch(context = coroutineContext) {
-        setState {
-            SearchUiState(SearchIcon.Cross, true, it.result, it.error)
-        }
+        setState { it.copy(icon = SearchIcon.Cross, isSearchRunning = true) }
 
         try {
-            val movies = searchMovies.execute(query)
+            val movies = searchMovies.executeAsync(query)
             val result = if (movies.isEmpty()) SearchResult.Empty else SearchResult.Success(movies)
-
-            setState {
-                SearchUiState(it.icon, false, result, it.error)
-            }
+            setState { it.copy(isSearchRunning = false, result = result) }
         } catch (e: Exception) {
             // Process error
         }
     }
 
     fun onClearClicked() {
-        setState {
-            SearchUiState(SearchIcon.Search, it.isSearchRunning, it.result, it.error)
-        }
+        setState { it.copy(icon = SearchIcon.Search) }
     }
 
     fun onMovieClicked(movie: Movie) {

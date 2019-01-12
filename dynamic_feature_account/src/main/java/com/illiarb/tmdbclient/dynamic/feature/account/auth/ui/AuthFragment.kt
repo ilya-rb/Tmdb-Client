@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.transition.Fade
 import com.illiarb.tmdbclient.dynamic.feature.account.R
-import com.illiarb.tmdbclient.dynamic.feature.account.auth.AuthModel
-import com.illiarb.tmdbclient.dynamic.feature.account.auth.AuthUiState
+import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthModel
+import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthUiState
 import com.illiarb.tmdbclient.dynamic.feature.account.di.AccountComponent
 import com.illiarb.tmdbexplorer.coreui.StateObserver
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment

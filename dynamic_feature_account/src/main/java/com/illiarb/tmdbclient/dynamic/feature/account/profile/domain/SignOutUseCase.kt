@@ -1,6 +1,6 @@
 package com.illiarb.tmdbclient.dynamic.feature.account.profile.domain
 
-import com.illiarb.tmdblcient.core.domain.UseCase
+import com.illiarb.tmdblcient.core.domain.NonBlockingUseCase
 import com.illiarb.tmdblcient.core.repository.AccountRepository
 import com.illiarb.tmdblcient.core.system.NonBlocking
 import javax.inject.Inject
@@ -10,10 +10,10 @@ import javax.inject.Inject
  */
 class SignOutUseCase @Inject constructor(
     private val accountRepository: AccountRepository
-) : UseCase<Boolean, Unit> {
+) : NonBlockingUseCase<Boolean, Unit> {
 
     @NonBlocking
-    override suspend fun execute(payload: Unit): Boolean {
+    override suspend fun executeAsync(payload: Unit): Boolean {
         return accountRepository.clearAccountData()
     }
 }

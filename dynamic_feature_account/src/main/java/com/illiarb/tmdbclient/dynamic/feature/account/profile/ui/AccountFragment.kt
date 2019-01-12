@@ -5,8 +5,8 @@ import android.view.View
 import androidx.core.view.ViewCompat
 import com.illiarb.tmdbclient.dynamic.feature.account.R
 import com.illiarb.tmdbclient.dynamic.feature.account.di.AccountComponent
-import com.illiarb.tmdbclient.dynamic.feature.account.profile.AccountModel
-import com.illiarb.tmdbclient.dynamic.feature.account.profile.AccountUiState
+import com.illiarb.tmdbclient.dynamic.feature.account.profile.presentation.AccountModel
+import com.illiarb.tmdbclient.dynamic.feature.account.profile.presentation.AccountUiState
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.ui.adapter.FavoritesAdapter
 import com.illiarb.tmdbexplorer.coreui.StateObserver
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment

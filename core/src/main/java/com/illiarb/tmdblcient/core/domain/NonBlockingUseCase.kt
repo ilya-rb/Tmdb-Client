@@ -5,8 +5,8 @@ import com.illiarb.tmdblcient.core.system.NonBlocking
 /**
  * @author ilya-rb on 09.01.19.
  */
-interface UseCase<T, P> {
+interface NonBlockingUseCase<T, P> {
 
     @NonBlocking
-    suspend fun execute(payload: P): T
+    suspend fun executeAsync(payload: P): T
 }
