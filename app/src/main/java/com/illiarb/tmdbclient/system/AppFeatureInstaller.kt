@@ -20,13 +20,6 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 /**
- * Coroutine Wrapper of [SplitInstallManagerFactory]
- *
- * TODO:
- * 1. Add error handling
- * 2. Add [deleteFeature] implementation
- * 3. Add [isFeatureInstalled] implementation
- *
  * @author ilya-rb on 24.12.18.
  */
 class AppFeatureInstaller @Inject constructor(
