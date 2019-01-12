@@ -1,6 +1,6 @@
 package com.illiarb.tmdbclient.tools
 
-import com.illiarb.tmdblcient.core.system.DispatcherProvider
+import com.illiarb.tmdblcient.core.system.coroutine.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject

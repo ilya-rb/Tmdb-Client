@@ -5,8 +5,5 @@ package com.illiarb.tmdblcient.core.system
  */
 interface WorkManager {
 
-    fun initialize()
-
     fun schedulerPeriodicConfigurationFetch()
-
 }

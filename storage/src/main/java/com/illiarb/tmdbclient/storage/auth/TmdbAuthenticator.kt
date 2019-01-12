@@ -6,8 +6,8 @@ import com.illiarb.tmdbclient.storage.network.request.CreateSessionRequest
 import com.illiarb.tmdbclient.storage.network.request.ValidateTokenRequest
 import com.illiarb.tmdblcient.core.auth.Authenticator
 import com.illiarb.tmdblcient.core.entity.UserCredentials
-import com.illiarb.tmdblcient.core.system.DispatcherProvider
-import com.illiarb.tmdblcient.core.system.NonBlocking
+import com.illiarb.tmdblcient.core.system.coroutine.DispatcherProvider
+import com.illiarb.tmdblcient.core.system.coroutine.NonBlocking
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 

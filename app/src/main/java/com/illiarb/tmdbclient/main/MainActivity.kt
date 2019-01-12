@@ -12,7 +12,7 @@ import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.navigation.Navigator
 import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
 import com.illiarb.tmdblcient.core.system.ConnectivityStatus
-import com.illiarb.tmdblcient.core.system.DispatcherProvider
+import com.illiarb.tmdblcient.core.system.coroutine.DispatcherProvider
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job

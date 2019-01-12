@@ -13,8 +13,8 @@ import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.entity.Review
 import com.illiarb.tmdblcient.core.repository.MoviesRepository
-import com.illiarb.tmdblcient.core.system.DispatcherProvider
-import com.illiarb.tmdblcient.core.system.NonBlocking
+import com.illiarb.tmdblcient.core.system.coroutine.DispatcherProvider
+import com.illiarb.tmdblcient.core.system.coroutine.NonBlocking
 import com.illiarb.tmdblcient.core.system.ResourceResolver
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext

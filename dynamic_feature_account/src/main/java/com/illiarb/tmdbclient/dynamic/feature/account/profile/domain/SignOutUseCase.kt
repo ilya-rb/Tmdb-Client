@@ -2,7 +2,7 @@ package com.illiarb.tmdbclient.dynamic.feature.account.profile.domain
 
 import com.illiarb.tmdblcient.core.domain.NonBlockingUseCase
 import com.illiarb.tmdblcient.core.repository.AccountRepository
-import com.illiarb.tmdblcient.core.system.NonBlocking
+import com.illiarb.tmdblcient.core.system.coroutine.NonBlocking
 import javax.inject.Inject
 
 /**

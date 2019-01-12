@@ -1,4 +1,4 @@
-package com.illiarb.tmdblcient.core.system
+package com.illiarb.tmdblcient.core.exception
 
 /**
  * @author ilya-rb on 27.11.18.

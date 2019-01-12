@@ -48,10 +48,13 @@ class ConfigurationFetchWork constructor(
                 val configuration = configurationService.getConfiguration().await()
                 persistableStorage.storeConfiguration(configuration)
             }
+
             Logger.i("Successful configuration fetch")
+
             Result.SUCCESS
         } catch (e: IOException) {
             Logger.e("Error during configuration fetching, rescheduling..", e)
+
             Result.RETRY
         }
     }

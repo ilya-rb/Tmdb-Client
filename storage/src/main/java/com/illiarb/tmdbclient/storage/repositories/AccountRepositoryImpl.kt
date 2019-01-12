@@ -7,8 +7,8 @@ import com.illiarb.tmdbclient.storage.network.api.service.AccountService
 import com.illiarb.tmdblcient.core.entity.Account
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.repository.AccountRepository
-import com.illiarb.tmdblcient.core.system.DispatcherProvider
-import com.illiarb.tmdblcient.core.system.NonBlocking
+import com.illiarb.tmdblcient.core.system.coroutine.DispatcherProvider
+import com.illiarb.tmdblcient.core.system.coroutine.NonBlocking
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 

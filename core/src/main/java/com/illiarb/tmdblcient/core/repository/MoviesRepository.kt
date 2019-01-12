@@ -4,7 +4,7 @@ import com.illiarb.tmdblcient.core.common.Result
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.entity.Review
-import com.illiarb.tmdblcient.core.system.NonBlocking
+import com.illiarb.tmdblcient.core.system.coroutine.NonBlocking
 
 /**
  * @author ilya-rb on 25.10.18.

@@ -31,5 +31,8 @@ dependencies {
 
     implementation deps.javax
 
-    implementation testDeps.junit
+    testImplementation testDeps.junit
+
+    androidTestImplementation androidTestDeps.espresso
+    androidTestImplementation androidTestDeps.runner
 }

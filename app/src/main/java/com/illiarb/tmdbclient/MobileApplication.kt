@@ -25,7 +25,6 @@ class MobileApplication : Application(), App {
         val appComponent = applicationProvider as AppComponent
         appComponent.inject(this)
 
-        workManager.initialize()
         workManager.schedulerPeriodicConfigurationFetch()
     }
 
@@ -42,7 +41,7 @@ class MobileApplication : Application(), App {
             Timber.plant(Timber.DebugTree())
         }
 
-        val timberPrinter = object : Logger.Printer {
+        val timberLoggingStrategy = object : Logger.LoggingStrategy {
             override fun log(priority: Logger.Priority, message: String, throwable: Throwable?) {
                 when (priority) {
                     Logger.Priority.WARN -> Timber.w(message)
@@ -53,6 +52,6 @@ class MobileApplication : Application(), App {
             }
         }
 
-        Logger.addPrinter(timberPrinter)
+        Logger.addPrinter(timberLoggingStrategy)
     }
 }

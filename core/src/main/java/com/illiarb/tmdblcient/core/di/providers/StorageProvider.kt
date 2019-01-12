@@ -4,7 +4,7 @@ import com.illiarb.tmdblcient.core.auth.Authenticator
 import com.illiarb.tmdblcient.core.repository.AccountRepository
 import com.illiarb.tmdblcient.core.repository.MoviesRepository
 import com.illiarb.tmdblcient.core.system.ConnectivityStatus
-import com.illiarb.tmdblcient.core.system.ErrorMessageBag
+import com.illiarb.tmdblcient.core.exception.ErrorMessageBag
 import com.illiarb.tmdblcient.core.system.ResourceResolver
 import com.illiarb.tmdblcient.core.system.WorkManager
 

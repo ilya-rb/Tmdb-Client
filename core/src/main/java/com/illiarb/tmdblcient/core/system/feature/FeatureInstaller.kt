@@ -1,6 +1,6 @@
 package com.illiarb.tmdblcient.core.system.feature
 
-import com.illiarb.tmdblcient.core.system.NonBlocking
+import com.illiarb.tmdblcient.core.system.coroutine.NonBlocking
 
 /**
  * Interface for interacting

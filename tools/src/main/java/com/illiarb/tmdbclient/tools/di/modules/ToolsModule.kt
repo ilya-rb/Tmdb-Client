@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.tools.di.modules
 
 import com.illiarb.tmdbclient.tools.CoroutineDispatcherProvider
-import com.illiarb.tmdblcient.core.system.DispatcherProvider
+import com.illiarb.tmdblcient.core.system.coroutine.DispatcherProvider
 import dagger.Binds
 import dagger.Module
 

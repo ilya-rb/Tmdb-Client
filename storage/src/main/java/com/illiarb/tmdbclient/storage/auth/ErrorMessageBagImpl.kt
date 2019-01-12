@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.storage.auth
 
 import com.illiarb.tmdbclient.storage.R
-import com.illiarb.tmdblcient.core.system.ErrorMessageBag
+import com.illiarb.tmdblcient.core.exception.ErrorMessageBag
 import com.illiarb.tmdblcient.core.system.ResourceResolver
 import javax.inject.Inject
 

@@ -5,10 +5,10 @@ package com.illiarb.tmdblcient.core.system
  */
 object Logger {
 
-    private val printers = mutableSetOf<Printer>()
+    private val strategies = mutableSetOf<LoggingStrategy>()
 
-    fun addPrinter(printer: Printer) {
-        printers.add(printer)
+    fun addPrinter(printer: LoggingStrategy) {
+        strategies.add(printer)
     }
 
     @JvmStatic
@@ -32,7 +32,7 @@ object Logger {
     }
 
     private fun logWithPriority(priority: Logger.Priority, message: String, throwable: Throwable? = null) {
-        printers.forEach {
+        strategies.forEach {
             it.log(priority, message, throwable)
         }
     }
@@ -44,7 +44,7 @@ object Logger {
         ERROR
     }
 
-    interface Printer {
+    interface LoggingStrategy {
 
         fun log(priority: Priority, message: String, throwable: Throwable?)
     }

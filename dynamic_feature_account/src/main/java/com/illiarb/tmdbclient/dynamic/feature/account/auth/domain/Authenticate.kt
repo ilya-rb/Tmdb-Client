@@ -3,7 +3,7 @@ package com.illiarb.tmdbclient.dynamic.feature.account.auth.domain
 import com.illiarb.tmdblcient.core.auth.Authenticator
 import com.illiarb.tmdblcient.core.domain.NonBlockingUseCase
 import com.illiarb.tmdblcient.core.entity.UserCredentials
-import com.illiarb.tmdblcient.core.system.NonBlocking
+import com.illiarb.tmdblcient.core.system.coroutine.NonBlocking
 import javax.inject.Inject
 
 /**

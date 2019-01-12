@@ -1,7 +1,7 @@
 package com.illiarb.tmdblcient.core.auth
 
 import com.illiarb.tmdblcient.core.entity.UserCredentials
-import com.illiarb.tmdblcient.core.system.NonBlocking
+import com.illiarb.tmdblcient.core.system.coroutine.NonBlocking
 
 /**
  * @author ilya-rb on 20.11.18.

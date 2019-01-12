@@ -1,4 +1,4 @@
-package com.illiarb.tmdblcient.core.system
+package com.illiarb.tmdblcient.core.system.coroutine
 
 /**
  * @author ilya-rb on 07.01.19.

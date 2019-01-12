@@ -1,4 +1,4 @@
-package com.illiarb.tmdblcient.core.system
+package com.illiarb.tmdblcient.core.system.coroutine
 
 import kotlinx.coroutines.CoroutineDispatcher
 

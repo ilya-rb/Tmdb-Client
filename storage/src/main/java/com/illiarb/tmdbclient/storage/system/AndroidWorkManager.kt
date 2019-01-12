@@ -7,22 +7,25 @@ import com.illiarb.tmdbclient.storage.network.api.config.ConfigurationFetchWork
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.system.WorkManager
 import javax.inject.Inject
+import javax.inject.Singleton
 import androidx.work.WorkManager as AdWorkManager
 
 /**
  * @author ilya-rb on 03.12.18.
  */
+@Singleton
 class AndroidWorkManager @Inject constructor(
-    private val app: App,
-    private val workerFactory: WorkerFactory
+    app: App,
+    workerFactory: WorkerFactory
 ) : WorkManager {
 
-    override fun initialize() {
-        val configuration = Configuration.Builder()
-            .setWorkerFactory(workerFactory)
-            .build()
-
-        AdWorkManager.initialize(app.getApplication(), configuration)
+    init {
+        AdWorkManager.initialize(
+            app.getApplication(),
+            Configuration.Builder()
+                .setWorkerFactory(workerFactory)
+                .build()
+        )
     }
 
     override fun schedulerPeriodicConfigurationFetch() {
