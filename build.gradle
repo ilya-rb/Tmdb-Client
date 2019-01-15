@@ -55,7 +55,7 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
- apply plugin: 'com.gradle.build-scan'
+apply plugin: 'com.gradle.build-scan'
 
 buildScan {
     licenseAgreementUrl = 'https://gradle.com/terms-of-servie'
