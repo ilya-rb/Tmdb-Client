@@ -1,14 +1,10 @@
 package com.illiarb.tmdbexplorer.coreui.image.blur
 
-import android.renderscript.RenderScript
-import android.os.Build
-import android.renderscript.ScriptIntrinsicBlur
-import android.renderscript.Allocation
-import android.renderscript.RSRuntimeException
-import android.graphics.Bitmap
 import android.annotation.TargetApi
 import android.content.Context
-import android.renderscript.Element
+import android.graphics.Bitmap
+import android.os.Build
+import android.renderscript.*
 
 internal object RsBlur {
 

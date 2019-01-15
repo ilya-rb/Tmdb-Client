@@ -3,7 +3,7 @@ package com.illiarb.tmdbexplorer.coreui.recyclerview.adapter
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseViewHolder
-import java.util.Collections
+import java.util.*
 
 abstract class BaseAdapter<T, VH : BaseViewHolder<T>> : RecyclerView.Adapter<VH>() {
 

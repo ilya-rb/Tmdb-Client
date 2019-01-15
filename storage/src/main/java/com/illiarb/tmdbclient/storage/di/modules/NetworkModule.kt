@@ -5,11 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.illiarb.tmdbclient.storage.BuildConfig
 import com.illiarb.tmdbclient.storage.network.api.ApiKeyInterceptor
-import com.illiarb.tmdbclient.storage.network.api.service.AccountService
-import com.illiarb.tmdbclient.storage.network.api.service.AuthService
-import com.illiarb.tmdbclient.storage.network.api.service.ConfigurationService
-import com.illiarb.tmdbclient.storage.network.api.service.MovieService
-import com.illiarb.tmdbclient.storage.network.api.service.SearchService
+import com.illiarb.tmdbclient.storage.network.api.service.*
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides

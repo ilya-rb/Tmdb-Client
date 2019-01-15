@@ -38,6 +38,9 @@ class StorageModule(val app: App) {
     fun provideConnectivityStatus(): ConnectivityStatus = AndroidConnectivityStatus(app.getApplication())
 
     @Provides
-    fun provideWorkerFactory(configurationService: ConfigurationService, persistableStorage: PersistableStorage): WorkerFactory =
+    fun provideWorkerFactory(
+        configurationService: ConfigurationService,
+        persistableStorage: PersistableStorage
+    ): WorkerFactory =
         DaggerWorkerFactory(configurationService, persistableStorage)
 }

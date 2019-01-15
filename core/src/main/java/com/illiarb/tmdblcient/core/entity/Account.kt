@@ -1,6 +1,6 @@
 package com.illiarb.tmdblcient.core.entity
 
-import java.util.Collections
+import java.util.*
 
 /**
  * @author ilya-rb on 20.11.18.

@@ -2,7 +2,7 @@ package com.illiarb.tmdbclient.storage.mappers
 
 import com.illiarb.tmdbclient.storage.model.MovieModel
 import com.illiarb.tmdblcient.core.entity.Movie
-import java.util.Collections
+import java.util.*
 import javax.inject.Inject
 
 class MovieMapper @Inject constructor(

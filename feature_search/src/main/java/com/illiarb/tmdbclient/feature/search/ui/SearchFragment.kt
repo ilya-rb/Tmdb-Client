@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.illiarb.tmdbclient.feature.search.R
+import com.illiarb.tmdbclient.feature.search.di.SearchComponent
 import com.illiarb.tmdbclient.feature.search.presentation.SearchModel
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchIcon
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchResult
-import com.illiarb.tmdbclient.feature.search.di.SearchComponent
 import com.illiarb.tmdbexplorer.coreui.StateObserver
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType

@@ -1,10 +1,9 @@
 package com.illiarb.tmdbclient.tools.navigation
 
-import com.illiarb.tmdblcient.core.navigation.ScreenData
 import com.illiarb.tmdblcient.core.navigation.Navigator
 import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
-import java.util.LinkedList
-import java.util.Queue
+import com.illiarb.tmdblcient.core.navigation.ScreenData
+import java.util.*
 import javax.inject.Inject
 
 /**

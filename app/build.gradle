@@ -60,7 +60,6 @@ dependencies {
 
     implementation deps.dagger
     implementation deps.timber
-    implementation deps.supportDesign
     implementation deps.navigation
 
     // Play core lib for downloading dynamic features

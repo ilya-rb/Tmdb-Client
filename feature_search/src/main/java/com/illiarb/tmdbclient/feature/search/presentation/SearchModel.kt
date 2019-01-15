@@ -1,8 +1,8 @@
 package com.illiarb.tmdbclient.feature.search.presentation
 
+import com.illiarb.tmdbclient.feature.search.domain.SearchMovies
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchIcon
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchResult
-import com.illiarb.tmdbclient.feature.search.domain.SearchMovies
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen

@@ -5,9 +5,9 @@ import com.illiarb.tmdbclient.storage.auth.TmdbAuthenticator
 import com.illiarb.tmdbclient.storage.repositories.AccountRepositoryImpl
 import com.illiarb.tmdbclient.storage.repositories.MoviesRepositoryImpl
 import com.illiarb.tmdblcient.core.auth.Authenticator
+import com.illiarb.tmdblcient.core.exception.ErrorMessageBag
 import com.illiarb.tmdblcient.core.repository.AccountRepository
 import com.illiarb.tmdblcient.core.repository.MoviesRepository
-import com.illiarb.tmdblcient.core.exception.ErrorMessageBag
 import dagger.Binds
 import dagger.Module
 

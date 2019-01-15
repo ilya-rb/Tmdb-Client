@@ -2,8 +2,8 @@ package com.illiarb.tmdbclient.feature.home.details.ui.reviews
 
 import android.view.ViewGroup
 import com.illiarb.tmdbclient.feature.home.R
-import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.BaseAdapter
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
+import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.BaseAdapter
 import com.illiarb.tmdblcient.core.entity.Review
 import javax.inject.Inject
 

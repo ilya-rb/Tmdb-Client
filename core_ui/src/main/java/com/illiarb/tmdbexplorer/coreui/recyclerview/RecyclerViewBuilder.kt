@@ -27,8 +27,10 @@ class RecyclerViewBuilder {
 
     fun hasFixedSize(hasFixedSize: Boolean) = apply { this.hasFixedSize = hasFixedSize }
 
-    fun spaceBetween(block: SpaceBetween.() -> Unit) = apply { this.spaceBetween = SpaceBetween()
-        .also(block) }
+    fun spaceBetween(block: SpaceBetween.() -> Unit) = apply {
+        this.spaceBetween = SpaceBetween()
+            .also(block)
+    }
 
     fun disableNestedScroll() = apply { this.nestedScrollEnabled = false }
 

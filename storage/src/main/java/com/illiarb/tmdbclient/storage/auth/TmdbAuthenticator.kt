@@ -21,22 +21,23 @@ class TmdbAuthenticator @Inject constructor(
 ) : Authenticator {
 
     @NonBlocking
-    override suspend fun authorize(credentials: UserCredentials): Boolean = withContext(dispatcherProvider.ioDispatcher) {
-        try {
-            val authToken = authService.requestAuthToken().await()
+    override suspend fun authorize(credentials: UserCredentials): Boolean =
+        withContext(dispatcherProvider.ioDispatcher) {
+            try {
+                val authToken = authService.requestAuthToken().await()
 
-            val request = ValidateTokenRequest(credentials.username, credentials.password, authToken.requestToken)
-            val validatedToken = authService.validateTokenWithCredentials(request).await()
+                val request = ValidateTokenRequest(credentials.username, credentials.password, authToken.requestToken)
+                val validatedToken = authService.validateTokenWithCredentials(request).await()
 
-            val session = authService.createNewSession(CreateSessionRequest(validatedToken.requestToken)).await()
+                val session = authService.createNewSession(CreateSessionRequest(validatedToken.requestToken)).await()
 
-            persistableStorage.storeSessionId(session.sessionId)
-        } catch (e: Exception) {
-            return@withContext false
+                persistableStorage.storeSessionId(session.sessionId)
+            } catch (e: Exception) {
+                return@withContext false
+            }
+
+            true
         }
-
-        true
-    }
 
     override suspend fun isAuthenticated(): Boolean = withContext(dispatcherProvider.ioDispatcher) {
         persistableStorage.isAuthorized()

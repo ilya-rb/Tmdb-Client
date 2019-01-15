@@ -1,6 +1,6 @@
 package com.illiarb.tmdbclient.storage.mappers
 
-import java.util.Collections
+import java.util.*
 
 interface Mapper<From, To> {
 

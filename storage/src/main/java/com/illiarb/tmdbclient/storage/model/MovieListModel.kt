@@ -3,7 +3,7 @@ package com.illiarb.tmdbclient.storage.model
 import com.ironz.binaryprefs.serialization.serializer.persistable.Persistable
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataInput
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataOutput
-import java.util.Collections
+import java.util.*
 
 /**
  * @author ilya-rb on 16.11.18.

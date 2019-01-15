@@ -4,18 +4,10 @@ import com.illiarb.tmdbclient.feature.home.list.domain.GetAllMovies
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import com.illiarb.tmdblcient.core.auth.Authenticator
 import com.illiarb.tmdblcient.core.common.Result
-import com.illiarb.tmdblcient.core.entity.ListSection
-import com.illiarb.tmdblcient.core.entity.Movie
-import com.illiarb.tmdblcient.core.entity.MovieFilter
-import com.illiarb.tmdblcient.core.entity.MovieSection
-import com.illiarb.tmdblcient.core.entity.NowPlayingSection
-import com.illiarb.tmdblcient.core.navigation.AccountScreen
-import com.illiarb.tmdblcient.core.navigation.AuthScreen
-import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
-import com.illiarb.tmdblcient.core.navigation.Router
-import com.illiarb.tmdblcient.core.navigation.SearchScreen
+import com.illiarb.tmdblcient.core.entity.*
+import com.illiarb.tmdblcient.core.navigation.*
 import kotlinx.coroutines.launch
-import java.util.Collections
+import java.util.*
 import javax.inject.Inject
 
 /**

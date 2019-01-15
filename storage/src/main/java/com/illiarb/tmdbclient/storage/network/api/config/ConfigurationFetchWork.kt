@@ -1,12 +1,7 @@
 package com.illiarb.tmdbclient.storage.network.api.config
 
 import android.content.Context
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequest
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.Worker
-import androidx.work.WorkerParameters
+import androidx.work.*
 import com.illiarb.tmdbclient.storage.local.PersistableStorage
 import com.illiarb.tmdbclient.storage.network.api.service.ConfigurationService
 import com.illiarb.tmdblcient.core.system.Logger

@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.tools.navigation
 
-import com.illiarb.tmdblcient.core.navigation.ScreenData
 import com.illiarb.tmdblcient.core.navigation.Router
+import com.illiarb.tmdblcient.core.navigation.ScreenData
 import javax.inject.Inject
 
 /**

@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseViewHolder
 
-abstract class BaseDiffAdapter<T, VH : BaseViewHolder<T>>(diffCallback: DiffUtil.ItemCallback<T>) : ListAdapter<T, VH>(diffCallback) {
+abstract class BaseDiffAdapter<T, VH : BaseViewHolder<T>>(diffCallback: DiffUtil.ItemCallback<T>) :
+    ListAdapter<T, VH>(diffCallback) {
 
     var clickEvent: (viewId: Int, position: Int, item: T) -> Unit = { _, _, _ -> }
 
@@ -32,7 +33,7 @@ abstract class BaseDiffAdapter<T, VH : BaseViewHolder<T>>(diffCallback: DiffUtil
         }
     }
 
-    fun getItemAt(position: Int) : T {
+    fun getItemAt(position: Int): T {
         return getItem(position)
     }
 }

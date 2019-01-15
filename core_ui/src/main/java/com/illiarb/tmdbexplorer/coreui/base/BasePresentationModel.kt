@@ -23,7 +23,11 @@ abstract class BasePresentationModel<T : Cloneable<T>> : ViewModel(), CoroutineS
     }
 
     protected fun setState(block: (T) -> T) {
-        stateObservable.accept(block(stateObservable.valueCopy() ?: throw IllegalStateException("initial state was not set")))
+        stateObservable.accept(
+            block(
+                stateObservable.valueCopy() ?: throw IllegalStateException("initial state was not set")
+            )
+        )
     }
 
     fun observeState(observer: StateObserver<T>) {

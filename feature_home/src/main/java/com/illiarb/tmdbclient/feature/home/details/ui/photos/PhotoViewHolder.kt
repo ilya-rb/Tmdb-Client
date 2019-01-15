@@ -3,10 +3,10 @@ package com.illiarb.tmdbclient.feature.home.details.ui.photos
 import android.view.View
 import android.widget.ImageView
 import com.illiarb.tmdbclient.feature.home.R
-import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseViewHolder
 import com.illiarb.tmdbexplorer.coreui.image.CropOptions
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.image.RequestOptions
+import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseViewHolder
 import kotlinx.android.synthetic.main.item_photo.view.*
 
 /**

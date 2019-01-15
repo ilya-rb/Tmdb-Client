@@ -8,11 +8,9 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import com.illiarb.tmdblcient.core.system.ConnectivityStatus
 import com.illiarb.tmdblcient.core.system.ConnectivityStatus.ConnectionState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 /**

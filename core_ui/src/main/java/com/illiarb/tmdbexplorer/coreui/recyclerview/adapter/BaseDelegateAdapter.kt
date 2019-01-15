@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.tmdbexplorer.coreui.R
-import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseDelegateViewHolder
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
+import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseDelegateViewHolder
 import javax.inject.Inject
 
 /**

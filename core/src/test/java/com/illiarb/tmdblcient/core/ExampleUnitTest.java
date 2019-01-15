@@ -2,7 +2,7 @@ package com.illiarb.tmdblcient.core;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Example local unit test, which will executeAsync on the development machine (host).

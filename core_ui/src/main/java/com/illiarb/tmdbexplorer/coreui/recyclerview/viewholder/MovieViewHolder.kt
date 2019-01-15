@@ -2,7 +2,6 @@ package com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder
 
 import android.view.View
 import com.illiarb.tmdbexplorer.coreui.R
-import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseViewHolder
 import com.illiarb.tmdbexplorer.coreui.image.CropOptions
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.image.RequestOptions

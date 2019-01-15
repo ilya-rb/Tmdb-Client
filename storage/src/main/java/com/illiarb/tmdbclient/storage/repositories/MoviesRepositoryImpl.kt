@@ -13,9 +13,9 @@ import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.entity.Review
 import com.illiarb.tmdblcient.core.repository.MoviesRepository
+import com.illiarb.tmdblcient.core.system.ResourceResolver
 import com.illiarb.tmdblcient.core.system.coroutine.DispatcherProvider
 import com.illiarb.tmdblcient.core.system.coroutine.NonBlocking
-import com.illiarb.tmdblcient.core.system.ResourceResolver
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -52,10 +52,11 @@ class MoviesRepositoryImpl @Inject constructor(
     }
 
     @NonBlocking
-    override suspend fun getMovieDetails(id: Int, appendToResponse: String): Movie = withContext(dispatcherProvider.ioDispatcher) {
-        val details = moviesService.getMovieDetails(id, appendToResponse).await()
-        movieMapper.map(details)
-    }
+    override suspend fun getMovieDetails(id: Int, appendToResponse: String): Movie =
+        withContext(dispatcherProvider.ioDispatcher) {
+            val details = moviesService.getMovieDetails(id, appendToResponse).await()
+            movieMapper.map(details)
+        }
 
     @NonBlocking
     override suspend fun getMovieReviews(id: Int): List<Review> = withContext(dispatcherProvider.ioDispatcher) {

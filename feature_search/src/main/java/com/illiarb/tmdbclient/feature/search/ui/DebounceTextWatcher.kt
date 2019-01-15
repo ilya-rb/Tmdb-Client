@@ -2,8 +2,7 @@ package com.illiarb.tmdbclient.feature.search.ui
 
 import android.text.Editable
 import android.text.TextWatcher
-import java.util.Timer
-import java.util.TimerTask
+import java.util.*
 
 /**
  * @author ilya-rb on 10.01.19.
