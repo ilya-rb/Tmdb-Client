@@ -4,7 +4,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'com.getkeepsafe.dexcount'
+
 apply from: dependenciesFilePath
+
+apply from: "$rootDir/code_quality_tools/jacoco.gradle"
+apply from: "$rootDir/code_quality_tools/lint.gradle"
 
 android {
     compileSdkVersion projectInfo.compileSdkVersion
@@ -24,6 +29,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+            testCoverageEnabled true
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -31,6 +41,13 @@ android {
     }
 
     dynamicFeatures = [':dynamic_feature_account']
+}
+
+dexcount {
+    format = 'list'
+    includeTotalMethodCount true
+    verbose false
+    maxTreeDepth = Integer.MAX_VALUE
 }
 
 dependencies {

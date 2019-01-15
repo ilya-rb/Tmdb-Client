@@ -1,0 +1,15 @@
+apply plugin: 'com.android.application'
+
+android {
+    lintOptions {
+        warningsAsErrors true
+        abortOnError true // Fail early
+
+        disable 'GoogleAppIndexingWarning' // App does not have deep linking
+        disable 'InvalidPackage' // Okio references java.nio that does not presented in Android SDK
+
+        checkAllWarnings true
+        showAll true
+        explainIssues true
+    }
+}

@@ -1,3 +1,12 @@
+def gradlePlugins = [:]
+
+gradlePlugins.android = "com.android.tools.build:gradle:$versions.androidGradle"
+gradlePlugins.jacoco = "org.jacoco:org.jacoco.core:$versions.jacocoGradle"
+gradlePlugins.kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+gradlePlugins.versions = "com.github.ben-manes:gradle-versions-plugin:$versions.versionsGradle"
+gradlePlugins.dexcount = "com.getkeepsafe.dexcount:dexcount-gradle-plugin:$versions.dexcountGradle"
+gradlePlugins.buildscan = "com.gradle:build-scan-plugin:$versions.buildScanGradle"
+
 def deps = [:]
 
 // STD
@@ -63,6 +72,7 @@ def androidTestDeps = [:]
 androidTestDeps.runner = "androidx.test:runner:$androidTestVersions.runner"
 androidTestDeps.espresso = "androidx.test.espresso:espresso-core:$androidTestVersions.espresso"
 
+ext.gradlePlugins = gradlePlugins
 ext.deps = deps
 ext.testDeps = testDeps
 ext.androidTestDeps = androidTestDeps
