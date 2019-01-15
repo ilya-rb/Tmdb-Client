@@ -2,13 +2,13 @@ apply from: versionsFilePath
 apply plugin: 'io.gitlab.arturbosch.detekt'
 
 detekt {
-    toolVersion = $versions.detektGradle
-    config = "$projectDir/code_quality_tools/detekt_config.yml"
+    toolVersion = "1.0.0-RC12"
+    config = files("$rootDir/code_quality_tools/detekt_config.yml")
     filters = ".*test.*,.*/resources/.*,.*/tmp/.*,.*/build/.*"
     reports {
         html {
-            enabled true
-            destination file("$rootDir/reports/detekt.html")
+            enabled = true
+            destination = file("$rootDir/reports/detekt.html")
         }
     }
 }

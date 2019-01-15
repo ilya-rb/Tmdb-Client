@@ -7,9 +7,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.getkeepsafe.dexcount'
 
 apply from: dependenciesFilePath
-
 apply from: "$rootDir/code_quality_tools/jacoco.gradle"
-apply from: "$rootDir/code_quality_tools/lint.gradle"
 
 android {
     compileSdkVersion projectInfo.compileSdkVersion

@@ -22,13 +22,13 @@ buildscript {
     }
 }
 
-//plugins {
-//    id "io.gitlab.arturbosch.detekt" version "1.0.0-RC12"
-//}
+plugins {
+    id "io.gitlab.arturbosch.detekt" version "1.0.0-RC12"
+}
 
 allprojects {
 
-//    apply from: 'code_quality_tools/detekt.gradle'
+    apply from: "$rootDir/code_quality_tools/detekt.gradle"
 
     repositories {
         google()
@@ -55,9 +55,9 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-// apply plugin: 'com.gradle.build-scan'
+ apply plugin: 'com.gradle.build-scan'
 
-//buildScan {
-//    licenseAgreementUrl = 'https://gradle.com/terms-of-servie'
-//    licenseAgress = 'yes'
-//}
+buildScan {
+    licenseAgreementUrl = 'https://gradle.com/terms-of-servie'
+    licenseAgree = 'yes'
+}
