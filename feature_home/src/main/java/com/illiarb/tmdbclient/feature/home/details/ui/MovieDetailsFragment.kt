@@ -1,8 +1,10 @@
 package com.illiarb.tmdbclient.feature.home.details.ui
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.google.android.material.chip.Chip
 import com.illiarb.tmdbclient.feature.home.R
@@ -13,7 +15,9 @@ import com.illiarb.tmdbclient.feature.home.details.ui.reviews.ReviewsAdapter
 import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
 import com.illiarb.tmdbexplorer.coreui.observable.Observer
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
+import com.illiarb.tmdbexplorer.coreui.ext.addToViewGroup
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
+import com.illiarb.tmdbexplorer.coreui.ext.show
 import com.illiarb.tmdbexplorer.coreui.image.CropOptions
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.image.RequestOptions
@@ -146,14 +150,14 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable,
             }
 
             genres.forEach { genre ->
-                Chip(requireContext(), null, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Action)
+                Chip(requireContext(), null, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Entry)
                     .apply {
                         text = genre.name
-                        setOnClickListener {
-                            //
-                        }
+                        chipBackgroundColor = ColorStateList.valueOf(
+                            ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+                        )
                     }
-                    .also { movieDetailsTags.addView(it) }
+                    .addToViewGroup(movieDetailsTags)
             }
 
             overview?.let {
@@ -161,12 +165,12 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable,
             }
 
             if (images.isNotEmpty()) {
-                movieDetailsPhotosTitle.visibility = View.VISIBLE
+                movieDetailsPhotosTitle.show()
                 photosAdapter.submitList(images)
             }
 
             if (reviews.isNotEmpty()) {
-                movieDetailsReviewsTitle.visibility = View.VISIBLE
+                movieDetailsReviewsTitle.show()
                 reviewsAdapter.submitList(reviews)
             }
         }

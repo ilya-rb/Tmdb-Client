@@ -18,3 +18,19 @@ fun View.awareOfWindowInsets() {
         return@setOnApplyWindowInsetsListener insets.consumeSystemWindowInsets()
     }
 }
+
+fun View.addToViewGroup(viewGroup: ViewGroup) {
+    viewGroup.addView(this)
+}
+
+fun View.hide() {
+    visibility = View.GONE
+}
+
+fun View.show() {
+    visibility = View.VISIBLE
+}
+
+fun View.invisible() {
+    visibility = View.INVISIBLE
+}
