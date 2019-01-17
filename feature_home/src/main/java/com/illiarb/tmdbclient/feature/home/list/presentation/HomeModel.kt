@@ -1,9 +1,9 @@
 package com.illiarb.tmdbclient.feature.home.list.presentation
 
 import com.illiarb.tmdbclient.feature.home.list.domain.GetAllMovies
+import com.illiarb.tmdbclient.feature.home.list.domain.MovieBlock
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import com.illiarb.tmdblcient.core.auth.Authenticator
-import com.illiarb.tmdblcient.core.common.Result
 import com.illiarb.tmdblcient.core.entity.*
 import com.illiarb.tmdblcient.core.navigation.*
 import kotlinx.coroutines.launch
@@ -23,17 +23,12 @@ class HomeModel @Inject constructor(
         setIdleState(HomeUiState(true, Collections.emptyList()))
 
         launch(context = coroutineContext) {
-            val result = getAllMovies.executeAsync(Unit)
-
-            when (result) {
-                is Result.Success -> {
-                    val movies = createMovieSections(result.result)
-                    setState { it.copy(isLoading = false, movies = movies) }
+            handleResult(getAllMovies.executeAsync(Unit), { blocks ->
+                val sections = createMovieSections(blocks)
+                setState { current ->
+                    current.copy(isLoading = false, movies = sections)
                 }
-                is Result.Error -> {
-                    // Process error
-                }
-            }
+            })
         }
     }
 
@@ -55,7 +50,7 @@ class HomeModel @Inject constructor(
         }
     }
 
-    private fun createMovieSections(movies: List<Pair<MovieFilter, List<Movie>>>): List<MovieSection> =
+    private fun createMovieSections(movies: List<MovieBlock>): List<MovieSection> =
         movies.map { (filter, movies) ->
             if (filter.code == MovieFilter.TYPE_NOW_PLAYING) {
                 NowPlayingSection(filter.name, movies)

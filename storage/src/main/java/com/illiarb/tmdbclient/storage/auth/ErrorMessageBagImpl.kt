@@ -18,4 +18,10 @@ class ErrorMessageBagImpl @Inject constructor(
 
     override fun getIncorrectPasswordLengthMessage(): String =
         resourceResolver.getString(R.string.error_password_incorrect_length)
+
+    override fun getDefaultErrorMessage(): String =
+        resourceResolver.getString(R.string.error_unknown)
+
+    override fun getNetworkConnectionMessage(): String =
+        resourceResolver.getString(R.string.error_bad_connection)
 }

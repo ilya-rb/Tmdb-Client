@@ -8,7 +8,7 @@ import com.illiarb.tmdbclient.dynamic.feature.account.di.AccountComponent
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.presentation.AccountModel
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.presentation.AccountUiState
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.ui.adapter.FavoritesAdapter
-import com.illiarb.tmdbexplorer.coreui.StateObserver
+import com.illiarb.tmdbexplorer.coreui.observable.Observer
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutOrientation
@@ -23,7 +23,8 @@ import javax.inject.Inject
 /**
  * @author ilya-rb on 20.11.18.
  */
-class AccountFragment : BaseFragment<AccountModel>(), Injectable, StateObserver<AccountUiState> {
+class AccountFragment : BaseFragment<AccountModel>(), Injectable,
+    Observer<AccountUiState> {
 
     @Inject
     lateinit var favoritesAdapter: FavoritesAdapter
@@ -77,7 +78,7 @@ class AccountFragment : BaseFragment<AccountModel>(), Injectable, StateObserver<
         presentationModel.stopObserving(this)
     }
 
-    override fun onStateChanged(state: AccountUiState) {
+    override fun onNewValue(state: AccountUiState) {
         accountSwipeRefreshLayout.isRefreshing = state.isLoading
 
         state.account?.let {

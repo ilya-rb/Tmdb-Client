@@ -7,15 +7,12 @@ import com.illiarb.tmdbclient.storage.mappers.ReviewMapper
 import com.illiarb.tmdbclient.storage.model.MovieModel
 import com.illiarb.tmdbclient.storage.network.api.service.MovieService
 import com.illiarb.tmdbclient.storage.network.api.service.SearchService
-import com.illiarb.tmdblcient.core.common.Result
-import com.illiarb.tmdblcient.core.common.invokeForResult
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.entity.Review
 import com.illiarb.tmdblcient.core.repository.MoviesRepository
 import com.illiarb.tmdblcient.core.system.ResourceResolver
 import com.illiarb.tmdblcient.core.system.coroutine.DispatcherProvider
-import com.illiarb.tmdblcient.core.system.coroutine.NonBlocking
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -35,9 +32,8 @@ class MoviesRepositoryImpl @Inject constructor(
     private val resourceResolver: ResourceResolver
 ) : MoviesRepository {
 
-    @NonBlocking
-    override suspend fun getMoviesByType(type: String, refresh: Boolean): Result<List<Movie>> = invokeForResult {
-        withContext(dispatcherProvider.ioDispatcher) {
+    override suspend fun getMoviesByType(type: String, refresh: Boolean): List<Movie> =
+        withContext(dispatcherProvider.io) {
             if (refresh) {
                 return@withContext movieMapper.mapList(fetchFromNetworkAndStore(type))
             }
@@ -49,36 +45,31 @@ class MoviesRepositoryImpl @Inject constructor(
                 movieMapper.mapList(cached)
             }
         }
-    }
 
-    @NonBlocking
     override suspend fun getMovieDetails(id: Int, appendToResponse: String): Movie =
-        withContext(dispatcherProvider.ioDispatcher) {
+        withContext(dispatcherProvider.io) {
             val details = moviesService.getMovieDetails(id, appendToResponse).await()
             movieMapper.map(details)
         }
 
-    @NonBlocking
-    override suspend fun getMovieReviews(id: Int): List<Review> = withContext(dispatcherProvider.ioDispatcher) {
-        val reviews = moviesService.getMovieReviews(id).await()
-        reviewMapper.mapList(reviews.results)
-    }
+    override suspend fun getMovieReviews(id: Int): List<Review> =
+        withContext(dispatcherProvider.io) {
+            val reviews = moviesService.getMovieReviews(id).await()
+            reviewMapper.mapList(reviews.results)
+        }
 
-    @NonBlocking
-    override suspend fun getMovieFilters(): List<MovieFilter> = withContext(dispatcherProvider.ioDispatcher) {
-        resourceResolver
-            .getStringArray(R.array.movie_filters)
-            .map {
-                MovieFilter(it, it.toLowerCase().replace(" ", "_"))
-            }
-    }
+    override suspend fun getMovieFilters(): List<MovieFilter> =
+        withContext(dispatcherProvider.io) {
+            resourceResolver
+                .getStringArray(R.array.movie_filters)
+                .map { MovieFilter(it, it.toLowerCase().replace(" ", "_")) }
+        }
 
-    // TODO: Move to search repository
-    @NonBlocking
-    override suspend fun searchMovies(query: String): List<Movie> = withContext(dispatcherProvider.ioDispatcher) {
-        val movies = searchService.searchMovies(query).await()
-        movieMapper.mapList(movies.results)
-    }
+    override suspend fun searchMovies(query: String): List<Movie> =
+        withContext(dispatcherProvider.io) {
+            val movies = searchService.searchMovies(query).await()
+            movieMapper.mapList(movies.results)
+        }
 
     private suspend fun fetchFromNetworkAndStore(type: String): List<MovieModel> = coroutineScope {
         val result = moviesService.getMoviesByType(type).await().results

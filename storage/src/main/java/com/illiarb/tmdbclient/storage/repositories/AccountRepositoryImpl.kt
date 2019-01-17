@@ -8,7 +8,6 @@ import com.illiarb.tmdblcient.core.entity.Account
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.repository.AccountRepository
 import com.illiarb.tmdblcient.core.system.coroutine.DispatcherProvider
-import com.illiarb.tmdblcient.core.system.coroutine.NonBlocking
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -23,36 +22,36 @@ class AccountRepositoryImpl @Inject constructor(
     private val movieMapper: MovieMapper
 ) : AccountRepository {
 
-    @NonBlocking
-    override suspend fun getCurrentAccount(): Account = withContext(dispatcherProvider.ioDispatcher) {
-        val cachedAccount = persistableStorage.getCurrentAccount()
-        if (cachedAccount.isNonExistent()) {
-            val account = accountService.getAccountDetails(persistableStorage.getSessionId()).await()
-            persistableStorage.storeAccount(account)
+    override suspend fun getCurrentAccount(): Account =
+        withContext(dispatcherProvider.io) {
+            val cachedAccount = persistableStorage.getCurrentAccount()
+            if (cachedAccount.isNonExistent()) {
+                val account = accountService.getAccountDetails(persistableStorage.getSessionId()).await()
+                persistableStorage.storeAccount(account)
 
-            accountMapper.map(account)
-        } else {
-            accountMapper.map(cachedAccount)
+                accountMapper.map(account)
+            } else {
+                accountMapper.map(cachedAccount)
+            }
         }
-    }
 
-    @NonBlocking
-    override suspend fun getRatedMovies(accountId: Int): List<Movie> = withContext(dispatcherProvider.ioDispatcher) {
-        val ratedMovies = accountService.getAccountRatedMovies(accountId, getSessionId()).await()
-        movieMapper.mapList(ratedMovies.results)
-    }
+    override suspend fun getRatedMovies(accountId: Int): List<Movie> =
+        withContext(dispatcherProvider.io) {
+            val ratedMovies = accountService.getAccountRatedMovies(accountId, getSessionId()).await()
+            movieMapper.mapList(ratedMovies.results)
+        }
 
-    @NonBlocking
-    override suspend fun getFavoriteMovies(accountId: Int): List<Movie> = withContext(dispatcherProvider.ioDispatcher) {
-        val favoriteMovies = accountService.getAccountFavoriteMovies(accountId, getSessionId()).await()
-        movieMapper.mapList(favoriteMovies.results)
-    }
+    override suspend fun getFavoriteMovies(accountId: Int): List<Movie> =
+        withContext(dispatcherProvider.io) {
+            val favoriteMovies = accountService.getAccountFavoriteMovies(accountId, getSessionId()).await()
+            movieMapper.mapList(favoriteMovies.results)
+        }
 
-    @NonBlocking
-    override suspend fun clearAccountData(): Boolean = withContext(dispatcherProvider.ioDispatcher) {
-        persistableStorage.clearAccountData()
-        true
-    }
+    override suspend fun clearAccountData(): Boolean =
+        withContext(dispatcherProvider.io) {
+            persistableStorage.clearAccountData()
+            true
+        }
 
     private fun getSessionId(): String = persistableStorage.getSessionId()
 }

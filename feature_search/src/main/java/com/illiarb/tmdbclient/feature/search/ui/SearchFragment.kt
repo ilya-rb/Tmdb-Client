@@ -9,7 +9,7 @@ import com.illiarb.tmdbclient.feature.search.presentation.SearchModel
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchIcon
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchResult
-import com.illiarb.tmdbexplorer.coreui.StateObserver
+import com.illiarb.tmdbexplorer.coreui.observable.Observer
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
@@ -22,7 +22,8 @@ import javax.inject.Inject
 /**
  * @author ilya-rb on 26.12.18.
  */
-class SearchFragment : BaseFragment<SearchModel>(), Injectable, StateObserver<SearchUiState> {
+class SearchFragment : BaseFragment<SearchModel>(), Injectable,
+    Observer<SearchUiState> {
 
     @Inject
     lateinit var searchAdapter: SearchAdapter
@@ -69,7 +70,7 @@ class SearchFragment : BaseFragment<SearchModel>(), Injectable, StateObserver<Se
         searchQuery.removeTextChangedListener(searchTextWatcher)
     }
 
-    override fun onStateChanged(state: SearchUiState) {
+    override fun onNewValue(state: SearchUiState) {
         searchProgress.visibility = if (state.isSearchRunning) View.VISIBLE else View.GONE
 
         val drawable = when (state.icon) {

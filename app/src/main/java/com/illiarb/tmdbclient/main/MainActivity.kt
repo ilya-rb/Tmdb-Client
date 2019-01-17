@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), Injectable, CoroutineScope {
     private val coroutineJob = Job()
 
     override val coroutineContext: CoroutineContext
-        get() = coroutineJob + dispatcherProvider.mainDispatcher
+        get() = coroutineJob + dispatcherProvider.main
 
     override fun inject(appProvider: AppProvider) = MainComponent.get(appProvider, this).inject(this)
 

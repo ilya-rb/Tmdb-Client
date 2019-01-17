@@ -19,11 +19,10 @@ class MovieDetailsModel @Inject constructor(
     fun getMovieDetails(id: Int) = launch(context = coroutineContext) {
         setState { it.copy(isLoading = true) }
 
-        try {
-            val movie = getMovieDetails.executeAsync(id)
-            setState { it.copy(isLoading = false, movie = movie) }
-        } catch (e: Exception) {
-            // Process error
-        }
+        handleResult(getMovieDetails.executeAsync(id), { movie ->
+            setState {
+                it.copy(isLoading = false, movie = movie)
+            }
+        })
     }
 }

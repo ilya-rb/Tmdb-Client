@@ -23,19 +23,22 @@ class SearchModel @Inject constructor(
     }
 
     fun search(query: String) = launch(context = coroutineContext) {
-        setState { it.copy(icon = SearchIcon.Cross, isSearchRunning = true) }
-
-        try {
-            val movies = searchMovies.executeAsync(query)
-            val result = if (movies.isEmpty()) SearchResult.Empty else SearchResult.Success(movies)
-            setState { it.copy(isSearchRunning = false, result = result) }
-        } catch (e: Exception) {
-            // Process error
+        setState {
+            it.copy(icon = SearchIcon.Cross, isSearchRunning = true)
         }
+
+        handleResult(searchMovies.executeAsync(query), { movies ->
+            val searchResult = if (movies.isEmpty()) SearchResult.Empty else SearchResult.Success(movies)
+            setState {
+                it.copy(isSearchRunning = false, result = searchResult)
+            }
+        })
     }
 
     fun onClearClicked() {
-        setState { it.copy(icon = SearchIcon.Search) }
+        setState {
+            it.copy(icon = SearchIcon.Search)
+        }
     }
 
     fun onMovieClicked(movie: Movie) {

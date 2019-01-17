@@ -6,7 +6,7 @@ import com.illiarb.tmdbclient.feature.home.R
 import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
 import com.illiarb.tmdbclient.feature.home.list.presentation.HomeModel
 import com.illiarb.tmdbclient.feature.home.list.presentation.HomeUiState
-import com.illiarb.tmdbexplorer.coreui.StateObserver
+import com.illiarb.tmdbexplorer.coreui.observable.Observer
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
@@ -18,7 +18,8 @@ import com.illiarb.tmdblcient.core.entity.Movie
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
 
-class HomeFragment : BaseFragment<HomeModel>(), Injectable, StateObserver<HomeUiState> {
+class HomeFragment : BaseFragment<HomeModel>(), Injectable,
+    Observer<HomeUiState> {
 
     @Inject
     lateinit var delegateAdapter: DelegateAdapter
@@ -72,7 +73,7 @@ class HomeFragment : BaseFragment<HomeModel>(), Injectable, StateObserver<HomeUi
         presentationModel.stopObserving(this)
     }
 
-    override fun onStateChanged(state: HomeUiState) {
+    override fun onNewValue(state: HomeUiState) {
         movieProgress.visibility = if (state.isLoading) View.VISIBLE else View.GONE
 
         if (state.movies.isNotEmpty()) {

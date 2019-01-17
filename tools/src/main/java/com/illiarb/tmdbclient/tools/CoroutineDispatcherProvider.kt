@@ -10,9 +10,9 @@ import javax.inject.Inject
  */
 class CoroutineDispatcherProvider @Inject constructor() : DispatcherProvider {
 
-    override val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    override val io: CoroutineDispatcher = Dispatchers.IO
 
-    override val mainDispatcher: CoroutineDispatcher = Dispatchers.Main
+    override val main: CoroutineDispatcher = Dispatchers.Main
 
-    override val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
+    override val default: CoroutineDispatcher = Dispatchers.Default
 }

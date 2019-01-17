@@ -7,7 +7,7 @@ import com.illiarb.tmdbclient.dynamic.feature.account.R
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthModel
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthUiState
 import com.illiarb.tmdbclient.dynamic.feature.account.di.AccountComponent
-import com.illiarb.tmdbexplorer.coreui.StateObserver
+import com.illiarb.tmdbexplorer.coreui.observable.Observer
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
@@ -19,7 +19,8 @@ import kotlinx.android.synthetic.main.fragment_auth.*
 /**
  * @author ilya-rb on 20.11.18.
  */
-class AuthFragment : BaseFragment<AuthModel>(), Injectable, StateObserver<AuthUiState> {
+class AuthFragment : BaseFragment<AuthModel>(), Injectable,
+    Observer<AuthUiState> {
 
     override fun getContentView(): Int = R.layout.fragment_auth
 
@@ -66,7 +67,7 @@ class AuthFragment : BaseFragment<AuthModel>(), Injectable, StateObserver<AuthUi
         presentationModel.stopObserving(this)
     }
 
-    override fun onStateChanged(state: AuthUiState) {
+    override fun onNewValue(state: AuthUiState) {
         if (state.isLoading) {
             showBlockingProgress()
         } else {

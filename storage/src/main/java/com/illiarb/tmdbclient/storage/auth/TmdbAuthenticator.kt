@@ -21,8 +21,8 @@ class TmdbAuthenticator @Inject constructor(
 ) : Authenticator {
 
     @NonBlocking
-    override suspend fun authorize(credentials: UserCredentials): Boolean =
-        withContext(dispatcherProvider.ioDispatcher) {
+    override suspend fun authorize(credentials: UserCredentials): Unit =
+        withContext(dispatcherProvider.io) {
             try {
                 val authToken = authService.requestAuthToken().await()
 
@@ -33,13 +33,13 @@ class TmdbAuthenticator @Inject constructor(
 
                 persistableStorage.storeSessionId(session.sessionId)
             } catch (e: Exception) {
-                return@withContext false
             }
 
-            true
+            // TODO
+            Unit
         }
 
-    override suspend fun isAuthenticated(): Boolean = withContext(dispatcherProvider.ioDispatcher) {
+    override suspend fun isAuthenticated(): Boolean = withContext(dispatcherProvider.io) {
         persistableStorage.isAuthorized()
     }
 }

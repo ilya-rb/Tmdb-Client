@@ -4,5 +4,7 @@
     <string name="error_username_empty">Username is required</string>
     <string name="error_password_empty">Password is required</string>
     <string name="error_password_incorrect_length">Password must be minimum 4 characters</string>
+    <string name="error_unknown">Unknown error. Please try again later</string>
+    <string name="error_bad_connection">Connection error. Please check your network connection.</string>
 
 </resources>

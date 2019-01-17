@@ -11,7 +11,7 @@ import com.illiarb.tmdbclient.feature.home.details.presentation.MovieDetailsUiSt
 import com.illiarb.tmdbclient.feature.home.details.ui.photos.PhotosAdapter
 import com.illiarb.tmdbclient.feature.home.details.ui.reviews.ReviewsAdapter
 import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
-import com.illiarb.tmdbexplorer.coreui.StateObserver
+import com.illiarb.tmdbexplorer.coreui.observable.Observer
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.image.CropOptions
@@ -27,7 +27,8 @@ import com.illiarb.tmdblcient.core.navigation.NavigationKeys
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import javax.inject.Inject
 
-class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable, StateObserver<MovieDetailsUiState> {
+class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable,
+    Observer<MovieDetailsUiState> {
 
     @Inject
     lateinit var photosAdapter: PhotosAdapter
@@ -118,7 +119,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable, Stat
         presentationModel.stopObserving(this)
     }
 
-    override fun onStateChanged(state: MovieDetailsUiState) {
+    override fun onNewValue(state: MovieDetailsUiState) {
         state.movie?.let {
             showMovieDetails(it)
         }

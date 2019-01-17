@@ -29,11 +29,16 @@ class AuthModel @Inject constructor(
     fun authenticate(username: String, password: String) = launch(context = coroutineContext) {
         setState { it.copy(isLoading = true, authButtonEnabled = false) }
 
-        try {
-            authenticate.executeAsync(UserCredentials(username, password))
-            router.navigateTo(AccountScreen)
-        } catch (e: Exception) {
-            setState { it.copy(isLoading = false, error = e, authButtonEnabled = true) }
-        }
+        handleResult(
+            authenticate.executeAsync(UserCredentials(username, password)),
+            { router.navigateTo(AccountScreen) },
+            { throwable ->
+                super.handleError(throwable)
+
+                setState { current ->
+                    current.copy(isLoading = false, error = throwable, authButtonEnabled = true)
+                }
+            }
+        )
     }
 }

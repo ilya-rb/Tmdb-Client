@@ -1,5 +1,6 @@
 package com.illiarb.tmdblcient.core.domain
 
+import com.illiarb.tmdblcient.core.common.Result
 import com.illiarb.tmdblcient.core.system.coroutine.NonBlocking
 
 /**
@@ -8,5 +9,5 @@ import com.illiarb.tmdblcient.core.system.coroutine.NonBlocking
 interface NonBlockingUseCase<T, P> {
 
     @NonBlocking
-    suspend fun executeAsync(payload: P): T
+    suspend fun executeAsync(payload: P): Result<T>
 }

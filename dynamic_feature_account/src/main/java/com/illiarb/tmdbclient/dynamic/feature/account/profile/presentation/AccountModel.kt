@@ -24,8 +24,11 @@ class AccountModel @Inject constructor(
         setIdleState(AccountUiState(true, false, null))
 
         launch(context = coroutineContext) {
-            val account = getProfileUseCase.executeAsync(Unit)
-            setState { it.copy(isLoading = false, account = account) }
+            handleResult(getProfileUseCase.executeAsync(Unit),
+                { account ->
+                    setState { it.copy(isLoading = false, account = account) }
+                }
+            )
         }
     }
 
@@ -35,13 +38,9 @@ class AccountModel @Inject constructor(
 
     fun onLogoutClick() {
         launch(context = coroutineContext) {
-            try {
-                signOutUseCase.executeAsync(Unit)
+            handleResult(signOutUseCase.executeAsync(Unit), {
                 router.navigateTo(AuthScreen)
-            } catch (e: Exception) {
-                // TODO Handle exception
-                e.printStackTrace()
-            }
+            })
         }
     }
 }

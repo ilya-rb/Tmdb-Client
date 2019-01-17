@@ -1,5 +1,6 @@
 package com.illiarb.tmdbclient.storage.di
 
+import com.illiarb.tmdbclient.storage.di.modules.ErrorHandlingModule
 import com.illiarb.tmdbclient.storage.di.modules.NetworkModule
 import com.illiarb.tmdbclient.storage.di.modules.RepositoriesModule
 import com.illiarb.tmdbclient.storage.di.modules.StorageModule
@@ -17,7 +18,8 @@ import javax.inject.Singleton
     modules = [
         RepositoriesModule::class,
         NetworkModule::class,
-        StorageModule::class
+        StorageModule::class,
+        ErrorHandlingModule::class
     ]
 )
 @Singleton

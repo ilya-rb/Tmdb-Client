@@ -9,7 +9,7 @@ import com.illiarb.tmdblcient.core.system.coroutine.NonBlocking
 interface Authenticator {
 
     @NonBlocking
-    suspend fun authorize(credentials: UserCredentials): Boolean
+    suspend fun authorize(credentials: UserCredentials)
 
     @NonBlocking
     suspend fun isAuthenticated(): Boolean

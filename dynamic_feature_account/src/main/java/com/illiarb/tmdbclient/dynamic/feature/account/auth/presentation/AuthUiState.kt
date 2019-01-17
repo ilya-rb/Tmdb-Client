@@ -1,6 +1,6 @@
 package com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation
 
-import com.illiarb.tmdbexplorer.coreui.Cloneable
+import com.illiarb.tmdbexplorer.coreui.observable.Cloneable
 
 /**
  * @author ilya-rb on 23.12.18.

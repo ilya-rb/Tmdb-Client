@@ -10,4 +10,8 @@ interface ErrorMessageBag {
     fun getPasswordEmptyMessage(): String
 
     fun getIncorrectPasswordLengthMessage(): String
+
+    fun getDefaultErrorMessage(): String
+
+    fun getNetworkConnectionMessage(): String
 }
