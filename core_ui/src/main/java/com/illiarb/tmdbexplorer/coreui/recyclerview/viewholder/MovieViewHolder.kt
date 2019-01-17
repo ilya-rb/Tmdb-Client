@@ -26,10 +26,6 @@ class MovieViewHolder(
         })
     }
 
-    override fun bindClickListener(clickListener: View.OnClickListener) {
-        itemView.setOnClickListener(clickListener)
-    }
-
     override fun onViewRecycled() {
         imageLoader.clearTarget(itemImage)
     }
