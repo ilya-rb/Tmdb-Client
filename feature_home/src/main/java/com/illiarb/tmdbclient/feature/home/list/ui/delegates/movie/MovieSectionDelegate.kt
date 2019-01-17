@@ -3,6 +3,7 @@ package com.illiarb.tmdbclient.feature.home.list.ui.delegates.movie
 import android.view.View
 import android.view.ViewGroup
 import com.illiarb.tmdbclient.feature.home.R
+import com.illiarb.tmdbexplorer.coreui.common.ViewClickListener
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutOrientation
@@ -20,25 +21,27 @@ import javax.inject.Inject
  * @author ilya-rb on 04.11.18.
  */
 class MovieSectionDelegate @Inject constructor(
-    private val imageLoader: ImageLoader
+    private val imageLoader: ImageLoader,
+    private val viewClickListener: ViewClickListener
 ) : AdapterDelegate {
 
     override fun isForViewType(item: Any): Boolean = item is ListSection
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseDelegateViewHolder {
-        return ViewHolder(parent.inflate(R.layout.item_movie_section), imageLoader)
+        return ViewHolder(parent.inflate(R.layout.item_movie_section), imageLoader, viewClickListener)
     }
 
     class ViewHolder(
         containerView: View,
-        imageLoader: ImageLoader
+        imageLoader: ImageLoader,
+        viewClickListener: ViewClickListener
     ) : BaseDelegateViewHolder(containerView) {
 
         private val sectionList = itemView.itemMovieSectionList
         private val sectionTitle = itemView.itemSectionTitle
 
         private val itemSpacing = itemView.resources.getDimensionPixelSize(R.dimen.item_movie_spacing)
-        private val movieAdapter = MovieAdapter(imageLoader)
+        private val movieAdapter = MovieAdapter(imageLoader, viewClickListener)
 
         init {
             RecyclerViewBuilder

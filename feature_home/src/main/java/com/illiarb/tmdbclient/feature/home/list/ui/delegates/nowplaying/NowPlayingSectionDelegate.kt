@@ -3,6 +3,7 @@ package com.illiarb.tmdbclient.feature.home.list.ui.delegates.nowplaying
 import android.view.View
 import android.view.ViewGroup
 import com.illiarb.tmdbclient.feature.home.R
+import com.illiarb.tmdbexplorer.coreui.common.ViewClickListener
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.AdapterDelegate
@@ -15,20 +16,22 @@ import kotlinx.android.synthetic.main.item_now_playing_section.view.*
 import javax.inject.Inject
 
 class NowPlayingSectionDelegate @Inject constructor(
-    private val imageLoader: ImageLoader
+    private val imageLoader: ImageLoader,
+    private val viewClickListener: ViewClickListener
 ) : AdapterDelegate {
 
     override fun isForViewType(item: Any): Boolean = item is NowPlayingSection
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseDelegateViewHolder =
-        ViewHolder(parent.inflate(R.layout.item_now_playing_section), imageLoader)
+        ViewHolder(parent.inflate(R.layout.item_now_playing_section), imageLoader, viewClickListener)
 
     class ViewHolder(
         containerView: View,
-        imageLoader: ImageLoader
+        imageLoader: ImageLoader,
+        viewClickListener: ViewClickListener
     ) : BaseDelegateViewHolder(containerView) {
 
-        private val adapter = NowPlayingPagerAdapter(imageLoader)
+        private val adapter = NowPlayingPagerAdapter(imageLoader, viewClickListener)
         private val sectionPager = itemView.itemNowPlayingSectionPager
 
         init {

@@ -3,6 +3,7 @@ package com.illiarb.tmdbclient.feature.home.list.ui.delegates.nowplaying
 import android.view.View
 import android.view.ViewGroup
 import com.illiarb.tmdbclient.feature.home.R
+import com.illiarb.tmdbexplorer.coreui.common.ViewClickListener
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdbexplorer.coreui.image.CropOptions
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
@@ -13,19 +14,17 @@ import com.illiarb.tmdblcient.core.entity.Movie
 import kotlinx.android.synthetic.main.item_now_playing.view.*
 
 class NowPlayingPagerAdapter(
-    private val imageLoader: ImageLoader
+    private val imageLoader: ImageLoader,
+    private val viewClickListener: ViewClickListener
 ) : BaseAdapter<Movie, NowPlayingPagerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(parent.inflate(R.layout.item_now_playing), imageLoader)
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        super.onBindViewHolder(holder, position)
-
-        holder.itemView.setOnClickListener {
-            //
-        }
-    }
+            .apply {
+                itemView.setOnClickListener {
+                    viewClickListener.onClicked(getItemAt(adapterPosition))
+                }
+            }
 
     class ViewHolder(
         containerView: View,

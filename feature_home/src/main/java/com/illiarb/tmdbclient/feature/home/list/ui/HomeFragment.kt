@@ -6,8 +6,9 @@ import com.illiarb.tmdbclient.feature.home.R
 import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
 import com.illiarb.tmdbclient.feature.home.list.presentation.HomeModel
 import com.illiarb.tmdbclient.feature.home.list.presentation.HomeUiState
-import com.illiarb.tmdbexplorer.coreui.observable.Observer
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
+import com.illiarb.tmdbexplorer.coreui.common.ViewClickListener
+import com.illiarb.tmdbexplorer.coreui.observable.Observer
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
 import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.AdapterDelegate
@@ -18,14 +19,24 @@ import com.illiarb.tmdblcient.core.entity.Movie
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
 
-class HomeFragment : BaseFragment<HomeModel>(), Injectable,
-    Observer<HomeUiState> {
+class HomeFragment : BaseFragment<HomeModel>(), Injectable, Observer<HomeUiState> {
 
     @Inject
     lateinit var delegateAdapter: DelegateAdapter
 
     @Inject
     lateinit var delegatesSet: Set<@JvmSuppressWildcards AdapterDelegate>
+
+    @Inject
+    lateinit var viewClickListener: ViewClickListener
+
+    private val viewClickObserver = object : Observer<Any> {
+        override fun onNewValue(state: Any) {
+            when (state) {
+                is Movie -> presentationModel.onMovieClick(state)
+            }
+        }
+    }
 
     override fun getContentView(): Int = R.layout.fragment_movies
 
@@ -48,12 +59,6 @@ class HomeFragment : BaseFragment<HomeModel>(), Injectable,
             }
             .setupWith(moviesList)
 
-        delegateAdapter.setClickEvent { _, _, item ->
-            when (item) {
-                is Movie -> presentationModel.onMovieClick(item)
-            }
-        }
-
         homeSearch.setOnClickListener {
             presentationModel.onSearchClick()
         }
@@ -66,11 +71,13 @@ class HomeFragment : BaseFragment<HomeModel>(), Injectable,
     override fun onStart() {
         super.onStart()
         presentationModel.observeState(this)
+        viewClickListener.observeClicks(viewClickObserver)
     }
 
     override fun onStop() {
         super.onStop()
         presentationModel.stopObserving(this)
+        viewClickListener.stopObserving(viewClickObserver)
     }
 
     override fun onNewValue(state: HomeUiState) {
