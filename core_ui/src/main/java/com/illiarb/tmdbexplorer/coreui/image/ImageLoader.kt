@@ -2,14 +2,19 @@ package com.illiarb.tmdbexplorer.coreui.image
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.Transformation
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.illiarb.tmdbexplorer.coreui.BuildConfig
 import com.illiarb.tmdbexplorer.coreui.image.blur.BlurTransformation
 import java.io.File
@@ -20,16 +25,34 @@ import javax.inject.Inject
  */
 class ImageLoader @Inject constructor() {
 
-    fun fromUrl(url: String?, target: ImageView, options: RequestOptions? = null) {
-        loadImageInternal(LoadData.Url(createImageUrl(url)), target, options)
+    fun fromUrl(
+        url: String?,
+        target: ImageView,
+        options: RequestOptions? = null,
+        onResourceReady: (Drawable) -> Boolean = { false },
+        onLoadError: (Throwable) -> Boolean = { false }
+    ) {
+        loadImageInternal(LoadData.Url(createImageUrl(url)), target, options, onResourceReady, onLoadError)
     }
 
-    fun fromFile(file: File, target: ImageView, options: RequestOptions? = null) {
-        loadImageInternal(LoadData.File(file), target, options)
+    fun fromFile(
+        file: File,
+        target: ImageView,
+        options: RequestOptions? = null,
+        onResourceReady: (Drawable) -> Boolean = { false },
+        onLoadError: (Throwable) -> Boolean = { false }
+    ) {
+        loadImageInternal(LoadData.File(file), target, options, onResourceReady, onLoadError)
     }
 
-    fun fromUri(uri: Uri, target: ImageView, options: RequestOptions? = null) {
-        loadImageInternal(LoadData.Uri(uri), target, options)
+    fun fromUri(
+        uri: Uri,
+        target: ImageView,
+        options: RequestOptions? = null,
+        onResourceReady: (Drawable) -> Boolean = { false },
+        onLoadError: (Throwable) -> Boolean = { false }
+    ) {
+        loadImageInternal(LoadData.Uri(uri), target, options, onResourceReady, onLoadError)
     }
 
     fun clearTarget(target: ImageView) {
@@ -50,7 +73,13 @@ class ImageLoader @Inject constructor() {
             ""
         }
 
-    private fun loadImageInternal(data: LoadData, target: ImageView, options: RequestOptions? = null) {
+    private fun loadImageInternal(
+        data: LoadData,
+        target: ImageView,
+        options: RequestOptions? = null,
+        onResourceReady: (Drawable) -> Boolean,
+        onLoadError: (Throwable) -> Boolean
+    ) {
         val request = Glide.with(target.context).load(mapData(data))
 
         options?.let {
@@ -65,7 +94,31 @@ class ImageLoader @Inject constructor() {
             }
         }
 
-        request.into(target)
+        request
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    if (e != null) {
+                        return onLoadError(e)
+                    }
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    return onResourceReady(resource)
+                }
+            })
+            .into(target)
     }
 
     private fun mapOptions(context: Context, options: RequestOptions): com.bumptech.glide.request.RequestOptions {

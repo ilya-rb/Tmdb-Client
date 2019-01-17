@@ -5,4 +5,6 @@ package com.illiarb.tmdblcient.core.navigation
  */
 object NavigationKeys {
     const val EXTRA_MOVIE_DETAILS_ID = "id"
+    const val EXTRA_PHOTOS = "photos"
+    const val EXTRA_SELECTED_PHOTO = "selected_photo"
 }

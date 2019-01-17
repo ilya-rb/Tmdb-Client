@@ -12,6 +12,7 @@ import com.illiarb.tmdbclient.feature.home.details.presentation.MovieDetailsUiSt
 import com.illiarb.tmdbclient.feature.home.details.ui.photos.PhotosAdapter
 import com.illiarb.tmdbclient.feature.home.details.ui.reviews.ReviewsAdapter
 import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
+import com.illiarb.tmdbclient.feature.home.photoview.PhotoViewFragment
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.ext.addToViewGroup
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
@@ -20,7 +21,6 @@ import com.illiarb.tmdbexplorer.coreui.ext.show
 import com.illiarb.tmdbexplorer.coreui.image.CropOptions
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.image.RequestOptions
-import com.illiarb.tmdbexplorer.coreui.image.blur.BlurParams
 import com.illiarb.tmdbexplorer.coreui.observable.Observer
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutOrientation
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
@@ -29,6 +29,8 @@ import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.navigation.NavigationKeys
+import com.illiarb.tmdblcient.core.navigation.PhotoViewScreen
+import com.illiarb.tmdblcient.core.navigation.Router
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import javax.inject.Inject
 
@@ -43,6 +45,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(),
 
     @Inject
     lateinit var imageLoader: ImageLoader
+
+    @Inject
+    lateinit var router: Router
 
     override fun getContentView(): Int = R.layout.fragment_movie_details
 
@@ -69,6 +74,12 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(),
                 spaceBetween { horizontally = resources.getDimensionPixelSize(R.dimen.margin_small) / 2 }
             }
             .setupWith(movieDetailsPhotos)
+
+        photosAdapter.clickEvent = { clickedView, _, photo ->
+            val photos = photosAdapter.readOnlyList()
+            val screenData = PhotoViewScreen(clickedView, photos, photo)
+            router.navigateTo(screenData)
+        }
 
         RecyclerViewBuilder
             .create {

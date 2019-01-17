@@ -9,7 +9,7 @@ abstract class BaseAdapter<T, VH : BaseViewHolder<T>> : RecyclerView.Adapter<VH>
 
     private val currentList = mutableListOf<T>()
 
-    var clickEvent: (viewId: Int, position: Int, item: T) -> Unit = { _, _, _ -> }
+    var clickEvent: (view: View, position: Int, item: T) -> Unit = { _, _, _ -> }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         holder.bindClickListener(View.OnClickListener { view ->
@@ -17,7 +17,7 @@ abstract class BaseAdapter<T, VH : BaseViewHolder<T>> : RecyclerView.Adapter<VH>
             if (adapterPosition != RecyclerView.NO_POSITION && adapterPosition < itemCount) {
                 val item = getItemAt(adapterPosition)
                 if (item != null) {
-                    clickEvent(view.id, adapterPosition, item)
+                    clickEvent(view, adapterPosition, item)
                 }
             }
         })

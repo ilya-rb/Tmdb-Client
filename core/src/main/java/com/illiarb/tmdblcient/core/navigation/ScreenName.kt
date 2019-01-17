@@ -13,5 +13,7 @@ enum class ScreenName {
 
     AUTH,
 
-    ACCOUNT
+    ACCOUNT,
+
+    PHOTO_VIEW
 }

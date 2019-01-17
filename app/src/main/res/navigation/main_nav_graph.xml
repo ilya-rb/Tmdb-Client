@@ -13,6 +13,11 @@
         android:label="MovieDetailsFragment" />
 
     <fragment
+        android:id="@+id/photoViewFragment"
+        android:name="com.illiarb.tmdbclient.feature.home.photoview.PhotoViewFragment"
+        android:label="PhotoViewFragment"/>
+
+    <fragment
         android:id="@+id/searchFragment"
         android:name="com.illiarb.tmdbclient.feature.search.ui.SearchFragment"
         android:label="SearchFragment" />
@@ -28,5 +33,9 @@
     <action
         android:id="@+id/searchAction"
         app:destination="@id/searchFragment" />
+
+    <action
+        android:id="@+id/photoViewAction"
+        app:destination="@id/photoViewFragment"/>
 
 </navigation>
