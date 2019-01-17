@@ -23,6 +23,7 @@ class MovieViewHolder(
         imageLoader.fromUrl(item.posterPath, itemImage, RequestOptions.create {
             cornerRadius(imageCornerRadius)
             cropOptions(CropOptions.CENTER_CROP)
+            thumbnail(0.2f)
         })
     }
 

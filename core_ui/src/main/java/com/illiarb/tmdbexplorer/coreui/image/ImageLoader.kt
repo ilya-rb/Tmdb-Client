@@ -9,6 +9,7 @@ import com.bumptech.glide.load.Transformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.illiarb.tmdbexplorer.coreui.BuildConfig
 import com.illiarb.tmdbexplorer.coreui.image.blur.BlurTransformation
 import java.io.File
@@ -50,19 +51,25 @@ class ImageLoader @Inject constructor() {
         }
 
     private fun loadImageInternal(data: LoadData, target: ImageView, options: RequestOptions? = null) {
-        Glide.with(target.context)
-            .load(mapData(data))
-            .apply(mapOptions(target.context, options))
-            .into(target)
-    }
+        val request = Glide.with(target.context).load(mapData(data))
 
-    private fun mapOptions(context: Context, options: RequestOptions?): com.bumptech.glide.request.RequestOptions {
-        val result = com.bumptech.glide.request.RequestOptions()
+        options?.let {
+            request.apply(mapOptions(target.context, it))
 
-        if (options == null) {
-            return result
+            if (it.useCrossFade) {
+                request.transition(DrawableTransitionOptions.withCrossFade())
+            }
+
+            if (it.thumbnail != 0f) {
+                request.thumbnail(it.thumbnail)
+            }
         }
 
+        request.into(target)
+    }
+
+    private fun mapOptions(context: Context, options: RequestOptions): com.bumptech.glide.request.RequestOptions {
+        val result = com.bumptech.glide.request.RequestOptions()
         val transformations = mutableListOf<Transformation<Bitmap>>()
 
         options.blurParams?.let {
