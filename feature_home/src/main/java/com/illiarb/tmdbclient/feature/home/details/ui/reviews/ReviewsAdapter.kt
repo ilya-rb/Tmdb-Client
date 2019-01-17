@@ -13,8 +13,6 @@ import javax.inject.Inject
  */
 class ReviewsAdapter @Inject constructor() : BaseAdapter<Review, ReviewViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
-        Logger.i("On create view called")
-        return ReviewViewHolder(parent.inflate(R.layout.item_review))
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder =
+        ReviewViewHolder(parent.inflate(R.layout.item_review))
 }

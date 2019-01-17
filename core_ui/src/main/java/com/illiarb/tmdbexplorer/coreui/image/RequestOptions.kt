@@ -25,7 +25,7 @@ data class RequestOptions(
 
     fun cornerRadius(radius: Int) = apply { cornerRadius = radius }
 
-    fun blurParams(params: BlurParams) = apply { blurParams = params }
+    fun blur(params: BlurParams) = apply { blurParams = params }
 
     fun useCrossFade(use: Boolean) = { useCrossFade = use }
 }

@@ -15,10 +15,12 @@ import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.ext.addToViewGroup
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
+import com.illiarb.tmdbexplorer.coreui.ext.hide
 import com.illiarb.tmdbexplorer.coreui.ext.show
 import com.illiarb.tmdbexplorer.coreui.image.CropOptions
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.image.RequestOptions
+import com.illiarb.tmdbexplorer.coreui.image.blur.BlurParams
 import com.illiarb.tmdbexplorer.coreui.observable.Observer
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutOrientation
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
@@ -150,6 +152,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(),
             if (reviews.isNotEmpty()) {
                 movieDetailsReviewsTitle.show()
                 reviewsAdapter.submitList(reviews)
+            } else {
+                movieDetailsReviews.hide()
+                movieDetailsReviewsTitle.hide()
             }
         }
     }

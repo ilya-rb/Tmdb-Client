@@ -54,24 +54,26 @@
                 android:id="@+id/movieDetailsTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/movie_details_space_between"
+                android:layout_marginStart="@dimen/margin_default"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textAppearance="@style/TextAppearance.MovieDetailsSection"
                 app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-                app:layout_constraintStart_toStartOf="@id/guidelineStart"
-                app:layout_constraintTop_toBottomOf="@id/movieDetailsPosterSmall"
-                tools:maxLines="1"
+                app:layout_constraintStart_toEndOf="@id/movieDetailsPosterSmall"
+                app:layout_constraintTop_toBottomOf="@id/movieDetailsPoster"
                 tools:text="Movie title" />
 
             <ImageView
                 android:id="@+id/movieDetailsTmdb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_default"
-                android:layout_marginEnd="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_small"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_tmdblogo"
-                app:layout_constraintStart_toEndOf="@id/movieDetailsPosterSmall"
-                app:layout_constraintTop_toBottomOf="@id/movieDetailsPoster" />
+                app:layout_constraintStart_toStartOf="@id/movieDetailsTitle"
+                app:layout_constraintTop_toBottomOf="@id/movieDetailsTitle"
+                app:layout_constraintBottom_toBottomOf="@id/movieDetailsPosterSmall"
+                />
 
             <TextView
                 android:id="@+id/movieDetailsRating"
@@ -84,16 +86,15 @@
                 app:layout_constraintTop_toTopOf="@id/movieDetailsTmdb"
                 tools:text="7.9" />
 
-            <!-- TODO Text color -->
             <TextView
                 android:id="@+id/movieDetailsDuration"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_default"
                 android:layout_marginTop="@dimen/margin_small"
-                app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-                app:layout_constraintStart_toEndOf="@id/movieDetailsPosterSmall"
-                app:layout_constraintTop_toBottomOf="@id/movieDetailsTmdb"
+                app:layout_constraintBottom_toBottomOf="@id/movieDetailsPosterSmall"
+                app:layout_constraintStart_toEndOf="@id/movieDetailsRating"
+                app:layout_constraintTop_toBottomOf="@id/movieDetailsTitle"
                 tools:text="120 min" />
 
             <com.google.android.material.chip.ChipGroup
@@ -104,7 +105,7 @@
                 app:chipSpacing="@dimen/movie_details_child_spacing"
                 app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
                 app:layout_constraintStart_toStartOf="@id/guidelineStart"
-                app:layout_constraintTop_toBottomOf="@id/movieDetailsTitle" />
+                app:layout_constraintTop_toBottomOf="@id/movieDetailsPosterSmall" />
 
             <TextView
                 android:id="@+id/movieDetailsOverview"
