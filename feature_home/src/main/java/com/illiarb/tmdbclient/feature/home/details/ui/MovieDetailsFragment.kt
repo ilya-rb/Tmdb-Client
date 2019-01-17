@@ -3,7 +3,6 @@ package com.illiarb.tmdbclient.feature.home.details.ui
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
-import android.view.ViewTreeObserver
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.google.android.material.chip.Chip
@@ -13,7 +12,6 @@ import com.illiarb.tmdbclient.feature.home.details.presentation.MovieDetailsUiSt
 import com.illiarb.tmdbclient.feature.home.details.ui.photos.PhotosAdapter
 import com.illiarb.tmdbclient.feature.home.details.ui.reviews.ReviewsAdapter
 import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
-import com.illiarb.tmdbexplorer.coreui.observable.Observer
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.ext.addToViewGroup
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
@@ -21,6 +19,7 @@ import com.illiarb.tmdbexplorer.coreui.ext.show
 import com.illiarb.tmdbexplorer.coreui.image.CropOptions
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.image.RequestOptions
+import com.illiarb.tmdbexplorer.coreui.observable.Observer
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutOrientation
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
@@ -31,8 +30,8 @@ import com.illiarb.tmdblcient.core.navigation.NavigationKeys
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import javax.inject.Inject
 
-class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable,
-    Observer<MovieDetailsUiState> {
+class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(),
+    Injectable, Observer<MovieDetailsUiState> {
 
     @Inject
     lateinit var photosAdapter: PhotosAdapter
@@ -42,16 +41,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable,
 
     @Inject
     lateinit var imageLoader: ImageLoader
-
-    private val containerScrollListener by lazy(LazyThreadSafetyMode.NONE) {
-        ViewTreeObserver.OnScrollChangedListener {
-            if (movieDetailsContainer.scrollY > 0) {
-                movieDetailsPlayTrailer.hide()
-            } else {
-                movieDetailsPlayTrailer.show()
-            }
-        }
-    }
 
     override fun getContentView(): Int = R.layout.fragment_movie_details
 
@@ -83,7 +72,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable,
             .create {
                 adapter(reviewsAdapter)
                 type(LayoutType.Linear())
-                disableNestedScroll()
                 spaceBetween {
                     horizontally = resources.getDimensionPixelSize(R.dimen.margin_default)
                     vertically = resources.getDimensionPixelSize(R.dimen.margin_small)
@@ -106,16 +94,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable,
     override fun onStart() {
         super.onStart()
         presentationModel.observeState(this)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        movieDetailsContainer.viewTreeObserver.addOnScrollChangedListener(containerScrollListener)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        movieDetailsContainer.viewTreeObserver.removeOnScrollChangedListener(containerScrollListener)
     }
 
     override fun onStop() {

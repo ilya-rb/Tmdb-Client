@@ -21,7 +21,7 @@
 
         <!-- Misc -->
         <item name="android:windowBackground">@color/colorPrimaryVariant</item>
-        <!--<item name="android:windowTranslucentStatus">true</item>-->
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="Theme.Transparent" parent="Theme.AppCompat.NoActionBar">
