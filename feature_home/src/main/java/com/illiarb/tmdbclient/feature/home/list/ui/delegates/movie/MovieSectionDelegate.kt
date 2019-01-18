@@ -50,7 +50,7 @@ class MovieSectionDelegate @Inject constructor(
                     type(LayoutType.Linear(LayoutType.DEFAULT_PREFETCH_COUNT))
                     orientation(LayoutOrientation.HORIZONTAL)
                     hasFixedSize(true)
-                    spaceBetween { spacing = itemSpacing / 2 }
+                    spaceBetween { spacing = itemSpacing }
                 }
                 .setupWith(sectionList)
         }
@@ -63,12 +63,6 @@ class MovieSectionDelegate @Inject constructor(
             sectionTitle.text = item.title
 
             movieAdapter.submitList(item.movies)
-        }
-
-        override fun bindClickListener(clickListener: View.OnClickListener) {
-            super.bindClickListener(clickListener)
-            itemView.setOnClickListener {
-            }
         }
 
         override fun onViewRecycled() {

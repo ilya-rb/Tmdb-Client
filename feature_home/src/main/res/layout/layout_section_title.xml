@@ -6,12 +6,11 @@
 
     <TextView
         android:id="@+id/itemSectionTitle"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/margin_default"
-        android:paddingBottom="@dimen/margin_default"
-        android:textStyle="bold"
+        android:padding="@dimen/margin_default"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Upcoming" />
