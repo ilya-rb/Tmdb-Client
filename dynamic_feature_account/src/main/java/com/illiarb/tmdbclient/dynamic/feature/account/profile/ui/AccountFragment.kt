@@ -10,6 +10,7 @@ import com.illiarb.tmdbclient.dynamic.feature.account.profile.presentation.Accou
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.ui.adapter.FavoritesAdapter
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
+import com.illiarb.tmdbexplorer.coreui.ext.hide
 import com.illiarb.tmdbexplorer.coreui.observable.LifecycleAwareObserver
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutOrientation
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
@@ -62,7 +63,11 @@ class AccountFragment : BaseFragment<AccountModel>() {
             awareOfWindowInsets()
         }
 
-        btnAccountLogout.setOnClickListener {
+        accountBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
+        accountSignOut.setOnClickListener {
             presentationModel.onLogoutClick()
         }
 
@@ -93,7 +98,7 @@ class AccountFragment : BaseFragment<AccountModel>() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // accountFavoritesList.adapter = null
+        accountFavoritesList.adapter = null
     }
 
     private fun render(state: AccountUiState) {
@@ -107,11 +112,17 @@ class AccountFragment : BaseFragment<AccountModel>() {
     private fun showAccount(account: Account) {
         accountAvatar.text = account.username.first().toUpperCase().toString()
         accountUsername.text = getString(R.string.account_username, account.username)
-        accountAverageScore.text = account.averageRating.toString()
         accountName.text = if (account.name.isEmpty()) {
             getString(R.string.account_name_fallback)
         } else {
             account.name
+        }
+
+        if (account.averageRating == 0) {
+            accountAverageScore.hide()
+            accountAverageScoreLabel.hide()
+        } else {
+            accountAverageScore.text = account.averageRating.toString()
         }
 
         favoritesAdapter.submitList(account.favoriteMovies)

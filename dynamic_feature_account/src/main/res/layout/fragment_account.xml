@@ -14,6 +14,17 @@
 
         <include layout="@layout/layout_start_end_guidelines" />
 
+        <ImageView
+            android:id="@+id/accountBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@null"
+            android:padding="@dimen/margin_small"
+            android:src="@drawable/ic_arrow_back"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toTopOf="@id/accountAvatar" />
+
         <TextView
             android:id="@+id/accountAvatar"
             android:layout_width="@dimen/account_image_size"
@@ -21,9 +32,12 @@
             android:layout_marginTop="@dimen/margin_default"
             android:background="@drawable/bg_account_avatar"
             android:contentDescription="@null"
+            android:elevation="@dimen/default_elevation"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
             android:textColor="@color/colorOnPrimary"
+            android:translationZ="@dimen/default_elevation"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/avatars"
@@ -31,46 +45,58 @@
 
         <TextView
             android:id="@+id/accountUsername"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_default"
             android:layout_marginTop="@dimen/margin_default"
+            android:gravity="center_horizontal"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/accountAvatar"
-            app:layout_constraintTop_toTopOf="@id/accountAvatar"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/accountAvatar"
             tools:text="User nickname" />
 
         <TextView
             android:id="@+id/accountName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_default"
+            android:layout_marginTop="@dimen/margin_small"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-            app:layout_constraintStart_toEndOf="@id/accountAvatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/accountUsername"
             tools:text="User name" />
 
-        <TextView
-            android:id="@+id/accountAverageScore"
+        <ImageView
+            android:id="@+id/accountSignOut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_default"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/accountAvatar"
-            tools:text="45 %" />
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@null"
+            android:padding="@dimen/margin_small"
+            android:src="@drawable/ic_sign_out"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintTop_toTopOf="@id/accountAvatar" />
 
         <TextView
             android:id="@+id/accountAverageScoreLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_default"
             android:text="@string/account_average_score"
-            app:layout_constraintBottom_toBottomOf="@id/accountAverageScore"
-            app:layout_constraintStart_toEndOf="@id/accountAverageScore"
-            app:layout_constraintTop_toTopOf="@id/accountAverageScore" />
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/accountName" />
+
+        <TextView
+            android:id="@+id/accountAverageScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_default"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/accountAverageScoreLabel"
+            app:layout_constraintStart_toEndOf="@id/accountAverageScoreLabel"
+            app:layout_constraintTop_toTopOf="@id/accountAverageScoreLabel"
+            tools:text="45 %" />
 
         <TextView
             android:id="@+id/accountFavorites"
@@ -81,7 +107,7 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/accountAverageScore" />
+            app:layout_constraintTop_toBottomOf="@id/accountAverageScoreLabel" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/accountFavoritesList"
@@ -94,16 +120,6 @@
             tools:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/item_movie"
             tools:orientation="horizontal" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAccountLogout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_default"
-            android:text="@string/account_exit"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-            app:layout_constraintStart_toStartOf="@id/guidelineStart" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

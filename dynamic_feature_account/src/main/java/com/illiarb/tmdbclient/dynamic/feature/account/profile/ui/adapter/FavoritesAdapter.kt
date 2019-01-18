@@ -18,12 +18,4 @@ class FavoritesAdapter @Inject constructor(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder =
         MovieViewHolder(parent.inflate(R.layout.item_movie), imageLoader)
-
-    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        super.onBindViewHolder(holder, position)
-
-        holder.itemView.setOnClickListener {
-            //
-        }
-    }
 }

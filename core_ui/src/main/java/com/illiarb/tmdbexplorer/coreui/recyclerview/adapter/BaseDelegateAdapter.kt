@@ -88,6 +88,7 @@ class DelegateAdapter @Inject constructor() : RecyclerView.Adapter<BaseDelegateV
     }
 
     fun submitList(newList: List<Any>) {
+        currentList.clear()
         currentList.addAll(newList)
         notifyDataSetChanged()
     }

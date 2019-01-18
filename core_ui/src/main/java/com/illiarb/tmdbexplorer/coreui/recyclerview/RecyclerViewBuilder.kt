@@ -3,7 +3,8 @@ package com.illiarb.tmdbexplorer.coreui.recyclerview
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.illiarb.tmdbexplorer.coreui.recyclerview.decoration.SpaceItemDecoration
+import com.illiarb.tmdbexplorer.coreui.recyclerview.decoration.HorizontalDecoration
+import com.illiarb.tmdbexplorer.coreui.recyclerview.decoration.VerticalDecoration
 
 /**
  * @author ilya-rb on 28.12.18.
@@ -49,11 +50,10 @@ class RecyclerViewBuilder {
 
             spaceBetween?.let {
                 if (type is LayoutType.Linear) {
-                    val axis = when (orientation) {
-                        LayoutOrientation.HORIZONTAL -> SpaceItemDecoration.MainAxis.X
-                        LayoutOrientation.VERTICAL -> SpaceItemDecoration.MainAxis.Y
+                    when (orientation) {
+                        LayoutOrientation.HORIZONTAL -> addItemDecoration(HorizontalDecoration(it.spacing))
+                        LayoutOrientation.VERTICAL -> addItemDecoration(VerticalDecoration(it.spacing))
                     }
-                    addItemDecoration(SpaceItemDecoration(it.spacing, it.addToFirst, it.addToLast, axis))
                 }
             }
         }
