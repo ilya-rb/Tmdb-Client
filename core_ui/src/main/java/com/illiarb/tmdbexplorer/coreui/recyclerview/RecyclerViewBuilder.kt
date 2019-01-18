@@ -11,8 +11,7 @@ import com.illiarb.tmdbexplorer.coreui.recyclerview.decoration.SpaceItemDecorati
 @Suppress("unused")
 class RecyclerViewBuilder {
 
-    private var orientation: LayoutOrientation =
-        LayoutOrientation.VERTICAL
+    private var orientation: LayoutOrientation = LayoutOrientation.VERTICAL
     private var type: LayoutType = LayoutType.Linear()
     private var adapter: RecyclerView.Adapter<*>? = null
     private var hasFixedSize: Boolean = false
@@ -28,8 +27,7 @@ class RecyclerViewBuilder {
     fun hasFixedSize(hasFixedSize: Boolean) = apply { this.hasFixedSize = hasFixedSize }
 
     fun spaceBetween(block: SpaceBetween.() -> Unit) = apply {
-        this.spaceBetween = SpaceBetween()
-            .also(block)
+        this.spaceBetween = SpaceBetween().also(block)
     }
 
     fun disableNestedScroll() = apply { this.nestedScrollEnabled = false }
@@ -50,7 +48,13 @@ class RecyclerViewBuilder {
             isNestedScrollingEnabled = nestedScrollEnabled
 
             spaceBetween?.let {
-                addItemDecoration(SpaceItemDecoration(it.horizontally, it.vertically))
+                if (type is LayoutType.Linear) {
+                    val axis = when (orientation) {
+                        LayoutOrientation.HORIZONTAL -> SpaceItemDecoration.MainAxis.X
+                        LayoutOrientation.VERTICAL -> SpaceItemDecoration.MainAxis.Y
+                    }
+                    addItemDecoration(SpaceItemDecoration(it.spacing, it.addToFirst, it.addToLast, axis))
+                }
             }
         }
     }
@@ -76,8 +80,7 @@ class RecyclerViewBuilder {
 }
 
 data class SpaceBetween(
-    var vertically: Int = 0,
-    var horizontally: Int = 0,
+    var spacing: Int = 0,
     var addToFirst: Boolean = true,
     var addToLast: Boolean = true
 )

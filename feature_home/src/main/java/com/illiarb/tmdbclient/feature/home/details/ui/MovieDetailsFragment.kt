@@ -71,7 +71,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(),
                 hasFixedSize(true)
                 type(LayoutType.Linear())
                 orientation(LayoutOrientation.HORIZONTAL)
-                spaceBetween { horizontally = resources.getDimensionPixelSize(R.dimen.margin_small) / 2 }
+                spaceBetween { spacing = resources.getDimensionPixelSize(R.dimen.margin_small) / 2 }
             }
             .setupWith(movieDetailsPhotos)
 
@@ -86,8 +86,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(),
                 adapter(reviewsAdapter)
                 type(LayoutType.Linear())
                 spaceBetween {
-                    horizontally = resources.getDimensionPixelSize(R.dimen.margin_default)
-                    vertically = resources.getDimensionPixelSize(R.dimen.margin_small)
+                    spacing = resources.getDimensionPixelSize(R.dimen.margin_small)
                 }
             }
             .setupWith(movieDetailsReviews)

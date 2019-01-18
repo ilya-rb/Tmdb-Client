@@ -76,8 +76,7 @@ class HomeFragment : BaseFragment<HomeModel>(), Injectable {
                 type(LayoutType.Linear())
                 hasFixedSize(true)
                 spaceBetween {
-                    horizontally = resources.getDimensionPixelSize(R.dimen.item_movie_spacing)
-                    addToFirst = true
+                    spacing = resources.getDimensionPixelSize(R.dimen.item_movie_spacing)
                 }
             }
             .setupWith(moviesList)

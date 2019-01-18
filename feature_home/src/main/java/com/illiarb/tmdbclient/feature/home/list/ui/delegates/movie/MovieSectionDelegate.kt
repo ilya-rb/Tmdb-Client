@@ -50,11 +50,7 @@ class MovieSectionDelegate @Inject constructor(
                     type(LayoutType.Linear(LayoutType.DEFAULT_PREFETCH_COUNT))
                     orientation(LayoutOrientation.HORIZONTAL)
                     hasFixedSize(true)
-                    spaceBetween {
-                        horizontally = itemSpacing / 2
-                        addToFirst = true
-                        addToLast = true
-                    }
+                    spaceBetween { spacing = itemSpacing / 2 }
                 }
                 .setupWith(sectionList)
         }

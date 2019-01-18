@@ -10,9 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.illiarb.tmdbexplorer.coreui.uiactions.UiActionImpl
 import com.illiarb.tmdbexplorer.coreui.uiactions.UiActions
+import com.illiarb.tmdblcient.core.di.Injectable
 import javax.inject.Inject
 
-abstract class BaseFragment<T : BasePresentationModel<*>> : Fragment(), UiActions {
+abstract class BaseFragment<T : BasePresentationModel<*>> : Fragment(), UiActions, Injectable {
 
     private val uiActions by lazy { UiActionImpl(requireActivity()) }
 

@@ -2,6 +2,7 @@
 <resources>
 
     <dimen name="account_image_size">100dp</dimen>
+    <dimen name="account_favorites_horizontal_space">16dp</dimen>
 
     <string name="account_username">\@%1$s</string>
     <string name="account_name_fallback">Name not provided</string>
