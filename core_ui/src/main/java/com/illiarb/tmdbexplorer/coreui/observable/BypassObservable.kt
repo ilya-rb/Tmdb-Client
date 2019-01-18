@@ -5,7 +5,7 @@ package com.illiarb.tmdbexplorer.coreui.observable
  */
 class BypassObservable<T> : Observable<T> {
 
-    private val observers = mutableListOf<Observer<T>>()
+    private val observers = mutableSetOf<Observer<T>>()
 
     fun publish(value: T) {
         observers.forEach {

@@ -7,11 +7,12 @@ import com.illiarb.tmdbclient.dynamic.feature.account.R
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthModel
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthUiState
 import com.illiarb.tmdbclient.dynamic.feature.account.di.AccountComponent
-import com.illiarb.tmdbexplorer.coreui.observable.Observer
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
+import com.illiarb.tmdbexplorer.coreui.observable.Observer
+import com.illiarb.tmdbexplorer.coreui.uiactions.ShowErrorDialogAction
+import com.illiarb.tmdbexplorer.coreui.uiactions.UiAction
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
-import com.illiarb.tmdblcient.core.exception.ApiException
 import com.illiarb.tmdblcient.core.exception.ErrorCodes
 import com.illiarb.tmdblcient.core.exception.ValidationException
 import kotlinx.android.synthetic.main.fragment_auth.*
@@ -19,8 +20,15 @@ import kotlinx.android.synthetic.main.fragment_auth.*
 /**
  * @author ilya-rb on 20.11.18.
  */
-class AuthFragment : BaseFragment<AuthModel>(), Injectable,
-    Observer<AuthUiState> {
+class AuthFragment : BaseFragment<AuthModel>(), Injectable, Observer<AuthUiState> {
+
+    private val actionsObserver = object : Observer<UiAction> {
+        override fun onNewValue(state: UiAction) {
+            when (state) {
+                is ShowErrorDialogAction -> showErrorDialog(state.message)
+            }
+        }
+    }
 
     override fun getContentView(): Int = R.layout.fragment_auth
 
@@ -59,28 +67,24 @@ class AuthFragment : BaseFragment<AuthModel>(), Injectable,
 
     override fun onStart() {
         super.onStart()
+
         presentationModel.observeState(this)
+        presentationModel.observeActions(actionsObserver)
     }
 
     override fun onStop() {
         super.onStop()
+
         presentationModel.stopObserving(this)
+        presentationModel.stopObservingActions(actionsObserver)
     }
 
     override fun onNewValue(state: AuthUiState) {
-        if (state.isLoading) {
-            showBlockingProgress()
-        } else {
-            hideBlockingProgress()
-        }
-
         if (state.error != null) {
             when (state.error) {
                 is ValidationException -> showValidationErrors(state.error.errors)
-                is ApiException -> showErrorDialog(state.error.message)
             }
         }
-
         btnAuthorize.isEnabled = state.authButtonEnabled
     }
 
@@ -94,9 +98,5 @@ class AuthFragment : BaseFragment<AuthModel>(), Injectable,
         }
     }
 
-    private fun getInputValues(): Array<String> =
-        arrayOf(
-            textUsername.toString(),
-            textPassword.toString()
-        )
+    private fun getInputValues(): Array<String> = arrayOf(textUsername.toString(), textPassword.toString())
 }

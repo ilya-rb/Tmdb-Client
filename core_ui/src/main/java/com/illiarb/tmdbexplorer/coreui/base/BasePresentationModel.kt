@@ -32,6 +32,14 @@ abstract class BasePresentationModel<T : Cloneable<T>> : ViewModel(), CoroutineS
         job.cancel()
     }
 
+    fun observeActions(observer: Observer<UiAction>) {
+        actionsObservable.addObserver(observer)
+    }
+
+    fun stopObservingActions(observer: Observer<UiAction>) {
+        actionsObservable.removeObserver(observer)
+    }
+
     fun observeState(observer: Observer<T>) {
         stateObservable.addObserver(observer)
     }

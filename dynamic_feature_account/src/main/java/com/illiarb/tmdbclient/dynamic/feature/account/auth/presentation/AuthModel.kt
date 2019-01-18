@@ -31,13 +31,17 @@ class AuthModel @Inject constructor(
 
         handleResult(
             authenticate.executeAsync(UserCredentials(username, password)),
-            { router.navigateTo(AccountScreen) },
-            { throwable ->
-                super.handleError(throwable)
 
+            onSuccess = {
                 setState { current ->
-                    current.copy(isLoading = false, error = throwable, authButtonEnabled = true)
+                    current.copy(isLoading = false)
                 }
+                router.navigateTo(AccountScreen)
+            },
+
+            onError = { throwable ->
+                super.handleError(throwable)
+                setState { AuthUiState(false, throwable, true) }
             }
         )
     }

@@ -4,6 +4,7 @@ import com.illiarb.tmdblcient.core.domain.BlockingUseCase
 import com.illiarb.tmdblcient.core.entity.UserCredentials
 import com.illiarb.tmdblcient.core.exception.ErrorCodes
 import com.illiarb.tmdblcient.core.exception.ErrorMessageBag
+import com.illiarb.tmdblcient.core.exception.ValidationException
 import com.illiarb.tmdblcient.core.system.coroutine.Blocking
 import javax.inject.Inject
 
@@ -13,10 +14,10 @@ import javax.inject.Inject
 class ValidateCredentials @Inject constructor(
     private val validator: Validator,
     private val errorMessageBag: ErrorMessageBag
-) : BlockingUseCase<Boolean, UserCredentials> {
+) : BlockingUseCase<List<Pair<Int, String>>, UserCredentials> {
 
     @Blocking
-    override fun executeBlocking(payload: UserCredentials): Boolean {
+    override fun executeBlocking(payload: UserCredentials): List<Pair<Int, String>> {
         val errors = mutableListOf<Pair<Int, String>>()
 
         if (validator.isUsernameEmpty(payload.username)) {
@@ -29,7 +30,6 @@ class ValidateCredentials @Inject constructor(
             errors.add(Pair(ErrorCodes.ERROR_PASSWORD_LENGTH, errorMessageBag.getIncorrectPasswordLengthMessage()))
         }
 
-        // If errors is empty - credentials are valid
-        return errors.isEmpty()
+        return errors
     }
 }

@@ -27,7 +27,7 @@ class UiActionImpl(val activity: FragmentActivity) : UiActions {
     }
 
     override fun hideBlockingProgress() {
-        if (blockingProgressDialog.isAdded) {
+        if (blockingProgressDialog.isVisible) {
             blockingProgressDialog.dismiss()
         }
     }

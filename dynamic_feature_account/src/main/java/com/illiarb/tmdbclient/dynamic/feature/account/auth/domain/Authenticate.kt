@@ -5,6 +5,7 @@ import com.illiarb.tmdblcient.core.common.Result
 import com.illiarb.tmdblcient.core.domain.NonBlockingUseCase
 import com.illiarb.tmdblcient.core.entity.UserCredentials
 import com.illiarb.tmdblcient.core.exception.ErrorHandler
+import com.illiarb.tmdblcient.core.exception.ValidationException
 import com.illiarb.tmdblcient.core.system.coroutine.NonBlocking
 import javax.inject.Inject
 
@@ -19,11 +20,13 @@ class Authenticate @Inject constructor(
 
     @NonBlocking
     override suspend fun executeAsync(payload: UserCredentials): Result<Unit> {
+        val errors = validateCredentials.executeBlocking(payload)
+        if (errors.isNotEmpty()) {
+            return Result.Error(ValidationException(errors))
+        }
+
         return Result.create(errorHandler) {
-            val isCredentialsValid = validateCredentials.executeBlocking(payload)
-            if (isCredentialsValid) {
-                authenticator.authorize(payload)
-            }
+            authenticator.authorize(payload)
         }
     }
 }

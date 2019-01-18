@@ -23,19 +23,15 @@ class TmdbAuthenticator @Inject constructor(
     @NonBlocking
     override suspend fun authorize(credentials: UserCredentials): Unit =
         withContext(dispatcherProvider.io) {
-            try {
-                val authToken = authService.requestAuthToken().await()
+            val authToken = authService.requestAuthToken().await()
 
-                val request = ValidateTokenRequest(credentials.username, credentials.password, authToken.requestToken)
-                val validatedToken = authService.validateTokenWithCredentials(request).await()
+            val request = ValidateTokenRequest(credentials.username, credentials.password, authToken.requestToken)
+            val validatedToken = authService.validateTokenWithCredentials(request).await()
 
-                val session = authService.createNewSession(CreateSessionRequest(validatedToken.requestToken)).await()
+            val session = authService.createNewSession(CreateSessionRequest(validatedToken.requestToken)).await()
 
-                persistableStorage.storeSessionId(session.sessionId)
-            } catch (e: Exception) {
-            }
+            persistableStorage.storeSessionId(session.sessionId)
 
-            // TODO
             Unit
         }
 
