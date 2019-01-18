@@ -6,6 +6,7 @@ import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.system.Logger
 import com.illiarb.tmdblcient.core.system.WorkManager
+import com.squareup.leakcanary.LeakCanary
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -26,6 +27,14 @@ class MobileApplication : Application(), App {
         appComponent.inject(this)
 
         workManager.schedulerPeriodicConfigurationFetch()
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return
+        }
+
+        LeakCanary.install(this)
     }
 
     override fun getApplication(): Application = this

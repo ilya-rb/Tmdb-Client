@@ -1,10 +1,8 @@
 package com.illiarb.tmdbexplorer.coreui.base
 
 import androidx.lifecycle.ViewModel
-import com.illiarb.tmdbexplorer.coreui.observable.BypassObservable
+import com.illiarb.tmdbexplorer.coreui.observable.*
 import com.illiarb.tmdbexplorer.coreui.observable.Cloneable
-import com.illiarb.tmdbexplorer.coreui.observable.Observer
-import com.illiarb.tmdbexplorer.coreui.observable.StateObservable
 import com.illiarb.tmdbexplorer.coreui.uiactions.ShowErrorDialogAction
 import com.illiarb.tmdbexplorer.coreui.uiactions.UiAction
 import com.illiarb.tmdblcient.core.common.Result
@@ -32,6 +30,8 @@ abstract class BasePresentationModel<T : Cloneable<T>> : ViewModel(), CoroutineS
         job.cancel()
     }
 
+    fun actionsObservable(): Observable<UiAction> = actionsObservable
+
     fun observeActions(observer: Observer<UiAction>) {
         actionsObservable.addObserver(observer)
     }
@@ -46,6 +46,10 @@ abstract class BasePresentationModel<T : Cloneable<T>> : ViewModel(), CoroutineS
 
     fun stopObserving(observer: Observer<T>) {
         stateObservable.removeObserver(observer)
+    }
+
+    fun stateObservable(): Observable<T> {
+        return stateObservable
     }
 
     fun <T> handleResult(

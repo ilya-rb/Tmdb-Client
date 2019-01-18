@@ -59,4 +59,6 @@ dependencies {
 
     // Play core lib for downloading dynamic features
     implementation deps.playCore
+
+    debugImplementation deps.leakCanary
 }

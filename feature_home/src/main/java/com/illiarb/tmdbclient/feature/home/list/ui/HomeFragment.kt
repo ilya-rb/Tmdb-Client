@@ -8,18 +8,21 @@ import com.illiarb.tmdbclient.feature.home.list.presentation.HomeModel
 import com.illiarb.tmdbclient.feature.home.list.presentation.HomeUiState
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.common.ViewClickListener
-import com.illiarb.tmdbexplorer.coreui.observable.Observer
+import com.illiarb.tmdbexplorer.coreui.observable.LifecycleAwareObserver
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
 import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.AdapterDelegate
 import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.DelegateAdapter
+import com.illiarb.tmdbexplorer.coreui.uiactions.ShowErrorDialogAction
+import com.illiarb.tmdbexplorer.coreui.uiactions.UiAction
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Movie
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
+import kotlin.LazyThreadSafetyMode.NONE
 
-class HomeFragment : BaseFragment<HomeModel>(), Injectable, Observer<HomeUiState> {
+class HomeFragment : BaseFragment<HomeModel>(), Injectable {
 
     @Inject
     lateinit var delegateAdapter: DelegateAdapter
@@ -30,10 +33,30 @@ class HomeFragment : BaseFragment<HomeModel>(), Injectable, Observer<HomeUiState
     @Inject
     lateinit var viewClickListener: ViewClickListener
 
-    private val viewClickObserver = object : Observer<Any> {
-        override fun onNewValue(state: Any) {
-            when (state) {
-                is Movie -> presentationModel.onMovieClick(state)
+    private val stateObserver: LifecycleAwareObserver<HomeUiState> by lazy(NONE) {
+        object : LifecycleAwareObserver<HomeUiState>(presentationModel.stateObservable()) {
+            override fun onNewValue(state: HomeUiState) {
+                render(state)
+            }
+        }
+    }
+
+    private val viewClickObserver: LifecycleAwareObserver<Any> by lazy(NONE) {
+        object : LifecycleAwareObserver<Any>(viewClickListener.clickObservable()) {
+            override fun onNewValue(state: Any) {
+                when (state) {
+                    is Movie -> presentationModel.onMovieClick(state)
+                }
+            }
+        }
+    }
+
+    private val actionsObserver: LifecycleAwareObserver<UiAction> by lazy(NONE) {
+        object: LifecycleAwareObserver<UiAction>(presentationModel.actionsObservable()) {
+            override fun onNewValue(state: UiAction) {
+                when (state) {
+                    is ShowErrorDialogAction -> showErrorDialog(state.message)
+                }
             }
         }
     }
@@ -68,19 +91,17 @@ class HomeFragment : BaseFragment<HomeModel>(), Injectable, Observer<HomeUiState
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        presentationModel.observeState(this)
-        viewClickListener.observeClicks(viewClickObserver)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        stateObserver.register(this)
+
+        actionsObserver.register(this)
+
+        viewClickObserver.register(this)
     }
 
-    override fun onStop() {
-        super.onStop()
-        presentationModel.stopObserving(this)
-        viewClickListener.stopObserving(viewClickObserver)
-    }
-
-    override fun onNewValue(state: HomeUiState) {
+    private fun render(state: HomeUiState) {
         movieProgress.visibility = if (state.isLoading) View.VISIBLE else View.GONE
 
         if (state.movies.isNotEmpty()) {
