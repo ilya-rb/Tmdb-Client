@@ -38,6 +38,8 @@ class PhotoViewAdapter @Inject constructor(
         notifyDataSetChanged()
     }
 
+    fun size(): Int = currentList.size
+
     fun indexOf(photo: String): Int {
         val index = currentList.indexOf(photo)
         return if (index == -1) 0 else index
