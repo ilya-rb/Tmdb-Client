@@ -5,10 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.transition.*
 import com.illiarb.tmdbclient.feature.home.R
 import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
-import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.navigation.NavigationKeys
@@ -21,23 +19,9 @@ import javax.inject.Inject
 class PhotoViewFragment : Fragment(), Injectable {
 
     @Inject
-    lateinit var imageLoader: ImageLoader
+    lateinit var photosAdapter: PhotoViewAdapter
 
     override fun inject(appProvider: AppProvider) = MoviesComponent.get(appProvider).inject(this)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        sharedElementEnterTransition = TransitionSet()
-            .apply {
-                ordering = TransitionSet.ORDERING_TOGETHER
-                addTransition(ChangeBounds())
-                addTransition(ChangeTransform())
-                addTransition(ChangeImageTransform())
-            }
-
-        postponeEnterTransition()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,12 +35,16 @@ class PhotoViewFragment : Fragment(), Injectable {
         super.onViewCreated(view, savedInstanceState)
 
         arguments?.let {
+            val photos = it.getStringArrayList(NavigationKeys.EXTRA_PHOTOS)
+            if (photos != null) {
+                photosAdapter.submitList(photos)
+            }
+
+            photosPager.adapter = photosAdapter
+
             val selected = it.getString(NavigationKeys.EXTRA_SELECTED_PHOTO)
             if (selected != null) {
-                imageLoader.fromUrl(selected, photoView, onResourceReady = {
-                    startPostponedEnterTransition()
-                    false
-                })
+                photosPager.currentItem = photosAdapter.indexOf(selected)
             }
         }
     }

@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    android:focusable="true"
-    >
+    android:focusable="true">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/photoView"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/photosPager"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:layout_gravity="center"
-        android:contentDescription="@null"
-        android:scaleType="fitXY"
-        android:transitionName="@string/movie_photo_transition_name"
-        tools:src="@tools:sample/backgrounds/scenic" />
+        android:layout_gravity="center" />
 
 </FrameLayout>

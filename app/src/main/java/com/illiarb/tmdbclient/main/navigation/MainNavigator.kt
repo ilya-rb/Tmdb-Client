@@ -65,9 +65,7 @@ class MainNavigator @Inject constructor(
 
     private fun createNavigationExtras(data: ScreenData): FragmentNavigator.Extras? =
         when (data) {
-            is PhotoViewScreen -> FragmentNavigator.Extras.Builder()
-                .addSharedElement(data.photoView, ViewCompat.getTransitionName(data.photoView)!!)
-                .build()
+            is PhotoViewScreen -> FragmentNavigator.Extras.Builder().build()
             else -> null
         }
 
