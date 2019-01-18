@@ -6,6 +6,7 @@ import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import com.illiarb.tmdbexplorer.coreui.ext.addToViewGroup
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
+import com.illiarb.tmdbexplorer.coreui.image.RequestOptions
 import javax.inject.Inject
 
 /**
@@ -20,7 +21,7 @@ class PhotoViewAdapter @Inject constructor(
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val imageView = ImageView(container.context)
 
-        imageLoader.fromUrl(currentList[position], imageView)
+        imageLoader.fromUrl(currentList[position], imageView, RequestOptions.create { useCrossFade(true) })
 
         return imageView.also { it.addToViewGroup(container) }
     }

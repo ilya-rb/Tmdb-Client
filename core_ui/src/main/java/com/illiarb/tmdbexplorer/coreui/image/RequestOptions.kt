@@ -27,5 +27,5 @@ data class RequestOptions(
 
     fun blur(params: BlurParams) = apply { blurParams = params }
 
-    fun useCrossFade(use: Boolean) = { useCrossFade = use }
+    fun useCrossFade(use: Boolean) = apply { useCrossFade = use }
 }
