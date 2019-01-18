@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.tmdbexplorer.coreui.R
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseDelegateViewHolder
+import com.illiarb.tmdblcient.core.system.Logger
 import javax.inject.Inject
 
 /**
@@ -18,15 +19,7 @@ class DelegateAdapter @Inject constructor() : RecyclerView.Adapter<BaseDelegateV
 
     private val delegatesMap = SparseArrayCompat<AdapterDelegate>()
 
-    private val currentList: MutableList<Any>
-        get() = asyncListDiffer.currentList
-
-    private val diffCallback = object : DiffUtil.ItemCallback<Any>() {
-        override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean = oldItem == newItem
-        override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean = oldItem == newItem
-    }
-
-    private val asyncListDiffer = AsyncListDiffer<Any>(this, diffCallback)
+    private val currentList: MutableList<Any> = mutableListOf()
 
     private var fallbackDelegate: AdapterDelegate = DefaultFallbackDelegate()
 
@@ -72,7 +65,7 @@ class DelegateAdapter @Inject constructor() : RecyclerView.Adapter<BaseDelegateV
         return super.getItemViewType(position)
     }
 
-    override fun getItemCount(): Int = asyncListDiffer.currentList.size
+    override fun getItemCount(): Int = currentList.size
 
     fun addDelegatesFromSet(delegates: Set<AdapterDelegate>) {
         delegates.forEach { addDelegate(it) }
@@ -95,7 +88,8 @@ class DelegateAdapter @Inject constructor() : RecyclerView.Adapter<BaseDelegateV
     }
 
     fun submitList(newList: List<Any>) {
-        asyncListDiffer.submitList(newList)
+        currentList.addAll(newList)
+        notifyDataSetChanged()
     }
 
     class DefaultFallbackDelegate : AdapterDelegate {

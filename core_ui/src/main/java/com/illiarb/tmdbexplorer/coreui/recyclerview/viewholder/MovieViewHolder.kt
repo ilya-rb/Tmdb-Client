@@ -29,5 +29,6 @@ class MovieViewHolder(
 
     override fun onViewRecycled() {
         imageLoader.clearTarget(itemImage)
+        itemView.setOnClickListener(null)
     }
 }

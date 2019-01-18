@@ -101,6 +101,11 @@ class HomeFragment : BaseFragment<HomeModel>(), Injectable {
         viewClickObserver.register(this)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        moviesList.adapter = null
+    }
+
     private fun render(state: HomeUiState) {
         movieProgress.visibility = if (state.isLoading) View.VISIBLE else View.GONE
 

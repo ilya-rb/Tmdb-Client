@@ -43,6 +43,7 @@ class NowPlayingPagerAdapter(
 
         override fun onViewRecycled() {
             imageLoader.clearTarget(itemCover)
+            itemView.setOnClickListener(null)
         }
     }
 }
