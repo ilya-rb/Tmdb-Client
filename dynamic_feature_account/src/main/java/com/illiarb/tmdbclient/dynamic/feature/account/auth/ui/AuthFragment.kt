@@ -8,7 +8,7 @@ import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthMode
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthUiState
 import com.illiarb.tmdbclient.dynamic.feature.account.di.AccountComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
-import com.illiarb.tmdbexplorer.coreui.observable.Observer
+import com.illiarb.tmdbexplorer.coreui.observable.LifecycleAwareObserver
 import com.illiarb.tmdbexplorer.coreui.uiactions.ShowErrorDialogAction
 import com.illiarb.tmdbexplorer.coreui.uiactions.UiAction
 import com.illiarb.tmdblcient.core.di.Injectable
@@ -16,16 +16,27 @@ import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.exception.ErrorCodes
 import com.illiarb.tmdblcient.core.exception.ValidationException
 import kotlinx.android.synthetic.main.fragment_auth.*
+import kotlin.LazyThreadSafetyMode.NONE
 
 /**
  * @author ilya-rb on 20.11.18.
  */
-class AuthFragment : BaseFragment<AuthModel>(), Injectable, Observer<AuthUiState> {
+class AuthFragment : BaseFragment<AuthModel>(), Injectable {
 
-    private val actionsObserver = object : Observer<UiAction> {
-        override fun onNewValue(state: UiAction) {
-            when (state) {
-                is ShowErrorDialogAction -> showErrorDialog(state.message)
+    private val stateObserver: LifecycleAwareObserver<AuthUiState> by lazy(NONE) {
+        object : LifecycleAwareObserver<AuthUiState>(presentationModel.stateObservable()) {
+            override fun onNewValue(state: AuthUiState) {
+                render(state)
+            }
+        }
+    }
+
+    private val actionsObserver: LifecycleAwareObserver<UiAction> by lazy(NONE) {
+        object : LifecycleAwareObserver<UiAction>(presentationModel.actionsObservable()) {
+            override fun onNewValue(state: UiAction) {
+                when (state) {
+                    is ShowErrorDialogAction -> showErrorDialog(state.message)
+                }
             }
         }
     }
@@ -65,21 +76,13 @@ class AuthFragment : BaseFragment<AuthModel>(), Injectable, Observer<AuthUiState
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        presentationModel.observeState(this)
-        presentationModel.observeActions(actionsObserver)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        stateObserver.register(this)
+        actionsObserver.register(this)
     }
 
-    override fun onStop() {
-        super.onStop()
-
-        presentationModel.stopObserving(this)
-        presentationModel.stopObservingActions(actionsObserver)
-    }
-
-    override fun onNewValue(state: AuthUiState) {
+    private fun render(state: AuthUiState) {
         if (state.error != null) {
             when (state.error) {
                 is ValidationException -> showValidationErrors(state.error.errors)
@@ -98,5 +101,8 @@ class AuthFragment : BaseFragment<AuthModel>(), Injectable, Observer<AuthUiState
         }
     }
 
-    private fun getInputValues(): Array<String> = arrayOf(textUsername.toString(), textPassword.toString())
+    private fun getInputValues(): Array<String?> = arrayOf(
+        textUsername.text?.toString(),
+        textPassword.text?.toString()
+    )
 }

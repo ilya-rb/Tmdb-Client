@@ -20,9 +20,9 @@ class AuthModel @Inject constructor(
         setIdleState(AuthUiState.idle())
     }
 
-    fun onTextChanged(inputs: Array<String>) {
+    fun onTextChanged(inputs: Array<String?>) {
         setState {
-            it.copy(authButtonEnabled = inputs.all { input -> input.isNotEmpty() })
+            it.copy(authButtonEnabled = inputs.all { input -> !input.isNullOrEmpty() })
         }
     }
 
@@ -41,7 +41,10 @@ class AuthModel @Inject constructor(
 
             onError = { throwable ->
                 super.handleError(throwable)
-                setState { AuthUiState(false, throwable, true) }
+
+                setState {
+                    AuthUiState(false, throwable, true)
+                }
             }
         )
     }

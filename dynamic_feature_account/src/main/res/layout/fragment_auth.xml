@@ -48,8 +48,8 @@
             android:id="@+id/textUsername"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:maxLines="1"
             android:hint="@string/auth_username_hint"
+            android:maxLines="1"
             android:textColorHint="@color/colorOnSurface" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -70,8 +70,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="@string/auth_password_hint"
-            android:maxLines="1"
             android:inputType="textPassword"
+            android:maxLines="1"
             android:textColorHint="@color/colorOnSurface" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -86,7 +86,7 @@
         android:text="@string/auth_btn_authorize"
         android:textAllCaps="false"
         android:textColor="@color/colorOnSecondary"
-        app:backgroundTint="@color/colorSecondary"
+        app:backgroundTint="@color/color_button_auth_tint"
         app:layout_constraintEnd_toEndOf="@id/textPasswordLayout"
         app:layout_constraintStart_toStartOf="@id/textPasswordLayout"
         app:layout_constraintTop_toBottomOf="@id/textPasswordLayout" />
