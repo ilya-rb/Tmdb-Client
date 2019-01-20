@@ -51,6 +51,7 @@ versions.with {
     binaryPrefs = "1.0.0"
     timber = "4.7.1"
     lottie = "2.8.0"
+    leakCanary = "1.6.3"
 }
 
 def testVersions = [:]

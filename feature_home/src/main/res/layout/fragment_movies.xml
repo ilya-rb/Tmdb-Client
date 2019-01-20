@@ -9,25 +9,25 @@
 
     <include layout="@layout/layout_start_end_guidelines" />
 
-    <TextView
-        android:id="@+id/movieTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/homeLogo"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginTop="@dimen/margin_default"
-        android:text="Movies"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_tmdblogo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/movieProgress"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginStart="@dimen/margin_default"
-        app:layout_constraintBottom_toBottomOf="@id/movieTitle"
-        app:layout_constraintStart_toEndOf="@id/movieTitle"
-        app:layout_constraintTop_toTopOf="@id/movieTitle" />
+        android:layout_marginEnd="@dimen/margin_default"
+        app:layout_constraintBottom_toBottomOf="@id/homeLogo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/homeLogo" />
 
     <ImageView
         android:id="@+id/homeAccount"
@@ -36,21 +36,21 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@null"
         android:src="@drawable/ic_account"
-        app:layout_constraintBottom_toBottomOf="@id/movieTitle"
-        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-        app:layout_constraintTop_toTopOf="@id/movieTitle" />
+        app:layout_constraintBottom_toBottomOf="@id/homeLogo"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintTop_toTopOf="@id/homeLogo" />
 
     <ImageView
         android:id="@+id/homeSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_default"
+        android:layout_marginStart="@dimen/margin_default"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@null"
         android:src="@drawable/ic_search"
-        app:layout_constraintBottom_toBottomOf="@id/movieTitle"
-        app:layout_constraintEnd_toStartOf="@id/homeAccount"
-        app:layout_constraintTop_toTopOf="@id/movieTitle" />
+        app:layout_constraintBottom_toBottomOf="@id/homeLogo"
+        app:layout_constraintStart_toEndOf="@id/homeAccount"
+        app:layout_constraintTop_toTopOf="@id/homeLogo" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/moviesList"
@@ -62,7 +62,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieTitle"
+        app:layout_constraintTop_toBottomOf="@id/homeLogo"
         tools:listitem="@layout/item_movie_section" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -65,6 +65,10 @@ deps.javax = "javax.inject:javax.inject:$versions.javax"
 // Logging
 deps.timber = "com.jakewharton.timber:timber:$versions.timber"
 
+// Tools
+deps.leakCanary = "com.squareup.leakcanary:leakcanary-support-fragment:$versions.leakCanary"
+deps.leakCanaryRelease = "com.squareup.leakcanary:leakcanary-android-no-op:$versions.leakCanary"
+
 def testDeps = [:]
 testDeps.junit = "junit:junit:$testVersions.junit"
 
