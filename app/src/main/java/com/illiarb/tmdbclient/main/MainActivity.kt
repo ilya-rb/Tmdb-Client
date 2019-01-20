@@ -12,28 +12,16 @@ import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.navigation.Navigator
 import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
 import com.illiarb.tmdblcient.core.system.ConnectivityStatus
-import com.illiarb.tmdblcient.core.system.coroutine.DispatcherProvider
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
-class MainActivity : AppCompatActivity(), Injectable, CoroutineScope {
+class MainActivity : AppCompatActivity(), Injectable {
 
     @Inject
     lateinit var navigator: Navigator
 
     @Inject
     lateinit var navigatorHolder: NavigatorHolder
-
-    @Inject
-    lateinit var dispatcherProvider: DispatcherProvider
-
-    private val coroutineJob = Job()
-
-    override val coroutineContext: CoroutineContext
-        get() = coroutineJob + dispatcherProvider.main
 
     override fun inject(appProvider: AppProvider) = MainComponent.get(appProvider, this).inject(this)
 
@@ -59,9 +47,10 @@ class MainActivity : AppCompatActivity(), Injectable, CoroutineScope {
             .findNavController(this, R.id.nav_host_fragment)
             .navigateUp()
 
-    private fun onConnectionStateChanged(state: ConnectivityStatus.ConnectionState) =
+    private fun onConnectionStateChanged(state: ConnectivityStatus.ConnectionState) {
         when (state) {
             ConnectivityStatus.ConnectionState.CONNECTED -> connectionStatusLabel.visibility = View.GONE
             ConnectivityStatus.ConnectionState.NOT_CONNECTED -> connectionStatusLabel.visibility = View.VISIBLE
         }
+    }
 }

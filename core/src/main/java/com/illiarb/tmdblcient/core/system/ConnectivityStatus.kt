@@ -1,13 +1,13 @@
 package com.illiarb.tmdblcient.core.system
 
-import kotlinx.coroutines.channels.ReceiveChannel
+import com.illiarb.tmdblcient.core.util.observable.Observable
 
 /**
  * @author ilya-rb on 26.12.18.
  */
 interface ConnectivityStatus {
 
-    fun connectionState(): ReceiveChannel<ConnectionState>
+    fun connectionState(): Observable<ConnectionState>
 
     enum class ConnectionState {
 

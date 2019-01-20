@@ -10,7 +10,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/colorSurface"
-        android:padding="@dimen/margin_default"
+        android:paddingStart="@dimen/margin_default"
+        android:paddingEnd="@dimen/margin_default"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -31,10 +32,13 @@
             android:id="@+id/searchQuery"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_default"
+            android:paddingBottom="@dimen/margin_default"
             android:layout_marginStart="@dimen/margin_default"
             android:background="@null"
             android:hint="@string/hint_search_query"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/searchProgress"
             app:layout_constraintStart_toEndOf="@id/searchIcon"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -3,6 +3,7 @@ package com.illiarb.tmdbclient.feature.search.ui
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import com.illiarb.tmdbclient.feature.search.R
 import com.illiarb.tmdbclient.feature.search.di.SearchComponent
 import com.illiarb.tmdbclient.feature.search.presentation.SearchModel
@@ -10,6 +11,9 @@ import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchIcon
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchResult
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
+import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
+import com.illiarb.tmdbexplorer.coreui.ext.hide
+import com.illiarb.tmdbexplorer.coreui.ext.show
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
 import com.illiarb.tmdbexplorer.coreui.util.LawObserver
@@ -57,6 +61,8 @@ class SearchFragment : BaseFragment<SearchModel>(), Injectable {
             }
             .setupWith(searchResultsList)
 
+        searchContainer.awareOfWindowInsets()
+
         searchIcon.setOnClickListener {
             presentationModel.onClearClicked()
         }
@@ -64,6 +70,8 @@ class SearchFragment : BaseFragment<SearchModel>(), Injectable {
         searchAdapter.clickEvent = { _, _, item ->
             presentationModel.onMovieClicked(item)
         }
+
+        ViewCompat.requestApplyInsets(view)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -79,6 +87,11 @@ class SearchFragment : BaseFragment<SearchModel>(), Injectable {
     override fun onStop() {
         super.onStop()
         searchQuery.removeTextChangedListener(searchTextWatcher)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        searchResultsList.adapter = null
     }
 
     private fun render(state: SearchUiState) {
@@ -100,13 +113,13 @@ class SearchFragment : BaseFragment<SearchModel>(), Injectable {
             is SearchResult.Success -> {
                 searchAdapter.submitList(state.result.movies)
 
-                searchResultsList.visibility = View.VISIBLE
-                emptyView.visibility = View.GONE
+                searchResultsList.show()
+                emptyView.hide()
             }
 
             else -> {
-                searchResultsList.visibility = View.GONE
-                emptyView.visibility = View.VISIBLE
+                searchResultsList.hide()
+                emptyView.show()
 
                 when (state.result) {
                     is SearchResult.Initial -> emptyViewText.text = getString(R.string.search_initial)

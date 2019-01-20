@@ -7,7 +7,6 @@ import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import com.illiarb.tmdblcient.core.navigation.Router
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -22,7 +21,7 @@ class SearchModel @Inject constructor(
         setIdleState(SearchUiState.idle())
     }
 
-    fun search(query: String) = launch(context = coroutineContext) {
+    fun search(query: String) = runCoroutine {
         setState {
             it.copy(icon = SearchIcon.Cross, isSearchRunning = true)
         }
