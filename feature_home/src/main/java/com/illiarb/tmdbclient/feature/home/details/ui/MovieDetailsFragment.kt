@@ -12,7 +12,6 @@ import com.illiarb.tmdbclient.feature.home.details.presentation.MovieDetailsUiSt
 import com.illiarb.tmdbclient.feature.home.details.ui.photos.PhotosAdapter
 import com.illiarb.tmdbclient.feature.home.details.ui.reviews.ReviewsAdapter
 import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
-import com.illiarb.tmdbclient.feature.home.photoview.PhotoViewFragment
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.ext.addToViewGroup
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
@@ -21,10 +20,10 @@ import com.illiarb.tmdbexplorer.coreui.ext.show
 import com.illiarb.tmdbexplorer.coreui.image.CropOptions
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.image.RequestOptions
-import com.illiarb.tmdbexplorer.coreui.observable.Observer
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutOrientation
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
+import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Movie
@@ -33,9 +32,9 @@ import com.illiarb.tmdblcient.core.navigation.PhotoViewScreen
 import com.illiarb.tmdblcient.core.navigation.Router
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import javax.inject.Inject
+import kotlin.LazyThreadSafetyMode.NONE
 
-class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(),
-    Injectable, Observer<MovieDetailsUiState> {
+class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
 
     @Inject
     lateinit var photosAdapter: PhotosAdapter
@@ -48,6 +47,14 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(),
 
     @Inject
     lateinit var router: Router
+
+    private val stateObserver: LawObserver<MovieDetailsUiState> by lazy(NONE) {
+        object : LawObserver<MovieDetailsUiState>(presentationModel.stateObservable()) {
+            override fun onNewValue(value: MovieDetailsUiState) {
+                render(value)
+            }
+        }
+    }
 
     override fun getContentView(): Int = R.layout.fragment_movie_details
 
@@ -97,23 +104,15 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(),
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        stateObserver.register(this)
+
         arguments?.let {
             val id = it.getInt(NavigationKeys.EXTRA_MOVIE_DETAILS_ID)
             presentationModel.getMovieDetails(id)
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        presentationModel.observeState(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        presentationModel.stopObserving(this)
-    }
-
-    override fun onNewValue(state: MovieDetailsUiState) {
+    private fun render(state: MovieDetailsUiState) {
         state.movie?.let {
             showMovieDetails(it)
         }

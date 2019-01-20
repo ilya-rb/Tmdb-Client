@@ -36,11 +36,15 @@ class AccountModel @Inject constructor(
         router.navigateTo(MovieDetailsScreen(movie.id))
     }
 
-    fun onLogoutClick() {
+    fun onDialogSubmitClick() {
         launch(context = coroutineContext) {
             handleResult(signOutUseCase.executeAsync(Unit), {
                 router.navigateTo(AuthScreen)
             })
         }
+    }
+
+    fun onLogoutClick() {
+        publishAction(ShowSignOutDialog)
     }
 }

@@ -7,7 +7,6 @@ import com.illiarb.tmdbclient.storage.network.request.ValidateTokenRequest
 import com.illiarb.tmdblcient.core.auth.Authenticator
 import com.illiarb.tmdblcient.core.entity.UserCredentials
 import com.illiarb.tmdblcient.core.system.coroutine.DispatcherProvider
-import com.illiarb.tmdblcient.core.system.coroutine.NonBlocking
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -20,7 +19,6 @@ class TmdbAuthenticator @Inject constructor(
     private val dispatcherProvider: DispatcherProvider
 ) : Authenticator {
 
-    @NonBlocking
     override suspend fun authorize(credentials: UserCredentials): Unit =
         withContext(dispatcherProvider.io) {
             val authToken = authService.requestAuthToken().await()

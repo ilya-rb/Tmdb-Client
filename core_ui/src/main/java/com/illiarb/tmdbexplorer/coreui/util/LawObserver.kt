@@ -1,14 +1,19 @@
-package com.illiarb.tmdbexplorer.coreui.observable
+package com.illiarb.tmdbexplorer.coreui.util
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
+import com.illiarb.tmdblcient.core.util.observable.Observable
+import com.illiarb.tmdblcient.core.util.observable.Observer
 
 /**
+ * Law - Lifecycle Aware Observer
+ *
  * @author ilya-rb on 18.01.19.
  */
-abstract class LifecycleAwareObserver<T>(private val observable: Observable<T>) : Observer<T>, LifecycleObserver {
+abstract class LawObserver<T>(private val observable: Observable<T>) : Observer<T>,
+    LifecycleObserver {
 
     private var owner: LifecycleOwner? = null
 

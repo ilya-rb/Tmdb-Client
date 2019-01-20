@@ -8,7 +8,7 @@ import com.illiarb.tmdbclient.feature.home.list.presentation.HomeModel
 import com.illiarb.tmdbclient.feature.home.list.presentation.HomeUiState
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.common.ViewClickListener
-import com.illiarb.tmdbexplorer.coreui.observable.LifecycleAwareObserver
+import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
 import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.AdapterDelegate
@@ -33,29 +33,29 @@ class HomeFragment : BaseFragment<HomeModel>(), Injectable {
     @Inject
     lateinit var viewClickListener: ViewClickListener
 
-    private val stateObserver: LifecycleAwareObserver<HomeUiState> by lazy(NONE) {
-        object : LifecycleAwareObserver<HomeUiState>(presentationModel.stateObservable()) {
-            override fun onNewValue(state: HomeUiState) {
-                render(state)
+    private val stateObserver: LawObserver<HomeUiState> by lazy(NONE) {
+        object : LawObserver<HomeUiState>(presentationModel.stateObservable()) {
+            override fun onNewValue(value: HomeUiState) {
+                render(value)
             }
         }
     }
 
-    private val viewClickObserver: LifecycleAwareObserver<Any> by lazy(NONE) {
-        object : LifecycleAwareObserver<Any>(viewClickListener.clickObservable()) {
-            override fun onNewValue(state: Any) {
-                when (state) {
-                    is Movie -> presentationModel.onMovieClick(state)
+    private val viewClickObserver: LawObserver<Any> by lazy(NONE) {
+        object : LawObserver<Any>(viewClickListener.clickObservable()) {
+            override fun onNewValue(value: Any) {
+                when (value) {
+                    is Movie -> presentationModel.onMovieClick(value)
                 }
             }
         }
     }
 
-    private val actionsObserver: LifecycleAwareObserver<UiAction> by lazy(NONE) {
-        object: LifecycleAwareObserver<UiAction>(presentationModel.actionsObservable()) {
-            override fun onNewValue(state: UiAction) {
-                when (state) {
-                    is ShowErrorDialogAction -> showErrorDialog(state.message)
+    private val actionsObserver: LawObserver<UiAction> by lazy(NONE) {
+        object: LawObserver<UiAction>(presentationModel.actionsObservable()) {
+            override fun onNewValue(value: UiAction) {
+                when (value) {
+                    is ShowErrorDialogAction -> showErrorDialog(value.message)
                 }
             }
         }

@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.feature.home.list.presentation
 
-import com.illiarb.tmdbexplorer.coreui.observable.Cloneable
 import com.illiarb.tmdblcient.core.entity.MovieSection
+import com.illiarb.tmdblcient.core.util.Cloneable
 
 /**
  * @author ilya-rb on 09.01.19.

@@ -2,21 +2,23 @@ package com.illiarb.tmdbclient.dynamic.feature.account.profile.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import com.illiarb.tmdbclient.dynamic.feature.account.R
 import com.illiarb.tmdbclient.dynamic.feature.account.di.AccountComponent
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.presentation.AccountModel
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.presentation.AccountUiState
+import com.illiarb.tmdbclient.dynamic.feature.account.profile.presentation.ShowSignOutDialog
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.ui.adapter.FavoritesAdapter
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.hide
-import com.illiarb.tmdbexplorer.coreui.observable.LifecycleAwareObserver
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutOrientation
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
 import com.illiarb.tmdbexplorer.coreui.uiactions.ShowErrorDialogAction
 import com.illiarb.tmdbexplorer.coreui.uiactions.UiAction
+import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Account
 import kotlinx.android.synthetic.main.fragment_account.*
@@ -31,19 +33,20 @@ class AccountFragment : BaseFragment<AccountModel>() {
     @Inject
     lateinit var favoritesAdapter: FavoritesAdapter
 
-    private val stateObserver: LifecycleAwareObserver<AccountUiState> by lazy(NONE) {
-        object : LifecycleAwareObserver<AccountUiState>(presentationModel.stateObservable()) {
-            override fun onNewValue(state: AccountUiState) {
-                render(state)
+    private val stateObserver: LawObserver<AccountUiState> by lazy(NONE) {
+        object : LawObserver<AccountUiState>(presentationModel.stateObservable()) {
+            override fun onNewValue(value: AccountUiState) {
+                render(value)
             }
         }
     }
 
-    private val actionsObserver: LifecycleAwareObserver<UiAction> by lazy(NONE) {
-        object : LifecycleAwareObserver<UiAction>(presentationModel.actionsObservable()) {
-            override fun onNewValue(state: UiAction) {
-                when (state) {
-                    is ShowErrorDialogAction -> showErrorDialog(state.message)
+    private val actionsObserver: LawObserver<UiAction> by lazy(NONE) {
+        object : LawObserver<UiAction>(presentationModel.actionsObservable()) {
+            override fun onNewValue(value: UiAction) {
+                when (value) {
+                    is ShowErrorDialogAction -> showErrorDialog(value.message)
+                    is ShowSignOutDialog -> showSignOutDialog()
                 }
             }
         }
@@ -107,6 +110,12 @@ class AccountFragment : BaseFragment<AccountModel>() {
         state.account?.let {
             showAccount(it)
         }
+    }
+
+    private fun showSignOutDialog() {
+        AlertDialog.Builder(requireContext())
+            .create()
+            .show()
     }
 
     private fun showAccount(account: Account) {

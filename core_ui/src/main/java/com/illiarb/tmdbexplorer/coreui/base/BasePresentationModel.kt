@@ -1,26 +1,34 @@
 package com.illiarb.tmdbexplorer.coreui.base
 
 import androidx.lifecycle.ViewModel
-import com.illiarb.tmdbexplorer.coreui.observable.*
-import com.illiarb.tmdbexplorer.coreui.observable.Cloneable
 import com.illiarb.tmdbexplorer.coreui.uiactions.ShowErrorDialogAction
 import com.illiarb.tmdbexplorer.coreui.uiactions.UiAction
 import com.illiarb.tmdblcient.core.common.Result
+import com.illiarb.tmdblcient.core.util.Cloneable
+import com.illiarb.tmdblcient.core.util.observable.BufferLatestObservable
+import com.illiarb.tmdblcient.core.util.observable.ImmutableObservable
+import com.illiarb.tmdblcient.core.util.observable.Observable
+import com.illiarb.tmdblcient.core.util.observable.SimpleObservable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 /**
  * @author ilya-rb on 07.01.19.
  */
+typealias ErrorHandler = (Throwable) -> Unit
+
+typealias SuccessHandler <T> = (T) -> Unit
+
 abstract class BasePresentationModel<T : Cloneable<T>> : ViewModel(), CoroutineScope {
 
     private val job = SupervisorJob()
 
-    private val stateObservable = StateObservable<T>()
+    private val stateObservable = ImmutableObservable<T>(BufferLatestObservable())
 
-    private val actionsObservable = BypassObservable<UiAction>()
+    private val actionsObservable = SimpleObservable<UiAction>()
 
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
@@ -30,32 +38,14 @@ abstract class BasePresentationModel<T : Cloneable<T>> : ViewModel(), CoroutineS
         job.cancel()
     }
 
-    fun actionsObservable(): Observable<UiAction> = actionsObservable
+    fun actionsObservable(): SimpleObservable<UiAction> = actionsObservable
 
-    fun observeActions(observer: Observer<UiAction>) {
-        actionsObservable.addObserver(observer)
-    }
+    fun stateObservable(): Observable<T> = stateObservable
 
-    fun stopObservingActions(observer: Observer<UiAction>) {
-        actionsObservable.removeObserver(observer)
-    }
-
-    fun observeState(observer: Observer<T>) {
-        stateObservable.addObserver(observer)
-    }
-
-    fun stopObserving(observer: Observer<T>) {
-        stateObservable.removeObserver(observer)
-    }
-
-    fun stateObservable(): Observable<T> {
-        return stateObservable
-    }
-
-    fun <T> handleResult(
+    protected fun <T> handleResult(
         result: Result<T>,
-        onSuccess: (T) -> Unit,
-        onError: ((Throwable) -> Unit)? = null
+        onSuccess: SuccessHandler<T>,
+        onError: ErrorHandler? = null
     ) {
         when (result) {
             is Result.Success -> onSuccess(result.result)
@@ -77,19 +67,21 @@ abstract class BasePresentationModel<T : Cloneable<T>> : ViewModel(), CoroutineS
         }
     }
 
+    protected fun runCoroutine(block: suspend CoroutineScope.() -> Unit) {
+        launch(context = coroutineContext) {
+            block(this)
+        }
+    }
+
     protected fun setIdleState(state: T) {
         stateObservable.accept(state)
     }
 
     protected fun setState(block: (T) -> T) {
-        stateObservable.accept(
-            block(
-                stateObservable.valueCopy() ?: throw IllegalStateException("initial state was not set")
-            )
-        )
+        stateObservable.accept(block(stateObservable.requireValue()))
     }
 
-    private fun publishAction(action: UiAction) {
-        actionsObservable.publish(action)
+    protected fun publishAction(action: UiAction) {
+        actionsObservable.accept(action)
     }
 }

@@ -8,9 +8,9 @@ import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthMode
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthUiState
 import com.illiarb.tmdbclient.dynamic.feature.account.di.AccountComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
-import com.illiarb.tmdbexplorer.coreui.observable.LifecycleAwareObserver
 import com.illiarb.tmdbexplorer.coreui.uiactions.ShowErrorDialogAction
 import com.illiarb.tmdbexplorer.coreui.uiactions.UiAction
+import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.exception.ErrorCodes
@@ -23,19 +23,19 @@ import kotlin.LazyThreadSafetyMode.NONE
  */
 class AuthFragment : BaseFragment<AuthModel>(), Injectable {
 
-    private val stateObserver: LifecycleAwareObserver<AuthUiState> by lazy(NONE) {
-        object : LifecycleAwareObserver<AuthUiState>(presentationModel.stateObservable()) {
-            override fun onNewValue(state: AuthUiState) {
-                render(state)
+    private val stateObserver: LawObserver<AuthUiState> by lazy(NONE) {
+        object : LawObserver<AuthUiState>(presentationModel.stateObservable()) {
+            override fun onNewValue(value: AuthUiState) {
+                render(value)
             }
         }
     }
 
-    private val actionsObserver: LifecycleAwareObserver<UiAction> by lazy(NONE) {
-        object : LifecycleAwareObserver<UiAction>(presentationModel.actionsObservable()) {
-            override fun onNewValue(state: UiAction) {
-                when (state) {
-                    is ShowErrorDialogAction -> showErrorDialog(state.message)
+    private val actionsObserver: LawObserver<UiAction> by lazy(NONE) {
+        object : LawObserver<UiAction>(presentationModel.actionsObservable()) {
+            override fun onNewValue(value: UiAction) {
+                when (value) {
+                    is ShowErrorDialogAction -> showErrorDialog(value.message)
                 }
             }
         }

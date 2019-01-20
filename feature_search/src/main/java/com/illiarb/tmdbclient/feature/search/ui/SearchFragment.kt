@@ -9,24 +9,32 @@ import com.illiarb.tmdbclient.feature.search.presentation.SearchModel
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchIcon
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchResult
-import com.illiarb.tmdbexplorer.coreui.observable.Observer
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
+import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.layout_empty_view.*
 import javax.inject.Inject
+import kotlin.LazyThreadSafetyMode.NONE
 
 /**
  * @author ilya-rb on 26.12.18.
  */
-class SearchFragment : BaseFragment<SearchModel>(), Injectable,
-    Observer<SearchUiState> {
+class SearchFragment : BaseFragment<SearchModel>(), Injectable {
 
     @Inject
     lateinit var searchAdapter: SearchAdapter
+
+    private val stateObserver: LawObserver<SearchUiState> by lazy(NONE) {
+        object : LawObserver<SearchUiState>(presentationModel.stateObservable()) {
+            override fun onNewValue(value: SearchUiState) {
+                render(value)
+            }
+        }
+    }
 
     private val searchTextWatcher = DebounceTextWatcher {
         presentationModel.search(it)
@@ -58,19 +66,22 @@ class SearchFragment : BaseFragment<SearchModel>(), Injectable,
         }
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        stateObserver.register(this)
+    }
+
     override fun onStart() {
         super.onStart()
-        presentationModel.observeState(this)
         searchQuery.addTextChangedListener(searchTextWatcher)
     }
 
     override fun onStop() {
         super.onStop()
-        presentationModel.stopObserving(this)
         searchQuery.removeTextChangedListener(searchTextWatcher)
     }
 
-    override fun onNewValue(state: SearchUiState) {
+    private fun render(state: SearchUiState) {
         searchProgress.visibility = if (state.isSearchRunning) View.VISIBLE else View.GONE
 
         val drawable = when (state.icon) {
