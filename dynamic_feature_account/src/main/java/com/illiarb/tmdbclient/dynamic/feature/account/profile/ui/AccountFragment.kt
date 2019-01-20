@@ -109,6 +109,13 @@ class AccountFragment : BaseFragment<AccountModel>() {
 
     private fun showSignOutDialog() {
         AlertDialog.Builder(requireContext())
+            .setTitle(R.string.account_sign_out_title)
+            .setMessage(R.string.account_sign_out_message)
+            .setNegativeButton(R.string.account_sign_out_cancel, null)
+            .setPositiveButton(R.string.account_sign_out_positive) { dialog, _ ->
+                presentationModel.onSignOutConfirm()
+                dialog.dismiss()
+            }
             .create()
             .show()
     }

@@ -10,12 +10,14 @@ import com.illiarb.tmdbclient.feature.search.presentation.SearchModel
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchIcon
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchResult
+import com.illiarb.tmdbclient.feature.search.presentation.ShowSearchFilters
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.hide
 import com.illiarb.tmdbexplorer.coreui.ext.show
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
+import com.illiarb.tmdbexplorer.coreui.uiactions.UiAction
 import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
@@ -67,6 +69,10 @@ class SearchFragment : BaseFragment<SearchModel>(), Injectable {
             presentationModel.onClearClicked()
         }
 
+        searchFilter.setOnClickListener {
+            presentationModel.onFilterClicked()
+        }
+
         searchAdapter.clickEvent = { _, _, item ->
             presentationModel.onMovieClicked(item)
         }
@@ -94,8 +100,24 @@ class SearchFragment : BaseFragment<SearchModel>(), Injectable {
         searchResultsList.adapter = null
     }
 
+    override fun handleAction(action: UiAction) {
+        super.handleAction(action)
+
+        when (action) {
+            is ShowSearchFilters -> {
+                SearchFilterFragment.newInstance().show(fragmentManager, SearchFilterFragment::class.java.name)
+            }
+        }
+    }
+
     private fun render(state: SearchUiState) {
-        searchProgress.visibility = if (state.isSearchRunning) View.VISIBLE else View.GONE
+        if (state.isSearchRunning) {
+            searchProgress.show()
+            searchFilter.hide()
+        } else {
+            searchProgress.hide()
+            searchFilter.show()
+        }
 
         val drawable = when (state.icon) {
             SearchIcon.Search -> ContextCompat.getDrawable(requireContext(), R.drawable.ic_search)

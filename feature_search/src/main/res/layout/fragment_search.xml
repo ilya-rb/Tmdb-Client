@@ -32,11 +32,11 @@
             android:id="@+id/searchQuery"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/margin_default"
-            android:paddingBottom="@dimen/margin_default"
             android:layout_marginStart="@dimen/margin_default"
             android:background="@null"
             android:hint="@string/hint_search_query"
+            android:paddingTop="@dimen/margin_default"
+            android:paddingBottom="@dimen/margin_default"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/searchProgress"
             app:layout_constraintStart_toEndOf="@id/searchIcon"
@@ -47,6 +47,18 @@
             android:layout_width="24dp"
             android:layout_height="0dp"
             android:layout_marginEnd="@dimen/margin_small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/searchFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:contentDescription="@null"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_search_filter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

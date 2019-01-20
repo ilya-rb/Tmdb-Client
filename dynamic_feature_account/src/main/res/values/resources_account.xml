@@ -10,4 +10,9 @@
     <string name="account_average_score">Movie average score</string>
     <string name="account_favorites">Favorite movies</string>
 
+    <string name="account_sign_out_title">Sign out</string>
+    <string name="account_sign_out_message">Sign out from account ?</string>
+    <string name="account_sign_out_cancel">Cancel</string>
+    <string name="account_sign_out_positive">Sign out</string>
+
 </resources>
