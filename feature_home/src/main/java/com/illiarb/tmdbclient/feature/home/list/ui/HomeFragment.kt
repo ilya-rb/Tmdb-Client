@@ -51,16 +51,6 @@ class HomeFragment : BaseFragment<HomeModel>(), Injectable {
         }
     }
 
-    private val actionsObserver: LawObserver<UiAction> by lazy(NONE) {
-        object: LawObserver<UiAction>(presentationModel.actionsObservable()) {
-            override fun onNewValue(value: UiAction) {
-                when (value) {
-                    is ShowErrorDialogAction -> showErrorDialog(value.message)
-                }
-            }
-        }
-    }
-
     override fun getContentView(): Int = R.layout.fragment_movies
 
     override fun inject(appProvider: AppProvider) = MoviesComponent.get(appProvider).inject(this)
@@ -94,8 +84,6 @@ class HomeFragment : BaseFragment<HomeModel>(), Injectable {
         super.onActivityCreated(savedInstanceState)
 
         stateObserver.register(this)
-
-        actionsObserver.register(this)
 
         viewClickObserver.register(this)
     }

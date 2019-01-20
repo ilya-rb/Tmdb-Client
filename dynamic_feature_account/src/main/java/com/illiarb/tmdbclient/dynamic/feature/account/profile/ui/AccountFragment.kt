@@ -16,7 +16,6 @@ import com.illiarb.tmdbexplorer.coreui.ext.hide
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutOrientation
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
-import com.illiarb.tmdbexplorer.coreui.uiactions.ShowErrorDialogAction
 import com.illiarb.tmdbexplorer.coreui.uiactions.UiAction
 import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
@@ -37,17 +36,6 @@ class AccountFragment : BaseFragment<AccountModel>() {
         object : LawObserver<AccountUiState>(presentationModel.stateObservable()) {
             override fun onNewValue(value: AccountUiState) {
                 render(value)
-            }
-        }
-    }
-
-    private val actionsObserver: LawObserver<UiAction> by lazy(NONE) {
-        object : LawObserver<UiAction>(presentationModel.actionsObservable()) {
-            override fun onNewValue(value: UiAction) {
-                when (value) {
-                    is ShowErrorDialogAction -> showErrorDialog(value.message)
-                    is ShowSignOutDialog -> showSignOutDialog()
-                }
             }
         }
     }
@@ -96,12 +84,19 @@ class AccountFragment : BaseFragment<AccountModel>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         stateObserver.register(this)
-        actionsObserver.register(this)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         accountFavoritesList.adapter = null
+    }
+
+    override fun handleAction(action: UiAction) {
+        super.handleAction(action)
+
+        if (action is ShowSignOutDialog) {
+            showSignOutDialog()
+        }
     }
 
     private fun render(state: AccountUiState) {

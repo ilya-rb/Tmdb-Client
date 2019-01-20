@@ -8,8 +8,6 @@ import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthMode
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthUiState
 import com.illiarb.tmdbclient.dynamic.feature.account.di.AccountComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
-import com.illiarb.tmdbexplorer.coreui.uiactions.ShowErrorDialogAction
-import com.illiarb.tmdbexplorer.coreui.uiactions.UiAction
 import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
@@ -27,16 +25,6 @@ class AuthFragment : BaseFragment<AuthModel>(), Injectable {
         object : LawObserver<AuthUiState>(presentationModel.stateObservable()) {
             override fun onNewValue(value: AuthUiState) {
                 render(value)
-            }
-        }
-    }
-
-    private val actionsObserver: LawObserver<UiAction> by lazy(NONE) {
-        object : LawObserver<UiAction>(presentationModel.actionsObservable()) {
-            override fun onNewValue(value: UiAction) {
-                when (value) {
-                    is ShowErrorDialogAction -> showErrorDialog(value.message)
-                }
             }
         }
     }
@@ -79,7 +67,6 @@ class AuthFragment : BaseFragment<AuthModel>(), Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         stateObserver.register(this)
-        actionsObserver.register(this)
     }
 
     private fun render(state: AuthUiState) {
