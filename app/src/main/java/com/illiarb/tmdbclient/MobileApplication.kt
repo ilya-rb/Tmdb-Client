@@ -3,6 +3,7 @@ package com.illiarb.tmdbclient
 import android.app.Application
 import com.google.firebase.FirebaseApp
 import com.illiarb.tmdbclient.di.AppComponent
+import com.illiarb.tmdblcient.core.config.FeatureConfig
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.system.Logger
@@ -16,6 +17,9 @@ class MobileApplication : Application(), App {
     @Inject
     lateinit var workManager: WorkManager
 
+    @Inject
+    lateinit var featureConfig: FeatureConfig
+
     private val applicationProvider by lazy { AppComponent.get(this) }
 
     override fun onCreate() {
@@ -24,10 +28,14 @@ class MobileApplication : Application(), App {
         configureDi()
         configureLogger()
 
+        FirebaseApp.initializeApp(this)
+
         val appComponent = applicationProvider as AppComponent
         appComponent.inject(this)
 
         workManager.schedulerPeriodicConfigurationFetch()
+
+        featureConfig.fetchConfiguration()
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
@@ -36,8 +44,6 @@ class MobileApplication : Application(), App {
         }
 
         LeakCanary.install(this)
-
-        FirebaseApp.initializeApp(this)
     }
 
     override fun getApplication(): Application = this
@@ -53,17 +59,13 @@ class MobileApplication : Application(), App {
             Timber.plant(Timber.DebugTree())
         }
 
-        val timberLoggingStrategy = object : Logger.LoggingStrategy {
-            override fun log(priority: Logger.Priority, message: String, throwable: Throwable?) {
-                when (priority) {
-                    Logger.Priority.WARN -> Timber.w(message)
-                    Logger.Priority.DEBUG -> Timber.d(message)
-                    Logger.Priority.INFO -> Timber.i(message)
-                    Logger.Priority.ERROR -> Timber.e(throwable, message)
-                }
+        Logger.addLoggingStrategy { priority, message, throwable ->
+            when (priority) {
+                Logger.Priority.WARN -> Timber.w(message)
+                Logger.Priority.DEBUG -> Timber.d(message)
+                Logger.Priority.INFO -> Timber.i(message)
+                Logger.Priority.ERROR -> Timber.e(throwable)
             }
         }
-
-        Logger.addPrinter(timberLoggingStrategy)
     }
 }

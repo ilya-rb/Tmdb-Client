@@ -6,4 +6,6 @@ package com.illiarb.tmdblcient.core.config
 interface FeatureConfig {
 
     fun isFeatureEnabled(featureName: FeatureName): Boolean
+
+    fun fetchConfiguration()
 }

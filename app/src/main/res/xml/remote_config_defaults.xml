@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+
+    <entry>
+        <key>auth_enabled</key>
+        <value>false</value>
+    </entry>
+
+    <entry>
+        <key>search_enabled</key>
+        <value>true</value>
+    </entry>
+
+</defaultsMap>

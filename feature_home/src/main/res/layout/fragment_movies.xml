@@ -50,7 +50,8 @@
         android:src="@drawable/ic_search"
         app:layout_constraintBottom_toBottomOf="@id/homeLogo"
         app:layout_constraintStart_toEndOf="@id/homeAccount"
-        app:layout_constraintTop_toTopOf="@id/homeLogo" />
+        app:layout_constraintTop_toTopOf="@id/homeLogo"
+        app:layout_goneMarginStart="0dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/moviesList"

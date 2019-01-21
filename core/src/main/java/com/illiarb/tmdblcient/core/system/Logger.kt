@@ -3,11 +3,13 @@ package com.illiarb.tmdblcient.core.system
 /**
  * @author ilya-rb on 13.11.18.
  */
+typealias LoggingStrategy = (Logger.Priority, String, Throwable?) -> Unit
+
 object Logger {
 
     private val strategies = mutableSetOf<LoggingStrategy>()
 
-    fun addPrinter(printer: LoggingStrategy) {
+    fun addLoggingStrategy(printer: LoggingStrategy) {
         strategies.add(printer)
     }
 
@@ -33,7 +35,7 @@ object Logger {
 
     private fun logWithPriority(priority: Logger.Priority, message: String, throwable: Throwable? = null) {
         strategies.forEach {
-            it.log(priority, message, throwable)
+            it.invoke(priority, message, throwable)
         }
     }
 
@@ -42,10 +44,5 @@ object Logger {
         DEBUG,
         INFO,
         ERROR
-    }
-
-    interface LoggingStrategy {
-
-        fun log(priority: Priority, message: String, throwable: Throwable?)
     }
 }
