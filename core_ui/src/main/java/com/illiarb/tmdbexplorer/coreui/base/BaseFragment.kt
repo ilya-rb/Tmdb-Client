@@ -24,10 +24,8 @@ abstract class BaseFragment<T : BasePresentationModel<*>> : Fragment(), UiAction
     private val uiActions by lazy { UiActionImpl(requireActivity()) }
 
     private val actionsObserver: LawObserver<UiAction> by lazy(LazyThreadSafetyMode.NONE) {
-        object : LawObserver<UiAction>(presentationModel.actionsObservable()) {
-            override fun onNewValue(value: UiAction) {
-                handleAction(value)
-            }
+        LawObserver.create(presentationModel.actionsObservable()) {
+            handleAction(it)
         }
     }
 

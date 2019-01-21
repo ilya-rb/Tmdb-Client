@@ -19,7 +19,6 @@ import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
 import com.illiarb.tmdbexplorer.coreui.uiactions.UiAction
 import com.illiarb.tmdbexplorer.coreui.util.LawObserver
-import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.layout_empty_view.*
@@ -34,16 +33,12 @@ class SearchFragment : BaseFragment<SearchModel>() {
     @Inject
     lateinit var searchAdapter: SearchAdapter
 
-    private val stateObserver: LawObserver<SearchUiState> by lazy(NONE) {
-        object : LawObserver<SearchUiState>(presentationModel.stateObservable()) {
-            override fun onNewValue(value: SearchUiState) {
-                render(value)
-            }
-        }
-    }
-
     private val searchTextWatcher = DebounceTextWatcher {
         presentationModel.search(it)
+    }
+
+    private val stateObserver: LawObserver<SearchUiState> by lazy(NONE) {
+        LawObserver.create(presentationModel.stateObservable(), ::render)
     }
 
     override fun getContentView(): Int = R.layout.fragment_search

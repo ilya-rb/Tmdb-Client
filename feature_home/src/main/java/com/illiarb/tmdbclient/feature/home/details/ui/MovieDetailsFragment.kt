@@ -49,11 +49,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
     lateinit var router: Router
 
     private val stateObserver: LawObserver<MovieDetailsUiState> by lazy(NONE) {
-        object : LawObserver<MovieDetailsUiState>(presentationModel.stateObservable()) {
-            override fun onNewValue(value: MovieDetailsUiState) {
-                render(value)
-            }
-        }
+        LawObserver.create(presentationModel.stateObservable(), ::render)
     }
 
     override fun getContentView(): Int = R.layout.fragment_movie_details

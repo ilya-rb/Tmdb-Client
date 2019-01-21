@@ -34,21 +34,11 @@ class HomeFragment : BaseFragment<HomeModel>(), Injectable {
     lateinit var viewClickListener: ViewClickListener
 
     private val stateObserver: LawObserver<HomeUiState> by lazy(NONE) {
-        object : LawObserver<HomeUiState>(presentationModel.stateObservable()) {
-            override fun onNewValue(value: HomeUiState) {
-                render(value)
-            }
-        }
+        LawObserver.create(presentationModel.stateObservable(), ::render)
     }
 
     private val viewClickObserver: LawObserver<Any> by lazy(NONE) {
-        object : LawObserver<Any>(viewClickListener.clickObservable()) {
-            override fun onNewValue(value: Any) {
-                when (value) {
-                    is Movie -> presentationModel.onMovieClick(value)
-                }
-            }
-        }
+        LawObserver.create(viewClickListener.clickObservable(), ::onClick)
     }
 
     override fun getContentView(): Int = R.layout.fragment_movies
@@ -91,6 +81,12 @@ class HomeFragment : BaseFragment<HomeModel>(), Injectable {
     override fun onDestroyView() {
         super.onDestroyView()
         moviesList.adapter = null
+    }
+
+    private fun onClick(item: Any) {
+        when (item) {
+            is Movie -> presentationModel.onMovieClick(item)
+        }
     }
 
     private fun render(state: HomeUiState) {

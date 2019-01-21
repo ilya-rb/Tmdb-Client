@@ -15,6 +15,17 @@ import com.illiarb.tmdblcient.core.util.observable.Observer
 abstract class LawObserver<T>(private val observable: Observable<T>) : Observer<T>,
     LifecycleObserver {
 
+    companion object {
+
+        fun <T> create(observable: Observable<T>, block: (T) -> Unit): LawObserver<T> {
+            return object : LawObserver<T>(observable) {
+                override fun onNewValue(value: T) {
+                    block(value)
+                }
+            }
+        }
+    }
+
     private var owner: LifecycleOwner? = null
 
     fun register(owner: LifecycleOwner) {
