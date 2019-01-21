@@ -43,6 +43,6 @@ class AccountModel @Inject constructor(
     }
 
     fun onLogoutClick() {
-        publishAction(ShowSignOutDialog)
+        executeAction(ShowSignOutDialog)
     }
 }

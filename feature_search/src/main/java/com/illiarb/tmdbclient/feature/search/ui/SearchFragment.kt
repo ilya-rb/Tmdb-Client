@@ -29,7 +29,7 @@ import kotlin.LazyThreadSafetyMode.NONE
 /**
  * @author ilya-rb on 26.12.18.
  */
-class SearchFragment : BaseFragment<SearchModel>(), Injectable {
+class SearchFragment : BaseFragment<SearchModel>() {
 
     @Inject
     lateinit var searchAdapter: SearchAdapter

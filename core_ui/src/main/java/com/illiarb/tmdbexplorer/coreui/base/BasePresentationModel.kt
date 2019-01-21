@@ -66,7 +66,7 @@ abstract class BasePresentationModel<T : Cloneable<T>> : ViewModel(), CoroutineS
 
     protected fun handleError(throwable: Throwable) {
         throwable.message?.let {
-            publishAction(ShowErrorDialogAction(it))
+            executeAction(ShowErrorDialogAction(it))
         }
     }
 
@@ -84,7 +84,7 @@ abstract class BasePresentationModel<T : Cloneable<T>> : ViewModel(), CoroutineS
         stateObservable.accept(block(stateObservable.requireValue()))
     }
 
-    protected fun publishAction(action: UiAction) {
+    protected fun executeAction(action: UiAction) {
         actionsObservable.accept(action)
     }
 }

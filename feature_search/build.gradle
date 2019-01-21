@@ -33,4 +33,7 @@ dependencies {
     implementation project(':core_ui')
 
     implementation deps.dagger
+
+    testImplementation testDeps.junit
+    testImplementation testDeps.mockito
 }

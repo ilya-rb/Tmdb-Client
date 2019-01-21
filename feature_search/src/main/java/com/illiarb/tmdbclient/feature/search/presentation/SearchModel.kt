@@ -41,7 +41,7 @@ class SearchModel @Inject constructor(
     }
 
     fun onFilterClicked() {
-        publishAction(ShowSearchFilters)
+        executeAction(ShowSearchFilters)
     }
 
     fun onMovieClicked(movie: Movie) {

@@ -52,7 +52,6 @@ abstract class BaseFragment<T : BasePresentationModel<*>> : Fragment(), UiAction
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         createPresentationModel()
-
         actionsObserver.register(this)
     }
 
