@@ -40,10 +40,6 @@ class SearchModel @Inject constructor(
         }
     }
 
-    fun onFilterClicked() {
-        executeAction(ShowSearchFilters)
-    }
-
     fun onMovieClicked(movie: Movie) {
         router.navigateTo(MovieDetailsScreen(movie.id))
     }
