@@ -3,8 +3,8 @@ gradlePlugins.android = "com.android.tools.build:gradle:$versions.androidGradle"
 gradlePlugins.jacoco = "org.jacoco:org.jacoco.core:$versions.jacocoGradle"
 gradlePlugins.kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
 gradlePlugins.versions = "com.github.ben-manes:gradle-versions-plugin:$versions.versionsGradle"
-gradlePlugins.dexcount = "com.getkeepsafe.dexcount:dexcount-gradle-plugin:$versions.dexcountGradle"
 gradlePlugins.buildscan = "com.gradle:build-scan-plugin:$versions.buildScanGradle"
+gradlePlugins.firebase = "com.google.gms:google-services:$versions.firebaseGradle"
 
 def deps = [:]
 // STD

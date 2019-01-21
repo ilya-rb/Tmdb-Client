@@ -4,8 +4,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
-apply plugin: 'com.getkeepsafe.dexcount'
-
 apply from: dependenciesFilePath
 apply from: "$rootDir/code_quality_tools/jacoco.gradle"
 
@@ -36,13 +34,6 @@ android {
     dynamicFeatures = [':dynamic_feature_account']
 }
 
-dexcount {
-    format = 'list'
-    includeTotalMethodCount true
-    verbose false
-    maxTreeDepth = Integer.MAX_VALUE
-}
-
 dependencies {
     kapt deps.daggerCompiler
 
@@ -63,3 +54,5 @@ dependencies {
 
     debugImplementation deps.leakCanary
 }
+
+apply plugin: 'com.google.gms.google-services'

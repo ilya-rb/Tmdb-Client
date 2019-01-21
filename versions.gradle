@@ -12,8 +12,8 @@ versions.with {
     androidGradle = "3.3.0"
     versionsGradle = "0.20.0"
     jacocoGradle = "0.8.2"
-    dexcountGradle = "0.8.5"
     buildScanGradle = "1.16"
+    firebaseGradle = "4.0.1"
 
     // Std
     kotlin = "1.3.11"

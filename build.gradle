@@ -17,8 +17,8 @@ buildscript {
         classpath gradlePlugins.kotlin
         classpath gradlePlugins.versions
         classpath gradlePlugins.jacoco
-        classpath gradlePlugins.dexcount
         classpath gradlePlugins.buildscan
+        classpath gradlePlugins.firebase
     }
 }
 
@@ -58,6 +58,6 @@ task clean(type: Delete) {
 apply plugin: 'com.gradle.build-scan'
 
 buildScan {
-    licenseAgreementUrl = 'https://gradle.com/terms-of-servie'
+    licenseAgreementUrl = 'https://gradle.com/terms-of-service'
     licenseAgree = 'yes'
 }
