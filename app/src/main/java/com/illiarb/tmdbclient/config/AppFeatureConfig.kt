@@ -1,6 +1,8 @@
 package com.illiarb.tmdbclient.config
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import com.illiarb.tmdbclient.BuildConfig
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdblcient.core.config.FeatureConfig
 import com.illiarb.tmdblcient.core.config.FeatureName
@@ -18,6 +20,14 @@ class AppFeatureConfig @Inject constructor() : FeatureConfig {
         .also {
             it.setDefaults(R.xml.remote_config_defaults)
         }
+
+    init {
+        remoteConfig.setConfigSettings(
+            FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build()
+        )
+    }
 
     override fun fetchConfiguration() {
         remoteConfig.fetch()
