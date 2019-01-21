@@ -1,5 +1,4 @@
 def gradlePlugins = [:]
-
 gradlePlugins.android = "com.android.tools.build:gradle:$versions.androidGradle"
 gradlePlugins.jacoco = "org.jacoco:org.jacoco.core:$versions.jacocoGradle"
 gradlePlugins.kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
@@ -8,7 +7,6 @@ gradlePlugins.dexcount = "com.getkeepsafe.dexcount:dexcount-gradle-plugin:$versi
 gradlePlugins.buildscan = "com.gradle:build-scan-plugin:$versions.buildScanGradle"
 
 def deps = [:]
-
 // STD
 deps.kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
 deps.kotlinCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlin_coroutines"
@@ -22,6 +20,9 @@ deps.appcompat = "androidx.appcompat:appcompat:$versions.supportLibrary"
 deps.pallete = "androidx.palette:palette:$versions.supportLibrary"
 deps.recyclerView = "androidx.recyclerview:recyclerview:$versions.supportLibrary"
 deps.constraintLayout = "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
+
+// Firebase
+deps.firebaseRemoteConfig = "com.google.firebase:firebase-config:$versions.firebase"
 
 // Arch components
 deps.viewmodel = "androidx.lifecycle:lifecycle-viewmodel:$versions.archComponents"
@@ -71,6 +72,7 @@ deps.leakCanaryRelease = "com.squareup.leakcanary:leakcanary-android-no-op:$vers
 
 def testDeps = [:]
 testDeps.junit = "junit:junit:$testVersions.junit"
+testDeps.mockito = "org.mockito:mockito-core:$testVersions.mockito"
 
 def androidTestDeps = [:]
 androidTestDeps.runner = "androidx.test:runner:$androidTestVersions.runner"
