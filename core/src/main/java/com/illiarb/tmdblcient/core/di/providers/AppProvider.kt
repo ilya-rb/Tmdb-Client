@@ -1,5 +1,6 @@
 package com.illiarb.tmdblcient.core.di.providers
 
+import com.illiarb.tmdblcient.core.config.FeatureConfig
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.system.feature.FeatureInstaller
 
@@ -11,4 +12,6 @@ interface AppProvider : StorageProvider, ToolsProvider {
     fun getApp(): App
 
     fun getFeatureInstaller(): FeatureInstaller
+
+    fun getFeatureConfig(): FeatureConfig
 }

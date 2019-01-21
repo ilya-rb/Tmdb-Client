@@ -8,7 +8,9 @@ import com.illiarb.tmdblcient.core.util.Cloneable
  */
 data class HomeUiState(
     val isLoading: Boolean,
-    val movies: List<MovieSection>
+    val movies: List<MovieSection>,
+    val isSearchEnabled: Boolean,
+    val isAuthEnabled: Boolean
 ) : Cloneable<HomeUiState> {
 
     override fun clone(): HomeUiState = copy()

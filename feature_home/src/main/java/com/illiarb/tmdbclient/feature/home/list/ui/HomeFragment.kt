@@ -8,6 +8,7 @@ import com.illiarb.tmdbclient.feature.home.list.presentation.HomeModel
 import com.illiarb.tmdbclient.feature.home.list.presentation.HomeUiState
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.common.ViewClickListener
+import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
@@ -90,7 +91,10 @@ class HomeFragment : BaseFragment<HomeModel>(), Injectable {
     }
 
     private fun render(state: HomeUiState) {
-        movieProgress.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+        homeAccount.setVisible(state.isAuthEnabled)
+        homeSearch.setVisible(state.isSearchEnabled)
+
+        movieProgress.setVisible(state.isLoading)
 
         if (state.movies.isNotEmpty()) {
             delegateAdapter.submitList(state.movies)

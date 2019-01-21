@@ -56,6 +56,7 @@ dependencies {
     implementation deps.dagger
     implementation deps.timber
     implementation deps.navigation
+    implementation deps.firebaseRemoteConfig
 
     // Play core lib for downloading dynamic features
     implementation deps.playCore

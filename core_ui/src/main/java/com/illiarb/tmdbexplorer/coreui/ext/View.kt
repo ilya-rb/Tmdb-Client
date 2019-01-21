@@ -34,3 +34,11 @@ fun View.show() {
 fun View.invisible() {
     visibility = View.INVISIBLE
 }
+
+fun View.setVisible(visible: Boolean) {
+    visibility = if (visible) {
+        View.VISIBLE
+    } else {
+        View.GONE
+    }
+}

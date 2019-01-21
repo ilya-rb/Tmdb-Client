@@ -1,6 +1,7 @@
 package com.illiarb.tmdbclient
 
 import android.app.Application
+import com.google.firebase.FirebaseApp
 import com.illiarb.tmdbclient.di.AppComponent
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
@@ -35,6 +36,8 @@ class MobileApplication : Application(), App {
         }
 
         LeakCanary.install(this)
+
+        FirebaseApp.initializeApp(this)
     }
 
     override fun getApplication(): Application = this
