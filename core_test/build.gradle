@@ -1,7 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
 
 apply from: dependenciesFilePath
 
@@ -21,18 +19,16 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
-    kapt deps.daggerCompiler
-
     implementation project(':core')
-    implementation project(':core_ui')
 
-    implementation deps.dagger
-
-    testImplementation project(':core_test')
+    api testDeps.junit
+    api testDeps.mockito
+    api testDeps.mockitoInline
+    api testDeps.mockitoKotlin
 }

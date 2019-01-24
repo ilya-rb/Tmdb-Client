@@ -73,6 +73,8 @@ deps.leakCanaryRelease = "com.squareup.leakcanary:leakcanary-android-no-op:$vers
 def testDeps = [:]
 testDeps.junit = "junit:junit:$testVersions.junit"
 testDeps.mockito = "org.mockito:mockito-core:$testVersions.mockito"
+testDeps.mockitoInline = "org.mockito:mockito-inline:$testVersions.mockito"
+testDeps.mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:$testVersions.mockitoKotlin"
 
 def androidTestDeps = [:]
 androidTestDeps.runner = "androidx.test:runner:$androidTestVersions.runner"

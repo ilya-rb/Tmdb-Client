@@ -3,22 +3,19 @@ package com.illiarb.tmdbclient.feature.search
 import com.illiarb.tmdbclient.feature.search.domain.SearchMovies
 import com.illiarb.tmdbclient.feature.search.presentation.SearchModel
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState
+import com.illiarb.tmdbcliient.core_test.TestObserver
+import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
 import com.illiarb.tmdblcient.core.common.Result
-import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import com.illiarb.tmdblcient.core.navigation.Router
-import com.illiarb.tmdblcient.core.util.observable.Observer
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
-import org.mockito.internal.verification.Only
-import org.mockito.verification.VerificationMode
 import java.util.*
 
 /**
@@ -93,7 +90,7 @@ class SearchModelTest {
     fun `on non-empty result progress is not displayed and result is success`() {
         runBlocking {
             val searchQuery = "test"
-            val result = listOf(createMovieStub(), createMovieStub())
+            val result = FakeEntityFactory.createFakeMovieList(2)
 
             Mockito
                 .`when`(mockSearchMovies.executeAsync(searchQuery))
@@ -110,7 +107,10 @@ class SearchModelTest {
                 .withLatest {
                     assertEquals(SearchUiState.SearchIcon.Cross, it.icon)
                     assertEquals(false, it.isSearchRunning)
-                    assertSame(SearchUiState.SearchResult.Success::class.java, it.result::class.java)
+                    assertSame(
+                        SearchUiState.SearchResult.Success::class.java,
+                        it.result::class.java
+                    )
 
                     val actual = (it.result as SearchUiState.SearchResult.Success).movies
                     assertArrayEquals(result.toTypedArray(), actual.toTypedArray())
@@ -120,50 +120,10 @@ class SearchModelTest {
 
     @Test
     fun `on movie clicked navigate to movie details is called`() {
-        val movie = createMovieStub()
+        val movie = FakeEntityFactory.createFakeMovie()
 
         searchModel.onMovieClicked(movie)
 
         verify(mockRouter).navigateTo(MovieDetailsScreen(movie.id))
-    }
-
-    class TestObserver<T> : Observer<T> {
-
-        private val values = mutableListOf<T>()
-
-        override fun onNewValue(value: T) {
-            values.add(value)
-        }
-
-        fun assertValuesCount(count: Int): TestObserver<T> {
-            assertEquals(count, values.size)
-            return this
-        }
-
-        fun assertNoValues(): TestObserver<T> {
-            assertEquals(true, values.isEmpty())
-            return this
-        }
-
-        fun clearValues(): TestObserver<T> {
-            values.clear()
-            return this
-        }
-
-        fun withPrevious(block: (T) -> Unit): TestObserver<T> {
-            block(values[values.size - 2])
-            return this
-        }
-
-        fun withLatest(block: (T) -> Unit): TestObserver<T> {
-            block(values.last())
-            return this
-        }
-    }
-
-    private fun createMovieStub(): Movie {
-        return Movie(
-            0, "", "", emptyList(), "", emptyList(), "", "", emptyList(), 0, "", emptyList(), 0f, 0
-        )
     }
 }
