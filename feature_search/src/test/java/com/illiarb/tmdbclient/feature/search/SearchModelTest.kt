@@ -3,70 +3,167 @@ package com.illiarb.tmdbclient.feature.search
 import com.illiarb.tmdbclient.feature.search.domain.SearchMovies
 import com.illiarb.tmdbclient.feature.search.presentation.SearchModel
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState
-import com.illiarb.tmdbclient.feature.search.presentation.ShowSearchFilters
-import com.illiarb.tmdbexplorer.coreui.uiactions.UiAction
+import com.illiarb.tmdblcient.core.common.Result
+import com.illiarb.tmdblcient.core.entity.Movie
+import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import com.illiarb.tmdblcient.core.navigation.Router
-import com.illiarb.tmdblcient.core.navigation.ScreenData
 import com.illiarb.tmdblcient.core.util.observable.Observer
-import org.junit.Assert
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyZeroInteractions
+import kotlinx.coroutines.runBlocking
+import org.junit.After
+import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
+import org.mockito.internal.verification.Only
+import org.mockito.verification.VerificationMode
+import java.util.*
 
 /**
+ * 1. Test on query clear correct icon is displayed
+ * 2. Test on running query loading is displayed
+ * 3. Test on success result loading is not displayed and correct result passed
+ * 4. Test on movie click navigates to correct route
+ *
  * @author ilya-rb on 21.01.19.
  */
 class SearchModelTest {
 
-    private val searchMovies = Mockito.mock(SearchMovies::class.java)
-    private val router = object : Router {
-        override fun navigateTo(data: ScreenData) {
-            // No-op
-        }
+    private val mockRouter = mock<Router>()
+
+    private val mockSearchMovies = mock<SearchMovies>()
+
+    private val searchModel = SearchModel(mockSearchMovies, mockRouter)
+
+    private val testStateObserver = TestObserver<SearchUiState>()
+
+    @Before
+    fun beforeEachTest() {
+        searchModel.stateObservable().addObserver(testStateObserver)
     }
 
-    private val model = SearchModel(searchMovies, router)
+    @After
+    fun afterEachTest() {
+        testStateObserver.clearValues()
+        searchModel.stateObservable().removeObserver(testStateObserver)
+    }
 
     @Test
     fun `on user clicks clear query, search icon is displayed`() {
-        val observer = createTestObserver<SearchUiState> {
-            Assert.assertEquals(it.icon, SearchUiState.SearchIcon.Search)
-            Assert.assertEquals(it.isSearchRunning, false)
-        }
+        // Clear search query from edit text
+        searchModel.onClearClicked()
 
-        runWithSubscription(observer) {
-            model.onClearClicked()
+        testStateObserver
+            // Idle + new state
+            .assertValuesCount(2)
+            .withLatest {
+                assertEquals(SearchUiState.SearchIcon.Search, it.icon)
+                assertEquals(false, it.isSearchRunning)
+            }
+    }
+
+    @Test
+    fun `on search query running progress is displayed and cross icon is displayed`() {
+        runBlocking {
+            val searchQuery = "test"
+
+            Mockito
+                .`when`(mockSearchMovies.executeAsync(searchQuery))
+                .thenReturn(Result.Success(Collections.emptyList()))
+
+            searchModel.search(searchQuery)
+
+            testStateObserver
+                // Idle + Loading State + Result state
+                .assertValuesCount(3)
+                .withPrevious {
+                    assertEquals(true, it.isSearchRunning)
+                }
+                .withLatest {
+                    assertEquals(SearchUiState.SearchIcon.Cross, it.icon)
+                    assertEquals(false, it.isSearchRunning)
+                    assertEquals(SearchUiState.SearchResult.Empty, it.result)
+                }
         }
     }
 
     @Test
-    fun `on user clicks filter show filter action is invoked`() {
-        val observer = createTestObserver<UiAction> {
-            Assert.assertSame(it, ShowSearchFilters)
-        }
+    fun `on non-empty result progress is not displayed and result is success`() {
+        runBlocking {
+            val searchQuery = "test"
+            val result = listOf(createMovieStub(), createMovieStub())
 
-        runWithActionSubscription(observer) {
-            model.onFilterClicked()
-        }
-    }
+            Mockito
+                .`when`(mockSearchMovies.executeAsync(searchQuery))
+                .thenReturn(Result.Success(result))
 
-    private inline fun runWithActionSubscription(observer: Observer<UiAction>, block: () -> Unit) {
-        model.actionsObservable().addObserver(observer)
-        block()
-        model.actionsObservable().removeObserver(observer)
-    }
+            searchModel.search(searchQuery)
 
-    private inline fun runWithSubscription(observer: Observer<SearchUiState>, block: () -> Unit) {
-        model.stateObservable().addObserver(observer)
-        block()
-        model.stateObservable().removeObserver(observer)
-    }
+            testStateObserver
+                // Idle + Loading State + Result state
+                .assertValuesCount(3)
+                .withPrevious {
+                    assertEquals(true, it.isSearchRunning)
+                }
+                .withLatest {
+                    assertEquals(SearchUiState.SearchIcon.Cross, it.icon)
+                    assertEquals(false, it.isSearchRunning)
+                    assertSame(SearchUiState.SearchResult.Success::class.java, it.result::class.java)
 
-    private inline fun <T> createTestObserver(crossinline onNewValue: (T) -> Unit): Observer<T> {
-        return object : Observer<T> {
-            override fun onNewValue(value: T) {
-                onNewValue(value)
-            }
+                    val actual = (it.result as SearchUiState.SearchResult.Success).movies
+                    assertArrayEquals(result.toTypedArray(), actual.toTypedArray())
+                }
         }
     }
 
+    @Test
+    fun `on movie clicked navigate to movie details is called`() {
+        val movie = createMovieStub()
+
+        searchModel.onMovieClicked(movie)
+
+        verify(mockRouter).navigateTo(MovieDetailsScreen(movie.id))
+    }
+
+    class TestObserver<T> : Observer<T> {
+
+        private val values = mutableListOf<T>()
+
+        override fun onNewValue(value: T) {
+            values.add(value)
+        }
+
+        fun assertValuesCount(count: Int): TestObserver<T> {
+            assertEquals(count, values.size)
+            return this
+        }
+
+        fun assertNoValues(): TestObserver<T> {
+            assertEquals(true, values.isEmpty())
+            return this
+        }
+
+        fun clearValues(): TestObserver<T> {
+            values.clear()
+            return this
+        }
+
+        fun withPrevious(block: (T) -> Unit): TestObserver<T> {
+            block(values[values.size - 2])
+            return this
+        }
+
+        fun withLatest(block: (T) -> Unit): TestObserver<T> {
+            block(values.last())
+            return this
+        }
+    }
+
+    private fun createMovieStub(): Movie {
+        return Movie(
+            0, "", "", emptyList(), "", emptyList(), "", "", emptyList(), 0, "", emptyList(), 0f, 0
+        )
+    }
 }

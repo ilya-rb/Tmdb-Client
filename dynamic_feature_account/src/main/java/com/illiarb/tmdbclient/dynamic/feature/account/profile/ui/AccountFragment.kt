@@ -33,11 +33,7 @@ class AccountFragment : BaseFragment<AccountModel>() {
     lateinit var favoritesAdapter: FavoritesAdapter
 
     private val stateObserver: LawObserver<AccountUiState> by lazy(NONE) {
-        object : LawObserver<AccountUiState>(presentationModel.stateObservable()) {
-            override fun onNewValue(value: AccountUiState) {
-                render(value)
-            }
-        }
+        LawObserver.create(presentationModel.stateObservable(), ::render)
     }
 
     override fun getContentView(): Int = R.layout.fragment_account

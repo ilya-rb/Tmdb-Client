@@ -34,7 +34,7 @@ abstract class BasePresentationModel<T : Cloneable<T>> : ViewModel(), CoroutineS
     private val actionsObservable = SimpleObservable<UiAction>()
 
     override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+        get() = job + Dispatchers.Unconfined
 
     override fun onCleared() {
         super.onCleared()

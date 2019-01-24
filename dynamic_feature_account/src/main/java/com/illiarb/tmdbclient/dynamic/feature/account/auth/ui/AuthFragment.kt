@@ -22,11 +22,7 @@ import kotlin.LazyThreadSafetyMode.NONE
 class AuthFragment : BaseFragment<AuthModel>(), Injectable {
 
     private val stateObserver: LawObserver<AuthUiState> by lazy(NONE) {
-        object : LawObserver<AuthUiState>(presentationModel.stateObservable()) {
-            override fun onNewValue(value: AuthUiState) {
-                render(value)
-            }
-        }
+        LawObserver.create(presentationModel.stateObservable(), ::render)
     }
 
     override fun getContentView(): Int = R.layout.fragment_auth
