@@ -4,8 +4,8 @@ import com.illiarb.tmdbclient.dynamic.feature.account.auth.domain.Authenticate
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthModel
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthUiState
 import com.illiarb.tmdbcliient.core_test.TestObserver
+import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
 import com.illiarb.tmdblcient.core.common.Result
-import com.illiarb.tmdblcient.core.entity.UserCredentials
 import com.illiarb.tmdblcient.core.navigation.AccountScreen
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.nhaarman.mockitokotlin2.mock
@@ -27,6 +27,7 @@ import org.mockito.Mockito
 class AuthModelTest {
 
     private val authenticate = mock<Authenticate>()
+
     private val router = mock<Router>()
 
     private val authModel = AuthModel(authenticate, router)
@@ -46,7 +47,22 @@ class AuthModelTest {
 
     @Test
     fun `on start authenticate progress is showing and button is disabled`() {
+        runBlocking {
+            val credentials = FakeEntityFactory.createValidCredentials()
 
+            Mockito
+                .`when`(authenticate.executeAsync(credentials))
+                .thenReturn(Result.Success(Unit))
+
+            authModel.authenticate(credentials.username, credentials.password)
+
+            testObserver
+                .assertValuesCount(3)
+                .withPrevious {
+                    assertEquals(true, it.isLoading)
+                    assertEquals(false, it.authButtonEnabled)
+                }
+        }
     }
 
     @Test
@@ -57,7 +73,7 @@ class AuthModelTest {
     @Test
     fun `on auth success progress is hidden and user navigates to account`() {
         runBlocking {
-            val credentials = UserCredentials("username", "password")
+            val credentials = FakeEntityFactory.createValidCredentials()
 
             Mockito
                 .`when`(authenticate.executeAsync(credentials))
@@ -68,10 +84,6 @@ class AuthModelTest {
             testObserver
                 // Idle + Loading + Result state
                 .assertValuesCount(3)
-                .withPrevious {
-                    assertEquals(true, it.isLoading)
-                    assertEquals(false, it.authButtonEnabled)
-                }
                 .withLatest {
                     assertEquals(false, it.isLoading)
                 }

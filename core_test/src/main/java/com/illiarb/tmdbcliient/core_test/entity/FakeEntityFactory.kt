@@ -1,8 +1,11 @@
 package com.illiarb.tmdbcliient.core_test.entity
 
 import com.illiarb.tmdblcient.core.entity.Movie
+import com.illiarb.tmdblcient.core.entity.UserCredentials
 
 /**
+ * Factory class to create entities for tests
+ *
  * @author ilya-rb on 24.01.19.
  */
 object FakeEntityFactory {
@@ -29,4 +32,10 @@ object FakeEntityFactory {
             add(createFakeMovie())
         }
     }
+
+    fun createValidCredentials() = UserCredentials("username", "password")
+
+    fun createUsernameEmptyCredentials() = UserCredentials("", "password")
+
+    fun createPasswordInvalidCredentials() = UserCredentials("username", "pas")
 }
