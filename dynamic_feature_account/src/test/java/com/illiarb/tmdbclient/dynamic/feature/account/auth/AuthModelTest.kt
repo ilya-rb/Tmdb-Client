@@ -6,6 +6,7 @@ import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthUiSt
 import com.illiarb.tmdbcliient.core_test.TestObserver
 import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
 import com.illiarb.tmdblcient.core.common.Result
+import com.illiarb.tmdblcient.core.exception.ValidationException
 import com.illiarb.tmdblcient.core.navigation.AccountScreen
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.nhaarman.mockitokotlin2.mock
@@ -21,6 +22,7 @@ import org.mockito.Mockito
  * 1. Test on authenticating Loading is showing and auth button is disabled
  * 2. Test on auth failure errors is showing
  * 3. Test on auth success navigated to account
+ * 4. Test on inputs changed auth button state changes
  *
  * @author ilya-rb on 24.01.19.
  */
@@ -67,7 +69,22 @@ class AuthModelTest {
 
     @Test
     fun `on auth failure errors are showing`() {
+        runBlocking {
+            val credentials = FakeEntityFactory.createUsernameEmptyCredentials()
 
+            Mockito
+                .`when`(authenticate.executeAsync(credentials))
+                .thenReturn(Result.Error(ValidationException(mutableListOf())))
+
+            authModel.authenticate(credentials.username, credentials.password)
+
+            testObserver
+                // Idle + Loading + Failure
+                .assertValuesCount(3)
+                .withLatest {
+                    assertEquals(true, it.error is ValidationException)
+                }
+        }
     }
 
     @Test
@@ -90,5 +107,26 @@ class AuthModelTest {
 
             verify(router).navigateTo(AccountScreen)
         }
+    }
+
+    @Test
+    fun `on text changes auth button state changes`() {
+        authModel.onTextChanged(arrayOf("username", ""))
+
+        testObserver
+            // Idle + Result state
+            .assertValuesCount(2)
+            .withLatest {
+                assertEquals(false, it.authButtonEnabled)
+            }
+
+        authModel.onTextChanged(arrayOf("username", "password"))
+
+        testObserver
+            // + New Result
+            .assertValuesCount(3)
+            .withLatest {
+                assertEquals(true, it.authButtonEnabled)
+            }
     }
 }
