@@ -9,11 +9,8 @@ import com.illiarb.tmdblcient.core.util.observable.BufferLatestObservable
 import com.illiarb.tmdblcient.core.util.observable.ImmutableObservable
 import com.illiarb.tmdblcient.core.util.observable.Observable
 import com.illiarb.tmdblcient.core.util.observable.SimpleObservable
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -23,6 +20,7 @@ typealias ErrorHandler = (Throwable) -> Unit
 
 typealias SuccessHandler <T> = (T) -> Unit
 
+@ExperimentalCoroutinesApi
 abstract class BasePresentationModel<T : Cloneable<T>> : ViewModel(), CoroutineScope {
 
     private val job = SupervisorJob()

@@ -8,12 +8,14 @@ import com.illiarb.tmdblcient.core.navigation.AuthScreen
 import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import com.illiarb.tmdblcient.core.navigation.Router
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
  * @author ilya-rb on 07.01.19.
  */
+@ExperimentalCoroutinesApi
 class AccountModel @Inject constructor(
     private val getProfileUseCase: GetProfileUseCase,
     private val signOutUseCase: SignOutUseCase,

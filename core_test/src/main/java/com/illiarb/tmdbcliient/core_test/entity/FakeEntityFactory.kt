@@ -1,7 +1,9 @@
 package com.illiarb.tmdbcliient.core_test.entity
 
+import com.illiarb.tmdblcient.core.entity.Account
 import com.illiarb.tmdblcient.core.entity.Movie
 import com.illiarb.tmdblcient.core.entity.UserCredentials
+import java.util.*
 
 /**
  * Factory class to create entities for tests
@@ -25,6 +27,15 @@ object FakeEntityFactory {
         emptyList(),
         7.4f,
         9
+    )
+
+    fun createFakeAccount(): Account = Account(
+        123,
+        "Name",
+        "Username",
+        "/fsdfs3434",
+        10,
+        Collections.emptyList()
     )
 
     fun createFakeMovieList(size: Int): List<Movie> = mutableListOf<Movie>().apply {

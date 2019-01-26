@@ -14,9 +14,24 @@ import com.illiarb.tmdbexplorer.coreui.uiactions.UiActionImpl
 import com.illiarb.tmdbexplorer.coreui.uiactions.UiActions
 import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.Injectable
+import com.illiarb.tmdblcient.core.system.coroutine.DispatcherProvider
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
-abstract class BaseFragment<T : BasePresentationModel<*>> : Fragment(), UiActions, Injectable {
+abstract class BaseFragment<T : BasePresentationModel<*>> : Fragment(),
+    UiActions,
+    Injectable,
+    CoroutineScope {
+
+    @Inject
+    protected lateinit var dispatcherProvider: DispatcherProvider
+
+    @Inject
+    protected lateinit var modelFactory: ViewModelProvider.Factory
 
     protected lateinit var presentationModel: T
         private set
@@ -29,15 +44,21 @@ abstract class BaseFragment<T : BasePresentationModel<*>> : Fragment(), UiAction
         }
     }
 
-    @Inject
-    lateinit var modelFactory: ViewModelProvider.Factory
+    private val job = SupervisorJob()
 
     @LayoutRes
     protected abstract fun getContentView(): Int
 
     protected abstract fun getModelClass(): Class<T>
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override val coroutineContext: CoroutineContext
+        get() = job + dispatcherProvider.main
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val contentView = getContentView()
 
         return if (contentView != View.NO_ID) {
@@ -53,6 +74,11 @@ abstract class BaseFragment<T : BasePresentationModel<*>> : Fragment(), UiAction
         actionsObserver.register(this)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        job.cancelChildren()
+    }
+
     override fun showToast(message: String) = uiActions.showToast(message)
 
     override fun showErrorDialog(message: String) = uiActions.showErrorDialog(message)
@@ -62,8 +88,10 @@ abstract class BaseFragment<T : BasePresentationModel<*>> : Fragment(), UiAction
     override fun hideBlockingProgress() = uiActions.hideBlockingProgress()
 
     protected open fun handleAction(action: UiAction) {
-        when (action) {
-            is ShowErrorDialogAction -> showErrorDialog(action.message)
+        launch(context = coroutineContext) {
+            when (action) {
+                is ShowErrorDialogAction -> showErrorDialog(action.message)
+            }
         }
     }
 
