@@ -90,7 +90,7 @@ class SearchModelTest {
     fun `on non-empty result progress is not displayed and result is success`() {
         runBlocking {
             val searchQuery = "test"
-            val result = FakeEntityFactory.createFakeMovieList(2)
+            val result = FakeEntityFactory.createFakeMovieList(size = 2)
 
             Mockito
                 .`when`(mockSearchMovies.executeAsync(searchQuery))
