@@ -2,6 +2,7 @@ package com.illiarb.tmdbcliient.core_test.entity
 
 import com.illiarb.tmdblcient.core.entity.Account
 import com.illiarb.tmdblcient.core.entity.Movie
+import com.illiarb.tmdblcient.core.entity.MovieFilter
 import com.illiarb.tmdblcient.core.entity.UserCredentials
 import java.util.*
 
@@ -32,6 +33,13 @@ object FakeEntityFactory {
         for (i in 0..size) {
             add(creator.invoke())
         }
+    }
+
+    fun createMovieFilters(): List<MovieFilter> = mutableListOf<MovieFilter>().apply {
+        add(MovieFilter(MovieFilter.TYPE_NOW_PLAYING, "now_playing"))
+        add(MovieFilter(MovieFilter.TYPE_POPULAR, "popular"))
+        add(MovieFilter(MovieFilter.TYPE_UPCOMING, "upcoming"))
+        add(MovieFilter(MovieFilter.TYPE_TOP_RATED, "top_rated"))
     }
 
     fun createValidCredentials() = UserCredentials("username", "password")
