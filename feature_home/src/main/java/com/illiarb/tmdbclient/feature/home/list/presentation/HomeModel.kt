@@ -8,12 +8,14 @@ import com.illiarb.tmdblcient.core.config.FeatureConfig
 import com.illiarb.tmdblcient.core.config.FeatureName
 import com.illiarb.tmdblcient.core.entity.*
 import com.illiarb.tmdblcient.core.navigation.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
 import javax.inject.Inject
 
 /**
  * @author ilya-rb on 08.01.19.
  */
+@ExperimentalCoroutinesApi
 class HomeModel @Inject constructor(
     featureConfig: FeatureConfig,
     private val getAllMovies: GetAllMovies,
