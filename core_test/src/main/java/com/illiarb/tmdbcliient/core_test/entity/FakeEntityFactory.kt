@@ -12,22 +12,9 @@ import java.util.*
  */
 object FakeEntityFactory {
 
-    fun createFakeMovie(): Movie = Movie(
-        123123,
-        "/ffgmdfg",
-        "/kgdg445",
-        emptyList(),
-        "http://google.com",
-        emptyList(),
-        "2018-01-12",
-        "overview",
-        emptyList(),
-        120,
-        "Movie title",
-        emptyList(),
-        7.4f,
-        9
-    )
+    fun createFakeMovie(init: () -> Movie = defaultMovieCreator()): Movie {
+        return init()
+    }
 
     fun createFakeAccount(): Account = Account(
         123,
@@ -38,9 +25,12 @@ object FakeEntityFactory {
         Collections.emptyList()
     )
 
-    fun createFakeMovieList(size: Int): List<Movie> = mutableListOf<Movie>().apply {
+    fun createFakeMovieList(
+        creator: () -> Movie = defaultMovieCreator(),
+        size: Int
+    ): List<Movie> = mutableListOf<Movie>().apply {
         for (i in 0..size) {
-            add(createFakeMovie())
+            add(creator.invoke())
         }
     }
 
@@ -49,4 +39,23 @@ object FakeEntityFactory {
     fun createUsernameEmptyCredentials() = UserCredentials("", "password")
 
     fun createPasswordInvalidCredentials() = UserCredentials("username", "pas")
+
+    private fun defaultMovieCreator(): () -> Movie = {
+        Movie(
+            123123,
+            "/ffgmdfg",
+            "/kgdg445",
+            emptyList(),
+            "http://google.com",
+            emptyList(),
+            "2018-01-12",
+            "overview",
+            emptyList(),
+            120,
+            "Movie title",
+            emptyList(),
+            7.4f,
+            9
+        )
+    }
 }
