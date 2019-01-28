@@ -10,6 +10,7 @@ import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.*
@@ -26,6 +27,7 @@ import java.util.*
  *
  * @author ilya-rb on 21.01.19.
  */
+@ExperimentalCoroutinesApi
 class SearchModelTest {
 
     private val mockRouter = mock<Router>()
