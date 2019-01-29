@@ -44,11 +44,10 @@ class AccountModelTest {
     @Test
     fun `on account fetched account is displaying and progress is hidden`() {
         runWithSubscription(accountModel.stateObservable()) { observer ->
-            observer
-                .withLatest {
-                    assertNotNull(it.account)
-                    assertFalse(it.isLoading)
-                }
+            observer.withLatest {
+                assertNotNull(it.account)
+                assertFalse(it.isLoading)
+            }
         }
     }
 
