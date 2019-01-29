@@ -25,10 +25,10 @@ abstract class BasePresentationModel<T : Cloneable<T>> : ViewModel(), CoroutineS
 
     private val job = SupervisorJob()
 
-    private val stateChannel: Channel<T> = Channel(Channel.CONFLATED)
-
+    // TODO: Need to inject this
     private val stateObservable = ImmutableObservable<T>(BufferLatestObservable())
 
+    // TODO: Need to inject this
     private val actionsObservable = SimpleObservable<UiAction>()
 
     override val coroutineContext: CoroutineContext
