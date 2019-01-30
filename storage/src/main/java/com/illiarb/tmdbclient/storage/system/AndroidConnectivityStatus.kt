@@ -9,6 +9,7 @@ import android.net.ConnectivityManager
 import com.illiarb.tmdblcient.core.system.ConnectivityStatus
 import com.illiarb.tmdblcient.core.system.ConnectivityStatus.ConnectionState
 import com.illiarb.tmdblcient.core.util.observable.Observable
+import com.illiarb.tmdblcient.core.util.observable.Observer
 import com.illiarb.tmdblcient.core.util.observable.SimpleObservable
 import javax.inject.Inject
 
@@ -19,14 +20,22 @@ class AndroidConnectivityStatus @Inject constructor(
     private val context: Context
 ) : ConnectivityStatus {
 
-    companion object {
-        private const val INTENT_FILTER_CONNECTIVITY_CHANGE = "android.net.conn.CONNECTIVITY_CHANGE"
-    }
-
     private val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-    private val statusObservable = SimpleObservable<ConnectionState>()
+    private val statusObservable = object : SimpleObservable<ConnectionState>() {
+
+        override fun addObserver(observer: Observer<ConnectionState>) {
+            super.addObserver(observer)
+            registerReceiver()
+        }
+
+        override fun removeObserver(observer: Observer<ConnectionState>) {
+            super.removeObserver(observer)
+            unregisterReceiver()
+        }
+    }
+        .also { it.accept(getConnectionStatus()) }
 
     @SuppressLint("MissingPermission")
     private val connectionReceiver = object : BroadcastReceiver() {
@@ -51,7 +60,9 @@ class AndroidConnectivityStatus @Inject constructor(
         }
 
     private fun registerReceiver() {
-        context.registerReceiver(connectionReceiver, IntentFilter(INTENT_FILTER_CONNECTIVITY_CHANGE))
+        context.registerReceiver(
+            connectionReceiver, IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")
+        )
     }
 
     private fun unregisterReceiver() {
