@@ -42,11 +42,19 @@ dependencies {
 
     implementation project(':core')
 
-    implementation deps.binaryPrefs
     implementation deps.dagger
+
+    // Caching
+    implementation deps.binaryPrefs
+
+    // Network
     implementation deps.retrofit
     implementation deps.converterGson
     implementation deps.coroutinesAdapter
     implementation deps.okHttpLogger
+
+    // Job scheduler
     implementation deps.workManager
+
+    testImplementation project(':core_test')
 }
