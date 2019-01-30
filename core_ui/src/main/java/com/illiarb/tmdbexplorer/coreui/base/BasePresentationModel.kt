@@ -25,10 +25,10 @@ abstract class BasePresentationModel<T : Cloneable<T>> : ViewModel(), CoroutineS
 
     private val job = SupervisorJob()
 
-    // TODO: Need to inject this
+    // TODO: Probably need to inject this
     private val stateObservable = ImmutableObservable<T>(BufferLatestObservable())
 
-    // TODO: Need to inject this
+    // TODO: Probably need to inject this
     private val actionsObservable = SimpleObservable<UiAction>()
 
     override val coroutineContext: CoroutineContext
