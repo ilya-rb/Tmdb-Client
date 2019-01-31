@@ -9,7 +9,7 @@ defaults: &defaults
 
 jobs:
 
-  build:
+  debugBuild:
     working_directory: ~/code
 
     <<: *defaults
@@ -30,7 +30,7 @@ jobs:
 
     - run:
         name: Build Project
-        command: ./gradlew build --scan --exclude-task test lint
+        command: ./gradlew assembleDebug --scan --exclude-task test --exclude-task lint
 
     - save_cache:
         paths:
