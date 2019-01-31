@@ -9,20 +9,21 @@ import com.illiarb.tmdbclient.feature.home.list.presentation.HomeUiState
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.common.ViewClickListener
 import com.illiarb.tmdbexplorer.coreui.ext.setVisible
-import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
 import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.AdapterDelegate
 import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.DelegateAdapter
-import com.illiarb.tmdbexplorer.coreui.uiactions.ShowErrorDialogAction
-import com.illiarb.tmdbexplorer.coreui.uiactions.UiAction
+import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Movie
 import kotlinx.android.synthetic.main.fragment_movies.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.LazyThreadSafetyMode.NONE
 
+@ExperimentalCoroutinesApi
 class HomeFragment : BaseFragment<HomeModel>(), Injectable {
 
     @Inject
@@ -91,13 +92,15 @@ class HomeFragment : BaseFragment<HomeModel>(), Injectable {
     }
 
     private fun render(state: HomeUiState) {
-        homeAccount.setVisible(state.isAuthEnabled)
-        homeSearch.setVisible(state.isSearchEnabled)
+        launch(context = coroutineContext) {
+            homeAccount.setVisible(state.isAuthEnabled)
+            homeSearch.setVisible(state.isSearchEnabled)
 
-        movieProgress.setVisible(state.isLoading)
+            movieProgress.setVisible(state.isLoading)
 
-        if (state.movies.isNotEmpty()) {
-            delegateAdapter.submitList(state.movies)
+            if (state.movies.isNotEmpty()) {
+                delegateAdapter.submitList(state.movies)
+            }
         }
     }
 }

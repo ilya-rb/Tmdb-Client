@@ -15,13 +15,11 @@ import com.illiarb.tmdbexplorer.coreui.uiactions.UiActions
 import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.system.coroutine.DispatcherProvider
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
+@ExperimentalCoroutinesApi
 abstract class BaseFragment<T : BasePresentationModel<*>> : Fragment(),
     UiActions,
     Injectable,

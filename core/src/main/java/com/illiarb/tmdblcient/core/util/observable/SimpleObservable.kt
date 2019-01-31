@@ -5,7 +5,7 @@ package com.illiarb.tmdblcient.core.util.observable
  */
 open class SimpleObservable<T> : Observable<T> {
 
-    val observers = mutableSetOf<Observer<T>>()
+    private val observers = mutableSetOf<Observer<T>>()
 
     override fun addObserver(observer: Observer<T>) {
         observers.add(observer)
@@ -18,6 +18,8 @@ open class SimpleObservable<T> : Observable<T> {
     override fun removeObserver(observer: Observer<T>) {
         observers.remove(observer)
     }
+
+    protected fun observersCount(): Int = observers.size
 
     protected fun notifyObservers(value: T, vararg observers: Observer<T>) {
         observers.forEach {

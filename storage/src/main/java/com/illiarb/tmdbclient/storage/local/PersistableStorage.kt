@@ -19,6 +19,7 @@ class PersistableStorage @Inject constructor(app: App) {
 
     companion object {
         const val STORE_NAME = "tmdb_cache"
+
         const val KEY_SESSION_ID = "session_id"
         const val KEY_ACCOUNT = "account"
         const val KEY_CONFIGURATION = "configuration"

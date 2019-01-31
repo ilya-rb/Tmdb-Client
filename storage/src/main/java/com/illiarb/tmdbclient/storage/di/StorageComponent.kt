@@ -28,6 +28,7 @@ interface StorageComponent : StorageProvider {
         fun get(app: App, toolsProvider: ToolsProvider): StorageProvider =
             DaggerStorageComponent.builder()
                 .storageModule(StorageModule(app))
+                .networkModule(NetworkModule(app))
                 .toolsProvider(toolsProvider)
                 .build()
     }

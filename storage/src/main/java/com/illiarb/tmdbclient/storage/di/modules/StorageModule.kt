@@ -41,6 +41,5 @@ class StorageModule(val app: App) {
     fun provideWorkerFactory(
         configurationService: ConfigurationService,
         persistableStorage: PersistableStorage
-    ): WorkerFactory =
-        DaggerWorkerFactory(configurationService, persistableStorage)
+    ): WorkerFactory = DaggerWorkerFactory(configurationService, persistableStorage)
 }

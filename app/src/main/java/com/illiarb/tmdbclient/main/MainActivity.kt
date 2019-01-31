@@ -56,6 +56,6 @@ class MainActivity : AppCompatActivity(), Injectable, Observer<ConnectionState> 
             .navigateUp()
 
     override fun onNewValue(value: ConnectionState) {
-        connectionStatusLabel.setVisible(value == ConnectionState.CONNECTED)
+        connectionStatusLabel.setVisible(value == ConnectionState.NOT_CONNECTED)
     }
 }

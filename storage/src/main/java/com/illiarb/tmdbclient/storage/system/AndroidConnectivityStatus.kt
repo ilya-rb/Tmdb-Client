@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import com.illiarb.tmdblcient.core.system.ConnectivityStatus
 import com.illiarb.tmdblcient.core.system.ConnectivityStatus.ConnectionState
+import com.illiarb.tmdblcient.core.util.observable.BufferLatestObservable
 import com.illiarb.tmdblcient.core.util.observable.Observable
 import com.illiarb.tmdblcient.core.util.observable.Observer
 import com.illiarb.tmdblcient.core.util.observable.SimpleObservable
@@ -26,13 +27,18 @@ class AndroidConnectivityStatus @Inject constructor(
     private val statusObservable = object : SimpleObservable<ConnectionState>() {
 
         override fun addObserver(observer: Observer<ConnectionState>) {
+            if (observersCount() == 0) {
+                registerReceiver()
+            }
             super.addObserver(observer)
-            registerReceiver()
         }
 
         override fun removeObserver(observer: Observer<ConnectionState>) {
             super.removeObserver(observer)
-            unregisterReceiver()
+
+            if (observersCount() == 0) {
+                unregisterReceiver()
+            }
         }
     }
         .also { it.accept(getConnectionStatus()) }

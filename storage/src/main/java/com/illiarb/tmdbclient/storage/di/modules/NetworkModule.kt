@@ -6,9 +6,11 @@ import com.google.gson.GsonBuilder
 import com.illiarb.tmdbclient.storage.BuildConfig
 import com.illiarb.tmdbclient.storage.network.api.ApiKeyInterceptor
 import com.illiarb.tmdbclient.storage.network.api.service.*
+import com.illiarb.tmdblcient.core.di.App
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
@@ -22,7 +24,7 @@ import javax.inject.Singleton
  * @author ilya-rb on 24.12.18.
  */
 @Module
-class NetworkModule {
+class NetworkModule(private val app: App) {
 
     @Module
     companion object {
@@ -30,6 +32,7 @@ class NetworkModule {
         const val CONNECT_TIMEOUT = 10L
         const val READ_TIMEOUT = 10L
         const val WRITE_TIMEOUT = 10L
+        const val CACHE_SIZE_BYTES = 20 * 1024L
 
         @Provides
         @JvmStatic
@@ -78,25 +81,13 @@ class NetworkModule {
 
         @Provides
         @JvmStatic
-        fun provideApiOkHttpClient(
-            apiKeyInterceptor: ApiKeyInterceptor,
-            httpLoggerInterceptor: HttpLoggingInterceptor
-        ): OkHttpClient =
-            OkHttpClient.Builder()
-                .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
-                .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
-                .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
-                .addInterceptor(apiKeyInterceptor)
-                .addInterceptor(httpLoggerInterceptor)
-                .build()
+        fun provideApiCallAdapterFactory(): CallAdapter.Factory =
+            CoroutineCallAdapterFactory.invoke()
 
         @Provides
         @JvmStatic
-        fun provideApiCallAdapterFactory(): CallAdapter.Factory = CoroutineCallAdapterFactory.invoke()
-
-        @Provides
-        @JvmStatic
-        fun provideApiConverterFactory(gson: Gson): Converter.Factory = GsonConverterFactory.create(gson)
+        fun provideApiConverterFactory(gson: Gson): Converter.Factory =
+            GsonConverterFactory.create(gson)
 
         @Provides
         @JvmStatic
@@ -110,4 +101,18 @@ class NetworkModule {
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create()
     }
+
+    @Provides
+    fun provideApiOkHttpClient(
+        apiKeyInterceptor: ApiKeyInterceptor,
+        httpLoggerInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient =
+        OkHttpClient.Builder()
+            .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+            .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+            .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
+            .addInterceptor(apiKeyInterceptor)
+            .addInterceptor(httpLoggerInterceptor)
+            .cache(Cache(app.getApplication().filesDir, CACHE_SIZE_BYTES))
+            .build()
 }

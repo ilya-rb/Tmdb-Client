@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 /**
  * @author ilya-rb on 03.12.18.
  */
-class ConfigurationFetchWork constructor(
+class ConfigurationFetchWork(
     context: Context,
     workerParameters: WorkerParameters,
     private val configurationService: ConfigurationService,
@@ -25,7 +25,10 @@ class ConfigurationFetchWork constructor(
         const val WORKER_REPEAT_INTERVAL = 2L
 
         fun createWorkRequest(): PeriodicWorkRequest =
-            PeriodicWorkRequestBuilder<ConfigurationFetchWork>(WORKER_REPEAT_INTERVAL, TimeUnit.DAYS)
+            PeriodicWorkRequestBuilder<ConfigurationFetchWork>(
+                WORKER_REPEAT_INTERVAL,
+                TimeUnit.DAYS
+            )
                 .addTag(ConfigurationFetchWork::class.java.name)
                 .setConstraints(
                     Constraints.Builder()
