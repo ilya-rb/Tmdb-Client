@@ -22,7 +22,7 @@ jobs:
 
     - run:
         name: Download configuration files
-        command: ./ci_config/fetch_config.sh
+        command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
 
     - run:
         name: Download Dependencies
