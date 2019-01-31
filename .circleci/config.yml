@@ -1,13 +1,18 @@
 version: 2
+
+defaults: &defaults
+  docker:
+  - image: circleci/android:api-28
+
+  environment:
+    JVM_OPTS: -Xmx3200m
+
 jobs:
+
   build:
     working_directory: ~/code
 
-    docker:
-    - image: circleci/android:api-28
-
-    environment:
-      JVM_OPTS: -Xmx3200m
+    <<: *defaults
 
     steps:
     - checkout
@@ -15,9 +20,9 @@ jobs:
     - restore_cache:
         key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
 
-    #      - run:
-    #         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
-    #         command: sudo chmod +x ./gradlew
+    - run:
+        name: Download configuration files
+        command: ./ci_config/fetch_config.sh
 
     - run:
         name: Download Dependencies
