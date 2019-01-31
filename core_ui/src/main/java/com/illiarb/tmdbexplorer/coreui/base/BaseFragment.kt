@@ -93,6 +93,12 @@ abstract class BaseFragment<T : BasePresentationModel<*>> : Fragment(),
         }
     }
 
+    protected inline fun runOnUi(crossinline block: () -> Unit) {
+        launch(context = coroutineContext) {
+            block()
+        }
+    }
+
     private fun createPresentationModel() {
         if (::modelFactory.isInitialized) {
             presentationModel = ViewModelProviders.of(this, modelFactory).get(getModelClass())

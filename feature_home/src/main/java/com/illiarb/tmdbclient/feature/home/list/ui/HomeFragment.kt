@@ -19,7 +19,6 @@ import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.entity.Movie
 import kotlinx.android.synthetic.main.fragment_movies.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.LazyThreadSafetyMode.NONE
 
@@ -91,16 +90,14 @@ class HomeFragment : BaseFragment<HomeModel>(), Injectable {
         }
     }
 
-    private fun render(state: HomeUiState) {
-        launch(context = coroutineContext) {
-            homeAccount.setVisible(state.isAuthEnabled)
-            homeSearch.setVisible(state.isSearchEnabled)
+    private fun render(state: HomeUiState) = runOnUi {
+        homeAccount.setVisible(state.isAuthEnabled)
+        homeSearch.setVisible(state.isSearchEnabled)
 
-            movieProgress.setVisible(state.isLoading)
+        movieProgress.setVisible(state.isLoading)
 
-            if (state.movies.isNotEmpty()) {
-                delegateAdapter.submitList(state.movies)
-            }
+        if (state.movies.isNotEmpty()) {
+            delegateAdapter.submitList(state.movies)
         }
     }
 }
