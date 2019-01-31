@@ -5,13 +5,12 @@ import com.illiarb.tmdbclient.feature.home.list.domain.MovieBlock
 import com.illiarb.tmdbclient.feature.home.list.presentation.HomeModel
 import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
 import com.illiarb.tmdbcliient.core_test.runWithSubscription
-import com.illiarb.tmdblcient.core.storage.Authenticator
 import com.illiarb.tmdblcient.core.common.Result
+import com.illiarb.tmdblcient.core.domain.entity.MovieFilter
+import com.illiarb.tmdblcient.core.navigation.*
+import com.illiarb.tmdblcient.core.storage.Authenticator
 import com.illiarb.tmdblcient.core.system.featureconfig.FeatureConfig
 import com.illiarb.tmdblcient.core.system.featureconfig.FeatureName
-import com.illiarb.tmdblcient.core.domain.entity.MovieFilter
-import com.illiarb.tmdbexplorer.coreui.navigation.*
-import com.illiarb.tmdblcient.core.navigation.*
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi

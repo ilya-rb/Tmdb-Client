@@ -56,7 +56,7 @@ jobs:
 
     - run:
         name: Run Unit Tests
-        command: ./gradlew test
+        command: ./gradlew testDebugUnitTest
 
     - store_test_results:
         path: app/test/test-results
