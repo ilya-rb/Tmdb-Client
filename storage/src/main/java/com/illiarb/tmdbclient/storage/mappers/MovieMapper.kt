@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.storage.mappers
 
 import com.illiarb.tmdbclient.storage.model.MovieModel
-import com.illiarb.tmdblcient.core.entity.Movie
+import com.illiarb.tmdblcient.core.domain.entity.Movie
 import java.util.*
 import javax.inject.Inject
 

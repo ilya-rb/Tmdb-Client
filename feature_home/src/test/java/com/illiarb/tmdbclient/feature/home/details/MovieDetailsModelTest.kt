@@ -5,7 +5,7 @@ import com.illiarb.tmdbclient.feature.home.details.presentation.MovieDetailsMode
 import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
 import com.illiarb.tmdbcliient.core_test.runWithSubscription
 import com.illiarb.tmdblcient.core.common.Result
-import com.illiarb.tmdblcient.core.entity.Movie
+import com.illiarb.tmdblcient.core.domain.entity.Movie
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi

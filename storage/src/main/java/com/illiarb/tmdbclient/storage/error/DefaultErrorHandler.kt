@@ -2,6 +2,8 @@ package com.illiarb.tmdbclient.storage.error
 
 import com.google.gson.JsonParser
 import com.illiarb.tmdblcient.core.exception.*
+import com.illiarb.tmdblcient.core.storage.ErrorHandler
+import com.illiarb.tmdblcient.core.storage.ErrorMessageBag
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 import javax.inject.Inject

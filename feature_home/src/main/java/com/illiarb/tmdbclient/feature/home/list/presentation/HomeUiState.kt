@@ -1,6 +1,6 @@
 package com.illiarb.tmdbclient.feature.home.list.presentation
 
-import com.illiarb.tmdblcient.core.entity.MovieSection
+import com.illiarb.tmdblcient.core.domain.entity.MovieSection
 import com.illiarb.tmdblcient.core.util.Cloneable
 
 /**

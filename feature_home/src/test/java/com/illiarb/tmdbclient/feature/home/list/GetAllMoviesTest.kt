@@ -3,9 +3,9 @@ package com.illiarb.tmdbclient.feature.home.list
 import com.illiarb.tmdbclient.feature.home.list.domain.GetAllMovies
 import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
 import com.illiarb.tmdblcient.core.common.Result
-import com.illiarb.tmdblcient.core.entity.MovieFilter
-import com.illiarb.tmdblcient.core.exception.ErrorHandler
-import com.illiarb.tmdblcient.core.repository.MoviesRepository
+import com.illiarb.tmdblcient.core.domain.entity.MovieFilter
+import com.illiarb.tmdblcient.core.storage.ErrorHandler
+import com.illiarb.tmdblcient.core.storage.MoviesRepository
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.runBlocking

@@ -3,11 +3,11 @@ package com.illiarb.tmdbclient
 import android.app.Application
 import com.google.firebase.FirebaseApp
 import com.illiarb.tmdbclient.di.AppComponent
-import com.illiarb.tmdblcient.core.config.FeatureConfig
+import com.illiarb.tmdblcient.core.system.featureconfig.FeatureConfig
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.system.Logger
-import com.illiarb.tmdblcient.core.system.WorkManager
+import com.illiarb.tmdblcient.core.storage.WorkManager
 import com.squareup.leakcanary.LeakCanary
 import timber.log.Timber
 import javax.inject.Inject

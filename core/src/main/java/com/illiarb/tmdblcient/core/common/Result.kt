@@ -1,6 +1,6 @@
 package com.illiarb.tmdblcient.core.common
 
-import com.illiarb.tmdblcient.core.exception.ErrorHandler
+import com.illiarb.tmdblcient.core.storage.ErrorHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 
@@ -16,9 +16,13 @@ sealed class Result<out T> {
             block: suspend CoroutineScope.() -> T
         ): Result<T> = coroutineScope {
             try {
-                Result.Success(block(this))
+                Success(block(this))
             } catch (e: Exception) {
-                Result.Error<T>(errorHandler.createExceptionFromThrowable(e))
+                Error<T>(
+                    errorHandler.createExceptionFromThrowable(
+                        e
+                    )
+                )
             }
         }
     }

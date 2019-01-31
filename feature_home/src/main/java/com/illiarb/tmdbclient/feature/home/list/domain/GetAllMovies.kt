@@ -2,10 +2,10 @@ package com.illiarb.tmdbclient.feature.home.list.domain
 
 import com.illiarb.tmdblcient.core.common.Result
 import com.illiarb.tmdblcient.core.domain.NonBlockingUseCase
-import com.illiarb.tmdblcient.core.entity.Movie
-import com.illiarb.tmdblcient.core.entity.MovieFilter
-import com.illiarb.tmdblcient.core.exception.ErrorHandler
-import com.illiarb.tmdblcient.core.repository.MoviesRepository
+import com.illiarb.tmdblcient.core.domain.entity.Movie
+import com.illiarb.tmdblcient.core.domain.entity.MovieFilter
+import com.illiarb.tmdblcient.core.storage.ErrorHandler
+import com.illiarb.tmdblcient.core.storage.MoviesRepository
 import javax.inject.Inject
 
 /**

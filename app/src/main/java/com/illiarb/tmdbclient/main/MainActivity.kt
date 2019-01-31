@@ -2,17 +2,16 @@ package com.illiarb.tmdbclient.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.Navigation
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.main.di.MainComponent
+import com.illiarb.tmdblcient.core.navigation.Navigator
+import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
 import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdbexplorer.coreui.keyboard.KeyboardContentResizer
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
-import com.illiarb.tmdblcient.core.navigation.Navigator
-import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
-import com.illiarb.tmdblcient.core.system.ConnectivityStatus
-import com.illiarb.tmdblcient.core.system.ConnectivityStatus.ConnectionState
+import com.illiarb.tmdblcient.core.tools.ConnectivityStatus
+import com.illiarb.tmdblcient.core.tools.ConnectivityStatus.ConnectionState
 import com.illiarb.tmdblcient.core.util.observable.Observer
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -49,11 +48,6 @@ class MainActivity : AppCompatActivity(), Injectable, Observer<ConnectionState> 
         navigatorHolder.removeNavigator()
         connectivityStatus.connectionState().removeObserver(this)
     }
-
-    override fun onNavigateUp(): Boolean =
-        Navigation
-            .findNavController(this, R.id.nav_host_fragment)
-            .navigateUp()
 
     override fun onNewValue(value: ConnectionState) {
         connectionStatusLabel.setVisible(value == ConnectionState.NOT_CONNECTED)

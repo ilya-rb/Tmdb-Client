@@ -1,9 +1,9 @@
 package com.illiarb.tmdblcient.core.navigation
 
 /**
- * @author ilya-rb on 18.11.18.
+ * @author ilya-rb on 31.01.19.
  */
 interface Navigator {
 
-    fun runNavigate(data: ScreenData)
+    fun runNavigation(screen: Screen)
 }

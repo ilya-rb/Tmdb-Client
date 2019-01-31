@@ -4,10 +4,10 @@ import com.illiarb.tmdbclient.storage.local.PersistableStorage
 import com.illiarb.tmdbclient.storage.mappers.AccountMapper
 import com.illiarb.tmdbclient.storage.mappers.MovieMapper
 import com.illiarb.tmdbclient.storage.network.api.service.AccountService
-import com.illiarb.tmdblcient.core.entity.Account
-import com.illiarb.tmdblcient.core.entity.Movie
-import com.illiarb.tmdblcient.core.repository.AccountRepository
-import com.illiarb.tmdblcient.core.system.coroutine.DispatcherProvider
+import com.illiarb.tmdblcient.core.domain.entity.Account
+import com.illiarb.tmdblcient.core.domain.entity.Movie
+import com.illiarb.tmdblcient.core.storage.AccountRepository
+import com.illiarb.tmdblcient.core.tools.DispatcherProvider
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 

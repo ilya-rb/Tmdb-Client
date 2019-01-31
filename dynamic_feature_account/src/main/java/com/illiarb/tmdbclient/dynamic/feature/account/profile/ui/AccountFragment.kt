@@ -19,7 +19,7 @@ import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
 import com.illiarb.tmdbexplorer.coreui.uiactions.UiAction
 import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
-import com.illiarb.tmdblcient.core.entity.Account
+import com.illiarb.tmdblcient.core.domain.entity.Account
 import kotlinx.android.synthetic.main.fragment_account.*
 import javax.inject.Inject
 import kotlin.LazyThreadSafetyMode.NONE

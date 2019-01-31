@@ -126,6 +126,10 @@ class SearchModelTest {
 
         searchModel.onMovieClicked(movie)
 
-        verify(mockRouter).navigateTo(MovieDetailsScreen(movie.id))
+        verify(mockRouter).navigateTo(
+            MovieDetailsScreen(
+                movie.id
+            )
+        )
     }
 }

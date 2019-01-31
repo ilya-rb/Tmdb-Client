@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.storage.local
 
 import com.illiarb.tmdblcient.core.di.App
-import com.illiarb.tmdblcient.core.system.ResourceResolver
+import com.illiarb.tmdblcient.core.storage.ResourceResolver
 
 /**
  * @author ilya-rb on 31.10.18.

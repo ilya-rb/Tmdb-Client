@@ -3,7 +3,7 @@ package com.illiarb.tmdbclient.dynamic.feature.account.auth
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.domain.ValidateCredentials
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.domain.Validator
 import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
-import com.illiarb.tmdblcient.core.entity.UserCredentials
+import com.illiarb.tmdblcient.core.domain.entity.UserCredentials
 import com.illiarb.tmdblcient.core.exception.ErrorCodes
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.Assert.assertEquals

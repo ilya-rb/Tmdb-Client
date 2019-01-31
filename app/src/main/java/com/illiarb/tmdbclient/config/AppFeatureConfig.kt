@@ -4,9 +4,9 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.illiarb.tmdbclient.BuildConfig
 import com.illiarb.tmdbclient.R
-import com.illiarb.tmdblcient.core.config.FeatureConfig
-import com.illiarb.tmdblcient.core.config.FeatureName
 import com.illiarb.tmdblcient.core.system.Logger
+import com.illiarb.tmdblcient.core.system.featureconfig.FeatureConfig
+import com.illiarb.tmdblcient.core.system.featureconfig.FeatureName
 import javax.inject.Inject
 import javax.inject.Singleton
 

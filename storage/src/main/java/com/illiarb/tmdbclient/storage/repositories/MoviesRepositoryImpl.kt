@@ -7,12 +7,12 @@ import com.illiarb.tmdbclient.storage.mappers.ReviewMapper
 import com.illiarb.tmdbclient.storage.model.MovieModel
 import com.illiarb.tmdbclient.storage.network.api.service.MovieService
 import com.illiarb.tmdbclient.storage.network.api.service.SearchService
-import com.illiarb.tmdblcient.core.entity.Movie
-import com.illiarb.tmdblcient.core.entity.MovieFilter
-import com.illiarb.tmdblcient.core.entity.Review
-import com.illiarb.tmdblcient.core.repository.MoviesRepository
-import com.illiarb.tmdblcient.core.system.ResourceResolver
-import com.illiarb.tmdblcient.core.system.coroutine.DispatcherProvider
+import com.illiarb.tmdblcient.core.domain.entity.Movie
+import com.illiarb.tmdblcient.core.domain.entity.MovieFilter
+import com.illiarb.tmdblcient.core.domain.entity.Review
+import com.illiarb.tmdblcient.core.storage.MoviesRepository
+import com.illiarb.tmdblcient.core.storage.ResourceResolver
+import com.illiarb.tmdblcient.core.tools.DispatcherProvider
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -62,7 +62,12 @@ class MoviesRepositoryImpl @Inject constructor(
         withContext(dispatcherProvider.io) {
             resourceResolver
                 .getStringArray(R.array.movie_filters)
-                .map { MovieFilter(it, it.toLowerCase().replace(" ", "_")) }
+                .map {
+                    MovieFilter(
+                        it,
+                        it.toLowerCase().replace(" ", "_")
+                    )
+                }
         }
 
     override suspend fun searchMovies(query: String): List<Movie> =

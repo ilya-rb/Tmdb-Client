@@ -3,7 +3,7 @@ package com.illiarb.tmdbclient.dynamic.feature.account.profile.presentation
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.domain.GetProfileUseCase
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.domain.SignOutUseCase
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
-import com.illiarb.tmdblcient.core.entity.Movie
+import com.illiarb.tmdblcient.core.domain.entity.Movie
 import com.illiarb.tmdblcient.core.navigation.AuthScreen
 import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import com.illiarb.tmdblcient.core.navigation.Router

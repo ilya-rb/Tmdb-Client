@@ -8,7 +8,7 @@ import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.AdapterDelegate
 import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseDelegateViewHolder
-import com.illiarb.tmdblcient.core.entity.NowPlayingSection
+import com.illiarb.tmdblcient.core.domain.entity.NowPlayingSection
 import com.yarolegovich.discretescrollview.DiscreteScrollView
 import com.yarolegovich.discretescrollview.transform.Pivot
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer

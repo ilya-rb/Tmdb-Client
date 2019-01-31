@@ -2,10 +2,10 @@ package com.illiarb.tmdbclient.di.modules
 
 import com.illiarb.tmdbclient.config.AppFeatureConfig
 import com.illiarb.tmdbclient.system.AppFeatureInstaller
-import com.illiarb.tmdblcient.core.config.FeatureConfig
+import com.illiarb.tmdblcient.core.system.featureconfig.FeatureConfig
 import com.illiarb.tmdblcient.core.di.App
-import com.illiarb.tmdblcient.core.system.ResourceResolver
-import com.illiarb.tmdblcient.core.system.feature.FeatureInstaller
+import com.illiarb.tmdblcient.core.storage.ResourceResolver
+import com.illiarb.tmdblcient.core.system.dynamicfeature.FeatureInstaller
 import dagger.Module
 import dagger.Provides
 

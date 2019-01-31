@@ -4,7 +4,7 @@ import com.illiarb.tmdbclient.feature.search.domain.SearchMovies
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchIcon
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchResult
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
-import com.illiarb.tmdblcient.core.entity.Movie
+import com.illiarb.tmdblcient.core.domain.entity.Movie
 import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import com.illiarb.tmdblcient.core.navigation.Router
 import kotlinx.coroutines.ExperimentalCoroutinesApi

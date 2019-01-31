@@ -5,7 +5,7 @@ import com.illiarb.tmdbclient.storage.model.MovieListModel
 import com.illiarb.tmdbclient.storage.model.MovieModel
 import com.illiarb.tmdbclient.storage.network.api.config.Configuration
 import com.illiarb.tmdblcient.core.di.App
-import com.illiarb.tmdblcient.core.entity.MovieFilter
+import com.illiarb.tmdblcient.core.domain.entity.MovieFilter
 import com.illiarb.tmdblcient.core.system.Logger
 import com.ironz.binaryprefs.BinaryPreferencesBuilder
 import com.ironz.binaryprefs.Preferences

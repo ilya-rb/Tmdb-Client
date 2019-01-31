@@ -12,7 +12,7 @@ import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
-import com.illiarb.tmdblcient.core.navigation.NavigationKeys
+import com.illiarb.tmdblcient.core.navigation.PhotoViewScreen
 import kotlinx.android.synthetic.main.fragment_photo_view.*
 import javax.inject.Inject
 
@@ -44,7 +44,7 @@ class PhotoViewFragment : Fragment(), Injectable {
         }
 
         arguments?.let {
-            val photos = it.getStringArrayList(NavigationKeys.EXTRA_PHOTOS)
+            val photos = it.getStringArrayList(PhotoViewScreen.EXTRA_PHOTOS)
             if (photos != null) {
                 photosAdapter.submitList(photos)
             }
@@ -62,7 +62,7 @@ class PhotoViewFragment : Fragment(), Injectable {
                 }
             })
 
-            val selected = it.getString(NavigationKeys.EXTRA_SELECTED_PHOTO)
+            val selected = it.getString(PhotoViewScreen.EXTRA_SELECTED)
             if (selected != null) {
                 val position = photosAdapter.indexOf(selected)
                 photosPager.currentItem = position

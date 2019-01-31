@@ -16,7 +16,7 @@ import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.DelegateAdapter
 import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
-import com.illiarb.tmdblcient.core.entity.Movie
+import com.illiarb.tmdblcient.core.domain.entity.Movie
 import kotlinx.android.synthetic.main.fragment_movies.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject

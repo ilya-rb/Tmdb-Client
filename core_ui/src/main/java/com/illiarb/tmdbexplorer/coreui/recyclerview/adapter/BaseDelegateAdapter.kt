@@ -3,13 +3,10 @@ package com.illiarb.tmdbexplorer.coreui.recyclerview.adapter
 import android.view.View
 import android.view.ViewGroup
 import androidx.collection.SparseArrayCompat
-import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.tmdbexplorer.coreui.R
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseDelegateViewHolder
-import com.illiarb.tmdblcient.core.system.Logger
 import javax.inject.Inject
 
 /**

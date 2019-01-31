@@ -2,8 +2,8 @@ package com.illiarb.tmdbclient.feature.home.details
 
 import com.illiarb.tmdbclient.feature.home.details.domain.GetMovieDetails
 import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
-import com.illiarb.tmdblcient.core.exception.ErrorHandler
-import com.illiarb.tmdblcient.core.repository.MoviesRepository
+import com.illiarb.tmdblcient.core.storage.ErrorHandler
+import com.illiarb.tmdblcient.core.storage.MoviesRepository
 import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock

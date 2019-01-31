@@ -6,7 +6,7 @@ import com.illiarb.tmdbclient.feature.search.R
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.BaseDiffAdapter
-import com.illiarb.tmdblcient.core.entity.Movie
+import com.illiarb.tmdblcient.core.domain.entity.Movie
 import javax.inject.Inject
 
 /**

@@ -10,7 +10,6 @@ import com.illiarb.tmdblcient.core.util.observable.ImmutableObservable
 import com.illiarb.tmdblcient.core.util.observable.Observable
 import com.illiarb.tmdblcient.core.util.observable.SimpleObservable
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.Channel
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -26,10 +25,12 @@ abstract class BasePresentationModel<T : Cloneable<T>> : ViewModel(), CoroutineS
     private val job = SupervisorJob()
 
     // TODO: Probably need to inject this
-    private val stateObservable = ImmutableObservable<T>(BufferLatestObservable())
+    private val stateObservable =
+        ImmutableObservable<T>(BufferLatestObservable())
 
     // TODO: Probably need to inject this
-    private val actionsObservable = SimpleObservable<UiAction>()
+    private val actionsObservable =
+        SimpleObservable<UiAction>()
 
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Unconfined

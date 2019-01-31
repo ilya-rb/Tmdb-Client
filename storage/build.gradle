@@ -25,9 +25,6 @@ android {
 
             buildConfigField "String", "API_URL", properties["api.url"]
             buildConfigField "String", "API_KEY", properties["api.key"]
-            buildConfigField "String", "HERE_APP_ID", properties["here.app.id"]
-            buildConfigField "String", "HERE_APP_CODE", properties["here.app.code"]
-            buildConfigField "String", "HERE_API_URL", properties["here.api.url"]
         }
 
         release {

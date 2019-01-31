@@ -7,11 +7,11 @@ import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListene
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdblcient.core.di.App
-import com.illiarb.tmdblcient.core.system.ResourceResolver
-import com.illiarb.tmdblcient.core.system.feature.DynamicFeatureName
-import com.illiarb.tmdblcient.core.system.feature.FeatureDownloadStatus.*
-import com.illiarb.tmdblcient.core.system.feature.FeatureInstallState
-import com.illiarb.tmdblcient.core.system.feature.FeatureInstaller
+import com.illiarb.tmdblcient.core.storage.ResourceResolver
+import com.illiarb.tmdblcient.core.system.dynamicfeature.DynamicFeatureName
+import com.illiarb.tmdblcient.core.system.dynamicfeature.FeatureDownloadStatus.*
+import com.illiarb.tmdblcient.core.system.dynamicfeature.FeatureInstallState
+import com.illiarb.tmdblcient.core.system.dynamicfeature.FeatureInstaller
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
@@ -87,10 +87,26 @@ class AppFeatureInstaller @Inject constructor(
         val progressPercentage = newState.totalBytesToDownload() / 100 * newState.bytesDownloaded()
 
         return when (newState.status()) {
-            SplitInstallSessionStatus.DOWNLOADING -> FeatureInstallState(featureName, DOWNLOADING, progressPercentage)
-            SplitInstallSessionStatus.FAILED -> FeatureInstallState(featureName, FAILED, progressPercentage)
-            SplitInstallSessionStatus.INSTALLED -> FeatureInstallState(featureName, INSTALLED, progressPercentage)
-            else -> FeatureInstallState(featureName, UNKNOWN, progressPercentage)
+            SplitInstallSessionStatus.DOWNLOADING -> FeatureInstallState(
+                featureName,
+                DOWNLOADING,
+                progressPercentage
+            )
+            SplitInstallSessionStatus.FAILED -> FeatureInstallState(
+                featureName,
+                FAILED,
+                progressPercentage
+            )
+            SplitInstallSessionStatus.INSTALLED -> FeatureInstallState(
+                featureName,
+                INSTALLED,
+                progressPercentage
+            )
+            else -> FeatureInstallState(
+                featureName,
+                UNKNOWN,
+                progressPercentage
+            )
         }
     }
 }

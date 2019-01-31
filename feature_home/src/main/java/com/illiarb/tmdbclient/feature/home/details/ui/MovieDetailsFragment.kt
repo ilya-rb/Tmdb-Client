@@ -26,14 +26,16 @@ import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
 import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
-import com.illiarb.tmdblcient.core.entity.Movie
-import com.illiarb.tmdblcient.core.navigation.NavigationKeys
+import com.illiarb.tmdblcient.core.domain.entity.Movie
+import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import com.illiarb.tmdblcient.core.navigation.PhotoViewScreen
 import com.illiarb.tmdblcient.core.navigation.Router
 import kotlinx.android.synthetic.main.fragment_movie_details.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 import kotlin.LazyThreadSafetyMode.NONE
 
+@ExperimentalCoroutinesApi
 class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
 
     @Inject
@@ -80,7 +82,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
 
         photosAdapter.clickEvent = { clickedView, _, photo ->
             val photos = photosAdapter.readOnlyList()
-            val screenData = PhotoViewScreen(clickedView, photos, photo)
+            val screenData =
+                PhotoViewScreen(clickedView, photos, photo)
             router.navigateTo(screenData)
         }
 
@@ -103,7 +106,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
         stateObserver.register(this)
 
         arguments?.let {
-            val id = it.getInt(NavigationKeys.EXTRA_MOVIE_DETAILS_ID)
+            val id = it.getInt(MovieDetailsScreen.EXTRA_ID)
             presentationModel.getMovieDetails(id)
         }
     }
@@ -135,7 +138,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
             }
 
             genres.forEach { genre ->
-                Chip(requireContext(), null, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Entry)
+                Chip(
+                    requireContext(),
+                    null,
+                    com.google.android.material.R.style.Widget_MaterialComponents_Chip_Entry
+                )
                     .apply {
                         text = genre.name
                         chipBackgroundColor = ColorStateList.valueOf(

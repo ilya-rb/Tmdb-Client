@@ -10,7 +10,7 @@ import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.image.RequestOptions
 import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.BaseAdapter
 import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseViewHolder
-import com.illiarb.tmdblcient.core.entity.Movie
+import com.illiarb.tmdblcient.core.domain.entity.Movie
 import kotlinx.android.synthetic.main.item_now_playing.view.*
 
 class NowPlayingPagerAdapter(

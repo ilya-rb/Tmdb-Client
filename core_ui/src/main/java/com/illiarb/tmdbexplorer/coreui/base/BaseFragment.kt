@@ -14,7 +14,7 @@ import com.illiarb.tmdbexplorer.coreui.uiactions.UiActionImpl
 import com.illiarb.tmdbexplorer.coreui.uiactions.UiActions
 import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.Injectable
-import com.illiarb.tmdblcient.core.system.coroutine.DispatcherProvider
+import com.illiarb.tmdblcient.core.tools.DispatcherProvider
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext

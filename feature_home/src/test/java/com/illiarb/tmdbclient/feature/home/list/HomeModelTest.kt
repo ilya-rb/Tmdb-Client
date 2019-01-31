@@ -5,11 +5,12 @@ import com.illiarb.tmdbclient.feature.home.list.domain.MovieBlock
 import com.illiarb.tmdbclient.feature.home.list.presentation.HomeModel
 import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
 import com.illiarb.tmdbcliient.core_test.runWithSubscription
-import com.illiarb.tmdblcient.core.auth.Authenticator
+import com.illiarb.tmdblcient.core.storage.Authenticator
 import com.illiarb.tmdblcient.core.common.Result
-import com.illiarb.tmdblcient.core.config.FeatureConfig
-import com.illiarb.tmdblcient.core.config.FeatureName
-import com.illiarb.tmdblcient.core.entity.MovieFilter
+import com.illiarb.tmdblcient.core.system.featureconfig.FeatureConfig
+import com.illiarb.tmdblcient.core.system.featureconfig.FeatureName
+import com.illiarb.tmdblcient.core.domain.entity.MovieFilter
+import com.illiarb.tmdbexplorer.coreui.navigation.*
 import com.illiarb.tmdblcient.core.navigation.*
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -129,7 +130,10 @@ class HomeModelTest {
 
     private fun createMovieBlockList(size: Int) = mutableListOf<MovieBlock>().apply {
         for (i in 0..size) {
-            val filter = MovieFilter(MovieFilter.TYPE_NOW_PLAYING, "now_playing")
+            val filter = MovieFilter(
+                MovieFilter.TYPE_NOW_PLAYING,
+                "now_playing"
+            )
             val movies = FakeEntityFactory.createFakeMovieList(size = 3)
             add(MovieBlock(filter, movies))
         }

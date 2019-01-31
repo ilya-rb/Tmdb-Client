@@ -3,11 +3,11 @@ package com.illiarb.tmdbclient.feature.home.list.presentation
 import com.illiarb.tmdbclient.feature.home.list.domain.GetAllMovies
 import com.illiarb.tmdbclient.feature.home.list.domain.MovieBlock
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
-import com.illiarb.tmdblcient.core.auth.Authenticator
-import com.illiarb.tmdblcient.core.config.FeatureConfig
-import com.illiarb.tmdblcient.core.config.FeatureName
-import com.illiarb.tmdblcient.core.entity.*
+import com.illiarb.tmdblcient.core.domain.entity.*
 import com.illiarb.tmdblcient.core.navigation.*
+import com.illiarb.tmdblcient.core.storage.Authenticator
+import com.illiarb.tmdblcient.core.system.featureconfig.FeatureConfig
+import com.illiarb.tmdblcient.core.system.featureconfig.FeatureName
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
 import javax.inject.Inject

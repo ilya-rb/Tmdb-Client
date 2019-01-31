@@ -1,7 +1,6 @@
 package com.illiarb.tmdbclient.main.navigation
 
 import android.os.Bundle
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
@@ -13,12 +12,10 @@ import javax.inject.Inject
 /**
  * @author ilya-rb on 18.11.18.
  */
-class MainNavigator @Inject constructor(
-    private val activity: FragmentActivity
-) : Navigator {
+class MainNavigator @Inject constructor(private val activity: FragmentActivity) : Navigator {
 
-    override fun runNavigate(data: ScreenData) {
-        val action = mapScreenNameToAction(data.screenName)
+    override fun runNavigation(screen: Screen) {
+        val action = mapScreenNameToAction(screen.screenName)
         val controller = Navigation.findNavController(activity, R.id.nav_host_fragment)
 
         // TODO: Fix dynamic feature rotation screen
@@ -31,7 +28,7 @@ class MainNavigator @Inject constructor(
             // First time dynamic feature launch
             // Add new node
             if (directionNode == null) {
-                val fragmentClass = when (data.screenName) {
+                val fragmentClass = when (screen.screenName) {
                     ScreenName.AUTH -> DynamicFeature.Auth.className
                     ScreenName.ACCOUNT -> DynamicFeature.Account.className
                     else -> throw IllegalStateException("Unknown dynamic feature screen")
@@ -51,9 +48,9 @@ class MainNavigator @Inject constructor(
 
         controller.navigate(
             action,
-            createNavigationArguments(data),
+            createNavigationArguments(screen),
             createNavigationOptions(),
-            createNavigationExtras(data)
+            createNavigationExtras(screen)
         )
     }
 
@@ -63,21 +60,21 @@ class MainNavigator @Inject constructor(
             .setExitAnim(R.anim.anim_fade_out)
             .build()
 
-    private fun createNavigationExtras(data: ScreenData): FragmentNavigator.Extras? =
-        when (data) {
+    private fun createNavigationExtras(screen: Screen): FragmentNavigator.Extras? =
+        when (screen) {
             is PhotoViewScreen -> FragmentNavigator.Extras.Builder().build()
             else -> null
         }
 
-    private fun createNavigationArguments(data: ScreenData): Bundle =
-        when (data) {
+    private fun createNavigationArguments(screen: Screen): Bundle =
+        when (screen) {
             is MovieDetailsScreen -> Bundle().apply {
-                putInt(NavigationKeys.EXTRA_MOVIE_DETAILS_ID, data.id)
+                putInt(MovieDetailsScreen.EXTRA_ID, screen.id)
             }
 
             is PhotoViewScreen -> Bundle().apply {
-                putStringArrayList(NavigationKeys.EXTRA_PHOTOS, ArrayList(data.photos))
-                putString(NavigationKeys.EXTRA_SELECTED_PHOTO, data.selectedPhoto)
+                putStringArrayList(PhotoViewScreen.EXTRA_PHOTOS, ArrayList(screen.photos))
+                putString(PhotoViewScreen.EXTRA_SELECTED, screen.selectedPhoto)
             }
 
             else -> Bundle.EMPTY

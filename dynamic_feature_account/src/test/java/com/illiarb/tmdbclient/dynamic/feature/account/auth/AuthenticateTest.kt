@@ -4,10 +4,10 @@ import com.illiarb.tmdbclient.dynamic.feature.account.auth.domain.Authenticate
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.domain.ValidateCredentials
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.domain.Validator
 import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
-import com.illiarb.tmdblcient.core.auth.Authenticator
+import com.illiarb.tmdblcient.core.storage.Authenticator
 import com.illiarb.tmdblcient.core.common.Result
-import com.illiarb.tmdblcient.core.exception.ErrorHandler
-import com.illiarb.tmdblcient.core.exception.ErrorMessageBag
+import com.illiarb.tmdblcient.core.storage.ErrorHandler
+import com.illiarb.tmdblcient.core.storage.ErrorMessageBag
 import com.illiarb.tmdblcient.core.exception.ValidationException
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify

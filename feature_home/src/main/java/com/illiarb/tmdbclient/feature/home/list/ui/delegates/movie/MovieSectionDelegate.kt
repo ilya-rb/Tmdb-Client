@@ -11,8 +11,8 @@ import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
 import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.AdapterDelegate
 import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseDelegateViewHolder
-import com.illiarb.tmdblcient.core.entity.ListSection
-import com.illiarb.tmdblcient.core.entity.MovieSection
+import com.illiarb.tmdblcient.core.domain.entity.ListSection
+import com.illiarb.tmdblcient.core.domain.entity.MovieSection
 import kotlinx.android.synthetic.main.item_movie_section.view.*
 import kotlinx.android.synthetic.main.layout_section_title.view.*
 import javax.inject.Inject

@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.storage.mappers
 
 import com.illiarb.tmdbclient.storage.model.AccountModel
-import com.illiarb.tmdblcient.core.entity.Account
+import com.illiarb.tmdblcient.core.domain.entity.Account
 import javax.inject.Inject
 
 /**

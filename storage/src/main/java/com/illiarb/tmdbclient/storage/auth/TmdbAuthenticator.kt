@@ -4,9 +4,9 @@ import com.illiarb.tmdbclient.storage.local.PersistableStorage
 import com.illiarb.tmdbclient.storage.network.api.service.AuthService
 import com.illiarb.tmdbclient.storage.network.request.CreateSessionRequest
 import com.illiarb.tmdbclient.storage.network.request.ValidateTokenRequest
-import com.illiarb.tmdblcient.core.auth.Authenticator
-import com.illiarb.tmdblcient.core.entity.UserCredentials
-import com.illiarb.tmdblcient.core.system.coroutine.DispatcherProvider
+import com.illiarb.tmdblcient.core.storage.Authenticator
+import com.illiarb.tmdblcient.core.domain.entity.UserCredentials
+import com.illiarb.tmdblcient.core.tools.DispatcherProvider
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 

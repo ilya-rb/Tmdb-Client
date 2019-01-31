@@ -1,0 +1,17 @@
+package com.illiarb.tmdblcient.core.storage
+
+/**
+ * @author ilya-rb on 27.11.18.
+ */
+interface ErrorMessageBag {
+
+    fun getUsernameEmptyMessage(): String
+
+    fun getPasswordEmptyMessage(): String
+
+    fun getIncorrectPasswordLengthMessage(): String
+
+    fun getDefaultErrorMessage(): String
+
+    fun getNetworkConnectionMessage(): String
+}

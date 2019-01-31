@@ -3,8 +3,8 @@ package com.illiarb.tmdbclient.dynamic.feature.account.profile
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.domain.GetProfileUseCase
 import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
 import com.illiarb.tmdblcient.core.common.Result
-import com.illiarb.tmdblcient.core.exception.ErrorHandler
-import com.illiarb.tmdblcient.core.repository.AccountRepository
+import com.illiarb.tmdblcient.core.storage.ErrorHandler
+import com.illiarb.tmdblcient.core.storage.AccountRepository
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.runBlocking

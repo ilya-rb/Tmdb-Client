@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.storage.di.modules
 
 import com.illiarb.tmdbclient.storage.error.DefaultErrorHandler
-import com.illiarb.tmdblcient.core.exception.ErrorHandler
+import com.illiarb.tmdblcient.core.storage.ErrorHandler
 import dagger.Binds
 import dagger.Module
 

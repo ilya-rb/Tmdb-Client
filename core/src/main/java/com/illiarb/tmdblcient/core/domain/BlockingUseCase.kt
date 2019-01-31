@@ -1,6 +1,6 @@
 package com.illiarb.tmdblcient.core.domain
 
-import com.illiarb.tmdblcient.core.system.coroutine.Blocking
+import com.illiarb.tmdblcient.core.common.Blocking
 
 /**
  * @author ilya-rb on 11.01.19.

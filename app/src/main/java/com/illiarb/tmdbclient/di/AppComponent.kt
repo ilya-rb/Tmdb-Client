@@ -2,6 +2,7 @@ package com.illiarb.tmdbclient.di
 
 import com.illiarb.tmdbclient.MobileApplication
 import com.illiarb.tmdbclient.di.modules.AppModule
+import com.illiarb.tmdbclient.di.modules.NavigationModule
 import com.illiarb.tmdbclient.storage.di.StorageComponent
 import com.illiarb.tmdbclient.tools.di.ToolsComponent
 import com.illiarb.tmdblcient.core.di.App
@@ -12,7 +13,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Component(
-    modules = [AppModule::class],
+    modules = [AppModule::class, NavigationModule::class],
     dependencies = [
         StorageProvider::class,
         ToolsProvider::class
@@ -24,7 +25,7 @@ interface AppComponent : AppProvider {
     companion object {
 
         fun get(app: App): AppProvider {
-            val toolsProvider = ToolsComponent.get()
+            val toolsProvider = ToolsComponent.get(app)
             val storageProvider = StorageComponent.get(app, toolsProvider)
 
             return DaggerAppComponent.builder()
