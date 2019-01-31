@@ -6,7 +6,6 @@ import com.illiarb.tmdbexplorer.coreui.uiactions.UiAction
 import com.illiarb.tmdblcient.core.common.Result
 import com.illiarb.tmdblcient.core.util.Cloneable
 import com.illiarb.tmdblcient.core.util.observable.BufferLatestObservable
-import com.illiarb.tmdblcient.core.util.observable.ImmutableObservable
 import com.illiarb.tmdblcient.core.util.observable.Observable
 import com.illiarb.tmdblcient.core.util.observable.SimpleObservable
 import kotlinx.coroutines.*
@@ -25,7 +24,7 @@ abstract class BasePresentationModel<T : Cloneable<T>>(initial: T) : ViewModel()
     private val job = SupervisorJob()
 
     // TODO: Probably need to inject this
-    private val stateObservable = ImmutableObservable(BufferLatestObservable(initial))
+    private val stateObservable = BufferLatestObservable.asImmutable(initial)
 
     // TODO: Probably need to inject this
     private val actionsObservable = SimpleObservable<UiAction>()
@@ -74,7 +73,7 @@ abstract class BasePresentationModel<T : Cloneable<T>>(initial: T) : ViewModel()
     }
 
     protected fun setState(reducer: T.() -> T) {
-        stateObservable.accept(reducer(stateObservable.requireValue()))
+        stateObservable.accept(reducer(stateObservable.value()))
     }
 
     protected fun executeAction(action: UiAction) {

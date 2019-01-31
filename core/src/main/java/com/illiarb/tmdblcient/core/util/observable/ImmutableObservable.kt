@@ -6,10 +6,11 @@ import com.illiarb.tmdblcient.core.util.Cloneable
  * @author ilya-rb on 20.01.19.
  */
 class ImmutableObservable<T : Cloneable<T>>(
+    initial: T,
     private val observable: Observable<T>
 ) : Observable<T> by observable {
 
-    private var currentValue: T? = null
+    private var currentValue: T = initial
 
     override fun accept(value: T) {
         if (currentValue === value && currentValue.hashCode() != value.hashCode()) {
@@ -21,9 +22,5 @@ class ImmutableObservable<T : Cloneable<T>>(
         observable.accept(value)
     }
 
-    fun value(): T? = currentValue?.clone()
-
-    fun hasValue(): Boolean = currentValue != null
-
-    fun requireValue(): T = currentValue!!.clone()
+    fun value(): T = currentValue.clone()
 }
