@@ -5,5 +5,7 @@ curl -X POST https://content.dropboxapi.com/2/files/download_zip \
     --header "Dropbox-API-Arg: {\"path\": \"/$CONFIG_ARCHIVE_NAME\"}" \
     -o "./$CONFIG_ARCHIVE_NAME.zip" \
     && unzip -o "$CONFIG_ARCHIVE_NAME.zip" \
+    && mv $CONFIG_ARCHIVE_NAME/api-config.properties ./ \
+    && mv $CONFIG_ARCHIVE_NAME/app/google-services.json ./app \
     && ls \
     && rm "$CONFIG_ARCHIVE_NAME.zip"
