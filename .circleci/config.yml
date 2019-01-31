@@ -1,6 +1,8 @@
 version: 2
 
 defaults: &defaults
+  working_directory: ~/code
+
   docker:
   - image: circleci/android:api-28
 
@@ -10,8 +12,6 @@ defaults: &defaults
 jobs:
 
   debug-build:
-    working_directory: ~/code
-
     <<: *defaults
 
     steps:
@@ -37,16 +37,26 @@ jobs:
         - ~/.gradle
         key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
 
-    - run:
-        name: Run Tests
-        command: ./gradlew test
-
     - store_artifacts:
         path: app/build/reports
         destination: reports
 
+  unit-tests:
+    <<: *defaults
+
+    steps:
+    - checkout
+
+    - restore_cache:
+        key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+
+    - run:
+        name: Run Unit Tests
+        command: ./gradlew test
+
     - store_test_results:
-        path: app/build/test-results
+        path: app/test/test-results
+
 
 workflows:
   version: 2
