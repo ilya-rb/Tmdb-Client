@@ -117,7 +117,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
         }
     }
 
-    private fun showMovieDetails(movie: Movie) {
+    private fun showMovieDetails(movie: Movie) = runOnUi {
         with(movie) {
             movieDetailsTitle.text = title
 

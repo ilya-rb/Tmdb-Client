@@ -20,17 +20,15 @@ typealias ErrorHandler = (Throwable) -> Unit
 typealias SuccessHandler <T> = (T) -> Unit
 
 @ExperimentalCoroutinesApi
-abstract class BasePresentationModel<T : Cloneable<T>> : ViewModel(), CoroutineScope {
+abstract class BasePresentationModel<T : Cloneable<T>>(initial: T) : ViewModel(), CoroutineScope {
 
     private val job = SupervisorJob()
 
     // TODO: Probably need to inject this
-    private val stateObservable =
-        ImmutableObservable<T>(BufferLatestObservable())
+    private val stateObservable = ImmutableObservable(BufferLatestObservable(initial))
 
     // TODO: Probably need to inject this
-    private val actionsObservable =
-        SimpleObservable<UiAction>()
+    private val actionsObservable = SimpleObservable<UiAction>()
 
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Unconfined
@@ -75,12 +73,8 @@ abstract class BasePresentationModel<T : Cloneable<T>> : ViewModel(), CoroutineS
         }
     }
 
-    protected fun setIdleState(state: T) {
-        stateObservable.accept(state)
-    }
-
-    protected fun setState(block: (T) -> T) {
-        stateObservable.accept(block(stateObservable.requireValue()))
+    protected fun setState(reducer: T.() -> T) {
+        stateObservable.accept(reducer(stateObservable.requireValue()))
     }
 
     protected fun executeAction(action: UiAction) {

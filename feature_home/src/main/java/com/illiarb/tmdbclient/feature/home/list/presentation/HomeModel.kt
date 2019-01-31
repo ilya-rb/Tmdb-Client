@@ -7,9 +7,7 @@ import com.illiarb.tmdblcient.core.domain.entity.*
 import com.illiarb.tmdblcient.core.navigation.*
 import com.illiarb.tmdblcient.core.storage.Authenticator
 import com.illiarb.tmdblcient.core.system.featureconfig.FeatureConfig
-import com.illiarb.tmdblcient.core.system.featureconfig.FeatureName
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -21,23 +19,14 @@ class HomeModel @Inject constructor(
     private val getAllMovies: GetAllMovies,
     private val authenticator: Authenticator,
     private val router: Router
-) : BasePresentationModel<HomeUiState>() {
+) : BasePresentationModel<HomeUiState>(HomeUiState.idle(featureConfig)) {
 
     init {
-        val initialState = HomeUiState(
-            isLoading = true,
-            movies = Collections.emptyList(),
-            isSearchEnabled = featureConfig.isFeatureEnabled(FeatureName.SEARCH),
-            isAuthEnabled = featureConfig.isFeatureEnabled(FeatureName.AUTH)
-        )
-
-        setIdleState(initialState)
-
         runCoroutine {
             handleResult(getAllMovies.executeAsync(Unit), { blocks ->
                 val sections = createMovieSections(blocks)
-                setState { current ->
-                    current.copy(isLoading = false, movies = sections)
+                setState {
+                    copy(isLoading = false, movies = sections)
                 }
             })
         }

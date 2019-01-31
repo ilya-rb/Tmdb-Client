@@ -3,7 +3,6 @@ package com.illiarb.tmdbclient.feature.home.details.presentation
 import com.illiarb.tmdbclient.feature.home.details.domain.GetMovieDetails
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -12,18 +11,14 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 class MovieDetailsModel @Inject constructor(
     private val getMovieDetails: GetMovieDetails
-) : BasePresentationModel<MovieDetailsUiState>() {
+) : BasePresentationModel<MovieDetailsUiState>(MovieDetailsUiState.idle()) {
 
-    init {
-        setIdleState(MovieDetailsUiState.idle())
-    }
-
-    fun getMovieDetails(id: Int) = launch(context = coroutineContext) {
-        setState { it.copy(isLoading = true) }
+    fun getMovieDetails(id: Int) = runCoroutine {
+        setState { copy(isLoading = true) }
 
         handleResult(getMovieDetails.executeAsync(id), { movie ->
             setState {
-                it.copy(isLoading = false, movie = movie)
+                copy(isLoading = false, movie = movie)
             }
         })
     }

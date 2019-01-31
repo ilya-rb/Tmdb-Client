@@ -7,10 +7,14 @@ import com.illiarb.tmdblcient.core.util.Cloneable
  * @author ilya-rb on 24.12.18.
  */
 data class AccountUiState(
-    val isLoading: Boolean = false,
-    val isBlockingLoading: Boolean = false,
-    val account: Account? = null
+    val isLoading: Boolean,
+    val isBlockingLoading: Boolean,
+    val account: Account?
 ) : Cloneable<AccountUiState> {
+
+    companion object {
+        fun idle() = AccountUiState(false, false, null)
+    }
 
     override fun clone(): AccountUiState = copy()
 }

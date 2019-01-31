@@ -9,7 +9,6 @@ import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import com.illiarb.tmdblcient.core.navigation.Router
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -20,15 +19,13 @@ class AccountModel @Inject constructor(
     private val getProfileUseCase: GetProfileUseCase,
     private val signOutUseCase: SignOutUseCase,
     private val router: Router
-) : BasePresentationModel<AccountUiState>(), CoroutineScope {
+) : BasePresentationModel<AccountUiState>(AccountUiState.idle()), CoroutineScope {
 
     init {
-        setIdleState(AccountUiState(true, false, null))
-
-        launch(context = coroutineContext) {
+        runCoroutine {
             handleResult(getProfileUseCase.executeAsync(Unit),
                 { account ->
-                    setState { it.copy(isLoading = false, account = account) }
+                    setState { copy(isLoading = false, account = account) }
                 }
             )
         }

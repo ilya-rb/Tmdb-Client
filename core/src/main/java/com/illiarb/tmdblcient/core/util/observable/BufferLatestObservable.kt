@@ -3,9 +3,9 @@ package com.illiarb.tmdblcient.core.util.observable
 /**
  * @author ilya-rb on 20.01.19.
  */
-class BufferLatestObservable<T> : SimpleObservable<T>() {
+class BufferLatestObservable<T>(initial: T) : SimpleObservable<T>() {
 
-    private var buffer: T? = null
+    private var buffer: T = initial
 
     override fun accept(value: T) {
         super.accept(value)
@@ -14,9 +14,6 @@ class BufferLatestObservable<T> : SimpleObservable<T>() {
 
     override fun addObserver(observer: Observer<T>) {
         super.addObserver(observer)
-
-        buffer?.let {
-            notifyObservers(it, observer)
-        }
+        notifyObservers(buffer, observer)
     }
 }

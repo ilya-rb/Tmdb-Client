@@ -16,32 +16,23 @@ import javax.inject.Inject
 class AuthModel @Inject constructor(
     private val authenticate: Authenticate,
     private val router: Router
-) : BasePresentationModel<AuthUiState>() {
-
-    init {
-        setIdleState(AuthUiState.idle())
-    }
+) : BasePresentationModel<AuthUiState>(AuthUiState.idle()) {
 
     fun onTextChanged(inputs: Array<String?>) {
         setState {
-            it.copy(authButtonEnabled = inputs.all { input -> !input.isNullOrEmpty() })
+            copy(authButtonEnabled = inputs.all { input -> !input.isNullOrEmpty() })
         }
     }
 
     fun authenticate(username: String, password: String) = launch(context = coroutineContext) {
-        setState { it.copy(isLoading = true, authButtonEnabled = false) }
+        setState { copy(isLoading = true, authButtonEnabled = false) }
 
         handleResult(
-            authenticate.executeAsync(
-                UserCredentials(
-                    username,
-                    password
-                )
-            ),
+            authenticate.executeAsync(UserCredentials(username, password)),
 
             onSuccess = {
-                setState { current ->
-                    current.copy(isLoading = false)
+                setState {
+                    copy(isLoading = false)
                 }
                 router.navigateTo(AccountScreen)
             },

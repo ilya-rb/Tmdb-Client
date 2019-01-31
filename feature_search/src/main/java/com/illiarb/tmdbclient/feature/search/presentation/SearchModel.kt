@@ -17,28 +17,25 @@ import javax.inject.Inject
 class SearchModel @Inject constructor(
     private val searchMovies: SearchMovies,
     private val router: Router
-) : BasePresentationModel<SearchUiState>() {
-
-    init {
-        setIdleState(SearchUiState.idle())
-    }
+) : BasePresentationModel<SearchUiState>(SearchUiState.idle()) {
 
     fun search(query: String) = runCoroutine {
         setState {
-            it.copy(icon = SearchIcon.Cross, isSearchRunning = true)
+            copy(icon = SearchIcon.Cross, isSearchRunning = true)
         }
 
         handleResult(searchMovies.executeAsync(query), { movies ->
-            val searchResult = if (movies.isEmpty()) SearchResult.Empty else SearchResult.Success(movies)
+            val searchResult =
+                if (movies.isEmpty()) SearchResult.Empty else SearchResult.Success(movies)
             setState {
-                it.copy(isSearchRunning = false, result = searchResult)
+                copy(isSearchRunning = false, result = searchResult)
             }
         })
     }
 
     fun onClearClicked() {
         setState {
-            it.copy(icon = SearchIcon.Search)
+            copy(icon = SearchIcon.Search)
         }
     }
 
