@@ -46,6 +46,7 @@ dependencies {
 
     implementation deps.dagger
     implementation deps.timber
+    implementation deps.firebaseCore
     implementation deps.firebaseRemoteConfig
     implementation deps.navigation
 
