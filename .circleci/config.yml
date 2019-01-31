@@ -64,4 +64,6 @@ workflows:
   develop:
     jobs:
     - debug-build
-    - unit-tests
+    - unit-tests:
+        requires:
+          -debug-build
