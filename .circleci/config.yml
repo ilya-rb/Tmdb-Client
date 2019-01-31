@@ -57,7 +57,6 @@ jobs:
     - store_test_results:
         path: app/test/test-results
 
-
 workflows:
   version: 2
 
@@ -66,4 +65,4 @@ workflows:
     - debug-build
     - unit-tests:
         requires:
-          -debug-build
+        - debug-build
