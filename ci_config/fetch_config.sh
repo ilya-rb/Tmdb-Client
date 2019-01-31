@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 curl -X POST https://content.dropboxapi.com/2/files/download \
     --header "Authoriation: Bearer $DROPBOX_KEY" \
