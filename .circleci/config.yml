@@ -52,4 +52,5 @@ workflows:
   version: 2
 
   develop:
-    jobs: debug-build
+    jobs:
+      - debug-build
