@@ -1,6 +1,12 @@
 package com.illiarb.tmdblcient.core.di.providers
 
-import com.illiarb.tmdblcient.core.storage.*
+import com.illiarb.tmdblcient.core.storage.AccountRepository
+import com.illiarb.tmdblcient.core.storage.MoviesRepository
+import com.illiarb.tmdblcient.core.storage.ResourceResolver
+import com.illiarb.tmdblcient.core.storage.Authenticator
+import com.illiarb.tmdblcient.core.storage.ErrorMessageBag
+import com.illiarb.tmdblcient.core.storage.WorkManager
+import com.illiarb.tmdblcient.core.storage.ErrorHandler
 
 /**
  * @author ilya-rb on 24.12.18.

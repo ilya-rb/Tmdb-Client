@@ -11,6 +11,7 @@ sealed class Result<out T> {
 
     companion object {
 
+        @Suppress("TooGenericExceptionCaught")
         suspend fun <T : Any> create(
             errorHandler: ErrorHandler,
             block: suspend CoroutineScope.() -> T
@@ -18,11 +19,7 @@ sealed class Result<out T> {
             try {
                 Success(block(this))
             } catch (e: Exception) {
-                Error<T>(
-                    errorHandler.createExceptionFromThrowable(
-                        e
-                    )
-                )
+                Error<T>(errorHandler.createExceptionFromThrowable(e))
             }
         }
     }

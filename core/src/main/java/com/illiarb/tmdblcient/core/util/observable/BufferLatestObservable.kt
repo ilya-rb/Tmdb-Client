@@ -23,6 +23,6 @@ class BufferLatestObservable<T>(initial: T) : SimpleObservable<T>() {
 
     override fun addObserver(observer: Observer<T>) {
         super.addObserver(observer)
-        notifyObservers(buffer, observer)
+        notifyObserver(buffer, observer)
     }
 }

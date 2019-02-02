@@ -12,7 +12,9 @@ open class SimpleObservable<T> : Observable<T> {
     }
 
     override fun accept(value: T) {
-        notifyObservers(value, *observers.toTypedArray())
+        observers.forEach {
+            notifyObserver(value, it)
+        }
     }
 
     override fun removeObserver(observer: Observer<T>) {
@@ -21,9 +23,7 @@ open class SimpleObservable<T> : Observable<T> {
 
     protected fun observersCount(): Int = observers.size
 
-    protected fun notifyObservers(value: T, vararg observers: Observer<T>) {
-        observers.forEach {
-            it.onNewValue(value)
-        }
+    protected fun notifyObserver(value: T, observer: Observer<T>) {
+        observer.onNewValue(value)
     }
 }
