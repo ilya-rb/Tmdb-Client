@@ -21,12 +21,14 @@ import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.layout_empty_view.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 import kotlin.LazyThreadSafetyMode.NONE
 
 /**
  * @author ilya-rb on 26.12.18.
  */
+@ExperimentalCoroutinesApi
 class SearchFragment : BaseFragment<SearchModel>() {
 
     @Inject
@@ -94,8 +96,10 @@ class SearchFragment : BaseFragment<SearchModel>() {
         searchProgress.setVisible(state.isSearchRunning)
 
         val drawable = when (state.icon) {
-            SearchIcon.Search -> ContextCompat.getDrawable(requireContext(), R.drawable.ic_search)
-            SearchIcon.Cross -> ContextCompat.getDrawable(requireContext(), R.drawable.ic_clear_search)
+            SearchIcon.Search ->
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_search)
+            SearchIcon.Cross ->
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_clear_search)
         }
 
         searchIcon.setImageDrawable(drawable)
@@ -118,8 +122,10 @@ class SearchFragment : BaseFragment<SearchModel>() {
                 emptyView.show()
 
                 when (state.result) {
-                    is SearchResult.Initial -> emptyViewText.text = getString(R.string.search_initial)
-                    is SearchResult.Empty -> emptyViewText.text = getString(R.string.search_no_results_found)
+                    SearchResult.Initial ->
+                        emptyViewText.text = getString(R.string.search_initial)
+                    SearchResult.Empty ->
+                        emptyViewText.text = getString(R.string.search_no_results_found)
                 }
             }
         }

@@ -2,21 +2,20 @@ package com.illiarb.tmdbclient.feature.home.details.ui
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.illiarb.tmdbclient.feature.home.R
 import com.illiarb.tmdbclient.feature.home.details.presentation.MovieDetailsModel
 import com.illiarb.tmdbclient.feature.home.details.presentation.MovieDetailsUiState
 import com.illiarb.tmdbclient.feature.home.details.ui.photos.PhotosAdapter
-import com.illiarb.tmdbclient.feature.home.details.ui.reviews.ReviewsAdapter
 import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.ext.addToViewGroup
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
-import com.illiarb.tmdbexplorer.coreui.ext.hide
-import com.illiarb.tmdbexplorer.coreui.ext.show
 import com.illiarb.tmdbexplorer.coreui.image.CropOptions
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.image.RequestOptions
@@ -40,9 +39,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
 
     @Inject
     lateinit var photosAdapter: PhotosAdapter
-
-    @Inject
-    lateinit var reviewsAdapter: ReviewsAdapter
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -70,32 +66,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
             }
         }
 
-        RecyclerViewBuilder
-            .create {
-                adapter(photosAdapter)
-                hasFixedSize(true)
-                type(LayoutType.Linear())
-                orientation(LayoutOrientation.HORIZONTAL)
-                spaceBetween { spacing = resources.getDimensionPixelSize(R.dimen.margin_small) / 2 }
-            }
-            .setupWith(movieDetailsPhotos)
-
         photosAdapter.clickEvent = { clickedView, _, photo ->
             val photos = photosAdapter.readOnlyList()
-            val screenData =
-                PhotoViewScreen(clickedView, photos, photo)
+            val screenData = PhotoViewScreen(clickedView, photos, photo)
             router.navigateTo(screenData)
         }
-
-        RecyclerViewBuilder
-            .create {
-                adapter(reviewsAdapter)
-                type(LayoutType.Linear())
-                spaceBetween {
-                    spacing = resources.getDimensionPixelSize(R.dimen.margin_small)
-                }
-            }
-            .setupWith(movieDetailsReviews)
 
         ViewCompat.requestApplyInsets(view)
     }
@@ -157,17 +132,36 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
             }
 
             if (images.isNotEmpty()) {
-                movieDetailsPhotosTitle.show()
-                photosAdapter.submitList(images)
-            }
-
-            if (reviews.isNotEmpty()) {
-                movieDetailsReviewsTitle.show()
-                reviewsAdapter.submitList(reviews)
-            } else {
-                movieDetailsReviews.hide()
-                movieDetailsReviewsTitle.hide()
+                showMoviePhotos(images)
             }
         }
+    }
+
+    private fun showMoviePhotos(photos: List<String>) {
+        val photosView = LayoutInflater
+            .from(requireContext())
+            .inflate(
+                R.layout.layout_photos_block,
+                movieDetailsRoot,
+                true
+            )
+
+        val photosList = photosView.findViewById<RecyclerView>(R.id.movieDetailsPhotos)
+
+        RecyclerViewBuilder
+            .create {
+                adapter(photosAdapter)
+                hasFixedSize(true)
+                type(LayoutType.Linear())
+                orientation(LayoutOrientation.HORIZONTAL)
+                spaceBetween {
+                    spacing = resources.getDimensionPixelSize(R.dimen.margin_default)
+                    addToFirst = true
+                    addToLast = true
+                }
+            }
+            .setupWith(photosList)
+
+        photosAdapter.submitList(photos)
     }
 }

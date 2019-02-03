@@ -11,8 +11,7 @@ import javax.inject.Inject
 @FragmentScope
 class ViewClickListener @Inject constructor() {
 
-    private val clickObservable =
-        SimpleObservable<Any>()
+    private val clickObservable = SimpleObservable<Any>()
 
     fun clickObservable(): SimpleObservable<Any> = clickObservable
 

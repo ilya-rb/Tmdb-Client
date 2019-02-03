@@ -21,12 +21,14 @@ import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.domain.entity.Account
 import kotlinx.android.synthetic.main.fragment_account.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 import kotlin.LazyThreadSafetyMode.NONE
 
 /**
  * @author ilya-rb on 20.11.18.
  */
+@ExperimentalCoroutinesApi
 class AccountFragment : BaseFragment<AccountModel>() {
 
     @Inject
@@ -95,7 +97,7 @@ class AccountFragment : BaseFragment<AccountModel>() {
         }
     }
 
-    private fun render(state: AccountUiState) {
+    private fun render(state: AccountUiState) = runOnUi {
         accountSwipeRefreshLayout.isRefreshing = state.isLoading
 
         state.account?.let {

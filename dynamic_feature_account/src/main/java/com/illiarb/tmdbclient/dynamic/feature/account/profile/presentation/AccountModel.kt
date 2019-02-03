@@ -23,11 +23,9 @@ class AccountModel @Inject constructor(
 
     init {
         runCoroutine {
-            handleResult(getProfileUseCase.executeAsync(Unit),
-                { account ->
-                    setState { copy(isLoading = false, account = account) }
-                }
-            )
+            handleResult(getProfileUseCase.executeAsync(Unit), { account ->
+                setState { copy(isLoading = false, account = account) }
+            })
         }
     }
 

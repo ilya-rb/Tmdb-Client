@@ -12,6 +12,13 @@ import com.illiarb.tmdbexplorer.coreui.recyclerview.decoration.VerticalDecoratio
 @Suppress("unused")
 class RecyclerViewBuilder {
 
+    companion object {
+
+        inline fun create(builder: RecyclerViewBuilder.() -> RecyclerViewBuilder): RecyclerViewBuilder {
+            return builder(RecyclerViewBuilder())
+        }
+    }
+
     private var orientation: LayoutOrientation = LayoutOrientation.VERTICAL
     private var type: LayoutType = LayoutType.Linear()
     private var adapter: RecyclerView.Adapter<*>? = null
@@ -70,13 +77,6 @@ class RecyclerViewBuilder {
             LayoutOrientation.VERTICAL -> LinearLayoutManager.VERTICAL
             LayoutOrientation.HORIZONTAL -> LinearLayoutManager.HORIZONTAL
         }
-
-    companion object {
-
-        inline fun create(builder: RecyclerViewBuilder.() -> RecyclerViewBuilder): RecyclerViewBuilder {
-            return builder(RecyclerViewBuilder())
-        }
-    }
 }
 
 data class SpaceBetween(

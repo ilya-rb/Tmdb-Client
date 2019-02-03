@@ -37,40 +37,17 @@ object FakeEntityFactory {
     }
 
     fun createMovieFilters(): List<MovieFilter> = mutableListOf<MovieFilter>().apply {
-        add(
-            MovieFilter(
-                MovieFilter.TYPE_NOW_PLAYING,
-                "now_playing"
-            )
-        )
-        add(
-            MovieFilter(
-                MovieFilter.TYPE_POPULAR,
-                "popular"
-            )
-        )
-        add(
-            MovieFilter(
-                MovieFilter.TYPE_UPCOMING,
-                "upcoming"
-            )
-        )
-        add(
-            MovieFilter(
-                MovieFilter.TYPE_TOP_RATED,
-                "top_rated"
-            )
-        )
+        add(MovieFilter(MovieFilter.TYPE_NOW_PLAYING, "now_playing"))
+        add(MovieFilter(MovieFilter.TYPE_POPULAR, "popular"))
+        add(MovieFilter(MovieFilter.TYPE_UPCOMING, "upcoming"))
+        add(MovieFilter(MovieFilter.TYPE_TOP_RATED, "top_rated"))
     }
 
-    fun createValidCredentials() =
-        UserCredentials("username", "password")
+    fun createValidCredentials() = UserCredentials("username", "password")
 
-    fun createUsernameEmptyCredentials() =
-        UserCredentials("", "password")
+    fun createUsernameEmptyCredentials() = UserCredentials("", "password")
 
-    fun createPasswordInvalidCredentials() =
-        UserCredentials("username", "pas")
+    fun createPasswordInvalidCredentials() = UserCredentials("username", "pas")
 
     private fun defaultMovieCreator(): () -> Movie = {
         Movie(

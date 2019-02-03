@@ -2,12 +2,14 @@ package com.illiarb.tmdbclient.feature.home.list.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.ViewCompat
 import com.illiarb.tmdbclient.feature.home.R
 import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
 import com.illiarb.tmdbclient.feature.home.list.presentation.HomeModel
 import com.illiarb.tmdbclient.feature.home.list.presentation.HomeUiState
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.common.ViewClickListener
+import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
@@ -62,6 +64,8 @@ class HomeFragment : BaseFragment<HomeModel>(), Injectable {
             }
             .setupWith(moviesList)
 
+        topView.awareOfWindowInsets()
+
         homeSearch.setOnClickListener {
             presentationModel.onSearchClick()
         }
@@ -69,6 +73,8 @@ class HomeFragment : BaseFragment<HomeModel>(), Injectable {
         homeAccount.setOnClickListener {
             presentationModel.onAccountClick()
         }
+
+        ViewCompat.requestApplyInsets(view)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

@@ -1,5 +1,6 @@
 package com.illiarb.tmdbclient.storage.system
 
+import android.util.Log
 import androidx.work.Configuration
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkerFactory
@@ -14,12 +15,12 @@ import androidx.work.WorkManager as AndroidWorkManager
  * @author ilya-rb on 03.12.18.
  */
 @Singleton
-class AppWorkManager @Inject constructor(app: App, workerFactory: WorkerFactory) :
-    WorkManager {
+class AppWorkManager @Inject constructor(app: App, workerFactory: WorkerFactory) : WorkManager {
 
     init {
         val config = Configuration.Builder()
             .setWorkerFactory(workerFactory)
+            .setMinimumLoggingLevel(Log.VERBOSE)
             .build()
 
         AndroidWorkManager.initialize(app.getApplication(), config)
