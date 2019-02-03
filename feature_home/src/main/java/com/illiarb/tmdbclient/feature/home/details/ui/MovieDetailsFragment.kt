@@ -86,6 +86,15 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        val photosList = findPhotosList()
+        photosList?.let {
+            it.adapter = null
+        }
+    }
+
     private fun render(state: MovieDetailsUiState) {
         state.movie?.let {
             showMovieDetails(it)
@@ -112,19 +121,21 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
                 movieDetailsDuration.text = getString(R.string.movie_details_duration, runtime)
             }
 
-            genres.forEach { genre ->
-                Chip(
-                    requireContext(),
-                    null,
-                    com.google.android.material.R.style.Widget_MaterialComponents_Chip_Entry
-                )
-                    .apply {
-                        text = genre.name
-                        chipBackgroundColor = ColorStateList.valueOf(
-                            ContextCompat.getColor(requireContext(), R.color.colorPrimary)
-                        )
-                    }
-                    .addToViewGroup(movieDetailsTags)
+            if (movieDetailsTags.childCount == 0) {
+                genres.forEach { genre ->
+                    Chip(
+                        requireContext(),
+                        null,
+                        com.google.android.material.R.style.Widget_MaterialComponents_Chip_Entry
+                    )
+                        .apply {
+                            text = genre.name
+                            chipBackgroundColor = ColorStateList.valueOf(
+                                ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+                            )
+                        }
+                        .addToViewGroup(movieDetailsTags)
+                }
             }
 
             overview?.let {
@@ -137,7 +148,13 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
         }
     }
 
+    private fun findPhotosList(): RecyclerView? {
+        return movieDetailsRoot.findViewById(R.id.movieDetailsPhotos)
+    }
+
     private fun showMoviePhotos(photos: List<String>) {
+        if (findPhotosList() != null) return
+
         val photosView = LayoutInflater
             .from(requireContext())
             .inflate(

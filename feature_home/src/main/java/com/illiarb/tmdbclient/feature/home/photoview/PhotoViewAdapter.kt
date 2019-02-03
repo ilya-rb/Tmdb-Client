@@ -21,7 +21,11 @@ class PhotoViewAdapter @Inject constructor(
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val imageView = ImageView(container.context)
 
-        imageLoader.fromUrl(currentList[position], imageView, RequestOptions.create { useCrossFade(true) })
+        imageLoader.fromUrl(
+            currentList[position],
+            imageView,
+            RequestOptions.create { useCrossFade(true) }
+        )
 
         return imageView.also { it.addToViewGroup(container) }
     }
