@@ -29,6 +29,7 @@ import com.illiarb.tmdbexplorer.coreui.uiactions.UiAction
 import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
+import com.illiarb.tmdblcient.core.domain.entity.Genre
 import com.illiarb.tmdblcient.core.domain.entity.Movie
 import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import com.illiarb.tmdblcient.core.navigation.PhotoViewScreen
@@ -110,13 +111,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
             movieDetailsTitle.text = title
 
             posterPath?.let {
-                val options = RequestOptions.create {
-                    cornerRadius(resources.getDimensionPixelSize(R.dimen.image_corner_radius))
-                    cropOptions(CropOptions.CENTER_CROP)
-                }
-
-                imageLoader.fromUrl(it, movieDetailsPosterSmall, options)
-                imageLoader.fromUrl(it, movieDetailsPoster, options.copy(cornerRadius = 0))
+                showMoviePoster(it)
             }
 
             movieDetailsRating.text = voteAverage.toString()
@@ -126,20 +121,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
             }
 
             if (movieDetailsTags.childCount == 0) {
-                genres.forEach { genre ->
-                    Chip(
-                        requireContext(),
-                        null,
-                        com.google.android.material.R.style.Widget_MaterialComponents_Chip_Entry
-                    )
-                        .apply {
-                            text = genre.name
-                            chipBackgroundColor = ColorStateList.valueOf(
-                                ContextCompat.getColor(requireContext(), R.color.colorPrimary)
-                            )
-                        }
-                        .addToViewGroup(movieDetailsTags)
-                }
+                showMovieGenres(genres)
             }
 
             overview?.let {
@@ -168,6 +150,33 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
 
     private fun findPhotosList(): RecyclerView? {
         return movieDetailsRoot.findViewById(R.id.movieDetailsPhotos)
+    }
+
+    private fun showMoviePoster(posterPath: String) {
+        val options = RequestOptions.create {
+            cornerRadius(resources.getDimensionPixelSize(R.dimen.image_corner_radius))
+            cropOptions(CropOptions.CENTER_CROP)
+        }
+
+        imageLoader.fromUrl(posterPath, movieDetailsPosterSmall, options)
+        imageLoader.fromUrl(posterPath, movieDetailsPoster, options.copy(cornerRadius = 0))
+    }
+
+    private fun showMovieGenres(genres: List<Genre>) {
+        genres.forEach { genre ->
+            Chip(
+                requireContext(),
+                null,
+                com.google.android.material.R.style.Widget_MaterialComponents_Chip_Entry
+            )
+                .apply {
+                    text = genre.name
+                    chipBackgroundColor = ColorStateList.valueOf(
+                        ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+                    )
+                }
+                .addToViewGroup(movieDetailsTags)
+        }
     }
 
     private fun showMoviePhotos(photos: List<String>) {
