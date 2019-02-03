@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.tmdbexplorer.coreui.R
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
 import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseDelegateViewHolder
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -82,6 +83,10 @@ class DelegateAdapter @Inject constructor() : RecyclerView.Adapter<BaseDelegateV
 
     fun setClickEvent(onClick: (Int, Int, Any) -> Unit) {
         clickEvent = onClick
+    }
+
+    fun currentList(): List<Any> {
+        return Collections.unmodifiableList(currentList)
     }
 
     fun submitList(newList: List<Any>) {

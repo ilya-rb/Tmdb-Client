@@ -11,17 +11,21 @@ import com.google.android.material.chip.Chip
 import com.illiarb.tmdbclient.feature.home.R
 import com.illiarb.tmdbclient.feature.home.details.presentation.MovieDetailsModel
 import com.illiarb.tmdbclient.feature.home.details.presentation.MovieDetailsUiState
+import com.illiarb.tmdbclient.feature.home.details.presentation.ShowReviewsAction
 import com.illiarb.tmdbclient.feature.home.details.ui.photos.PhotosAdapter
+import com.illiarb.tmdbclient.feature.home.details.ui.reviews.ReviewsFragment
 import com.illiarb.tmdbclient.feature.home.di.MoviesComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.ext.addToViewGroup
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
+import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdbexplorer.coreui.image.CropOptions
 import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.image.RequestOptions
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutOrientation
 import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
+import com.illiarb.tmdbexplorer.coreui.uiactions.UiAction
 import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
@@ -142,9 +146,23 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
                 movieDetailsOverview.text = it
             }
 
+            movieDetailsReviews.setVisible(reviews.isNotEmpty())
+            movieDetailsReviews.setOnClickListener {
+                presentationModel.onReviewsClicked(reviews)
+            }
+
             if (images.isNotEmpty()) {
                 showMoviePhotos(images)
             }
+        }
+    }
+
+    override fun handleAction(action: UiAction) {
+        super.handleAction(action)
+
+        when (action) {
+            is ShowReviewsAction ->
+                ReviewsFragment().show(fragmentManager, ReviewsFragment::class.java.name)
         }
     }
 

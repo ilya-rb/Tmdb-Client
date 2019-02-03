@@ -1,6 +1,7 @@
 package com.illiarb.tmdbclient.feature.home.di
 
 import com.illiarb.tmdbclient.feature.home.details.ui.MovieDetailsFragment
+import com.illiarb.tmdbclient.feature.home.details.ui.reviews.ReviewsFragment
 import com.illiarb.tmdbclient.feature.home.list.ui.HomeFragment
 import com.illiarb.tmdbclient.feature.home.photoview.PhotoViewFragment
 import com.illiarb.tmdbexplorer.coreui.di.modules.ViewModelModule
@@ -32,4 +33,6 @@ interface MoviesComponent {
     fun inject(fragment: MovieDetailsFragment)
 
     fun inject(fragment: PhotoViewFragment)
+
+    fun inject(fragment: ReviewsFragment)
 }
