@@ -10,6 +10,7 @@ import com.illiarb.tmdbclient.storage.model.ResultsModel
 import com.illiarb.tmdbclient.storage.network.api.service.MovieService
 import com.illiarb.tmdbclient.storage.network.api.service.SearchService
 import com.illiarb.tmdbcliient.core_test.TestDispatcherProvider
+import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
 import com.illiarb.tmdblcient.core.storage.ResourceResolver
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.CompletableDeferred
@@ -74,6 +75,27 @@ object MovieRepositoryTest : Spek({
                 }
             }
         }
+
+        describe("Movie details fetching") {
+            val movie = FakeEntityFactory.createFakeMovie()
+            val appendToResponse = "images,reviews"
+
+            context("On given movie id = ${movie.id}") {
+                Mockito
+                    .`when`(movieService.getMovieDetails(movie.id, appendToResponse))
+                    .thenReturn(CompletableDeferred(MovieModel(id = movie.id)))
+
+                val result = runBlocking { repository.getMovieDetails(movie.id, appendToResponse) }
+
+                it("") {
+
+                }
+            }
+        }
+    }
+
+    group("Search movies tests") {
+
     }
 })
 
