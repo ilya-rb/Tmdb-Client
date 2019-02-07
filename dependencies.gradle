@@ -5,6 +5,7 @@ gradlePlugins.kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotl
 gradlePlugins.versions = "com.github.ben-manes:gradle-versions-plugin:$versions.versionsGradle"
 gradlePlugins.buildscan = "com.gradle:build-scan-plugin:$versions.buildScanGradle"
 gradlePlugins.firebase = "com.google.gms:google-services:$versions.firebaseGradle"
+gradlePlugins.androidJunit5 = "de.mannodermaus.gradle.plugins:android-junit5:$versions.androidJunit5Gradle"
 
 def deps = [:]
 // STD
@@ -72,6 +73,10 @@ testDeps.junit = "junit:junit:$testVersions.junit"
 testDeps.mockito = "org.mockito:mockito-core:$testVersions.mockito"
 testDeps.mockitoInline = "org.mockito:mockito-inline:$testVersions.mockito"
 testDeps.mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:$testVersions.mockitoKotlin"
+testDeps.spekJvm = "org.spekframework.spek2:spek-dsl-jvm:$testVersions.spek"
+testDeps.spekJunit5 = "org.spekframework.spek2:spek-runner-junit5:$testVersions.spek"
+testDeps.kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:$versions.kotlin"
+
 
 def androidTestDeps = [:]
 androidTestDeps.runner = "androidx.test:runner:$androidTestVersions.runner"

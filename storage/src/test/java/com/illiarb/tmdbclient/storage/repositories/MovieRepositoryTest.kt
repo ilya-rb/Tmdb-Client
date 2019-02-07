@@ -10,31 +10,31 @@ import com.illiarb.tmdbclient.storage.model.ResultsModel
 import com.illiarb.tmdbclient.storage.network.api.service.MovieService
 import com.illiarb.tmdbclient.storage.network.api.service.SearchService
 import com.illiarb.tmdbcliient.core_test.TestDispatcherProvider
-import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
 import com.illiarb.tmdblcient.core.storage.ResourceResolver
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import org.junit.Test
+import org.junit.Assert.assertTrue
 import org.mockito.Mockito
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 /**
  * @author ilya-rb on 30.01.19.
  */
 @ExperimentalCoroutinesApi
-class MovieRepositoryTest {
+object MovieRepositoryTest : Spek({
 
-    private val movieService = mock<MovieService>()
-    private val searchService = mock<SearchService>()
-    private val dispatcherProvider = TestDispatcherProvider()
-    private val storage = mock<PersistableStorage>()
-    private val resourceResolver = mock<ResourceResolver>()
+    val movieService = mock<MovieService>()
+    val searchService = mock<SearchService>()
+    val dispatcherProvider = TestDispatcherProvider()
+    val storage = mock<PersistableStorage>()
+    val resourceResolver = mock<ResourceResolver>()
 
-    private val movieMapper = MovieMapper(GenreMapper(), PersonMapper(), ReviewMapper())
+    val movieMapper = MovieMapper(GenreMapper(), PersonMapper(), ReviewMapper())
 
-    private val repository = MoviesRepositoryImpl(
+    val repository = MoviesRepositoryImpl(
         movieService,
         searchService,
         dispatcherProvider,
@@ -44,33 +44,42 @@ class MovieRepositoryTest {
         resourceResolver
     )
 
-    @Test
-    fun `on refresh movies fetched directly from network and caches`() {
-        runBlocking {
-            val type = "upcoming"
+    group("Movies fetching tests") {
+        val type = "now_playing"
+        val movies = createMovieModelList(2)
 
-            Mockito
-                .`when`(movieService.getMoviesByType(type))
-                .thenReturn(CompletableDeferred(ResultsModel(createMovieModelList(2))))
+        Mockito
+            .`when`(movieService.getMoviesByType(type))
+            .thenReturn(CompletableDeferred((ResultsModel(movies))))
 
-            repository.getMoviesByType(type, refresh = true)
+        Mockito
+            .`when`(storage.storeMovies(type, movies))
+            .thenReturn(true)
+
+        describe("a movie repository fetch") {
+            context("on type $type") {
+                val result = runBlocking { repository.getMoviesByType(type, true) }
+
+                it("should fetch movies from network with type = $type") {
+                    assertTrue(result.isNotEmpty())
+                    @Suppress("DeferredResultUnused")
+                    Mockito.verify(movieService).getMoviesByType(type)
+                }
+
+                after {
+                    it("Should store fetched movies in cache") {
+                        Mockito.verify(storage.storeMovies(type, movies))
+                    }
+                }
+            }
         }
     }
+})
 
-    @Test
-    fun `on fetch movies cached returns first`() {
-
-    }
-
-    private fun createMovieModelList(size: Int): List<MovieModel> {
-        return mutableListOf<MovieModel>().apply {
-            for (i in 0..size) {
-                add(
-                    MovieModel(
-
-                    )
-                )
-            }
+fun createMovieModelList(size: Int): List<MovieModel> {
+    return mutableListOf<MovieModel>().apply {
+        for (i in 0 until size) {
+            add(MovieModel())
         }
     }
 }

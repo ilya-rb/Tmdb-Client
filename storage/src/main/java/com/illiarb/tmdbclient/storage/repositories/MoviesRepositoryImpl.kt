@@ -62,12 +62,7 @@ class MoviesRepositoryImpl @Inject constructor(
         withContext(dispatcherProvider.io) {
             resourceResolver
                 .getStringArray(R.array.movie_filters)
-                .map {
-                    MovieFilter(
-                        it,
-                        it.toLowerCase().replace(" ", "_")
-                    )
-                }
+                .map { MovieFilter(it, it.toLowerCase().replace(" ", "_")) }
         }
 
     override suspend fun searchMovies(query: String): List<Movie> =

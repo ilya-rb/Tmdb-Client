@@ -19,6 +19,7 @@ buildscript {
         classpath gradlePlugins.jacoco
         classpath gradlePlugins.buildscan
         classpath gradlePlugins.firebase
+        classpath gradlePlugins.androidJunit5
     }
 }
 
