@@ -45,30 +45,31 @@ object MovieRepositoryTest : Spek({
     )
 
     group("Movies fetching tests") {
-        val type = "now_playing"
-        val movies = createMovieModelList(2)
+        describe("Movie repository fetching process") {
+            val types = arrayOf("now_playing, upcoming, popular, top_rated")
 
-        Mockito
-            .`when`(movieService.getMoviesByType(type))
-            .thenReturn(CompletableDeferred((ResultsModel(movies))))
+            types.forEach { type ->
+                context("on type received = $type") {
+                    val movies = createMovieModelList(2)
 
-        Mockito
-            .`when`(storage.storeMovies(type, movies))
-            .thenReturn(true)
+                    Mockito
+                        .`when`(movieService.getMoviesByType(type))
+                        .thenReturn(CompletableDeferred((ResultsModel(movies))))
 
-        describe("a movie repository fetch") {
-            context("on type $type") {
-                val result = runBlocking { repository.getMoviesByType(type, true) }
+                    Mockito
+                        .`when`(storage.storeMovies(type, movies))
+                        .thenReturn(true)
 
-                it("should fetch movies from network with type = $type") {
-                    assertTrue(result.isNotEmpty())
-                    @Suppress("DeferredResultUnused")
-                    Mockito.verify(movieService).getMoviesByType(type)
-                }
+                    val result = runBlocking { repository.getMoviesByType(type, true) }
 
-                after {
+                    it("should fetch movies from network with type = $type") {
+                        assertTrue(result.isNotEmpty())
+                        @Suppress("DeferredResultUnused")
+                        Mockito.verify(movieService).getMoviesByType(type)
+                    }
+
                     it("Should store fetched movies in cache") {
-                        Mockito.verify(storage.storeMovies(type, movies))
+                        Mockito.verify(storage).storeMovies(type, movies)
                     }
                 }
             }
