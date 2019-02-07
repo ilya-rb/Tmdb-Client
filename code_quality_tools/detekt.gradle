@@ -4,11 +4,18 @@ apply plugin: 'io.gitlab.arturbosch.detekt'
 detekt {
     toolVersion = "1.0.0-RC12"
     config = files("$rootDir/code_quality_tools/detekt_config.yml")
-    filters = ".*test.*,.*/resources/.*,.*/tmp/.*,.*/build/.*"
+    filters = ".*/resources/.*,.*/build/*"
     reports {
         html {
             enabled = true
-            destination = file("$rootDir/reports/detekt.html")
+            destination = file("$rootDir/reports/${project.name}_detekt.html")
         }
+    }
+    idea {
+        path = "$rootDir/.idea"
+        codeStyleScheme = "$rootDir/.idea/idea-code-style.xml"
+        inspectionsProfile = "$rootDir/.idea/inspect.xml"
+        report = "project.projectDir/reports"
+        mask = "*.kt"
     }
 }

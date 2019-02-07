@@ -8,3 +8,4 @@ api-config.properties
 /captures
 .externalNativeBuild
 app/google-services.json
+/reports
