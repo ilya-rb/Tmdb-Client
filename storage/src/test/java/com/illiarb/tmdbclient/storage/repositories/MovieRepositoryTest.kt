@@ -13,6 +13,8 @@ import com.illiarb.tmdbcliient.core_test.TestDispatcherProvider
 import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
 import com.illiarb.tmdblcient.core.storage.ResourceResolver
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -85,17 +87,15 @@ object MovieRepositoryTest : Spek({
                     .`when`(movieService.getMovieDetails(movie.id, appendToResponse))
                     .thenReturn(CompletableDeferred(MovieModel(id = movie.id)))
 
-                val result = runBlocking { repository.getMovieDetails(movie.id, appendToResponse) }
+                runBlocking { repository.getMovieDetails(movie.id, appendToResponse) }
 
-                it("") {
-
+                it("Should fetch movie details from api") {
+                    @Suppress("DeferredResultUnused")
+                    verify(movieService).getMovieDetails(movie.id, appendToResponse)
+                    verifyZeroInteractions(storage)
                 }
             }
         }
-    }
-
-    group("Search movies tests") {
-
     }
 })
 

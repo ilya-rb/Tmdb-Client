@@ -31,18 +31,13 @@ class AuthModel @Inject constructor(
             authenticate.executeAsync(UserCredentials(username, password)),
 
             onSuccess = {
-                setState {
-                    copy(isLoading = false)
-                }
+                setState { copy(isLoading = false) }
                 router.navigateTo(AccountScreen)
             },
 
             onError = { throwable ->
                 super.handleError(throwable)
-
-                setState {
-                    AuthUiState(false, throwable, true)
-                }
+                setState { AuthUiState(false, throwable, true) }
             }
         )
     }
