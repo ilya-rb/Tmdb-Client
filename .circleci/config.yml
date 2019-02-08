@@ -84,10 +84,8 @@ workflows:
   develop:
     jobs:
     - debug-build
-
     - unit-tests:
-        requires:
-        - debug-build
-
+      requires:
+      - debug-build
     - lint:
-      type: approval
+        type: approval
