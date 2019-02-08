@@ -4,7 +4,7 @@ defaults: &defaults
   working_directory: ~/code
 
   docker:
-  - image: circleci/android:api-28
+    - image: circleci/android:api-28
 
   environment:
     JVM_OPTS: -Xmx3200m
@@ -15,115 +15,119 @@ jobs:
     <<: *defaults
 
     steps:
-    - checkout
+      - checkout
 
-    - restore_cache:
-        key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
 
-    - run:
-        name: Download configuration files
-        command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
+      - run:
+          name: Download configuration files
+          command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
 
-    - run:
-        name: Download Dependencies
-        command: ./gradlew androidDependencies
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
 
-    - run:
-        name: Build Project
-        command: ./gradlew assembleDebug --scan --exclude-task test --exclude-task lint
+      - run:
+          name: Build Project
+          command: ./gradlew assembleDebug --scan --exclude-task test --exclude-task lint
 
-    - save_cache:
-        paths:
-        - ~/.gradle
-        key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
 
-    - store_artifacts:
-        path: app/build/reports
-        destination: reports
+      - store_artifacts:
+          path: app/build/reports
+          destination: reports
 
   unit-tests:
     <<: *defaults
 
     steps:
-    - checkout
+      - checkout
 
-    - restore_cache:
-        key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
 
-    - run:
-        name: Download configuration files
-        command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
+      - run:
+          name: Download configuration files
+          command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
 
-    - run:
-        name: Run Unit Tests
-        command: ./gradlew testDebugUnitTest
+      - run:
+          name: Run Unit Tests
+          command: ./gradlew testDebugUnitTest
 
-    - store_test_results:
-        path: app/test/test-results
+      - run:
+          name: Upload code coverage report
+          command: bash <(curl -s https://codecov.io/bash) -t token
+
+      - store_test_results:
+          path: app/test/test-results
 
   lint:
     <<: *defaults
 
     steps:
-    - checkout
+      - checkout
 
-    - restore_cache:
-      key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+      - restore_cache:
+        key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
 
-    - run:
-      name: Download configuration files
-      command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
+      - run:
+        name: Download configuration files
+        command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
 
-    - run:
-      name: Run Unit Tests
-      command: ./gradlew detekt
+      - run:
+        name: Run Unit Tests
+        command: ./gradlew detekt
 
   release-build:
     <<: *defaults
 
     steps:
-    - checkout
+      - checkout
 
-    - restore_cache:
-        key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
 
-    - run:
-        name: Download configuration files
-        command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
+      - run:
+          name: Download configuration files
+          command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
 
-    - run:
-        name: Download Dependencies
-        command: ./gradlew androidDependencies
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
 
-    - run:
-        name: Build Project
-        command: ./gradlew assembleRelease --scan --exclude-task test --exclude-task lint
+      - run:
+          name: Build Project
+          command: ./gradlew assembleRelease --scan --exclude-task test --exclude-task lint
 
-    - save_cache:
-        paths:
-        - ~/.gradle
-        key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
 
-    - store_artifacts:
-        path: app/build/reports
-        destination: reports
+      - store_artifacts:
+          path: app/build/reports
+          destination: reports
 
 workflows:
   version: 2
 
   develop:
     jobs:
-    - debug-build
+      - debug-build
 
-    - unit-tests:
-        requires:
-        - debug-build
+      - unit-tests:
+          requires:
+            - debug-build
 
-    - lint:
-        type: approval
+      - lint:
+          type: approval
 
-    - release:
-        type: approval
-        requires:
-        - unit-tests
-        - lint
+      - release:
+          type: approval
+          requires:
+            - unit-tests
+            - lint
