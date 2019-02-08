@@ -65,6 +65,20 @@ subprojects {
                 exceptionFormat 'full'
             }
         }
+
+        android.lintOptions {
+            warningsAsErrors true
+            abortOnError false
+
+            // App does not have deep linking
+            disable 'GoogleAppIndexingWarning'
+            // Okio references java.nio that does not presented in Android SDK
+            disable 'InvalidPackage'
+
+            checkAllWarnings true
+            showAll true
+            explainIssues true
+        }
     }
 }
 
