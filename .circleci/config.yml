@@ -123,11 +123,11 @@ workflows:
           requires:
             - debug-build
 
-      - lint:
-          type: approval
+      #- lint:
+      #    type: approval
 
-      - release:
-          type: approval
-          requires:
-            - unit-tests
-            - lint
+      #- release:
+      #    type: approval
+      #    requires:
+      #      - unit-tests
+      #      - lint
