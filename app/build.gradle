@@ -5,7 +5,6 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 apply from: dependenciesFilePath
-apply from: "$rootDir/code_quality_tools/jacoco.gradle"
 
 android {
     compileSdkVersion projectInfo.compileSdkVersion

@@ -52,6 +52,22 @@ allprojects {
     }
 }
 
+subprojects {
+
+    apply from: "$rootDir/code_quality_tools/jacoco.gradle"
+
+    afterEvaluate {
+        // For all android libraries
+        // This allows us see tests execution progress in the output on the CI.
+        android.testOptions.unitTests.all {
+            testLogging {
+                events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+                exceptionFormat 'full'
+            }
+        }
+    }
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
