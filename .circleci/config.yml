@@ -89,5 +89,5 @@ workflows:
         requires:
         - debug-build
 
-    - lint
+    - lint:
       type: approval
