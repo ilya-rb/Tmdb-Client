@@ -65,7 +65,6 @@
         android:id="@+id/moviesList"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_default"
         android:clipToPadding="false"
         android:paddingBottom="@dimen/margin_default"
         app:layout_constraintBottom_toBottomOf="parent"

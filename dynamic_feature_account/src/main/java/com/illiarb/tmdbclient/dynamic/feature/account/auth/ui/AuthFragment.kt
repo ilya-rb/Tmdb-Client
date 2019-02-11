@@ -14,11 +14,13 @@ import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.exception.ErrorCodes
 import com.illiarb.tmdblcient.core.exception.ValidationException
 import kotlinx.android.synthetic.main.fragment_auth.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.LazyThreadSafetyMode.NONE
 
 /**
  * @author ilya-rb on 20.11.18.
  */
+@ExperimentalCoroutinesApi
 class AuthFragment : BaseFragment<AuthModel>(), Injectable {
 
     private val stateObserver: LawObserver<AuthUiState> by lazy(NONE) {

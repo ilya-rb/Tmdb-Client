@@ -32,8 +32,6 @@ dependencies {
     implementation project(':core')
     implementation project(':core_ui')
 
-    implementation 'com.yarolegovich:discrete-scrollview:1.4.9'
-
     implementation deps.dagger
 
     testImplementation project(':core_test')

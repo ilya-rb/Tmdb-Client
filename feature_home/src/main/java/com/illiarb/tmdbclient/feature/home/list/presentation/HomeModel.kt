@@ -52,11 +52,5 @@ class HomeModel @Inject constructor(
     }
 
     private fun createMovieSections(movies: List<MovieBlock>): List<MovieSection> =
-        movies.map { (filter, movies) ->
-            if (filter.code == MovieFilter.TYPE_NOW_PLAYING) {
-                NowPlayingSection(filter.name, movies)
-            } else {
-                ListSection(filter.name, movies)
-            }
-        }
+        movies.map { (filter, movies) -> ListSection(filter.name, movies) }
 }
