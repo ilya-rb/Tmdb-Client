@@ -180,8 +180,12 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
     }
 
     private fun showMoviePhotos(photos: List<String>) {
+        // Check if we already inflated layout
+        // because after rotation setState will be called again
         if (findPhotosList() != null) return
 
+        // Using layout inflater because
+        // seems like ViewStub doesn't support <merge> tag
         val photosView = LayoutInflater
             .from(requireContext())
             .inflate(

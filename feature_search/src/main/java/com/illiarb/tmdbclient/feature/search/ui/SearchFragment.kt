@@ -92,7 +92,7 @@ class SearchFragment : BaseFragment<SearchModel>() {
         searchResultsList.adapter = null
     }
 
-    private fun render(state: SearchUiState) {
+    private fun render(state: SearchUiState) = runOnUi {
         searchProgress.setVisible(state.isSearchRunning)
 
         val drawable = when (state.icon) {
