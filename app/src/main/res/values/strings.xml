@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">TmdbClient</string>
     <string name="dynamic_feature_account">account</string>
+
+    <!-- Messages -->
     <string name="network_not_connected">Not connected to network</string>
+
+    <!-- Shortcuts -->
+    <string name="search_shortcut_short_label">Search</string>
+
 </resources>

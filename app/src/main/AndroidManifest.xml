@@ -18,10 +18,17 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
         <activity android:name=".main.MainActivity">
+
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts"
+                />
+
         </activity>
 
     </application>
