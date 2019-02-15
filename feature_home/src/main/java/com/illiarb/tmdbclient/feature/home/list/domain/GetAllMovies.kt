@@ -26,7 +26,7 @@ class GetAllMovies @Inject constructor(
         }
 
     private suspend fun getMoviesByType(filter: MovieFilter): List<Movie> =
-        moviesRepository.getMoviesByType(filter.code, true)
+        moviesRepository.getMoviesByType(filter.code, false)
 }
 
 data class MovieBlock(val filter: MovieFilter, val movies: List<Movie>)

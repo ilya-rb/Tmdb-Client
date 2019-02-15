@@ -9,7 +9,7 @@ projectInfo.with {
 def versions = [:]
 versions.with {
     // Gradle plugins
-    androidGradle = "3.4.0-beta03"
+    androidGradle = "3.4.0-beta04"
     versionsGradle = "0.20.0"
     jacocoGradle = "0.8.2"
     buildScanGradle = "1.16"

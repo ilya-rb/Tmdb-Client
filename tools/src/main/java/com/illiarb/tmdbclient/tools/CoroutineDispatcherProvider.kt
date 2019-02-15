@@ -10,8 +10,7 @@ import javax.inject.Inject
  * @author ilya-rb on 07.01.19.
  */
 @ExperimentalCoroutinesApi
-class CoroutineDispatcherProvider @Inject constructor() :
-    DispatcherProvider {
+class CoroutineDispatcherProvider @Inject constructor() : DispatcherProvider {
 
     override val io: CoroutineDispatcher = Dispatchers.IO
 
