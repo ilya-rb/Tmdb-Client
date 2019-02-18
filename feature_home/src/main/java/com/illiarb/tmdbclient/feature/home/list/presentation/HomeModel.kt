@@ -1,14 +1,15 @@
 package com.illiarb.tmdbclient.feature.home.list.presentation
 
-import com.illiarb.tmdbclient.feature.home.list.domain.GetAllMovies
-import com.illiarb.tmdbclient.feature.home.list.domain.MovieBlock
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
-import com.illiarb.tmdblcient.core.domain.entity.*
+import com.illiarb.tmdblcient.core.domain.MoviesInteractor
+import com.illiarb.tmdblcient.core.domain.entity.ListSection
+import com.illiarb.tmdblcient.core.domain.entity.Movie
+import com.illiarb.tmdblcient.core.domain.entity.MovieBlock
+import com.illiarb.tmdblcient.core.domain.entity.MovieSection
 import com.illiarb.tmdblcient.core.navigation.*
 import com.illiarb.tmdblcient.core.storage.Authenticator
 import com.illiarb.tmdblcient.core.system.featureconfig.FeatureConfig
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -17,17 +18,16 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 class HomeModel @Inject constructor(
     featureConfig: FeatureConfig,
-    private val getAllMovies: GetAllMovies,
+    private val moviesInteractor: MoviesInteractor,
     private val authenticator: Authenticator,
     private val router: Router
 ) : BasePresentationModel<HomeUiState>(HomeUiState.idle(featureConfig)) {
 
     init {
         runCoroutine {
-            handleResult(getAllMovies.executeAsync(Unit), { blocks ->
-                val sections = createMovieSections(blocks)
+            handleResult(moviesInteractor.getAllMovies(), { blocks ->
                 setState {
-                    copy(isLoading = false, movies = sections)
+                    copy(isLoading = false, movies = createMovieSections(blocks))
                 }
             })
         }
@@ -52,5 +52,7 @@ class HomeModel @Inject constructor(
     }
 
     private fun createMovieSections(movies: List<MovieBlock>): List<MovieSection> =
-        movies.map { (filter, movies) -> ListSection(filter.name, movies) }
+        movies.map { (filter, movies) ->
+            ListSection(filter.name, movies)
+        }
 }

@@ -1,11 +1,12 @@
 package com.illiarb.tmdbclient.feature.home.list
 
-import com.illiarb.tmdbclient.feature.home.list.domain.GetAllMovies
-import com.illiarb.tmdbclient.feature.home.list.domain.MovieBlock
 import com.illiarb.tmdbclient.feature.home.list.presentation.HomeModel
 import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
 import com.illiarb.tmdbcliient.core_test.runWithSubscription
 import com.illiarb.tmdblcient.core.common.Result
+import com.illiarb.tmdblcient.core.domain.AuthInteractor
+import com.illiarb.tmdblcient.core.domain.MoviesInteractor
+import com.illiarb.tmdblcient.core.domain.entity.MovieBlock
 import com.illiarb.tmdblcient.core.domain.entity.MovieFilter
 import com.illiarb.tmdblcient.core.navigation.*
 import com.illiarb.tmdblcient.core.storage.Authenticator
@@ -27,7 +28,7 @@ import org.mockito.Mockito
 class HomeModelTest {
 
     private val router = mock<Router>()
-    private val authenticator = mock<Authenticator>()
+    private val authInteractor = mock<Authenticator>()
 
     private val featureConfig = mock<FeatureConfig>()
         .apply {
@@ -40,21 +41,21 @@ class HomeModelTest {
                 .thenReturn(false)
         }
 
-    private val getAllMovies = mock<GetAllMovies>()
+    private val moviesInteractor = mock<MoviesInteractor>()
         .apply {
             runBlocking {
                 Mockito
-                    .`when`(executeAsync(Unit))
+                    .`when`(getAllMovies())
                     .thenReturn(Result.Success(createMovieBlockList(3)))
             }
         }
 
-    private val homeModel = HomeModel(featureConfig, getAllMovies, authenticator, router)
+    private val homeModel = HomeModel(featureConfig, moviesInteractor, authInteractor, router)
 
     @Test
     fun `on auth enabled and search disabled proper states are set`() {
         runBlocking {
-            verify(getAllMovies).executeAsync(Unit)
+            verify(moviesInteractor).getAllMovies()
             verify(featureConfig).isFeatureEnabled(FeatureName.SEARCH)
             verify(featureConfig).isFeatureEnabled(FeatureName.AUTH)
 
@@ -70,7 +71,7 @@ class HomeModelTest {
     @Test
     fun `on start movies fetched with progress`() {
         runBlocking {
-            verify(getAllMovies).executeAsync(Unit)
+            verify(moviesInteractor).getAllMovies()
             verify(featureConfig).isFeatureEnabled(FeatureName.SEARCH)
             verify(featureConfig).isFeatureEnabled(FeatureName.AUTH)
 
@@ -103,13 +104,13 @@ class HomeModelTest {
     fun `on account click if not logged in auth screen is opened`() {
         runBlocking {
             Mockito
-                .`when`(authenticator.isAuthenticated())
+                .`when`(authInteractor.isAuthenticated())
                 .thenReturn(false)
 
             homeModel.onAccountClick()
 
             verify(router).navigateTo(AuthScreen)
-            verify(authenticator).isAuthenticated()
+            verify(authInteractor).isAuthenticated()
         }
     }
 
@@ -117,13 +118,13 @@ class HomeModelTest {
     fun `on account click if logged in account screen is opened`() {
         runBlocking {
             Mockito
-                .`when`(authenticator.isAuthenticated())
+                .`when`(authInteractor.isAuthenticated())
                 .thenReturn(true)
 
             homeModel.onAccountClick()
 
             verify(router).navigateTo(AccountScreen)
-            verify(authenticator).isAuthenticated()
+            verify(authInteractor).isAuthenticated()
         }
     }
 

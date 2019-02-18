@@ -1,12 +1,11 @@
 package com.illiarb.tmdbclient.dynamic.feature.account.profile
 
-import com.illiarb.tmdbclient.dynamic.feature.account.profile.domain.GetProfileUseCase
-import com.illiarb.tmdbclient.dynamic.feature.account.profile.domain.SignOutUseCase
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.presentation.AccountModel
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.presentation.ShowSignOutDialog
 import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
 import com.illiarb.tmdbcliient.core_test.runWithSubscription
 import com.illiarb.tmdblcient.core.common.Result
+import com.illiarb.tmdblcient.core.domain.AccountInteractor
 import com.illiarb.tmdblcient.core.navigation.AuthScreen
 import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import com.illiarb.tmdblcient.core.navigation.Router
@@ -24,22 +23,20 @@ import org.mockito.Mockito
 @ExperimentalCoroutinesApi
 class AccountModelTest {
 
-    private val getProfileUseCase = mock<GetProfileUseCase>()
+    private val accountInteractor = mock<AccountInteractor>()
         .apply {
             runBlocking {
                 Mockito
-                    .`when`(executeAsync(Unit))
+                    .`when`(getAccount())
                     .thenReturn(
                         Result.Success(FakeEntityFactory.createFakeAccount())
                     )
             }
         }
 
-    private val signOutUseCase = mock<SignOutUseCase>()
-
     private val router = mock<Router>()
 
-    private val accountModel = AccountModel(getProfileUseCase, signOutUseCase, router)
+    private val accountModel = AccountModel(accountInteractor, router)
 
     @Test
     fun `on account fetched account is displaying and progress is hidden`() {
@@ -55,8 +52,8 @@ class AccountModelTest {
     fun `on sign out confirm auth screen is shown`() {
         runBlocking {
             Mockito
-                .`when`(signOutUseCase.executeAsync(Unit))
-                .thenReturn(Result.Success(true))
+                .`when`(accountInteractor.exitFromAccount())
+                .thenReturn(Result.Success(Unit))
 
             accountModel.onSignOutConfirm()
 

@@ -1,16 +1,17 @@
 package com.illiarb.tmdbclient.dynamic.feature.account.auth
 
-import com.illiarb.tmdbclient.dynamic.feature.account.auth.domain.Authenticate
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthModel
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthUiState
 import com.illiarb.tmdbcliient.core_test.TestObserver
 import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
 import com.illiarb.tmdblcient.core.common.Result
+import com.illiarb.tmdblcient.core.domain.AuthInteractor
 import com.illiarb.tmdblcient.core.exception.ValidationException
 import com.illiarb.tmdblcient.core.navigation.AccountScreen
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -26,13 +27,14 @@ import org.mockito.Mockito
  *
  * @author ilya-rb on 24.01.19.
  */
+@ExperimentalCoroutinesApi
 class AuthModelTest {
 
-    private val authenticate = mock<Authenticate>()
+    private val authInteractor = mock<AuthInteractor>()
 
     private val router = mock<Router>()
 
-    private val authModel = AuthModel(authenticate, router)
+    private val authModel = AuthModel(authInteractor, router)
 
     private val testObserver = TestObserver<AuthUiState>()
 
@@ -53,7 +55,7 @@ class AuthModelTest {
             val credentials = FakeEntityFactory.createValidCredentials()
 
             Mockito
-                .`when`(authenticate.executeAsync(credentials))
+                .`when`(authInteractor.authenticate(credentials))
                 .thenReturn(Result.Success(Unit))
 
             authModel.authenticate(credentials.username, credentials.password)
@@ -73,7 +75,7 @@ class AuthModelTest {
             val credentials = FakeEntityFactory.createUsernameEmptyCredentials()
 
             Mockito
-                .`when`(authenticate.executeAsync(credentials))
+                .`when`(authInteractor.authenticate(credentials))
                 .thenReturn(Result.Error(ValidationException(mutableListOf())))
 
             authModel.authenticate(credentials.username, credentials.password)
@@ -93,7 +95,7 @@ class AuthModelTest {
             val credentials = FakeEntityFactory.createValidCredentials()
 
             Mockito
-                .`when`(authenticate.executeAsync(credentials))
+                .`when`(authInteractor.authenticate(credentials))
                 .thenReturn(Result.Success(Unit))
 
             authModel.authenticate(credentials.username, credentials.password)

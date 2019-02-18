@@ -1,8 +1,7 @@
 package com.illiarb.tmdbclient.dynamic.feature.account.profile.presentation
 
-import com.illiarb.tmdbclient.dynamic.feature.account.profile.domain.GetProfileUseCase
-import com.illiarb.tmdbclient.dynamic.feature.account.profile.domain.SignOutUseCase
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
+import com.illiarb.tmdblcient.core.domain.AccountInteractor
 import com.illiarb.tmdblcient.core.domain.entity.Movie
 import com.illiarb.tmdblcient.core.navigation.AuthScreen
 import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
@@ -16,14 +15,13 @@ import javax.inject.Inject
  */
 @ExperimentalCoroutinesApi
 class AccountModel @Inject constructor(
-    private val getProfileUseCase: GetProfileUseCase,
-    private val signOutUseCase: SignOutUseCase,
+    private val accountInteractor: AccountInteractor,
     private val router: Router
 ) : BasePresentationModel<AccountUiState>(AccountUiState.idle()), CoroutineScope {
 
     init {
         runCoroutine {
-            handleResult(getProfileUseCase.executeAsync(Unit), { account ->
+            handleResult(accountInteractor.getAccount(), { account ->
                 setState { copy(isLoading = false, account = account) }
             })
         }
@@ -35,7 +33,7 @@ class AccountModel @Inject constructor(
 
     fun onSignOutConfirm() {
         runCoroutine {
-            handleResult(signOutUseCase.executeAsync(Unit), { router.navigateTo(AuthScreen) })
+            handleResult(accountInteractor.exitFromAccount(), { router.navigateTo(AuthScreen) })
         }
     }
 

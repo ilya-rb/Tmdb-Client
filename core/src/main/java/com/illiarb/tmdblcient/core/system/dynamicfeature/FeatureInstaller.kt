@@ -1,7 +1,5 @@
 package com.illiarb.tmdblcient.core.system.dynamicfeature
 
-import com.illiarb.tmdblcient.core.common.NonBlocking
-
 /**
  * Interface for interacting
  * with dynamic feature modules
@@ -10,7 +8,6 @@ import com.illiarb.tmdblcient.core.common.NonBlocking
  */
 interface FeatureInstaller {
 
-    @NonBlocking
     suspend fun installFeatures(vararg featureName: DynamicFeatureName): FeatureInstallState
 
     fun mockInstallFeatures(vararg featureName: DynamicFeatureName): FeatureInstallState

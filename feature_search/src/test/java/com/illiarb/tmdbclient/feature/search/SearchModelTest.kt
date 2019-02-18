@@ -1,11 +1,11 @@
 package com.illiarb.tmdbclient.feature.search
 
-import com.illiarb.tmdbclient.feature.search.domain.SearchMovies
 import com.illiarb.tmdbclient.feature.search.presentation.SearchModel
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState
 import com.illiarb.tmdbcliient.core_test.TestObserver
 import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
 import com.illiarb.tmdblcient.core.common.Result
+import com.illiarb.tmdblcient.core.domain.SearchInteractor
 import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.nhaarman.mockitokotlin2.mock
@@ -32,9 +32,9 @@ class SearchModelTest {
 
     private val mockRouter = mock<Router>()
 
-    private val mockSearchMovies = mock<SearchMovies>()
+    private val mockSearchInteractor = mock<SearchInteractor>()
 
-    private val searchModel = SearchModel(mockSearchMovies, mockRouter)
+    private val searchModel = SearchModel(mockSearchInteractor, mockRouter)
 
     private val testStateObserver = TestObserver<SearchUiState>()
 
@@ -69,7 +69,7 @@ class SearchModelTest {
             val searchQuery = "test"
 
             Mockito
-                .`when`(mockSearchMovies.executeAsync(searchQuery))
+                .`when`(mockSearchInteractor.searchMovies(searchQuery))
                 .thenReturn(Result.Success(Collections.emptyList()))
 
             searchModel.search(searchQuery)
@@ -95,7 +95,7 @@ class SearchModelTest {
             val result = FakeEntityFactory.createFakeMovieList(size = 2)
 
             Mockito
-                .`when`(mockSearchMovies.executeAsync(searchQuery))
+                .`when`(mockSearchInteractor.searchMovies(searchQuery))
                 .thenReturn(Result.Success(result))
 
             searchModel.search(searchQuery)
@@ -126,10 +126,6 @@ class SearchModelTest {
 
         searchModel.onMovieClicked(movie)
 
-        verify(mockRouter).navigateTo(
-            MovieDetailsScreen(
-                movie.id
-            )
-        )
+        verify(mockRouter).navigateTo(MovieDetailsScreen(movie.id))
     }
 }

@@ -14,7 +14,8 @@ import dagger.Component
     dependencies = [AppProvider::class],
     modules = [
         AccountModule::class,
-        ViewModelModule::class
+        ViewModelModule::class,
+        InteractorsModule::class
     ]
 )
 @FragmentScope

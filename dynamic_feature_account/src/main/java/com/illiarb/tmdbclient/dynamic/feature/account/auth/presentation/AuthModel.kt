@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation
 
-import com.illiarb.tmdbclient.dynamic.feature.account.auth.domain.Authenticate
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
+import com.illiarb.tmdblcient.core.domain.AuthInteractor
 import com.illiarb.tmdblcient.core.domain.entity.UserCredentials
 import com.illiarb.tmdblcient.core.navigation.AccountScreen
 import com.illiarb.tmdblcient.core.navigation.Router
@@ -14,7 +14,7 @@ import javax.inject.Inject
  */
 @ExperimentalCoroutinesApi
 class AuthModel @Inject constructor(
-    private val authenticate: Authenticate,
+    private val authInteractor: AuthInteractor,
     private val router: Router
 ) : BasePresentationModel<AuthUiState>(AuthUiState.idle()) {
 
@@ -28,7 +28,7 @@ class AuthModel @Inject constructor(
         setState { copy(isLoading = true, authButtonEnabled = false) }
 
         handleResult(
-            authenticate.executeAsync(UserCredentials(username, password)),
+            authInteractor.authenticate(UserCredentials(username, password)),
 
             onSuccess = {
                 setState { copy(isLoading = false) }

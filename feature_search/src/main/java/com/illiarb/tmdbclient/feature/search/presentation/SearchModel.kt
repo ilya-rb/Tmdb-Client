@@ -1,9 +1,9 @@
 package com.illiarb.tmdbclient.feature.search.presentation
 
-import com.illiarb.tmdbclient.feature.search.domain.SearchMovies
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchIcon
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchResult
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
+import com.illiarb.tmdblcient.core.domain.SearchInteractor
 import com.illiarb.tmdblcient.core.domain.entity.Movie
 import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import com.illiarb.tmdblcient.core.navigation.Router
@@ -15,7 +15,7 @@ import javax.inject.Inject
  */
 @ExperimentalCoroutinesApi
 class SearchModel @Inject constructor(
-    private val searchMovies: SearchMovies,
+    private val searchInteractor: SearchInteractor,
     private val router: Router
 ) : BasePresentationModel<SearchUiState>(SearchUiState.idle()) {
 
@@ -24,7 +24,7 @@ class SearchModel @Inject constructor(
             copy(icon = SearchIcon.Cross, isSearchRunning = true)
         }
 
-        handleResult(searchMovies.executeAsync(query), { movies ->
+        handleResult(searchInteractor.searchMovies(query), { movies ->
             val searchResult =
                 if (movies.isEmpty()) SearchResult.Empty else SearchResult.Success(movies)
             setState {

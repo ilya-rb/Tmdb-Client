@@ -1,27 +1,28 @@
 package com.illiarb.tmdbclient.dynamic.feature.account.profile
 
-import com.illiarb.tmdbclient.dynamic.feature.account.profile.domain.GetProfileUseCase
+import com.illiarb.tmdbclient.dynamic.feature.account.profile.domain.AccountInteractorImpl
 import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
 import com.illiarb.tmdblcient.core.common.Result
-import com.illiarb.tmdblcient.core.storage.ErrorHandler
 import com.illiarb.tmdblcient.core.storage.AccountRepository
+import com.illiarb.tmdblcient.core.storage.ErrorHandler
 import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.mockito.Mockito
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.verifyZeroInteractions
 
 /**
- * @author ilya-rb on 26.01.19.
+ * @author ilya-rb on 18.02.19.
  */
-class GetProfileUseCaseTest {
+class AccountInteractorTest {
 
     private val repository = mock<AccountRepository>()
     private val errorHandler = mock<ErrorHandler>()
 
-    private val getProfileUseCase = GetProfileUseCase(repository, errorHandler)
+    private val accountInteractor = AccountInteractorImpl(repository, errorHandler)
 
     @Test
     fun `on success profile is returned`() {
@@ -42,7 +43,7 @@ class GetProfileUseCaseTest {
                 .`when`(repository.getCurrentAccount())
                 .thenReturn(account)
 
-            val result = getProfileUseCase.executeAsync(Unit)
+            val result = accountInteractor.getAccount()
 
             verify(repository).getFavoriteMovies(account.id)
             verify(repository).getRatedMovies(account.id)
@@ -59,6 +60,44 @@ class GetProfileUseCaseTest {
                 .toInt()
 
             assertEquals(rating * 10, accountResult.result.averageRating)
+        }
+    }
+
+    @Test
+    fun `on sign out success true is returned`() {
+        runBlocking {
+            Mockito
+                .`when`(repository.clearAccountData())
+                .thenReturn(true)
+
+            val result = accountInteractor.exitFromAccount()
+
+            verify(repository).clearAccountData()
+            verifyZeroInteractions(errorHandler)
+
+            assertTrue(result is Result.Success)
+        }
+    }
+
+    @Test
+    fun `on sign out failure error is returned`() {
+        runBlocking {
+            val error = RuntimeException("Error Clearing data")
+
+            Mockito
+                .`when`(errorHandler.createExceptionFromThrowable(error))
+                .thenReturn(error)
+
+            Mockito
+                .`when`(repository.clearAccountData())
+                .thenThrow(error)
+
+            val result = accountInteractor.exitFromAccount()
+
+            verify(repository).clearAccountData()
+            verify(errorHandler).createExceptionFromThrowable(error)
+
+            assertTrue(result is Result.Error)
         }
     }
 }

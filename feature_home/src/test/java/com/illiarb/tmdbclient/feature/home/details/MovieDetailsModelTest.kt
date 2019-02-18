@@ -1,10 +1,10 @@
 package com.illiarb.tmdbclient.feature.home.details
 
-import com.illiarb.tmdbclient.feature.home.details.domain.GetMovieDetails
 import com.illiarb.tmdbclient.feature.home.details.presentation.MovieDetailsModel
 import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
 import com.illiarb.tmdbcliient.core_test.runWithSubscription
 import com.illiarb.tmdblcient.core.common.Result
+import com.illiarb.tmdblcient.core.domain.MoviesInteractor
 import com.illiarb.tmdblcient.core.domain.entity.Movie
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -20,9 +20,9 @@ import org.mockito.Mockito
 @ExperimentalCoroutinesApi
 class MovieDetailsModelTest {
 
-    private val getMovieDetails = mock<GetMovieDetails>()
+    private val moviesInteractor = mock<MoviesInteractor>()
 
-    private val movieDetailsModel = MovieDetailsModel(getMovieDetails)
+    private val movieDetailsModel = MovieDetailsModel(moviesInteractor)
 
     @Test
     fun `on movie details fetch progress is showing`() {
@@ -32,7 +32,7 @@ class MovieDetailsModelTest {
             runWithSubscription(movieDetailsModel.stateObservable()) { observer ->
                 movieDetailsModel.getMovieDetails(movie.id)
 
-                verify(getMovieDetails).executeAsync(movie.id)
+                verify(moviesInteractor).getMovieDetails(movie.id)
 
                 observer.withPrevious {
                     assertTrue(it.isLoading)
@@ -49,7 +49,7 @@ class MovieDetailsModelTest {
             runWithSubscription(movieDetailsModel.stateObservable()) { observer ->
                 movieDetailsModel.getMovieDetails(movie.id)
 
-                verify(getMovieDetails).executeAsync(movie.id)
+                verify(moviesInteractor).getMovieDetails(movie.id)
 
                 observer.withLatest {
                     assertFalse(it.isLoading)
@@ -63,7 +63,7 @@ class MovieDetailsModelTest {
         val movie = FakeEntityFactory.createFakeMovie()
 
         Mockito
-            .`when`(getMovieDetails.executeAsync(movie.id))
+            .`when`(moviesInteractor.getMovieDetails(movie.id))
             .thenReturn(Result.Success(movie))
 
         return movie
