@@ -1,4 +1,4 @@
-package com.illiarb.tmdclient.analytics.internal
+package com.illiarb.tmdclient.analytics
 
 import com.illiarb.tmdblcient.core.analytics.AnalyticEvent
 import com.illiarb.tmdblcient.core.analytics.AnalyticEventFactory
