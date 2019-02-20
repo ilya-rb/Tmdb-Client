@@ -1,5 +1,6 @@
 package com.illiarb.tmdbclient.dynamic.feature.account.auth.domain
 
+import com.illiarb.tmdblcient.core.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.common.Result
 import com.illiarb.tmdblcient.core.domain.AuthInteractor
 import com.illiarb.tmdblcient.core.domain.entity.UserCredentials
@@ -17,7 +18,8 @@ class AuthInteractorImpl @Inject constructor(
     private val authenticator: Authenticator,
     private val validator: Validator,
     private val errorMessageBag: ErrorMessageBag,
-    private val errorHandler: ErrorHandler
+    private val errorHandler: ErrorHandler,
+    private val analyticsService: AnalyticsService
 ) : AuthInteractor {
 
     override suspend fun authenticate(credentials: UserCredentials): Result<Unit> {
@@ -26,9 +28,11 @@ class AuthInteractorImpl @Inject constructor(
             return validationResult
         }
 
-        return Result.create(errorHandler) {
-            authenticator.authorize(credentials)
-        }
+        return Result
+            .create(errorHandler) { authenticator.authorize(credentials) }
+            .doOnSuccess {
+                analyticsService.trackEvent(analyticsService.factory.createLoggedInEvent())
+            }
     }
 
     override suspend fun isAuthenticated(): Boolean = authenticator.isAuthenticated()

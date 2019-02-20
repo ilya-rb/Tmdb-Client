@@ -1,5 +1,6 @@
 package com.illiarb.tmdbclient.dynamic.feature.account.profile.domain
 
+import com.illiarb.tmdblcient.core.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.common.Result
 import com.illiarb.tmdblcient.core.domain.AccountInteractor
 import com.illiarb.tmdblcient.core.domain.entity.Account
@@ -14,7 +15,8 @@ import kotlin.math.roundToInt
  */
 class AccountInteractorImpl @Inject constructor(
     private val accountRepository: AccountRepository,
-    private val errorHandler: ErrorHandler
+    private val errorHandler: ErrorHandler,
+    private val analyticsService: AnalyticsService
 ) : AccountInteractor {
 
     override suspend fun getAccount(): Result<Account> =
@@ -31,10 +33,14 @@ class AccountInteractorImpl @Inject constructor(
         }
 
     override suspend fun exitFromAccount(): Result<Unit> =
-        Result.create(errorHandler) {
-            accountRepository.clearAccountData()
-            Unit
-        }
+        Result
+            .create(errorHandler) {
+                accountRepository.clearAccountData()
+                Unit
+            }
+            .doOnSuccess {
+                analyticsService.trackEvent(analyticsService.factory.createLoggedOutEvent())
+            }
 
     private fun calculateRating(movies: List<Movie>): Int =
         movies

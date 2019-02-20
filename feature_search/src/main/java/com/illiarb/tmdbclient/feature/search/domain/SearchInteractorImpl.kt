@@ -18,9 +18,9 @@ class SearchInteractorImpl @Inject constructor(
 ) : SearchInteractor {
 
     override suspend fun searchMovies(query: String): Result<List<Movie>> =
-        Result.create(errorHandler) {
-            repository.searchMovies(query).also {
+        Result
+            .create(errorHandler) { repository.searchMovies(query) }
+            .doOnSuccess {
                 analyticsService.trackEvent(analyticsService.factory.createMovieSearchEvent(query))
             }
-        }
 }

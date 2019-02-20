@@ -27,4 +27,11 @@ sealed class Result<out T> {
     data class Success<out T : Any>(val result: T) : Result<T>()
 
     data class Error<out T : Any>(val error: Throwable) : Result<T>()
+
+    inline fun doOnSuccess(block: () -> Unit): Result<T> =
+        this.also {
+            if (this is Result.Success) {
+                block()
+            }
+        }
 }
