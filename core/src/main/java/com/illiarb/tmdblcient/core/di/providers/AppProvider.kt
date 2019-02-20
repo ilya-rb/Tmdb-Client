@@ -9,7 +9,10 @@ import com.illiarb.tmdblcient.core.system.featureconfig.FeatureConfig
 /**
  * @author ilya-rb on 24.12.18.
  */
-interface AppProvider : StorageProvider, ToolsProvider, InteractorsProvider {
+interface AppProvider : StorageProvider,
+    ToolsProvider,
+    InteractorsProvider,
+    AnalyticsProvider {
 
     fun getApp(): App
 

@@ -26,9 +26,7 @@ class HomeModel @Inject constructor(
     init {
         runCoroutine {
             handleResult(moviesInteractor.getAllMovies(), { blocks ->
-                setState {
-                    copy(isLoading = false, movies = createMovieSections(blocks))
-                }
+                setState { copy(isLoading = false, movies = createMovieSections(blocks)) }
             })
         }
     }

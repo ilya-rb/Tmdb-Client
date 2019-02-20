@@ -1,6 +1,5 @@
-apply plugin: 'com.android.dynamic-feature'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 apply from: dependenciesFilePath
@@ -11,15 +10,15 @@ android {
     defaultConfig {
         minSdkVersion projectInfo.minSdkVersion
         targetSdkVersion projectInfo.targetSdkVersion
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        versionCode 1
+        versionName "1.0"
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            // You must use the following property to specify additional ProGuard
-            // rules for dynamic feature modules.
-            // proguardFiles 'proguard-rules-default.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -27,11 +26,8 @@ android {
 dependencies {
     kapt deps.daggerCompiler
 
-    implementation project(':app')
     implementation project(':core')
-    implementation project(':core_ui')
 
     implementation deps.dagger
-
-    testImplementation project(':core_test')
+    implementation deps.firebaseCore
 }

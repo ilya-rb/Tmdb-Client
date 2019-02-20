@@ -18,9 +18,7 @@ class MovieDetailsModel @Inject constructor(
         setState { copy(isLoading = true) }
 
         handleResult(moviesInteractor.getMovieDetails(id), { movie ->
-            setState {
-                copy(isLoading = false, movie = movie)
-            }
+            setState { copy(isLoading = false, movie = movie) }
         })
     }
 
