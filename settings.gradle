@@ -1,5 +1,6 @@
 include ':app',
         ':core',
+        ':analytics',
         ':storage',
         ':core_ui',
         ':core_test',
