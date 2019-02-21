@@ -26,9 +26,11 @@ class AccountRepositoryImpl @Inject constructor(
         withContext(dispatcherProvider.io) {
             val cachedAccount = persistableStorage.getCurrentAccount()
             if (cachedAccount.isNonExistent()) {
-                val account = accountService.getAccountDetails(persistableStorage.getSessionId()).await()
-                persistableStorage.storeAccount(account)
+                val account = accountService
+                    .getAccountDetailsAsync(persistableStorage.getSessionId())
+                    .await()
 
+                persistableStorage.storeAccount(account)
                 accountMapper.map(account)
             } else {
                 accountMapper.map(cachedAccount)
@@ -37,13 +39,17 @@ class AccountRepositoryImpl @Inject constructor(
 
     override suspend fun getRatedMovies(accountId: Int): List<Movie> =
         withContext(dispatcherProvider.io) {
-            val ratedMovies = accountService.getAccountRatedMovies(accountId, getSessionId()).await()
+            val ratedMovies = accountService
+                .getAccountRatedMoviesAsync(accountId, getSessionId())
+                .await()
             movieMapper.mapList(ratedMovies.results)
         }
 
     override suspend fun getFavoriteMovies(accountId: Int): List<Movie> =
         withContext(dispatcherProvider.io) {
-            val favoriteMovies = accountService.getAccountFavoriteMovies(accountId, getSessionId()).await()
+            val favoriteMovies = accountService
+                .getAccountFavoriteMoviesAsync(accountId, getSessionId())
+                .await()
             movieMapper.mapList(favoriteMovies.results)
         }
 

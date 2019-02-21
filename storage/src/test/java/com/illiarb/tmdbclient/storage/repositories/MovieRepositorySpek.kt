@@ -24,10 +24,12 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
 /**
+ * TODO: Rewrite other tests to Spek2
+ *
  * @author ilya-rb on 30.01.19.
  */
 @ExperimentalCoroutinesApi
-object MovieRepositoryTest : Spek({
+object MovieRepositorySpek : Spek({
 
     val movieService = mock<MovieService>()
     val searchService = mock<SearchService>()
@@ -56,7 +58,7 @@ object MovieRepositoryTest : Spek({
                     val movies = createMovieModelList(2)
 
                     Mockito
-                        .`when`(movieService.getMoviesByType(type))
+                        .`when`(movieService.getMoviesByTypeAsync(type))
                         .thenReturn(CompletableDeferred((ResultsModel(movies))))
 
                     Mockito
@@ -68,7 +70,7 @@ object MovieRepositoryTest : Spek({
                     it("should fetch movies from network with type = $type") {
                         assertTrue(result.isNotEmpty())
                         @Suppress("DeferredResultUnused")
-                        Mockito.verify(movieService).getMoviesByType(type)
+                        Mockito.verify(movieService).getMoviesByTypeAsync(type)
                     }
 
                     it("Should store fetched movies in cache") {
@@ -84,14 +86,14 @@ object MovieRepositoryTest : Spek({
 
             context("On given movie id = ${movie.id}") {
                 Mockito
-                    .`when`(movieService.getMovieDetails(movie.id, appendToResponse))
+                    .`when`(movieService.getMovieDetailsAsync(movie.id, appendToResponse))
                     .thenReturn(CompletableDeferred(MovieModel(id = movie.id)))
 
                 runBlocking { repository.getMovieDetails(movie.id, appendToResponse) }
 
                 it("Should fetch movie details from api") {
                     @Suppress("DeferredResultUnused")
-                    verify(movieService).getMovieDetails(movie.id, appendToResponse)
+                    verify(movieService).getMovieDetailsAsync(movie.id, appendToResponse)
                     verifyZeroInteractions(storage)
                 }
             }

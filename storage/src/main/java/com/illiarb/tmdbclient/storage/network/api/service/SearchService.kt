@@ -12,5 +12,5 @@ import retrofit2.http.Query
 interface SearchService {
 
     @GET("search/movie")
-    fun searchMovies(@Query("query") query: String): Deferred<ResultsModel<MovieModel>>
+    fun searchMoviesAsync(@Query("query") query: String): Deferred<ResultsModel<MovieModel>>
 }

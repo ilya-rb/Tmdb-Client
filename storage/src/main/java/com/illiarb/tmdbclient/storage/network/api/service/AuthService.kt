@@ -15,11 +15,13 @@ import retrofit2.http.POST
 interface AuthService {
 
     @GET("authentication/token/new")
-    fun requestAuthToken(): Deferred<AuthTokenResponse>
-
-    @POST("authentication/token/validate_with_login")
-    fun validateTokenWithCredentials(@Body request: ValidateTokenRequest): Deferred<AuthTokenResponse>
+    fun requestAuthTokenAsync(): Deferred<AuthTokenResponse>
 
     @POST("authentication/session/new")
-    fun createNewSession(@Body request: CreateSessionRequest): Deferred<CreateSessionResponse>
+    fun createNewSessionAsync(@Body request: CreateSessionRequest): Deferred<CreateSessionResponse>
+
+    @POST("authentication/token/validate_with_login")
+    fun validateTokenWithCredentialsAsync(
+        @Body request: ValidateTokenRequest
+    ): Deferred<AuthTokenResponse>
 }

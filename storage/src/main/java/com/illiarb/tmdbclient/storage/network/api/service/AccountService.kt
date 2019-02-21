@@ -14,16 +14,16 @@ import retrofit2.http.Query
 interface AccountService {
 
     @GET("account")
-    fun getAccountDetails(@Query("session_id") sessionId: String): Deferred<AccountModel>
+    fun getAccountDetailsAsync(@Query("session_id") sessionId: String): Deferred<AccountModel>
 
     @GET("account/{account_id}/favorite/movies")
-    fun getAccountFavoriteMovies(
+    fun getAccountFavoriteMoviesAsync(
         @Path("account_id") accountId: Int,
         @Query("session_id") sessionId: String
     ): Deferred<ResultsModel<MovieModel>>
 
     @GET("account/{account_id}/rated/movies")
-    fun getAccountRatedMovies(
+    fun getAccountRatedMoviesAsync(
         @Path("account_id") accountId: Int,
         @Query("session_id") sessionId: String
     ): Deferred<ResultsModel<MovieModel>>

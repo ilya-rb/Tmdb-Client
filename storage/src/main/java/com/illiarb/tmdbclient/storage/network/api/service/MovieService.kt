@@ -11,14 +11,14 @@ import retrofit2.http.Query
 interface MovieService {
 
     @GET("movie/{type}")
-    fun getMoviesByType(@Path("type") type: String): Deferred<ResultsModel<MovieModel>>
+    fun getMoviesByTypeAsync(@Path("type") type: String): Deferred<ResultsModel<MovieModel>>
 
     @GET("movie/{id}")
-    fun getMovieDetails(
+    fun getMovieDetailsAsync(
         @Path("id") id: Int,
         @Query("append_to_response") appendToResponse: String
     ): Deferred<MovieModel>
 
     @GET("movie/{id}/reviews")
-    fun getMovieReviews(@Path("id") id: Int): Deferred<ResultsModel<ReviewModel>>
+    fun getMovieReviewsAsync(@Path("id") id: Int): Deferred<ResultsModel<ReviewModel>>
 }

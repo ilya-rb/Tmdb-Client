@@ -48,13 +48,13 @@ class MoviesRepositoryImpl @Inject constructor(
 
     override suspend fun getMovieDetails(id: Int, appendToResponse: String): Movie =
         withContext(dispatcherProvider.io) {
-            val details = moviesService.getMovieDetails(id, appendToResponse).await()
+            val details = moviesService.getMovieDetailsAsync(id, appendToResponse).await()
             movieMapper.map(details)
         }
 
     override suspend fun getMovieReviews(id: Int): List<Review> =
         withContext(dispatcherProvider.io) {
-            val reviews = moviesService.getMovieReviews(id).await()
+            val reviews = moviesService.getMovieReviewsAsync(id).await()
             reviewMapper.mapList(reviews.results)
         }
 
@@ -67,12 +67,12 @@ class MoviesRepositoryImpl @Inject constructor(
 
     override suspend fun searchMovies(query: String): List<Movie> =
         withContext(dispatcherProvider.io) {
-            val movies = searchService.searchMovies(query).await()
+            val movies = searchService.searchMoviesAsync(query).await()
             movieMapper.mapList(movies.results)
         }
 
     private suspend fun fetchFromNetworkAndStore(type: String): List<MovieModel> = coroutineScope {
-        val result = moviesService.getMoviesByType(type).await().results
+        val result = moviesService.getMoviesByTypeAsync(type).await().results
         persistableStorage.storeMovies(type, result)
         result
     }
