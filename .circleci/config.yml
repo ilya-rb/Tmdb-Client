@@ -60,7 +60,7 @@ jobs:
 
       - run:
           name: Upload code coverage report
-          command: bash <(curl -s https://codecov.io/bash) -t token
+          command: bash <(curl -s https://codecov.io/bash)
 
       - store_test_results:
           path: app/test/test-results
