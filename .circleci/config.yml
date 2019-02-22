@@ -56,7 +56,7 @@ jobs:
 
       - run:
           name: Run Unit Tests
-          command: ./gradlew testDebugUnitTest
+          command: ./gradlew testDebugUnitTestCoverage
 
       - run:
           name: Upload code coverage report
