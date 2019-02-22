@@ -1,8 +1,8 @@
 package com.illiarb.tmdbclient.dynamic.feature.account.profile
 
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.domain.AccountInteractorImpl
+import com.illiarb.tmdbcliient.core_test.analytics.TestAnalyticsService
 import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
-import com.illiarb.tmdblcient.core.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.common.Result
 import com.illiarb.tmdblcient.core.storage.AccountRepository
 import com.illiarb.tmdblcient.core.storage.ErrorHandler
@@ -22,9 +22,10 @@ class AccountInteractorTest {
 
     private val repository = mock<AccountRepository>()
     private val errorHandler = mock<ErrorHandler>()
-    private val analyticsService = mock<AnalyticsService>()
+    private val analyticsService = TestAnalyticsService()
 
-    private val accountInteractor = AccountInteractorImpl(repository, errorHandler, analyticsService)
+    private val accountInteractor =
+        AccountInteractorImpl(repository, errorHandler, analyticsService)
 
     @Test
     fun `on success profile is returned`() {

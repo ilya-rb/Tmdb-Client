@@ -2,6 +2,7 @@ package com.illiarb.tmdbclient.dynamic.feature.account.auth
 
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.domain.AuthInteractorImpl
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.domain.Validator
+import com.illiarb.tmdbcliient.core_test.analytics.TestAnalyticsService
 import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
 import com.illiarb.tmdblcient.core.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.common.Result
@@ -28,7 +29,7 @@ class AuthInteractorTest {
     private val errorMessageBag = mock<ErrorMessageBag>()
     private val authenticator = mock<Authenticator>()
     private val errorHandler = mock<ErrorHandler>()
-    private val analyticsService = mock<AnalyticsService>()
+    private val analyticsService = TestAnalyticsService()
 
     private val authInteractor =
         AuthInteractorImpl(authenticator, validator, errorMessageBag, errorHandler, analyticsService)

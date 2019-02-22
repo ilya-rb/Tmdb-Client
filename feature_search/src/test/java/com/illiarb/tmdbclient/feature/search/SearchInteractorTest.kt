@@ -1,8 +1,8 @@
 package com.illiarb.tmdbclient.feature.search
 
 import com.illiarb.tmdbclient.feature.search.domain.SearchInteractorImpl
+import com.illiarb.tmdbcliient.core_test.analytics.TestAnalyticsService
 import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
-import com.illiarb.tmdblcient.core.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.common.Result
 import com.illiarb.tmdblcient.core.storage.ErrorHandler
 import com.illiarb.tmdblcient.core.storage.MoviesRepository
@@ -21,9 +21,12 @@ class SearchInteractorTest {
 
     private val repository = mock<MoviesRepository>()
     private val errorHandler = mock<ErrorHandler>()
-    private val analyticsService = mock<AnalyticsService>()
 
-    private val searchInteractor = SearchInteractorImpl(repository, errorHandler, analyticsService)
+    private val searchInteractor = SearchInteractorImpl(
+        repository,
+        errorHandler,
+        TestAnalyticsService()
+    )
 
     @Test
     fun `on search query results not empty and result success`() {
