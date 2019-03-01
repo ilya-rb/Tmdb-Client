@@ -18,6 +18,7 @@ class MovieViewHolder(
 ) : BaseViewHolder<Movie>(containerView) {
 
     private val itemImage = itemView.findViewById<ImageView>(R.id.itemMoviePoster)
+    private val itemOverlay = itemView.findViewById<View>(R.id.itemMoviePosterOverlay)
     private val imageCornerRadius = 10
 
     override fun bind(item: Movie) {
@@ -28,7 +29,7 @@ class MovieViewHolder(
     }
 
     override fun bindClickListener(clickListener: View.OnClickListener) {
-        itemView.setOnClickListener(clickListener)
+        itemOverlay.setOnClickListener(clickListener)
     }
 
     override fun onViewRecycled() {
