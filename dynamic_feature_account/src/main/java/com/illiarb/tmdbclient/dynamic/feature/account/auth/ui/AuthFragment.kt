@@ -8,6 +8,7 @@ import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthMode
 import com.illiarb.tmdbclient.dynamic.feature.account.auth.presentation.AuthUiState
 import com.illiarb.tmdbclient.dynamic.feature.account.di.AccountComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
+import com.illiarb.tmdbexplorer.coreui.ext.deleteContextMenuItems
 import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
@@ -60,6 +61,9 @@ class AuthFragment : BaseFragment<AuthModel>(), Injectable {
             val password = textPassword.text?.toString() ?: ""
             presentationModel.authenticate(username, password)
         }
+
+        textPassword.isLongClickable = false
+        textPassword.deleteContextMenuItems(android.R.id.copy, android.R.id.cut)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
