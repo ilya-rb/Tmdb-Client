@@ -28,14 +28,10 @@ class MoviesInteractorImpl @Inject constructor(
         }
 
     override suspend fun getMovieDetails(id: Int): Result<Movie> =
-        Result.create(errorHandler) {
-            repository.getMovieDetails(id, "images,reviews")
-        }
+        Result.create(errorHandler) { repository.getMovieDetails(id, "images,reviews") }
 
     override suspend fun getMovieReviews(id: Int): Result<List<Review>> =
-        Result.create(errorHandler) {
-            repository.getMovieReviews(id)
-        }
+        Result.create(errorHandler) { repository.getMovieReviews(id) }
 
     private suspend fun getMoviesByType(filter: MovieFilter): List<Movie> =
         repository.getMoviesByType(filter.code, false)

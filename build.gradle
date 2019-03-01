@@ -13,7 +13,7 @@ buildscript {
     }
 
     dependencies {
-        classpath gradlePlugins.android
+        classpath "com.android.tools.build:gradle:3.4.0-beta05"
         classpath gradlePlugins.kotlin
         classpath gradlePlugins.versions
         classpath gradlePlugins.jacoco
@@ -57,7 +57,6 @@ subprojects {
     apply from: "$rootDir/code_quality_tools/jacoco.gradle"
 
     afterEvaluate {
-        // For all android libraries
         // This allows us see tests execution progress in the output on the CI.
         android.testOptions.unitTests.all {
             testLogging {
