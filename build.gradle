@@ -13,7 +13,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:3.4.0-beta05"
+        classpath gradlePlugins.android
         classpath gradlePlugins.kotlin
         classpath gradlePlugins.versions
         classpath gradlePlugins.jacoco
