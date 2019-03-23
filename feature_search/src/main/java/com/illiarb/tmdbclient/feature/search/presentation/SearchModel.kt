@@ -25,8 +25,7 @@ class SearchModel @Inject constructor(
         }
 
         handleResult(searchInteractor.searchMovies(query), { movies ->
-            val searchResult =
-                if (movies.isEmpty()) SearchResult.Empty else SearchResult.Success(movies)
+            val searchResult = if (movies.isEmpty()) SearchResult.Empty else SearchResult.Success(movies)
             setState {
                 copy(isSearchRunning = false, result = searchResult)
             }

@@ -33,7 +33,7 @@ abstract class LawObserver<T>(private val observable: Observable<T>) :
         observable.addObserver(this)
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun unregister() {
         this.owner?.lifecycle?.removeObserver(this)
         this.owner = null

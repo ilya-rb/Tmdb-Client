@@ -5,10 +5,12 @@ import com.illiarb.tmdbexplorer.coreui.di.modules.ViewModelModule
 import com.illiarb.tmdbexplorer.coreui.di.scope.FragmentScope
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import dagger.Component
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 /**
  * @author ilya-rb on 26.12.18.
  */
+@ExperimentalCoroutinesApi
 @Component(
     dependencies = [AppProvider::class],
     modules = [

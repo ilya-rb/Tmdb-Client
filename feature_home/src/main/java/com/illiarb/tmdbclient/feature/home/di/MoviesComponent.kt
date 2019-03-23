@@ -8,7 +8,9 @@ import com.illiarb.tmdbexplorer.coreui.di.modules.ViewModelModule
 import com.illiarb.tmdbexplorer.coreui.di.scope.FragmentScope
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import dagger.Component
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @Component(
     dependencies = [AppProvider::class],
     modules = [
