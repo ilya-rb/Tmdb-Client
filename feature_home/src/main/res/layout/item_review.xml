@@ -1,52 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimaryVariant">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimaryVariant">
+    <include layout="@layout/layout_start_end_guidelines" />
 
-        <include layout="@layout/layout_start_end_guidelines" />
+    <TextView
+        android:id="@+id/itemReviewAuthor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/movie_details_item_review_vertical_padding"
+        android:paddingBottom="@dimen/movie_details_item_review_vertical_padding"
+        android:textColor="@color/colorOnSurface"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Review author" />
 
-        <TextView
-            android:id="@+id/itemReviewAuthor"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/movie_details_item_review_vertical_padding"
-            android:paddingBottom="@dimen/movie_details_item_review_vertical_padding"
-            android:textColor="@color/colorOnSurface"
-            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-            app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Review author" />
+    <TextView
+        android:id="@+id/itemReviewLink"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorOnSurface"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintTop_toBottomOf="@id/itemReviewAuthor"
+        tools:text="https://google.com" />
 
-        <TextView
-            android:id="@+id/itemReviewLink"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorOnSurface"
-            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-            app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/itemReviewAuthor"
-            tools:text="https://google.com" />
+    <TextView
+        android:id="@+id/itemReviewText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:textColor="@color/colorOnSurface"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintTop_toBottomOf="@id/itemReviewLink"
+        tools:text="@tools:sample/lorem" />
 
-        <TextView
-            android:id="@+id/itemReviewText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_default"
-            android:layout_marginBottom="@dimen/margin_default"
-            android:textColor="@color/colorOnSurface"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-            app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/itemReviewLink"
-            tools:text="@tools:sample/lorem" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

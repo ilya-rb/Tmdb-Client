@@ -128,9 +128,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
                 movieDetailsOverview.text = it
             }
 
-            movieDetailsReviews.setVisible(reviews.isNotEmpty())
-            movieDetailsReviews.setOnClickListener {
-                presentationModel.onReviewsClicked(reviews)
+            movieDetailsReviews.text = reviews.size.toString()
+            if (reviews.isNotEmpty()) {
+                movieDetailsReviews.setOnClickListener {
+                    presentationModel.onReviewsClicked(reviews)
+                }
             }
 
             if (images.isNotEmpty()) {
@@ -144,7 +146,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsModel>(), Injectable {
 
         when (action) {
             is ShowReviewsAction ->
-                ReviewsFragment().show(fragmentManager, ReviewsFragment::class.java.name)
+                ReviewsFragment.newInstance(action.reviews).show(fragmentManager, ReviewsFragment::class.java.name)
         }
     }
 

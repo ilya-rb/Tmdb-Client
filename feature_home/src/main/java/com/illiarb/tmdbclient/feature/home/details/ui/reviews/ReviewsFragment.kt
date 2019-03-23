@@ -12,13 +12,27 @@ import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
 import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
+import com.illiarb.tmdblcient.core.domain.entity.Review
 import kotlinx.android.synthetic.main.fragment_movie_reviews.*
+import java.io.Serializable
 import javax.inject.Inject
 
 /**
  * @author ilya-rb on 03.02.19.
  */
 class ReviewsFragment : BottomSheetDialogFragment(), Injectable {
+
+    companion object {
+
+        private const val ARG_REVIEWS = "reviews"
+
+        fun newInstance(reviews: List<Review>): ReviewsFragment =
+            ReviewsFragment().also {
+                it.arguments = Bundle().apply {
+                    putSerializable(ARG_REVIEWS, reviews as Serializable)
+                }
+            }
+    }
 
     @Inject
     lateinit var reviewsAdapter: ReviewsAdapter
@@ -43,5 +57,11 @@ class ReviewsFragment : BottomSheetDialogFragment(), Injectable {
                 adapter(reviewsAdapter)
             }
             .setupWith(movieReviews)
+
+        arguments?.let {
+            @Suppress("UNCHECKED_CAST")
+            val reviews = it.getSerializable(ARG_REVIEWS) as List<Review>
+            reviewsAdapter.submitList(reviews)
+        }
     }
 }
