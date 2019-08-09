@@ -15,5 +15,7 @@ enum class ScreenName {
 
     ACCOUNT,
 
-    PHOTO_VIEW
+    PHOTO_VIEW,
+
+    SEARCH_FILTERS
 }

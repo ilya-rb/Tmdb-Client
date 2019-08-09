@@ -7,6 +7,7 @@ import com.illiarb.tmdblcient.core.domain.SearchInteractor
 import com.illiarb.tmdblcient.core.domain.entity.Movie
 import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
 import com.illiarb.tmdblcient.core.navigation.Router
+import com.illiarb.tmdblcient.core.navigation.SearchFilterScreen
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
@@ -36,6 +37,10 @@ class SearchModel @Inject constructor(
         setState {
             copy(icon = SearchIcon.Search)
         }
+    }
+
+    fun onSearchFilterClicked() {
+//        router.navigateTo(SearchFilterScreen(readOnlyState().searchFilter))
     }
 
     fun onMovieClicked(movie: Movie) {

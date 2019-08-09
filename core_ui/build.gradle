@@ -19,14 +19,6 @@ android {
     }
 
     buildTypes {
-        all {
-            def config = file("$rootDir/api-config.properties")
-            def properties = new Properties()
-            properties.load(new FileInputStream(config))
-
-            buildConfigField "String", "IMG_URL", properties["api.imgUrl"]
-        }
-
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -41,9 +33,11 @@ dependencies {
 
     api deps.supportDesign
     api deps.constraintLayout
+    api deps.adapterDelegates
+    api deps.adapterDelegatesDsl
+    api deps.lifecycleKtx
 
     implementation deps.dagger
-    implementation deps.glide
-    implementation deps.lottie
     implementation deps.viewModelExt
+    implementation deps.viewModelKtx
 }

@@ -12,15 +12,13 @@ import com.illiarb.tmdbclient.dynamic.feature.account.profile.presentation.ShowS
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.ui.adapter.FavoritesAdapter
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
-import com.illiarb.tmdbexplorer.coreui.ext.hide
-import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutOrientation
-import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
-import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
+import com.illiarb.core_ui_recycler_view.LayoutOrientation
+import com.illiarb.core_ui_recycler_view.LayoutType
+import com.illiarb.core_ui_recycler_view.RecyclerViewBuilder
 import com.illiarb.tmdbexplorer.coreui.uiactions.UiAction
 import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.domain.entity.Account
-import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 import kotlin.LazyThreadSafetyMode.NONE
@@ -64,11 +62,11 @@ class AccountFragment : BaseFragment<AccountModel>() {
             presentationModel.onFavoriteMovieClick(movie)
         }
 
-        RecyclerViewBuilder
+        com.illiarb.core_ui_recycler_view.RecyclerViewBuilder
             .create {
                 adapter(favoritesAdapter)
-                type(LayoutType.Linear())
-                orientation(LayoutOrientation.HORIZONTAL)
+                type(com.illiarb.core_ui_recycler_view.LayoutType.Linear())
+                orientation(com.illiarb.core_ui_recycler_view.LayoutOrientation.HORIZONTAL)
                 hasFixedSize(true)
                 spaceBetween {
                     spacing = resources.getDimensionPixelSize(R.dimen.account_favorites_horizontal_space)

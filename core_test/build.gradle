@@ -48,6 +48,6 @@ dependencies {
     api testDeps.spekJunit5
     api testDeps.kotlinReflect
 
-    androidTestApi androidTestDeps.espresso
-    androidTestApi androidTestDeps.runner
+    androidTestImplementation androidTestDeps.espresso
+    androidTestImplementation androidTestDeps.runner
 }

@@ -30,7 +30,7 @@ class DefaultErrorHandler @Inject constructor(
         }
 
     private fun createNetworkError(error: HttpException): Throwable {
-        val errorBody = error.response().errorBody()
+        val errorBody = error.response()?.errorBody()
         if (errorBody != null) {
             val root = jsonParser.parse(errorBody.string()).asJsonObject
 

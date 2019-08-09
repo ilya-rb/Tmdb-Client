@@ -88,6 +88,8 @@ class MainNavigator @Inject constructor(private val activity: FragmentActivity) 
             ScreenName.AUTH -> R.id.authAction
             ScreenName.SEARCH -> R.id.searchAction
             ScreenName.PHOTO_VIEW -> R.id.photoViewAction
+            // TODO: Remove
+            ScreenName.SEARCH_FILTERS -> R.id.searchAction
         }
 
     private fun isDynamicFeatureAction(action: Int): Boolean =

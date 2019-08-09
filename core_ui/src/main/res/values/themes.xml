@@ -1,52 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Platform.Theme.Tmdb" parent="Theme.MaterialComponents.DayNight.NoActionBar" />
+
+    <style name="Base.Theme.Tmdb" parent="Platform.Theme.Tmdb">
+
+        <!-- Typography styles -->
+        <item name="textAppearanceHeadline1">@style/TextAppearance.Tmdb.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.Tmdb.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.Tmdb.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.Tmdb.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.Tmdb.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.Tmdb.Headline6</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.Tmdb.Subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.Tmdb.Subtitle2</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.Tmdb.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.Tmdb.Body2</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.Tmdb.Caption</item>
+        <item name="textAppearanceButton">@style/TextAppearance.Tmdb.Button</item>
+        <item name="textAppearanceOverline">@style/TextAppearance.Tmdb.Overline</item>
+
+    </style>
+
     <!-- Main Application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="Theme.Tmdb" parent="Base.Theme.Tmdb">
 
-        <!-- Theme colors -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryVariant</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorAccent">@color/colorSecondary</item>
-        <item name="colorError">@color/colorError</item>
-        <item name="colorControlNormal">@color/colorPrimary</item>
-        <item name="colorControlActivated">@color/colorSecondary</item>
-        <item name="colorControlHighlight">@color/colorSecondary</item>
+        <item name="colorPrimary">@color/tmdb_white</item>
+        <item name="colorOnPrimary">@color/tmdb_black</item>
 
-        <!-- Text colors -->
-        <item name="android:fontFamily">@font/montserrat</item>
-        <item name="android:textColor">@color/colorOnSurface</item>
-        <item name="android:textColorLink">@color/colorTextLink</item>
+        <item name="colorPrimaryVariant">@color/tmdb_amber_800</item>
+        <item name="colorPrimaryDark">@color/tmdb_white</item>
 
-        <!-- Misc -->
-        <item name="android:windowBackground">@color/colorPrimaryVariant</item>
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
+        <item name="colorSecondary">@color/tmdb_amber_300</item>
+        <item name="colorOnSecondary">@color/tmdb_white</item>
+        <item name="colorSecondaryVariant">@color/tmdb_amber_800</item>
 
-    <style name="Theme.Transparent" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:backgroundDimEnabled">false</item>
-    </style>
+        <item name="colorError">@color/tmdb_red_500</item>
 
-    <!-- Typography -->
-    <style name="TextAppearance.SecondaryText" parent="TextAppearance.MaterialComponents.Body1" />
-
-    <!-- Bottom sheet -->
-    <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog" />
-
-    <!-- set the rounded drawable as background to your bottom sheet -->
-    <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/bg_bottom_sheet_dialog</item>
-    </style>
-
-    <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
-        <item name="android:windowIsFloating">false</item>
-        <item name="bottomSheetStyle">@style/BottomSheet</item>
     </style>
 
 </resources>

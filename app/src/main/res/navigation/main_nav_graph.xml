@@ -4,17 +4,17 @@
 
     <fragment
         android:id="@+id/moviesFragment"
-        android:name="com.illiarb.tmdbclient.feature.home.list.ui.HomeFragment"
+        android:name="com.illiarb.tmdbclient.home.ui.HomeFragment"
         android:label="MoviesFragment" />
 
     <fragment
         android:id="@+id/movieDetailsFragment"
-        android:name="com.illiarb.tmdbclient.feature.home.details.ui.MovieDetailsFragment"
+        android:name="com.illiarb.tmdbclient.details.ui.MovieDetailsFragment"
         android:label="MovieDetailsFragment" />
 
     <fragment
         android:id="@+id/photoViewFragment"
-        android:name="com.illiarb.tmdbclient.feature.home.photoview.PhotoViewFragment"
+        android:name="com.illiarb.tmdbclient.photoview.PhotoViewFragment"
         android:label="PhotoViewFragment"/>
 
     <fragment

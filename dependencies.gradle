@@ -28,6 +28,8 @@ deps.firebaseRemoteConfig = "com.google.firebase:firebase-config:$versions.fireb
 
 // Arch components
 deps.viewmodel = "androidx.lifecycle:lifecycle-viewmodel:$versions.archComponents"
+deps.lifecycleKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$versions.archComponents"
+deps.viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.archComponents"
 deps.viewModelExt = "androidx.lifecycle:lifecycle-extensions:$versions.archComponents"
 deps.navigation = "android.arch.navigation:navigation-fragment:$versions.navigation"
 deps.workManager = "android.arch.work:work-runtime-ktx:$versions.workManager"
@@ -55,6 +57,9 @@ deps.converterGson = "com.squareup.retrofit2:converter-gson:$versions.retrofit"
 deps.rxJavaAdapter = "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
 deps.coroutinesAdapter = "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
 deps.okHttpLogger = "com.squareup.okhttp3:logging-interceptor:$versions.okHttpLogger"
+
+deps.adapterDelegates = "com.hannesdorfmann:adapterdelegates4:4.1.2-SNAPSHOT"
+deps.adapterDelegatesDsl = "com.hannesdorfmann:adapterdelegates4-kotlin-dsl:4.1.1"
 
 // Di
 deps.dagger = "com.google.dagger:dagger:$versions.dagger"

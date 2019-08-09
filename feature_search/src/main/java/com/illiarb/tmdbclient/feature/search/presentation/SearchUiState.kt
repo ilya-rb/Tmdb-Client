@@ -1,6 +1,7 @@
 package com.illiarb.tmdbclient.feature.search.presentation
 
 import com.illiarb.tmdblcient.core.domain.entity.Movie
+import com.illiarb.tmdblcient.core.domain.entity.SearchFilter
 import com.illiarb.tmdblcient.core.util.Cloneable
 
 /**
@@ -10,7 +11,8 @@ data class SearchUiState(
     val icon: SearchIcon,
     val isSearchRunning: Boolean,
     val result: SearchResult,
-    val error: Throwable?
+    val error: Throwable?,
+    val searchFilter: SearchFilter
 ) : Cloneable<SearchUiState> {
 
     companion object {
@@ -18,7 +20,8 @@ data class SearchUiState(
             SearchIcon.Search,
             false,
             SearchResult.Initial,
-            null
+            null,
+            SearchFilter.empty()
         )
     }
 

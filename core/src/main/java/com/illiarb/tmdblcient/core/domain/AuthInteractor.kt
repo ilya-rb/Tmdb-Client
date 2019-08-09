@@ -1,6 +1,5 @@
 package com.illiarb.tmdblcient.core.domain
 
-import com.illiarb.tmdblcient.core.common.Result
 import com.illiarb.tmdblcient.core.domain.entity.UserCredentials
 
 /**
@@ -8,7 +7,7 @@ import com.illiarb.tmdblcient.core.domain.entity.UserCredentials
  */
 interface AuthInteractor {
 
-    suspend fun authenticate(credentials: UserCredentials): Result<Unit>
+    suspend fun authenticate(credentials: UserCredentials)
 
     suspend fun isAuthenticated(): Boolean
 }

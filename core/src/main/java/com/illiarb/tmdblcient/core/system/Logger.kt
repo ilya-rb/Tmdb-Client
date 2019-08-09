@@ -15,38 +15,22 @@ object Logger {
 
     @JvmStatic
     fun d(message: String, t: Throwable? = null) {
-        logWithPriority(
-            Logger.Priority.DEBUG,
-            message,
-            t
-        )
+        logWithPriority(Logger.Priority.DEBUG, message, t)
     }
 
     @JvmStatic
     fun i(message: String, t: Throwable? = null) {
-        logWithPriority(
-            Logger.Priority.INFO,
-            message,
-            t
-        )
+        logWithPriority(Logger.Priority.INFO, message, t)
     }
 
     @JvmStatic
     fun w(message: String, t: Throwable? = null) {
-        logWithPriority(
-            Logger.Priority.WARN,
-            message,
-            t
-        )
+        logWithPriority(Logger.Priority.WARN, message, t)
     }
 
     @JvmStatic
     fun e(message: String, t: Throwable? = null) {
-        logWithPriority(
-            Logger.Priority.ERROR,
-            message,
-            t
-        )
+        logWithPriority(Logger.Priority.ERROR, message, t)
     }
 
     private fun logWithPriority(priority: Priority, message: String, throwable: Throwable? = null) {

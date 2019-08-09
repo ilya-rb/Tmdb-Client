@@ -11,16 +11,10 @@ import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchIcon
 import com.illiarb.tmdbclient.feature.search.presentation.SearchUiState.SearchResult
 import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
-import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
-import com.illiarb.tmdbexplorer.coreui.ext.hide
-import com.illiarb.tmdbexplorer.coreui.ext.setVisible
-import com.illiarb.tmdbexplorer.coreui.ext.show
-import com.illiarb.tmdbexplorer.coreui.recyclerview.LayoutType
-import com.illiarb.tmdbexplorer.coreui.recyclerview.RecyclerViewBuilder
+import com.illiarb.core_ui_recycler_view.LayoutType
+import com.illiarb.core_ui_recycler_view.RecyclerViewBuilder
 import com.illiarb.tmdbexplorer.coreui.util.LawObserver
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
-import kotlinx.android.synthetic.main.fragment_search.*
-import kotlinx.android.synthetic.main.layout_empty_view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 import kotlin.LazyThreadSafetyMode.NONE
@@ -51,10 +45,10 @@ class SearchFragment : BaseFragment<SearchModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        RecyclerViewBuilder
+        com.illiarb.core_ui_recycler_view.RecyclerViewBuilder
             .create {
                 adapter(searchAdapter)
-                type(LayoutType.Linear())
+                type(com.illiarb.core_ui_recycler_view.LayoutType.Linear())
                 hasFixedSize(true)
             }
             .setupWith(searchResultsList)
@@ -63,6 +57,10 @@ class SearchFragment : BaseFragment<SearchModel>() {
 
         searchIcon.setOnClickListener {
             presentationModel.onClearClicked()
+        }
+
+        searchFilter.setOnClickListener {
+            presentationModel.onSearchFilterClicked()
         }
 
         searchAdapter.clickEvent = { _, _, item ->
@@ -93,6 +91,7 @@ class SearchFragment : BaseFragment<SearchModel>() {
     }
 
     private fun render(state: SearchUiState) = runOnUi {
+        searchFilter.setVisible(!state.isSearchRunning)
         searchProgress.setVisible(state.isSearchRunning)
 
         val drawable = when (state.icon) {

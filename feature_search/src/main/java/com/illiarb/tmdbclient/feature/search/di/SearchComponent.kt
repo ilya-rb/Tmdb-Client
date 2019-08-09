@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.feature.search.di
 
 import com.illiarb.tmdbclient.feature.search.ui.SearchFragment
-import com.illiarb.tmdbexplorer.coreui.di.modules.ViewModelModule
+import com.illiarb.tmdbexplorer.coreui.di.ViewModelModule
 import com.illiarb.tmdbexplorer.coreui.di.scope.FragmentScope
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import dagger.Component

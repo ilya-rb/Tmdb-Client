@@ -22,13 +22,10 @@ class ConfigurationFetchWork(
     companion object {
 
         // 2 Days
-        const val WORKER_REPEAT_INTERVAL = 2L
+        private const val WORKER_REPEAT_INTERVAL = 2L
 
         fun createWorkRequest(): PeriodicWorkRequest =
-            PeriodicWorkRequestBuilder<ConfigurationFetchWork>(
-                WORKER_REPEAT_INTERVAL,
-                TimeUnit.DAYS
-            )
+            PeriodicWorkRequestBuilder<ConfigurationFetchWork>(WORKER_REPEAT_INTERVAL, TimeUnit.DAYS)
                 .addTag(ConfigurationFetchWork::class.java.name)
                 .setConstraints(
                     Constraints.Builder()
@@ -48,12 +45,10 @@ class ConfigurationFetchWork(
             }
 
             Logger.i("Successful configuration fetch")
-
-            Result.SUCCESS
+            Result.success()
         } catch (e: IOException) {
             Logger.e("Error during configuration fetching, rescheduling..", e)
-
-            Result.RETRY
+            Result.retry()
         }
     }
 }

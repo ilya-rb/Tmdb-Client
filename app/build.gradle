@@ -30,7 +30,7 @@ android {
         }
     }
 
-    dynamicFeatures = [':dynamic_feature_account']
+    // dynamicFeatures = [':dynamic_feature_account']
 }
 
 dependencies {
@@ -41,8 +41,7 @@ dependencies {
     implementation project(':storage')
     implementation project(':tools')
     implementation project(':analytics')
-    implementation project(':feature_home')
-    implementation project(':feature_search')
+    implementation project(':features')
 
     implementation deps.dagger
     implementation deps.timber

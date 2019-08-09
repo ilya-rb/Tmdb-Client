@@ -9,7 +9,6 @@ sealed class Screen(val screenName: ScreenName)
 
 object AccountScreen : Screen(ScreenName.ACCOUNT)
 object AuthScreen : Screen(ScreenName.AUTH)
-object SearchScreen : Screen(ScreenName.SEARCH)
 
 data class MovieDetailsScreen(val id: Int) : Screen(ScreenName.MOVIE_DETAILS) {
     companion object {
@@ -25,7 +24,6 @@ data class PhotoViewScreen(
 ) : Screen(ScreenName.PHOTO_VIEW) {
 
     companion object {
-        const val SHARED_ELEMENT_NAME = "photoView"
         const val EXTRA_PHOTOS = "photos"
         const val EXTRA_SELECTED = "selected"
     }

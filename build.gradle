@@ -24,16 +24,18 @@ buildscript {
 }
 
 plugins {
-    id "io.gitlab.arturbosch.detekt" version "1.0.0-RC12"
+    id "io.gitlab.arturbosch.detekt" version "1.0.0-RC16"
 }
 
 allprojects {
 
     apply from: "$rootDir/code_quality_tools/detekt.gradle"
+    apply plugin: "com.github.ben-manes.versions"
 
     repositories {
         google()
         maven { url "https://jitpack.io" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         jcenter()
     }
 
@@ -47,7 +49,6 @@ allprojects {
     afterEvaluate {
         extensions.findByName('kapt')?.arguments {
             arg("dagger.formatGeneratedSource", "disabled")
-            arg("dagger.gradle.incremental", "enabled")
         }
     }
 }
@@ -63,6 +64,11 @@ subprojects {
                 events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
                 exceptionFormat 'full'
             }
+        }
+
+        android.compileOptions {
+            sourceCompatibility 1.8
+            targetCompatibility 1.8
         }
 
         android.lintOptions {
@@ -88,6 +94,7 @@ task clean(type: Delete) {
 apply plugin: 'com.gradle.build-scan'
 
 buildScan {
-    licenseAgreementUrl = 'https://gradle.com/terms-of-service'
-    licenseAgree = 'yes'
+    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+    termsOfServiceAgree = 'yes'
+    publishAlways()
 }

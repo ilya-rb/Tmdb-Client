@@ -18,8 +18,7 @@ import dagger.Provides
 class AnalyticsModule(private val app: App) {
 
     @Provides
-    fun provideAnalyticsEventFactory(): AnalyticEventFactory =
-        DefaultAnalyticEventFactory()
+    fun provideAnalyticsEventFactory(): AnalyticEventFactory = DefaultAnalyticEventFactory()
 
     @Provides
     fun provideAnalyticsService(

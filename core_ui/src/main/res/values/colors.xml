@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Main App color scheme -->
-    <color name="colorPrimary">#344955</color>
-    <color name="colorPrimaryVariant">#232F34</color>
-    <color name="colorSecondary">#F9AA33</color>
-    <color name="colorBackground">#FFF</color>
-    <color name="colorSurface">#000</color>
-    <color name="colorError">#B00020</color>
-    <color name="colorOnPrimary">#FFF</color>
-    <color name="colorOnSecondary">#000</color>
-    <color name="colorOnBackground">#000</color>
-    <color name="colorOnSurface">#FFF</color>
-    <color name="colorOnError">#FFF</color>
-    <color name="colorDivider">#BDBDBD</color>
-    <color name="colorTextLink">#03A9F4</color>
+    <color name="tmdb_white">#FFF</color>
+    <color name="tmdb_black">#000</color>
+    <color name="tmdb_amber_500">#FFC107</color>
+    <color name="tmdb_amber_300">#FFF350</color>
+    <color name="tmdb_amber_800">#C79100</color>
+    <color name="tmdb_grey_500">#C7C7C7</color>
+    <color name="tmdb_red_500">#F44336</color>
 
 </resources>

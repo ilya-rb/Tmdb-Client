@@ -1,19 +1,18 @@
 package com.illiarb.tmdbclient.feature.search.ui
 
 import android.view.View
-import com.illiarb.tmdbexplorer.coreui.image.CropOptions
-import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
-import com.illiarb.tmdbexplorer.coreui.image.RequestOptions
+import com.illiarb.core_ui_image.CropOptions
+import com.illiarb.core_ui_image.ImageLoader
+import com.illiarb.core_ui_image.RequestOptions
 import com.illiarb.tmdbexplorer.coreui.recyclerview.viewholder.BaseViewHolder
 import com.illiarb.tmdblcient.core.domain.entity.Movie
-import kotlinx.android.synthetic.main.item_search_result.view.*
 
 /**
  * @author ilya-rb on 27.12.18.
  */
 class SearchResultViewHolder(
     containerView: View,
-    private val imageLoader: ImageLoader
+    private val imageLoader: com.illiarb.core_ui_image.ImageLoader
 ) : BaseViewHolder<Movie>(containerView) {
 
     private val itemTitle = itemView.itemSearchTitle
@@ -25,8 +24,8 @@ class SearchResultViewHolder(
         itemRating.text = item.voteAverage.toString()
 
         item.backdropPath?.let {
-            imageLoader.fromUrl(it, itemImage, RequestOptions.create {
-                cropOptions(CropOptions.CENTER_CROP)
+            imageLoader.fromUrl(it, itemImage, com.illiarb.core_ui_image.RequestOptions.create {
+                cropOptions(com.illiarb.core_ui_image.CropOptions.CENTER_CROP)
             })
         }
     }

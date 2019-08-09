@@ -16,7 +16,7 @@ class ApiKeyInterceptor @Inject constructor() : Interceptor {
             .newBuilder()
             .url(
                 chain.request()
-                    .url()
+                    .url
                     .newBuilder()
                     .addQueryParameter(PARAM_API_KEY, BuildConfig.API_KEY)
                     .build()

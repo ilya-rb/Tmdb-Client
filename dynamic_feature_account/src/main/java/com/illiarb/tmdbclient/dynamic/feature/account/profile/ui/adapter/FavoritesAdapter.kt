@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import com.illiarb.tmdbclient.dynamic.feature.account.R
 import com.illiarb.tmdbclient.dynamic.feature.account.profile.ui.MovieViewHolder
 import com.illiarb.tmdbexplorer.coreui.ext.inflate
-import com.illiarb.tmdbexplorer.coreui.image.ImageLoader
+import com.illiarb.core_ui_image.ImageLoader
 import com.illiarb.tmdbexplorer.coreui.recyclerview.adapter.BaseAdapter
 import com.illiarb.tmdblcient.core.domain.entity.Movie
 import javax.inject.Inject
@@ -13,7 +13,7 @@ import javax.inject.Inject
  * @author ilya-rb on 06.12.18.
  */
 class FavoritesAdapter @Inject constructor(
-    private val imageLoader: ImageLoader
+    private val imageLoader: com.illiarb.core_ui_image.ImageLoader
 ) : BaseAdapter<Movie, MovieViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder =

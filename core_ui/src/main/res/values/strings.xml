@@ -1,4 +1,0 @@
-<resources>
-    <string name="progress_dialog_text">Loading…</string>
-    <string name="error_dialog_retry">Retry</string>
-</resources>

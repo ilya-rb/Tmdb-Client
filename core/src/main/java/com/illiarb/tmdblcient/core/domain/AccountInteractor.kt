@@ -1,6 +1,5 @@
 package com.illiarb.tmdblcient.core.domain
 
-import com.illiarb.tmdblcient.core.common.Result
 import com.illiarb.tmdblcient.core.domain.entity.Account
 
 /**
@@ -8,8 +7,8 @@ import com.illiarb.tmdblcient.core.domain.entity.Account
  */
 interface AccountInteractor {
 
-    suspend fun getAccount(): Result<Account>
+    suspend fun getAccount(): Account
 
-    suspend fun exitFromAccount(): Result<Unit>
+    suspend fun exitFromAccount()
 
 }
