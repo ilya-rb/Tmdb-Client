@@ -1,11 +1,12 @@
 package com.illiarb.tmdblcient.core.ext
 
-import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
-fun <T> emit(block: (T) -> Unit): FlowCollector<T> {
-    return object : FlowCollector<T> {
-        override suspend fun emit(value: T) {
-            block(value)
-        }
+inline fun <T> CoroutineScope.launchAndCollect(flow: Flow<T>, crossinline block: suspend CoroutineScope.(T) -> Unit) {
+    launch {
+        flow.collect { block(it) }
     }
 }

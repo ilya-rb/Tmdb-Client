@@ -1,5 +1,6 @@
 package com.illiarb.tmdblcient.core.tools
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -8,6 +9,10 @@ import kotlinx.coroutines.flow.Flow
 interface ConnectivityStatus {
 
     fun connectionState(): Flow<ConnectionState>
+
+    fun setCoroutineScope(scope: CoroutineScope)
+
+    fun removeCoroutineScope()
 
     enum class ConnectionState {
 

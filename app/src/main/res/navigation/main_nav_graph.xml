@@ -4,23 +4,13 @@
 
     <fragment
         android:id="@+id/moviesFragment"
-        android:name="com.illiarb.tmdbclient.home.ui.HomeFragment"
+        android:name="com.illiarb.tmdbclient.movies.home.HomeFragment"
         android:label="MoviesFragment" />
 
     <fragment
         android:id="@+id/movieDetailsFragment"
-        android:name="com.illiarb.tmdbclient.details.ui.MovieDetailsFragment"
+        android:name="com.illiarb.tmdbclient.movies.details.MovieDetailsFragment"
         android:label="MovieDetailsFragment" />
-
-    <fragment
-        android:id="@+id/photoViewFragment"
-        android:name="com.illiarb.tmdbclient.photoview.PhotoViewFragment"
-        android:label="PhotoViewFragment"/>
-
-    <fragment
-        android:id="@+id/searchFragment"
-        android:name="com.illiarb.tmdbclient.feature.search.ui.SearchFragment"
-        android:label="SearchFragment" />
 
     <action
         android:id="@+id/movieDetailsAction"
@@ -29,13 +19,5 @@
     <action
         android:id="@+id/moviesFragmentAction"
         app:destination="@id/moviesFragment" />
-
-    <action
-        android:id="@+id/searchAction"
-        app:destination="@id/searchFragment" />
-
-    <action
-        android:id="@+id/photoViewAction"
-        app:destination="@id/photoViewFragment"/>
 
 </navigation>

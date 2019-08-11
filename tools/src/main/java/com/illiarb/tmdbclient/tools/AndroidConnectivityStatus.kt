@@ -6,43 +6,58 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.tools.ConnectivityStatus
 import com.illiarb.tmdblcient.core.tools.ConnectivityStatus.ConnectionState
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import com.illiarb.tmdblcient.core.tools.DispatcherProvider
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 /**
  * @author ilya-rb on 26.12.18.
  */
-@ExperimentalCoroutinesApi
 @FlowPreview
-class AndroidConnectivityStatus @Inject constructor(private val app: App) : ConnectivityStatus {
+class AndroidConnectivityStatus @Inject constructor(
+    private val app: App
+) : ConnectivityStatus, LifecycleObserver {
 
-    private val context: Context
-        get() = app.getApplication()
-
-    private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    private val connectivityManager =
+        app.getApplication().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     private val connectionStatusChannel = Channel<ConnectionState>()
+
+    private var coroutineScope: CoroutineScope? = null
 
     @SuppressLint("MissingPermission")
     private val connectionReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            val info = connectivityManager.activeNetworkInfo
+            coroutineScope?.launch {
+                val info = connectivityManager.activeNetworkInfo
 
-            if (info != null && info.isConnected) {
-                connectionStatusChannel.send(ConnectionState.CONNECTED)
-            } else {
-                connectionStatusChannel.send(ConnectionState.NOT_CONNECTED)
+                if (info != null && info.isConnected) {
+                    connectionStatusChannel.send(ConnectionState.CONNECTED)
+                } else {
+                    connectionStatusChannel.send(ConnectionState.NOT_CONNECTED)
+                }
             }
         }
+    }
+
+    override fun setCoroutineScope(scope: CoroutineScope) {
+        coroutineScope = scope
+    }
+
+    override fun removeCoroutineScope() {
+        coroutineScope = null
     }
 
     override fun connectionState(): Flow<ConnectionState> = connectionStatusChannel.consumeAsFlow()
@@ -59,10 +74,10 @@ class AndroidConnectivityStatus @Inject constructor(private val app: App) : Conn
     }
 
     private fun registerReceiver() {
-        context.registerReceiver(connectionReceiver, IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"))
+        app.getApplication().registerReceiver(connectionReceiver, IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"))
     }
 
     private fun unregisterReceiver() {
-        context.unregisterReceiver(connectionReceiver)
+        app.getApplication().unregisterReceiver(connectionReceiver)
     }
 }

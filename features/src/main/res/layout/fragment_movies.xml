@@ -17,25 +17,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/homeLogo"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="@dimen/margin_default"
-        android:contentDescription="@null"
-        android:src="@drawable/ic_tmdblogo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/topView" />
-
     <ProgressBar
         android:id="@+id/movieProgress"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginEnd="@dimen/margin_default"
-        app:layout_constraintBottom_toBottomOf="@id/homeLogo"
+        android:layout_marginEnd="@dimen/spacing_normal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/homeLogo" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.illiarb.tmdbexplorer.coreui.widget.ImageView
         android:id="@+id/homeAccount"
@@ -44,33 +32,19 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@null"
         android:src="@drawable/ic_account"
-        app:layout_constraintBottom_toBottomOf="@id/homeLogo"
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toTopOf="@id/homeLogo" />
-
-    <com.illiarb.tmdbexplorer.coreui.widget.ImageView
-        android:id="@+id/homeSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_default"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@null"
-        android:src="@drawable/ic_search"
-        app:layout_constraintBottom_toBottomOf="@id/homeLogo"
-        app:layout_constraintStart_toEndOf="@id/homeAccount"
-        app:layout_constraintTop_toTopOf="@id/homeLogo"
-        app:layout_goneMarginStart="0dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/moviesList"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:paddingBottom="@dimen/margin_default"
+        android:paddingBottom="@dimen/spacing_normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/homeLogo"
+        app:layout_constraintTop_toBottomOf="@id/homeAccount"
         tools:listitem="@layout/item_movie_section" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.di
 
 import androidx.lifecycle.ViewModel
-import com.illiarb.tmdbclient.home.presentation.HomeModel
+import com.illiarb.tmdbclient.movies.home.HomeModel
 import com.illiarb.tmdbexplorer.coreui.di.ViewModelKey
 import dagger.Binds
 import dagger.Module

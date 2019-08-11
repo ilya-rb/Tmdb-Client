@@ -8,7 +8,7 @@
         android:id="@+id/itemSectionTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/margin_default"
+        android:padding="@dimen/spacing_normal"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"

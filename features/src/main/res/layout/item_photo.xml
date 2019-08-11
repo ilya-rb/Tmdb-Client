@@ -5,8 +5,6 @@
     android:layout_width="@dimen/movie_details_item_photo_width"
     android:layout_height="@dimen/movie_details_item_photo_height"
     android:adjustViewBounds="true"
-    android:transitionName="@string/movie_photo_transition_name"
     android:contentDescription="@null"
     tools:scaleType="fitXY"
-    tools:src="@tools:sample/backgrounds/scenic"
-    />
+    tools:src="@tools:sample/backgrounds/scenic" />

@@ -16,11 +16,11 @@
     <dimen name="movie_details_poster_small_height">150dp</dimen>
     <dimen name="movie_details_poster_small_width">100dp</dimen>
     <dimen name="movie_details_tags_height">32dp</dimen>
-    <dimen name="movie_details_child_spacing">@dimen/margin_small</dimen>
+    <dimen name="movie_details_child_spacing">@dimen/spacing_small</dimen>
     <dimen name="movie_details_photos_height">100dp</dimen>
     <dimen name="movie_details_item_photo_height">100dp</dimen>
     <dimen name="movie_details_item_photo_width">150dp</dimen>
-    <dimen name="movie_details_item_review_vertical_padding">@dimen/margin_small</dimen>
+    <dimen name="movie_details_item_review_vertical_padding">@dimen/spacing_small</dimen>
 
     <!-- Colors -->
     <color name="colorMovieDetailsPosterOverlay">#99000000</color>

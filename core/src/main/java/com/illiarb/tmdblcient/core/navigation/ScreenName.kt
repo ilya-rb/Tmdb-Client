@@ -9,13 +9,7 @@ enum class ScreenName {
 
     MOVIE_DETAILS,
 
-    SEARCH,
-
     AUTH,
 
-    ACCOUNT,
-
-    PHOTO_VIEW,
-
-    SEARCH_FILTERS
+    ACCOUNT
 }

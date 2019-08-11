@@ -5,7 +5,5 @@ package com.illiarb.tmdblcient.core.system.featureconfig
  */
 enum class FeatureName(val code: String) {
 
-    AUTH("auth_enabled"),
-
-    SEARCH("search_enabled")
+    AUTH("auth_enabled")
 }

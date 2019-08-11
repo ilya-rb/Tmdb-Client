@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @Singleton
 class AppNavigatorHolder @Inject constructor() : NavigatorHolder {
 
-    private val screensBuffer: Queue<Screen> = LinkedList<Screen>()
+    private val screensBuffer: Queue<Screen> = LinkedList()
 
     private var navigator: Navigator? = null
 

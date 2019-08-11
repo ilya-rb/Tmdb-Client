@@ -3,12 +3,7 @@
 
     <entry>
         <key>auth_enabled</key>
-        <value>true</value>
-    </entry>
-
-    <entry>
-        <key>search_enabled</key>
-        <value>true</value>
+        <value>false</value>
     </entry>
 
 </defaultsMap>

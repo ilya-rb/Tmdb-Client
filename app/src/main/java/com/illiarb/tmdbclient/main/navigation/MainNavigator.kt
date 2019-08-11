@@ -49,8 +49,7 @@ class MainNavigator @Inject constructor(private val activity: FragmentActivity) 
         controller.navigate(
             action,
             createNavigationArguments(screen),
-            createNavigationOptions(),
-            createNavigationExtras(screen)
+            createNavigationOptions()
         )
     }
 
@@ -60,23 +59,11 @@ class MainNavigator @Inject constructor(private val activity: FragmentActivity) 
             .setExitAnim(R.anim.anim_fade_out)
             .build()
 
-    private fun createNavigationExtras(screen: Screen): FragmentNavigator.Extras? =
-        when (screen) {
-            is PhotoViewScreen -> FragmentNavigator.Extras.Builder().build()
-            else -> null
-        }
-
     private fun createNavigationArguments(screen: Screen): Bundle =
         when (screen) {
             is MovieDetailsScreen -> Bundle().apply {
                 putInt(MovieDetailsScreen.EXTRA_ID, screen.id)
             }
-
-            is PhotoViewScreen -> Bundle().apply {
-                putStringArrayList(PhotoViewScreen.EXTRA_PHOTOS, ArrayList(screen.photos))
-                putString(PhotoViewScreen.EXTRA_SELECTED, screen.selectedPhoto)
-            }
-
             else -> Bundle.EMPTY
         }
 
@@ -86,10 +73,6 @@ class MainNavigator @Inject constructor(private val activity: FragmentActivity) 
             ScreenName.MOVIE_DETAILS -> R.id.movieDetailsAction
             ScreenName.ACCOUNT -> R.id.accountAction
             ScreenName.AUTH -> R.id.authAction
-            ScreenName.SEARCH -> R.id.searchAction
-            ScreenName.PHOTO_VIEW -> R.id.photoViewAction
-            // TODO: Remove
-            ScreenName.SEARCH_FILTERS -> R.id.searchAction
         }
 
     private fun isDynamicFeatureAction(action: Int): Boolean =

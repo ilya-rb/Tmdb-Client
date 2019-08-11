@@ -31,4 +31,5 @@ dependencies {
     implementation project(':core')
 
     implementation deps.dagger
+    implementation deps.lifecycleKtx
 }
