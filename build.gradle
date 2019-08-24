@@ -13,7 +13,7 @@ buildscript {
     }
 
     dependencies {
-        classpath gradlePlugins.android
+        classpath "com.android.tools.build:gradle:3.5.0"
         classpath gradlePlugins.kotlin
         classpath gradlePlugins.versions
         classpath gradlePlugins.jacoco

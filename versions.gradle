@@ -18,7 +18,7 @@ versions.with {
 
     // Std
     kotlin = "1.3.41"
-    kotlin_coroutines = "1.3.0-RC"
+    kotlin_coroutines = "1.3.0-RC2"
 
     // Support
     supportLibrary = "1.1.0-alpha08"
