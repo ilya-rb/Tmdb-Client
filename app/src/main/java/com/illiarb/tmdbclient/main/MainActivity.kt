@@ -3,8 +3,11 @@ package com.illiarb.tmdbclient.main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.main.di.MainComponent
+import com.illiarb.tmdbexplorer.coreui.common.BackPressedListener
 import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
@@ -29,9 +32,8 @@ class MainActivity : AppCompatActivity(), Injectable {
     @Inject
     lateinit var connectivityStatus: ConnectivityStatus
 
-    private var connectivityStatusJob: Job? = null
-
-    override fun inject(appProvider: AppProvider) = MainComponent.get(appProvider, this).inject(this)
+    override fun inject(appProvider: AppProvider) =
+        MainComponent.get(appProvider, this).inject(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +42,11 @@ class MainActivity : AppCompatActivity(), Injectable {
 
     override fun onResumeFragments() {
         super.onResumeFragments()
+
         navigatorHolder.setNavigator(navigator)
 
-        connectivityStatusJob = lifecycleScope.launch {
-            connectivityStatus.setCoroutineScope(lifecycleScope)
-            connectivityStatus.connectionState().collect {
+        lifecycleScope.launch {
+            connectivityStatus.connectionState(lifecycleScope).collect {
                 updateConnectionStateLabel(it)
             }
         }
@@ -53,9 +55,23 @@ class MainActivity : AppCompatActivity(), Injectable {
     override fun onPause() {
         super.onPause()
         navigatorHolder.removeNavigator()
+        connectivityStatus.release()
+    }
 
-        connectivityStatusJob?.cancel()
-        connectivityStatus.removeCoroutineScope()
+    override fun onBackPressed() {
+        // TODO: Move proper way of doing this
+        val navHost = (nav_host_fragment as NavHostFragment)
+        val handled = navHost.childFragmentManager.fragments.any {
+            if (it is BackPressedListener) {
+                it.onBackPressed()
+            } else {
+                false
+            }
+        }
+
+        if (!handled) {
+            super.onBackPressed()
+        }
     }
 
     private fun updateConnectionStateLabel(state: ConnectivityStatus.ConnectionState) {

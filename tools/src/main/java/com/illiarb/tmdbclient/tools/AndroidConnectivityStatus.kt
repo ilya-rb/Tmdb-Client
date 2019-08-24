@@ -52,29 +52,30 @@ class AndroidConnectivityStatus @Inject constructor(
         }
     }
 
-    override fun setCoroutineScope(scope: CoroutineScope) {
-        coroutineScope = scope
-    }
-
-    override fun removeCoroutineScope() {
-        coroutineScope = null
-    }
-
-    override fun connectionState(): Flow<ConnectionState> = connectionStatusChannel.consumeAsFlow()
-        .onStart {
+    override fun connectionState(scope: CoroutineScope): Flow<ConnectionState> =
+        connectionStatusChannel.consumeAsFlow().onStart {
+            coroutineScope = scope
             registerReceiver()
             emit(getConnectionStatus())
         }
-        .onCompletion { unregisterReceiver() }
 
-    private fun getConnectionStatus() = if (connectivityManager.isDefaultNetworkActive) {
-        ConnectionState.CONNECTED
-    } else {
-        ConnectionState.NOT_CONNECTED
+    override fun release() {
+        unregisterReceiver()
+        coroutineScope = null
     }
 
+    private fun getConnectionStatus() =
+        if (connectivityManager.isDefaultNetworkActive) {
+            ConnectionState.CONNECTED
+        } else {
+            ConnectionState.NOT_CONNECTED
+        }
+
     private fun registerReceiver() {
-        app.getApplication().registerReceiver(connectionReceiver, IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"))
+        app.getApplication().registerReceiver(
+            connectionReceiver,
+            IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")
+        )
     }
 
     private fun unregisterReceiver() {

@@ -37,6 +37,8 @@
 
         <item name="colorError">@color/tmdb_red_500</item>
 
+        <item name="android:fontFamily">@font/montserrat</item>
+
     </style>
 
 </resources>

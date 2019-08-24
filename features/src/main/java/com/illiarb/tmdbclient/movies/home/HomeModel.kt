@@ -1,11 +1,13 @@
 package com.illiarb.tmdbclient.movies.home
 
+import com.illiarb.tmdbclient.movies.home.HomeView.MovieSectionsState
+import com.illiarb.tmdbclient.movies.home.HomeView.SearchResultState
+import com.illiarb.tmdbclient.movies.home.HomeView.SingleUiEvent.*
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import com.illiarb.tmdblcient.core.domain.MoviesInteractor
-import com.illiarb.tmdblcient.core.domain.entity.ListSection
-import com.illiarb.tmdblcient.core.domain.entity.MovieBlock
-import com.illiarb.tmdblcient.core.domain.entity.MovieSection
-import com.illiarb.tmdblcient.core.ext.launchAndCollect
+import com.illiarb.tmdblcient.core.domain.SearchInteractor
+import com.illiarb.tmdblcient.core.domain.entity.*
+import com.illiarb.tmdblcient.core.ext.collectWithScope
 import com.illiarb.tmdblcient.core.navigation.AccountScreen
 import com.illiarb.tmdblcient.core.navigation.AuthScreen
 import com.illiarb.tmdblcient.core.navigation.MovieDetailsScreen
@@ -21,31 +23,60 @@ import javax.inject.Inject
  * @author ilya-rb on 08.01.19.
  */
 class HomeModel @Inject constructor(
-    featureConfig: FeatureConfig,
+    private val featureConfig: FeatureConfig,
     private val moviesInteractor: MoviesInteractor,
+    private val searchInteractor: SearchInteractor,
     private val authenticator: Authenticator,
     private val router: Router
 ) : BasePresentationModel() {
 
-    private val isAccountEnabled = flowOf(featureConfig.isFeatureEnabled(FeatureName.AUTH))
-    private val progressVisible = Channel<Boolean>(Channel.CONFLATED)
+    companion object {
+        private const val SEARCH_DEBOUNCE_DELAY = 400L
+    }
 
-    private val sections: Flow<List<MovieSection>> =
-        flow { emit(createMovieSections(moviesInteractor.getAllMovies())) }
-            .onStart { progressVisible.send(true) }
-            .onCompletion { progressVisible.send(false) }
+    private val searchResultsState = Channel<SearchResultState>(Channel.CONFLATED)
 
     fun bind(view: HomeView) {
-        view.launchAndCollect(progressVisible.consumeAsFlow()) { view.progressVisible(it) }
+        searchResultsState.consumeAsFlow()
+            .collectWithScope(view) { view.searchResultsState(it) }
 
-        view.launchAndCollect(isAccountEnabled) { view.accountEnabled(it) }
+        flow<MovieSectionsState> {
+            val movies = moviesInteractor.getAllMovies()
+            emit(MovieSectionsState.Content(movies.asSections()))
+        }
+            .onStart { emit(MovieSectionsState.Loading) }
+            .catch { emit(MovieSectionsState.Failure) }
+            .collectWithScope(view) { view.movieSections(it) }
 
-        view.launchAndCollect(sections) { view.movieSections(it) }
+        view.searchQuery
+            .debounce(SEARCH_DEBOUNCE_DELAY)
+            .filter { it.isNotEmpty() }
+            .map {
+                val searchResults = searchInteractor.searchMovies(it.toString())
+                if (searchResults.isEmpty()) {
+                    SearchResultState.Empty
+                } else {
+                    SearchResultState.Results(searchResults.map { m -> SearchResult(m) })
+                }
+            }
+            .collectWithScope(view) { searchResultsState.send(it) }
 
-        view.launchAndCollect(view.uiEvents) {
-            when (it) {
-                is HomeView.UiEvent.MovieClick -> router.navigateTo(MovieDetailsScreen(it.movie.id))
-                is HomeView.UiEvent.AccountClick -> {
+        view.searchFocusChange
+            .collectWithScope(view) { hasFocus ->
+                if (hasFocus) {
+                    view.accountVisible(false)
+                    view.searchResultsState(SearchResultState.Empty)
+                } else {
+                    view.accountVisible(featureConfig.isFeatureEnabled(FeatureName.AUTH))
+                    view.searchResultsState(SearchResultState.Hidden)
+                }
+            }
+
+        view.uiEvents.collectWithScope(view) { event ->
+            when (event) {
+                is ClearSearch -> searchResultsState.send(SearchResultState.Hidden)
+                is MovieClick -> router.navigateTo(MovieDetailsScreen(event.movie.id))
+                is AccountClick -> {
                     if (authenticator.isAuthenticated()) {
                         router.navigateTo(AccountScreen)
                     } else {
@@ -54,8 +85,16 @@ class HomeModel @Inject constructor(
                 }
             }
         }
+
+        view.accountVisible(featureConfig.isFeatureEnabled(FeatureName.AUTH))
     }
 
-    private fun createMovieSections(movies: List<MovieBlock>): List<MovieSection> =
-        movies.map { (filter, movies) -> ListSection(filter.name, movies) }
+    private fun List<MovieBlock>.asSections(): List<MovieSection> =
+        map { (filter, movies) ->
+            if (filter.code == MovieFilter.TYPE_NOW_PLAYING) {
+                NowPlayingSection(filter.name, movies)
+            } else {
+                ListSection(filter.name, movies)
+            }
+        }
 }

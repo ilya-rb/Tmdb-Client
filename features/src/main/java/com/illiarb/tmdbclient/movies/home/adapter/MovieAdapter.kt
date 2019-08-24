@@ -16,5 +16,7 @@ class MovieAdapter @Inject constructor(imageLoader: ImageLoader) : ListDelegatio
 
     init {
         delegatesManager.addDelegate(movieSectionDelegate(imageLoader, onClick))
+        delegatesManager.addDelegate(nowPlayingDelegate(imageLoader))
+        delegatesManager.addDelegate(searchResultDelegate(imageLoader))
     }
 }

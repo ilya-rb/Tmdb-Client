@@ -3,7 +3,7 @@
 
     <entry>
         <key>auth_enabled</key>
-        <value>false</value>
+        <value>true</value>
     </entry>
 
 </defaultsMap>

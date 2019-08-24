@@ -8,11 +8,9 @@ import kotlinx.coroutines.flow.Flow
  */
 interface ConnectivityStatus {
 
-    fun connectionState(): Flow<ConnectionState>
+    fun connectionState(scope: CoroutineScope): Flow<ConnectionState>
 
-    fun setCoroutineScope(scope: CoroutineScope)
-
-    fun removeCoroutineScope()
+    fun release()
 
     enum class ConnectionState {
 

@@ -34,6 +34,9 @@ dependencies {
     implementation project(':core_ui_image')
     implementation project(':core_ui_recycler_view')
 
+    // TODO: Move to dependencies
+    implementation 'androidx.viewpager2:viewpager2:1.0.0-beta03'
+
     implementation deps.dagger
 
     testImplementation project(':core_test')
