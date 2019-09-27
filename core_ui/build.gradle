@@ -36,8 +36,10 @@ dependencies {
     api deps.adapterDelegates
     api deps.adapterDelegatesDsl
     api deps.lifecycleKtx
+    api deps.lifecycleLiveData
+    api deps.viewModelExt
+    api deps.viewModelKtx
 
     implementation deps.dagger
-    implementation deps.viewModelExt
-    implementation deps.viewModelKtx
+
 }

@@ -25,7 +25,10 @@ class MobileAppInjector(private val app: App) : Application.ActivityLifecycleCal
         }
 
         if (activity is FragmentActivity) {
-            activity.supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks(), true)
+            activity.supportFragmentManager.registerFragmentLifecycleCallbacks(
+                fragmentLifecycleCallbacks(),
+                true
+            )
         }
     }
 
@@ -49,7 +52,11 @@ class MobileAppInjector(private val app: App) : Application.ActivityLifecycleCal
 
     private fun fragmentLifecycleCallbacks(): FragmentManager.FragmentLifecycleCallbacks {
         return object : FragmentManager.FragmentLifecycleCallbacks() {
-            override fun onFragmentPreAttached(fm: FragmentManager, fragment: Fragment, context: Context) {
+            override fun onFragmentPreAttached(
+                fm: FragmentManager,
+                fragment: Fragment,
+                context: Context
+            ) {
                 if (fragment is Injectable) {
                     fragment.inject(app.getAppProvider())
                 }

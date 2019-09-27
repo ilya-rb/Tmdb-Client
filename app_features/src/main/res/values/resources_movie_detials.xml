@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Strings -->
+    <string name="movie_details_photos">Photos</string>
+    <string name="movie_details_reviews">Reviews</string>
+    <string name="movie_details_overview_empty">No description provided</string>
+    <string name="movie_details_duration">%1$d min</string>
+
+    <!-- Dimens -->
+    <dimen name="movie_details_poster_height">250dp</dimen>
+    <dimen name="movie_details_poster_height_neg">-200dp</dimen>
+    <dimen name="movie_details_child_spacing">@dimen/spacing_small</dimen>
+    <dimen name="movie_details_photos_height">100dp</dimen>
+    <dimen name="movie_details_item_photo_height">100dp</dimen>
+    <dimen name="movie_details_item_photo_width">150dp</dimen>
+    <dimen name="movie_details_item_review_vertical_padding">@dimen/spacing_small</dimen>
+
+</resources>

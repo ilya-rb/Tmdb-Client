@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="tmdb_purple_200">#BB86FC</color>
+    <color name="tmdb_blue_700">#3700B3</color>
+    <color name="tmdb_teal_200">#03DAC6</color>
+    <color name="tmdb_black">#121212</color>
     <color name="tmdb_white">#FFF</color>
-    <color name="tmdb_black">#000</color>
-    <color name="tmdb_amber_500">#FFC107</color>
-    <color name="tmdb_amber_300">#FFF350</color>
-    <color name="tmdb_amber_800">#C79100</color>
-    <color name="tmdb_grey_500">#C7C7C7</color>
-    <color name="tmdb_red_500">#F44336</color>
+    <color name="tmdb_red">#CF6679</color>
 
 </resources>

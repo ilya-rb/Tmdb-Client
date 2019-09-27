@@ -1,11 +1,9 @@
 package com.illiarb.tmdbclient.di.modules
 
-import com.illiarb.tmdbclient.config.AppFeatureConfig
-import com.illiarb.tmdbclient.system.AppFeatureInstaller
-import com.illiarb.tmdblcient.core.system.featureconfig.FeatureConfig
+import com.illiarb.tmdbclient.navigation.AppFeatureInstaller
 import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.feature.dynamic.FeatureInstaller
 import com.illiarb.tmdblcient.core.storage.ResourceResolver
-import com.illiarb.tmdblcient.core.system.dynamicfeature.FeatureInstaller
 import dagger.Module
 import dagger.Provides
 
@@ -21,7 +19,4 @@ class AppModule(val app: App) {
     @Provides
     fun provideFeatureInstaller(resourceResolver: ResourceResolver): FeatureInstaller =
         AppFeatureInstaller(app, resourceResolver)
-
-    @Provides
-    fun provideFeatureConfig(): FeatureConfig = AppFeatureConfig()
 }

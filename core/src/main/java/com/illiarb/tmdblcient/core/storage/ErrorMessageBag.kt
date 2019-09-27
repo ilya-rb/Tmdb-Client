@@ -5,12 +5,6 @@ package com.illiarb.tmdblcient.core.storage
  */
 interface ErrorMessageBag {
 
-    fun getUsernameEmptyMessage(): String
-
-    fun getPasswordEmptyMessage(): String
-
-    fun getIncorrectPasswordLengthMessage(): String
-
     fun getDefaultErrorMessage(): String
 
     fun getNetworkConnectionMessage(): String

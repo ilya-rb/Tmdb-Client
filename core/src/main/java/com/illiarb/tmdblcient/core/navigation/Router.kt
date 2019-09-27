@@ -5,5 +5,16 @@ package com.illiarb.tmdblcient.core.navigation
  */
 interface Router {
 
-    fun navigateTo(screen: Screen)
+    fun executeAction(action: Action)
+
+    sealed class Action {
+
+        data class ShowMovieDetails(val id: Int) : Action() {
+            companion object {
+                const val EXTRA_MOVIE_DETAILS = "id"
+            }
+        }
+
+        object Account : Action()
+    }
 }

@@ -38,15 +38,17 @@ dependencies {
 
     implementation project(':core')
     implementation project(':core_ui')
-    implementation project(':storage')
-    implementation project(':tools')
-    implementation project(':analytics')
-    implementation project(':features')
+    implementation project(':core_ui_image')
+    implementation project(':core_storage')
+    implementation project(':core_tools')
+    implementation project(':service_analytics')
+    implementation project(':service_tmdb')
+    implementation project(':app_features')
 
     implementation deps.dagger
     implementation deps.timber
     implementation deps.firebaseCore
-    implementation deps.firebaseRemoteConfig
+
     implementation deps.navigation
 
     // Play core lib for downloading dynamic features

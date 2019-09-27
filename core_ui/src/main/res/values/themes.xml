@@ -25,17 +25,15 @@
     <!-- Main Application theme. -->
     <style name="Theme.Tmdb" parent="Base.Theme.Tmdb">
 
-        <item name="colorPrimary">@color/tmdb_white</item>
-        <item name="colorOnPrimary">@color/tmdb_black</item>
-
-        <item name="colorPrimaryVariant">@color/tmdb_amber_800</item>
-        <item name="colorPrimaryDark">@color/tmdb_white</item>
-
-        <item name="colorSecondary">@color/tmdb_amber_300</item>
-        <item name="colorOnSecondary">@color/tmdb_white</item>
-        <item name="colorSecondaryVariant">@color/tmdb_amber_800</item>
-
-        <item name="colorError">@color/tmdb_red_500</item>
+        <item name="colorPrimary">@color/tmdb_purple_200</item>
+        <item name="colorPrimaryVariant">@color/tmdb_blue_700</item>
+        <item name="colorSecondary">@color/tmdb_teal_200</item>
+        <item name="android:colorBackground">@color/tmdb_black</item>
+        <item name="colorSurface">@color/tmdb_black</item>
+        <item name="colorError">@color/tmdb_red</item>
+        <item name="colorOnBackground">@color/tmdb_white</item>
+        <item name="colorOnSurface">@color/tmdb_white</item>
+        <item name="colorOnError">@color/tmdb_white</item>
 
         <item name="android:fontFamily">@font/montserrat</item>
 

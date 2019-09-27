@@ -1,6 +1,6 @@
 package com.illiarb.tmdbclient.di.modules
 
-import com.illiarb.tmdbclient.navigation.AppNavigatorHolder
+import com.illiarb.tmdbclient.navigation.ActionsBuffer
 import com.illiarb.tmdbclient.navigation.AppRouter
 import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
 import com.illiarb.tmdblcient.core.navigation.Router
@@ -14,8 +14,8 @@ import dagger.Module
 interface NavigationModule {
 
     @Binds
-    fun bindNavigatorHolder(impl: AppNavigatorHolder): NavigatorHolder
+    fun bindRouter(router: AppRouter): Router
 
     @Binds
-    fun bindRouter(impl: AppRouter): Router
+    fun bindNavigatorHolder(buffer: ActionsBuffer): NavigatorHolder
 }
