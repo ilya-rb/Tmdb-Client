@@ -9,7 +9,7 @@
         android:id="@+id/movieDetailsRoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipChildren="false">
+        >
 
         <com.illiarb.tmdbclient.details.ui.CurvedImageView
             android:id="@+id/movieDetailsPoster"
@@ -24,7 +24,6 @@
             android:id="@+id/movieDetailsPlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/spacing_normal"
             android:src="@drawable/ic_play_arrow"
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="@id/movieDetailsPoster"
@@ -66,7 +65,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_normal"
-            android:gravity="end"
+            android:gravity="center_horizontal"
             android:text="@string/movie_details_year"
             android:textAppearance="?attr/textAppearanceCaption"
             android:textColor="?attr/colorAccent"
@@ -92,6 +91,7 @@
             android:id="@+id/movieDetailsLengthTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:text="@string/movie_details_length"
             android:textAppearance="?attr/textAppearanceCaption"
             android:textColor="?attr/colorAccent"
@@ -105,7 +105,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_small"
-            android:gravity="end"
+            android:gravity="center_horizontal"
             android:textAppearance="?attr/textAppearanceCaption"
             android:textColor="?attr/colorOnSurface"
             app:layout_constraintEnd_toStartOf="@id/movieDetailsCountry"
@@ -131,6 +131,7 @@
             android:id="@+id/movieDetailsLength"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:textAppearance="?attr/textAppearanceCaption"
             android:textColor="?attr/colorOnSurface"
             app:layout_constraintBottom_toBottomOf="@id/movieDetailsYear"

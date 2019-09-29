@@ -40,7 +40,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
     lateinit var onClickListener: OnClickListener
 
     private val viewModel: MovieDetailsViewModel by lazy(LazyThreadSafetyMode.NONE) {
-        viewModelFactory.create(MovieDetailsViewModel.MovieDetailsModel::class.java)
+        viewModelFactory.create(MovieDetailsViewModel.DefaultDetailsViewModel::class.java)
     }
 
     override fun inject(appProvider: AppProvider) {

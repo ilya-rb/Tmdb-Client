@@ -17,7 +17,7 @@ interface MovieDetailsViewModel {
 
     val movie: LiveData<Async<Movie>>
 
-    class MovieDetailsModel @Inject constructor(
+    class DefaultDetailsViewModel @Inject constructor(
         private val tmdbService: TmdbService,
         private val movieId: Int
     ) : BasePresentationModel(), MovieDetailsViewModel {

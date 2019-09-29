@@ -1,6 +1,7 @@
 package com.illiarb.tmdbclient.details.ui
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
@@ -16,7 +17,22 @@ class CurvedImageView @JvmOverloads constructor(
 
     private val curvePath = Path()
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private val curveOffset: Float = resources.getDimension(R.dimen.movie_details_curve_offset)
+    private val curveOffset: Float
+
+    init {
+        var attributes: TypedArray? = null
+        try {
+            attributes = context.obtainStyledAttributes(attrs, R.styleable.CurvedImageView)
+
+            curveOffset = attributes.getInt(
+                R.styleable.CurvedImageView_cvCurveOffset,
+                resources.getDimensionPixelSize(R.dimen.movie_details_curve_offset)
+            ).toFloat()
+
+        } finally {
+            attributes?.recycle()
+        }
+    }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -30,10 +46,11 @@ class CurvedImageView @JvmOverloads constructor(
             // top left to bottom left
             lineTo(0f, height - curveOffset)
             // arc from bottom left to bottom right
-            cubicTo(
-                0f, height,
-                width, height,
-                width, height - curveOffset
+            quadTo(
+                width / 2,
+                height + curveOffset,
+                width,
+                height - curveOffset
             )
             // bottom right to top right
             lineTo(width, 0f)
