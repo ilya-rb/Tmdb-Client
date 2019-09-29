@@ -1,11 +1,12 @@
 include ':app',
+        ':service_tmdb',
         ':core',
-        ':analytics',
-        ':storage',
+        ':service_analytics',
+        ':core_storage',
         ':core_ui',
         ':core_ui_image',
         ':core_ui_recycler_view',
         ':core_test',
-        ':features',
+        ':app_features',
 //        ':dynamic_feature_account',
-        ':tools'
+        ':core_tools'

@@ -29,6 +29,7 @@ deps.firebaseRemoteConfig = "com.google.firebase:firebase-config:$versions.fireb
 // Arch components
 deps.viewmodel = "androidx.lifecycle:lifecycle-viewmodel:$versions.archComponents"
 deps.lifecycleKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$versions.archComponents"
+deps.lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata-ktx:$versions.archComponents"
 deps.viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.archComponents"
 deps.viewModelExt = "androidx.lifecycle:lifecycle-extensions:$versions.archComponents"
 deps.navigation = "android.arch.navigation:navigation-fragment:$versions.navigation"
