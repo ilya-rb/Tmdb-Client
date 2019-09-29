@@ -19,7 +19,7 @@ import javax.inject.Singleton
 
 interface MoviesRepository {
 
-    suspend fun getMoviesByType(type: String, refresh: Boolean = true): List<Movie>
+    suspend fun getMoviesByType(type: String, refresh: Boolean = false): List<Movie>
 
     suspend fun getMovieDetails(id: Int, appendToResponse: String): Movie
 

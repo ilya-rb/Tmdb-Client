@@ -4,16 +4,16 @@ package com.illiarb.tmdblcient.core.util
  * Grabbed from here:
  * https://github.com/airbnb/MvRx/blob/master/mvrx/src/main/kotlin/com/airbnb/mvrx/Async.kt
  *
- * The T generic is unused for some classes but since it is sealed and useful for Success and Fail,
+ * The T generic is unused for some classes but since it is sealed and useful for Left and Fail,
  * it should be on all of them.
  *
- * Complete: Success, Fail
+ * Complete: Left, Fail
  * ShouldLoad: Uninitialized, Fail
  */
 sealed class Async<out T>(val complete: Boolean, val shouldLoad: Boolean) {
 
     /**
-     * Returns the Success value or null.
+     * Returns the Left value or null.
      *
      * Can be invoked as an operator like: `yourProp()`
      */
@@ -21,7 +21,7 @@ sealed class Async<out T>(val complete: Boolean, val shouldLoad: Boolean) {
 
     companion object {
         /**
-         * Helper to set metadata on a Success instance.
+         * Helper to set metadata on a Left instance.
          * @see Success.metadata
          */
         fun <T> Success<*>.setMetadata(metadata: T) {
@@ -29,7 +29,7 @@ sealed class Async<out T>(val complete: Boolean, val shouldLoad: Boolean) {
         }
 
         /**
-         * Helper to get metadata on a Success instance.
+         * Helper to get metadata on a Left instance.
          * @see Success.metadata
          */
         @Suppress("UNCHECKED_CAST")
@@ -83,7 +83,7 @@ data class Fail<out T>(val error: Throwable) : Async<T>(complete = true, shouldL
  * With this, you can do:
  * when (data) {
  *     is Incomplete -> Unit
- *     is Success    -> Unit
+ *     is Left    -> Unit
  *     is Fail       -> Unit
  * }
  */

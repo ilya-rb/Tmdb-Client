@@ -51,6 +51,9 @@ class HomeFragment : BaseFragment(R.layout.fragment_movies), Injectable, BackPre
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        appBar.isLiftOnScroll = true
+        appBar.liftOnScrollTargetViewId = R.id.moviesList
+
         RecyclerViewBuilder
             .create {
                 adapter(adapter)

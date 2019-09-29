@@ -29,17 +29,16 @@ class HomeModel @Inject constructor(
             .zip(moviesService.getMovieGenres()) { movieBlocks, genres ->
                 val allSections = mutableListOf<MovieSection>()
 
-                movieBlocks.forEach { block ->
-                    if (block.filter.code == MovieFilter.TYPE_NOW_PLAYING) {
-                        allSections.add(NowPlayingSection(block.filter.name, block.movies))
-                        allSections.add(GenresSection(genres))
+                movieBlocks.getOrThrow().forEach { block ->
+                    if (block.filter.isNowPlaying()) {
+                        allSections.add(block.asMovieSection())
+                        allSections.add(GenresSection(genres.getOrThrow()))
                     } else {
-                        allSections.add(ListSection(block.filter.name, block.movies))
+                        allSections.add(block.asMovieSection())
                     }
                 }
-                allSections
+                Success(allSections.toList())
             }
-            .map { Success(it.toList()) }
             .catch { emit(Fail(it)) }
             .collect { emit(it) }
     }
@@ -62,4 +61,11 @@ class HomeModel @Inject constructor(
             }
         }
     }
+
+    private fun MovieBlock.asMovieSection(): MovieSection =
+        if (filter.isNowPlaying()) {
+            NowPlayingSection(filter.name, movies)
+        } else {
+            ListSection(filter.name, movies)
+        }
 }

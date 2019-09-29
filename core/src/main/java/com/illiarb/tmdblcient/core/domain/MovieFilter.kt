@@ -11,4 +11,6 @@ data class MovieFilter(val name: String, val code: String) {
         const val TYPE_UPCOMING = "upcoming"
         const val TYPE_TOP_RATED = "top_rated"
     }
+
+    fun isNowPlaying() = code == TYPE_NOW_PLAYING
 }
