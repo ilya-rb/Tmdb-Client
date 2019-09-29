@@ -1,4 +1,4 @@
-package com.illiarb.tmdbcliient.core_test
+package com.illiarb.tmdbcliient.core_test.tools
 
 import com.illiarb.tmdblcient.core.tools.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher

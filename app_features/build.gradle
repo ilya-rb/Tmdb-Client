@@ -3,6 +3,9 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+// Required as JUnit 5 doesn't support android modules out of the box.
+apply plugin: "de.mannodermaus.android-junit5"
+
 apply from: dependenciesFilePath
 
 android {
@@ -24,6 +27,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    testOptions {
+        unitTests.all { useJUnitPlatform() }
+        junitPlatform {
+            filters {
+                engines {
+                    include 'spek2'
+                }
+            }
+        }
+    }
 }
 
 dependencies {
@@ -33,9 +47,6 @@ dependencies {
     implementation project(':core_ui')
     implementation project(':core_ui_image')
     implementation project(':core_ui_recycler_view')
-
-    // TODO: Move to dependencies
-    implementation 'androidx.viewpager2:viewpager2:1.0.0-beta03'
 
     implementation deps.dagger
 

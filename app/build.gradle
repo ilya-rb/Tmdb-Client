@@ -29,8 +29,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    // dynamicFeatures = [':dynamic_feature_account']
 }
 
 dependencies {

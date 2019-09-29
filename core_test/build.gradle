@@ -39,6 +39,7 @@ android {
 
 dependencies {
     implementation project(':core')
+    implementation project(':service_tmdb')
 
     api testDeps.junit
     api testDeps.mockito
@@ -47,6 +48,8 @@ dependencies {
     api testDeps.spekJvm
     api testDeps.spekJunit5
     api testDeps.kotlinReflect
+    api testDeps.kotlinCoroutines
+    api testDeps.androidX
 
     androidTestImplementation androidTestDeps.espresso
     androidTestImplementation androidTestDeps.runner

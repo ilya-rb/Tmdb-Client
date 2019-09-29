@@ -1,6 +1,7 @@
 package com.illiarb.tmdbclient.home
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.illiarb.tmdbclient.home.HomeViewModel.HomeUiEvent
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
@@ -23,32 +24,35 @@ class HomeModel @Inject constructor(
     private val router: Router
 ) : BasePresentationModel(), HomeViewModel {
 
-    private val _movieSections: LiveData<Async<List<MovieSection>>> = liveData {
-        moviesService.getAllMovies()
-            .onStart { emit(Loading()) }
-            .zip(moviesService.getMovieGenres()) { movieBlocks, genres ->
-                val allSections = mutableListOf<MovieSection>()
+    private val _movieSectionsData = MutableLiveData<Async<List<MovieSection>>>()
 
-                movieBlocks.getOrThrow().forEach { block ->
-                    if (block.filter.isNowPlaying()) {
-                        allSections.add(block.asMovieSection())
-                        allSections.add(GenresSection(genres.getOrThrow()))
-                    } else {
-                        allSections.add(block.asMovieSection())
+    init {
+        launch {
+            moviesService.getAllMovies()
+                .zip(moviesService.getMovieGenres()) { movieBlocks, genres ->
+                    val allSections = mutableListOf<MovieSection>()
+
+                    movieBlocks.getOrThrow().forEach { block ->
+                        if (block.filter.isNowPlaying()) {
+                            allSections.add(block.asMovieSection())
+                            allSections.add(GenresSection(genres.getOrThrow()))
+                        } else {
+                            allSections.add(block.asMovieSection())
+                        }
                     }
+                    Success(allSections.toList()) as Async<List<MovieSection>>
                 }
-                Success(allSections.toList())
-            }
-            .catch { emit(Fail(it)) }
-            .collect { emit(it) }
+                .onStart { emit(Loading()) }
+                .catch { emit(Fail(it)) }
+                .collect { _movieSectionsData.value = it }
+        }
     }
 
-    private val _isAccountVisible = liveData {
-        emit(featureConfig.isFeatureEnabled(FeatureFlag.AUTH))
-    }
+    private val _isAccountVisible = MutableLiveData<Boolean>()
+        .apply { value = featureConfig.isFeatureEnabled(FeatureFlag.AUTH) }
 
     override val movieSections: LiveData<Async<List<MovieSection>>>
-        get() = _movieSections
+        get() = _movieSectionsData
 
     override val isAccountVisible: LiveData<Boolean>
         get() = _isAccountVisible

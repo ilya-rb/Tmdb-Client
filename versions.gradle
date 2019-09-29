@@ -60,7 +60,7 @@ testVersions.with {
     junit = "4.13-beta-3"
     mockito = "3.0.0"
     mockitoKotlin = "2.1.0"
-    spek = "2.0.6"
+    spek = "2.0.7"
 }
 
 def androidTestVersions = [:]
