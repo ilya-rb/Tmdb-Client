@@ -11,3 +11,5 @@ data class GenreModel(
     val name: String
 
 )
+
+data class GenreListModel(@SerializedName("genres") val genres: List<GenreModel>)

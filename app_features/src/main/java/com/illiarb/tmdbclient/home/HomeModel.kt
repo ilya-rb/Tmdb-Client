@@ -11,8 +11,7 @@ import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.services.TmdbService
 import com.illiarb.tmdblcient.core.util.*
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 /**
@@ -24,16 +23,24 @@ class HomeModel @Inject constructor(
     private val router: Router
 ) : BasePresentationModel(), HomeViewModel {
 
-    private val _movieSections = liveData {
+    private val _movieSections: LiveData<Async<List<MovieSection>>> = liveData {
         moviesService.getAllMovies()
-            .map {
-                when (it) {
-                    is Uninitialized -> Uninitialized
-                    is Loading -> Loading()
-                    is Success -> Success(it().asSections())
-                    is Fail -> Fail(it.error)
+            .onStart { emit(Loading()) }
+            .zip(moviesService.getMovieGenres()) { movieBlocks, genres ->
+                val allSections = mutableListOf<MovieSection>()
+
+                movieBlocks.forEach { block ->
+                    if (block.filter.code == MovieFilter.TYPE_NOW_PLAYING) {
+                        allSections.add(NowPlayingSection(block.filter.name, block.movies))
+                        allSections.add(GenresSection(genres))
+                    } else {
+                        allSections.add(ListSection(block.filter.name, block.movies))
+                    }
                 }
+                allSections
             }
+            .map { Success(it.toList()) }
+            .catch { emit(Fail(it)) }
             .collect { emit(it) }
     }
 
@@ -53,14 +60,6 @@ class HomeModel @Inject constructor(
                 val movie = event.item as Movie
                 router.executeAction(ShowMovieDetails(movie.id))
             }
-        }
-    }
-
-    private fun List<MovieBlock>.asSections(): List<MovieSection> = map { (filter, movies) ->
-        if (filter.code == MovieFilter.TYPE_NOW_PLAYING) {
-            NowPlayingSection(filter.name, movies)
-        } else {
-            ListSection(filter.name, movies)
         }
     }
 }

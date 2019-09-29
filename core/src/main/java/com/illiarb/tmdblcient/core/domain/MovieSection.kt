@@ -1,12 +1,10 @@
 package com.illiarb.tmdblcient.core.domain
 
-import java.util.Collections
-
 /**
  * @author ilya-rb on 04.11.18.
  */
-sealed class MovieSection(val title: String, val movies: List<Movie>)
+sealed class MovieSection
 
-class ListSection(title: String, movies: List<Movie>) : MovieSection(title, movies)
-class NowPlayingSection(title: String, movies: List<Movie>) : MovieSection(title, movies)
-class SearchResult(val movie: Movie) : MovieSection("", Collections.emptyList())
+class ListSection(val title: String, val movies: List<Movie>) : MovieSection()
+class NowPlayingSection(val title: String, val movies: List<Movie>) : MovieSection()
+class GenresSection(val genres: List<Genre>) : MovieSection()

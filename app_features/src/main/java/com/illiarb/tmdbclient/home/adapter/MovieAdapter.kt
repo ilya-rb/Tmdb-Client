@@ -15,5 +15,6 @@ class MovieAdapter @Inject constructor(
     init {
         delegatesManager.addDelegate(movieSectionDelegate(imageLoader, clickListener))
         delegatesManager.addDelegate(nowPlayingDelegate(imageLoader))
+        delegatesManager.addDelegate(genresSectionDelegate())
     }
 }

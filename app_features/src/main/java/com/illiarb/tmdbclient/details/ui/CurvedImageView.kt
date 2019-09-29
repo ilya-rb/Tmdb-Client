@@ -33,7 +33,7 @@ class CurvedImageView @JvmOverloads constructor(
             cubicTo(
                 0f, height,
                 width, height,
-                width, height// - curveOffset
+                width, height - curveOffset
             )
             // bottom right to top right
             lineTo(width, 0f)

@@ -15,7 +15,6 @@ import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieSection
 import kotlinx.android.synthetic.main.item_movie.view.*
 import kotlinx.android.synthetic.main.item_movie_section.view.*
-import kotlinx.android.synthetic.main.layout_section_title.view.*
 
 fun movieSectionDelegate(
     imageLoader: ImageLoader,

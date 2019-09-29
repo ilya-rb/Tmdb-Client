@@ -18,6 +18,7 @@ import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.domain.MovieSection
+import com.illiarb.tmdblcient.core.tools.Logger
 import com.illiarb.tmdblcient.core.util.Async
 import com.illiarb.tmdblcient.core.util.Fail
 import com.illiarb.tmdblcient.core.util.Loading
@@ -91,7 +92,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_movies), Injectable, BackPre
     private fun onMoviesStateChange(state: Async<List<MovieSection>>) {
         when (state) {
             is Loading -> moviesList.moveToState(RecyclerView.State.Loading)
-            is Fail -> moviesList.moveToState(RecyclerView.State.Error)
+            is Fail -> Logger.e("Got error: ", state.error)
             is Success -> {
                 moviesList.moveToState(RecyclerView.State.Content)
                 adapter.items = state()

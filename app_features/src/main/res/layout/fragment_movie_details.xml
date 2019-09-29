@@ -8,7 +8,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/movieDetailsRoot"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:clipChildren="false">
 
         <com.illiarb.tmdbclient.details.ui.CurvedImageView
             android:id="@+id/movieDetailsPoster"
@@ -28,6 +29,7 @@
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="@id/movieDetailsPoster"
             app:layout_constraintEnd_toEndOf="@id/movieDetailsTitle"
+            app:layout_constraintStart_toStartOf="@id/movieDetailsTitle"
             app:layout_constraintTop_toBottomOf="@id/movieDetailsPoster" />
 
         <TextView
