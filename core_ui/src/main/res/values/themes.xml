@@ -36,6 +36,8 @@
         <item name="colorOnError">@color/tmdb_white</item>
 
         <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
 
     </style>
 
