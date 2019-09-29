@@ -64,6 +64,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_movies), Injectable, BackPre
         bind(viewModel)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        moviesList.recyclerView().adapter = null
+    }
+
     override fun handleBackPress(): Boolean {
         if (moviesList.recyclerView().scrollY > 0) {
             moviesList.recyclerView().smoothScrollToPosition(0)

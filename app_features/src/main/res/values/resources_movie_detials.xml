@@ -2,12 +2,17 @@
 <resources>
 
     <!-- Strings -->
+    <string name="movie_details_year">Year</string>
+    <string name="movie_details_country">Country</string>
+    <string name="movie_details_length">Length</string>
+
     <string name="movie_details_photos">Photos</string>
     <string name="movie_details_reviews">Reviews</string>
     <string name="movie_details_overview_empty">No description provided</string>
     <string name="movie_details_duration">%1$d min</string>
 
     <!-- Dimens -->
+    <dimen name="movie_details_curve_offset">80dp</dimen>
     <dimen name="movie_details_poster_height">250dp</dimen>
     <dimen name="movie_details_poster_height_neg">-200dp</dimen>
     <dimen name="movie_details_child_spacing">@dimen/spacing_small</dimen>

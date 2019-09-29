@@ -1,14 +1,10 @@
 package com.illiarb.tmdbclient.details
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.chip.Chip
 import com.illiarb.core_ui_image.CropOptions
 import com.illiarb.core_ui_image.ImageLoader
 import com.illiarb.core_ui_image.RequestOptions
@@ -23,13 +19,10 @@ import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
-import com.illiarb.tmdblcient.core.domain.Genre
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.util.Success
 import kotlinx.android.synthetic.main.fragment_movie_details.*
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Injectable {
@@ -69,6 +62,18 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
                 requireActivity().onBackPressed()
             }
         }
+
+        RecyclerViewBuilder
+            .create {
+                adapter(photosAdapter)
+                type(LayoutType.Linear())
+                orientation(LayoutOrientation.HORIZONTAL)
+                hasFixedSize(true)
+                spaceBetween {
+                    spacing = resources.getDimensionPixelSize(R.dimen.spacing_normal)
+                }
+            }
+            .setupWith(movieDetailsPhotos)
 
         ViewCompat.requestApplyInsets(view)
 
@@ -111,38 +116,8 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
         }
 
         if (images.isNotEmpty()) {
-            showMoviePhotos(images)
+            photosAdapter.items = images
+            photosAdapter.notifyDataSetChanged()
         }
-    }
-
-    private fun showMoviePhotos(photos: List<String>) {
-        // Using layout inflater because
-        // seems like ViewStub doesn't support <merge> tag
-//        val photosView = LayoutInflater
-//            .from(requireContext())
-//            .inflate(
-//                R.layout.layout_photos_block,
-//                movieDetailsRoot,
-//                true
-//            )
-//
-//        val photosList = photosView.findViewById<RecyclerView>(R.id.movieDetailsPhotos)
-//
-//        RecyclerViewBuilder
-//            .create {
-//                adapter(photosAdapter)
-//                hasFixedSize(true)
-//                type(LayoutType.Linear())
-//                orientation(LayoutOrientation.HORIZONTAL)
-//                spaceBetween {
-//                    spacing = resources.getDimensionPixelSize(R.dimen.spacing_normal)
-//                    addToFirst = true
-//                    addToLast = true
-//                }
-//            }
-//            .setupWith(photosList)
-//
-//        photosAdapter.items = photos
-//        photosAdapter.notifyDataSetChanged()
     }
 }

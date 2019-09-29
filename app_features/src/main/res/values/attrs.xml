@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CurvedView">
+        <attr name="cvBackgroundColor" format="color"/>
+        <attr name="cvCurveOffset" format="integer"/>
+    </declare-styleable>
+
+</resources>

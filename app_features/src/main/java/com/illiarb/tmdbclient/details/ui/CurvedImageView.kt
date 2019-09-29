@@ -1,0 +1,50 @@
+package com.illiarb.tmdbclient.details.ui
+
+import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Path
+import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatImageView
+import com.illiarb.tmdbclient.movies.home.R
+
+class CurvedImageView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : AppCompatImageView(context, attrs, defStyleAttr) {
+
+    private val curvePath = Path()
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val curveOffset: Float = resources.getDimension(R.dimen.movie_details_curve_offset)
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+
+        curvePath.apply {
+            reset()
+
+            val height = measuredHeight.toFloat()
+            val width = measuredWidth.toFloat()
+
+            // top left to bottom left
+            lineTo(0f, height - curveOffset)
+            // arc from bottom left to bottom right
+            cubicTo(
+                0f, height,
+                width, height,
+                width, height// - curveOffset
+            )
+            // bottom right to top right
+            lineTo(width, 0f)
+            // top right to top left
+            close()
+        }
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        canvas.drawPath(curvePath, paint)
+        canvas.clipPath(curvePath)
+        super.onDraw(canvas)
+    }
+}
