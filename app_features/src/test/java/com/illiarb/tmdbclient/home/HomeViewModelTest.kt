@@ -47,19 +47,7 @@ class HomeViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun `should contain 4 sections with now playing first`() {
-        homeViewModel.movieSections.observeForever {
-            if (it is Success) {
-                val sections = it()
-
-                assertEquals(sections.size, 4)
-                assertTrue(sections[0] is NowPlayingSection)
-            }
-        }
-    }
-
-    @Test
-    fun `should contain genre section after now playing`() {
+    fun `should contain sections with now playing first and genres second`() {
         homeViewModel.movieSections.observeForever {
             if (it is Success) {
                 val sections = it()

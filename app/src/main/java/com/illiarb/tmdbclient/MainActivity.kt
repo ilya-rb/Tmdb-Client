@@ -13,17 +13,17 @@ import com.illiarb.tmdblcient.core.navigation.Navigator
 import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
 import com.illiarb.tmdblcient.core.tools.ConnectivityStatus
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), Injectable {
 
     @Inject
-    lateinit var navigator: Navigator
+    lateinit var appNavigator: Navigator
 
     @Inject
-    lateinit var navigatorHolder: NavigatorHolder
+    lateinit var actionsBuffer: NavigatorHolder
 
     @Inject
     lateinit var connectivityStatus: ConnectivityStatus
@@ -35,23 +35,24 @@ class MainActivity : AppCompatActivity(), Injectable {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        connectivityStatus.connectionState()
-            .onEach { updateConnectionStateLabel(it) }
-            .launchIn(lifecycleScope)
+        lifecycleScope.launch {
+            connectivityStatus.connectionState().collect {
+                updateConnectionStateLabel(it)
+            }
+        }
     }
 
     override fun onResumeFragments() {
         super.onResumeFragments()
-        navigatorHolder.setNavigator(navigator)
+        actionsBuffer.setNavigator(appNavigator)
     }
 
     override fun onPause() {
         super.onPause()
-        navigatorHolder.removeNavigator()
+        actionsBuffer.removeNavigator()
     }
 
     override fun onBackPressed() {
-        // TODO: Find a proper way of doing this
         val navHost = (nav_host_fragment as NavHostFragment)
         val handled = navHost.childFragmentManager.fragments.any {
             if (it is BackPressedHandler) {

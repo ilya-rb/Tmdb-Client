@@ -5,16 +5,11 @@ import com.google.firebase.FirebaseApp
 import com.illiarb.tmdbclient.di.AppComponent
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
-import com.illiarb.tmdblcient.core.storage.WorkManager
 import com.illiarb.tmdblcient.core.tools.Logger
 import com.squareup.leakcanary.LeakCanary
 import timber.log.Timber
-import javax.inject.Inject
 
 class MobileApplication : Application(), App {
-//
-//    @Inject
-//    lateinit var workManager: WorkManager
 
     private val applicationProvider by lazy { AppComponent.get(this) }
 
@@ -34,8 +29,6 @@ class MobileApplication : Application(), App {
 
         val appComponent = applicationProvider as AppComponent
         appComponent.inject(this)
-
-//        workManager.schedulerPeriodicConfigurationFetch()
 
         LeakCanary.install(this)
     }

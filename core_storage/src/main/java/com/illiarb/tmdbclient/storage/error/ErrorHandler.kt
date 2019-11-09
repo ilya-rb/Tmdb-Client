@@ -1,9 +1,9 @@
 package com.illiarb.tmdbclient.storage.error
 
 import com.google.gson.JsonParser
-import com.illiarb.tmdblcient.core.exception.*
-import com.illiarb.tmdblcient.core.storage.ErrorHandler
-import com.illiarb.tmdblcient.core.storage.ErrorMessageBag
+import com.illiarb.tmdblcient.core.exception.ApiException
+import com.illiarb.tmdblcient.core.exception.NetworkException
+import com.illiarb.tmdblcient.core.exception.UnknownErrorException
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 import javax.inject.Inject
@@ -11,9 +11,7 @@ import javax.inject.Inject
 /**
  * @author ilya-rb on 16.01.19.
  */
-class DefaultErrorHandler @Inject constructor(
-    private val errorMessageBag: ErrorMessageBag
-) : ErrorHandler {
+class ErrorHandler @Inject constructor(private val errorMessageBag: ErrorMessageBag) {
 
     companion object {
         private const val API_ERROR_STATUS_CODE = "status_code"
@@ -22,7 +20,7 @@ class DefaultErrorHandler @Inject constructor(
 
     private val jsonParser: JsonParser = JsonParser()
 
-    override fun createExceptionFromThrowable(error: Throwable): Throwable =
+    fun createExceptionFromThrowable(error: Throwable): Throwable =
         when (error) {
             is SocketTimeoutException -> NetworkException(errorMessageBag.getNetworkConnectionMessage())
             is HttpException -> createNetworkError(error)

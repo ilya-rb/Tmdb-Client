@@ -1,7 +1,6 @@
 package com.illiarb.tmdblcient.core.di.providers
 
 import com.illiarb.tmdblcient.core.di.App
-import com.illiarb.tmdblcient.core.feature.dynamic.FeatureInstaller
 import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
 import com.illiarb.tmdblcient.core.navigation.Router
 
@@ -11,8 +10,6 @@ import com.illiarb.tmdblcient.core.navigation.Router
 interface AppProvider : StorageProvider, ToolsProvider, TmdbProvider, AnalyticsProvider {
 
     fun getApp(): App
-
-    fun getFeatureInstaller(): FeatureInstaller
 
     fun router(): Router
 

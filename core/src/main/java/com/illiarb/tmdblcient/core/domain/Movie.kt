@@ -16,4 +16,24 @@ data class Movie(
     val voteAverage: Float,
     val rating: Int = 0,
     val country: String?
-)
+) {
+
+    companion object {
+        const val DELIMITER_COMMA_SPACED = ", "
+    }
+
+    fun getGenresString(delimiter: String = DELIMITER_COMMA_SPACED): String? {
+        if (genres.isNotEmpty()) {
+            return buildString {
+                genres.forEachIndexed { index, genre ->
+                    append(genre.name)
+
+                    if (index < genres.size - 1) {
+                        append(delimiter)
+                    }
+                }
+            }
+        }
+        return null
+    }
+}

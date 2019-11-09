@@ -1,7 +1,7 @@
 package com.illiarb.tmdbcliient.core_test.storage
 
-import com.illiarb.tmdblcient.core.feature.flags.FeatureFlag
-import com.illiarb.tmdblcient.core.feature.flags.FeatureFlagStore
+import com.illiarb.tmdblcient.core.feature.FeatureFlag
+import com.illiarb.tmdblcient.core.feature.FeatureFlagStore
 
 class TestFeatureFlagStore : FeatureFlagStore {
 

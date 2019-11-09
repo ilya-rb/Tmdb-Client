@@ -1,4 +1,4 @@
-package com.illiarb.tmdblcient.core.feature.flags
+package com.illiarb.tmdblcient.core.feature
 
 /**
  * @author ilya-rb on 21.01.19.
@@ -6,4 +6,9 @@ package com.illiarb.tmdblcient.core.feature.flags
 interface FeatureFlagStore {
 
     fun isFeatureEnabled(featureName: FeatureFlag): Boolean
+
+    enum class FeatureFlag(val code: String) {
+
+        AUTH("auth_enabled")
+    }
 }

@@ -12,7 +12,7 @@ import dagger.Component
  */
 @Component(
     dependencies = [AppProvider::class],
-    modules = [MainModule::class, ActivityModule::class]
+    modules = [ActivityModule::class, MainModule::class]
 )
 interface MainComponent {
 

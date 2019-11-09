@@ -6,6 +6,7 @@ import com.illiarb.tmdblcient.core.domain.MovieFilter
 import com.illiarb.tmdblcient.core.domain.Review
 import com.tmdbclient.service_tmdb.MoviesRepository
 import java.util.Collections
+import java.util.Random
 
 class TestMovieRepository : MoviesRepository {
 
@@ -16,8 +17,16 @@ class TestMovieRepository : MoviesRepository {
         MovieFilter("Top rated", MovieFilter.TYPE_TOP_RATED)
     )
 
-    override suspend fun getMoviesByType(type: String, refresh: Boolean): List<Movie> =
-        Collections.emptyList()
+    override suspend fun getMoviesByType(type: String, refresh: Boolean): List<Movie> {
+        val random = Random()
+        val size = random.nextInt(10)
+
+        return mutableListOf<Movie>().apply {
+            for (i in 0..size) {
+                add(FakeEntityFactory.createFakeMovie())
+            }
+        }
+    }
 
     override suspend fun getMovieDetails(id: Int, appendToResponse: String): Movie =
         FakeEntityFactory.createFakeMovie()

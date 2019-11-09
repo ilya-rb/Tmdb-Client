@@ -1,6 +1,6 @@
 package com.illiarb.tmdblcient.core.di.providers
 
-import com.illiarb.tmdblcient.core.feature.flags.FeatureFlagStore
+import com.illiarb.tmdblcient.core.feature.FeatureFlagStore
 import com.illiarb.tmdblcient.core.storage.ResourceResolver
 
 /**

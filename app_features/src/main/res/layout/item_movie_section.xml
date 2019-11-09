@@ -20,7 +20,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/itemMovieSectionList"
         android:layout_width="0dp"
-        android:layout_height="@dimen/item_movie_height"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_small"
         android:clipToPadding="false"
         android:orientation="vertical"

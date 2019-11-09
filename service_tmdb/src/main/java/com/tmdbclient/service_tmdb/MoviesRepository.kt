@@ -1,7 +1,6 @@
 package com.tmdbclient.service_tmdb
 
 import com.illiarb.tmdbclient.storage.R
-import com.illiarb.tmdblcient.core.domain.Genre
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieFilter
 import com.illiarb.tmdblcient.core.domain.Review

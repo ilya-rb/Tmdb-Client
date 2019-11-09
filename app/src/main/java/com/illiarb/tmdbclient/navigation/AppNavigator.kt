@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.FragmentNavigator
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdblcient.core.navigation.Navigator
 import com.illiarb.tmdblcient.core.navigation.Router
@@ -20,26 +19,6 @@ class AppNavigator @Inject constructor(private val activity: FragmentActivity) :
         val destination = when (action) {
             is Router.Action.ShowMovieDetails -> R.id.movieDetailsAction
             is Router.Action.Account -> R.id.accountAction
-        }
-
-        if (isDynamicFeature(action)) {
-            val directionNode = controller.graph.findNode(destination)
-            if (directionNode == null) {
-                val fragmentClass = when (action) {
-                    Router.Action.Account -> DynamicFeature.Account.className
-                    else -> throw IllegalArgumentException("Unknown dynamic feature screen $action")
-                }
-
-                val newDestination = controller.navigatorProvider
-                    .getNavigator(FragmentNavigator::class.java)
-                    .createDestination()
-                    .apply {
-                        id = destination
-                        className = fragmentClass
-                    }
-
-                controller.graph.addDestination(newDestination)
-            }
         }
 
         controller.navigate(
@@ -63,7 +42,4 @@ class AppNavigator @Inject constructor(private val activity: FragmentActivity) :
             .setEnterAnim(R.anim.anim_fade_in)
             .setExitAnim(R.anim.anim_fade_out)
             .build()
-
-    private fun isDynamicFeature(action: Router.Action): Boolean =
-        action == Router.Action.Account
 }

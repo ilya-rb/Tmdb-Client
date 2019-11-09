@@ -51,4 +51,9 @@ dependencies {
     implementation deps.dagger
 
     testImplementation project(':core_test')
+
+    androidTestImplementation project(':core_test')
+    androidTestImplementation androidTestDeps.kaspresso
+    androidTestImplementation androidTestDeps.runner
+    androidTestImplementation androidTestDeps.kakao
 }

@@ -22,7 +22,6 @@ fun movieSectionDelegate(
 ) = adapterDelegate<ListSection, MovieSection>(R.layout.item_movie_section) {
 
     val adapter = MovieSectionAdapter(imageLoader, clickListener)
-
     val sectionTitle = itemView.itemSectionTitle
     val sectionList = itemView.itemMovieSectionList
 
@@ -60,18 +59,21 @@ class MovieSectionAdapter(
     ) = adapterDelegate<Movie, Movie>(R.layout.item_movie) {
 
         val image = itemView.itemMoviePoster
+        val title = itemView.itemMovieTitle
         val imageCornerRadius = itemView.resources.getDimensionPixelSize(R.dimen.spacing_small)
 
+        itemView.setOnClickListener {
+            clickListener.onClick(item)
+        }
+
         bind {
+            title.text = item.title
+
             imageLoader.fromUrl(item.posterPath, image, RequestOptions.create {
                 cornerRadius(imageCornerRadius)
                 cropOptions(CropOptions.CENTER_CROP)
                 thumbnail(0.2f)
             })
-
-            itemView.setOnClickListener {
-                clickListener.onClick(item)
-            }
         }
     }
 }

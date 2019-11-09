@@ -17,6 +17,14 @@ sealed class Either<out T : Any> {
 
     companion object {
 
+        suspend fun <T: Any> create(block: suspend () -> T): Either<T> {
+            return try {
+                Left(block())
+            } catch (e: Exception) {
+                Right(e)
+            }
+        }
+
         fun <T : Any> asFlow(block: suspend () -> T): Flow<Either<T>> =
             flow<Either<T>> { emit(Left(block())) }.catch { emit(Right(it)) }
     }

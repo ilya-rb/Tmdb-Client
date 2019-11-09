@@ -2,17 +2,30 @@ package com.illiarb.tmdbclient.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
 import com.illiarb.tmdbclient.home.HomeViewModel.HomeUiEvent
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
-import com.illiarb.tmdblcient.core.domain.*
-import com.illiarb.tmdblcient.core.feature.flags.FeatureFlag
-import com.illiarb.tmdblcient.core.feature.flags.FeatureFlagStore
+import com.illiarb.tmdblcient.core.domain.Genre
+import com.illiarb.tmdblcient.core.domain.GenresSection
+import com.illiarb.tmdblcient.core.domain.ListSection
+import com.illiarb.tmdblcient.core.domain.Movie
+import com.illiarb.tmdblcient.core.domain.MovieBlock
+import com.illiarb.tmdblcient.core.domain.MovieSection
+import com.illiarb.tmdblcient.core.domain.NowPlayingSection
+import com.illiarb.tmdblcient.core.feature.FeatureFlagStore
+import com.illiarb.tmdblcient.core.feature.FeatureFlagStore.FeatureFlag
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.services.TmdbService
-import com.illiarb.tmdblcient.core.util.*
-import kotlinx.coroutines.flow.*
+import com.illiarb.tmdblcient.core.util.Async
+import com.illiarb.tmdblcient.core.util.Fail
+import com.illiarb.tmdblcient.core.util.Loading
+import com.illiarb.tmdblcient.core.util.Success
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.zip
 import javax.inject.Inject
 
 /**
@@ -24,23 +37,23 @@ class HomeModel @Inject constructor(
     private val router: Router
 ) : BasePresentationModel(), HomeViewModel {
 
+    companion object {
+        // Max genres displayed in block on screen
+        private const val GENRES_MAX_SIZE = 8
+    }
+
     private val _movieSectionsData = MutableLiveData<Async<List<MovieSection>>>()
 
     init {
         launch {
-            moviesService.getAllMovies()
-                .zip(moviesService.getMovieGenres()) { movieBlocks, genres ->
-                    val allSections = mutableListOf<MovieSection>()
-
-                    movieBlocks.getOrThrow().forEach { block ->
-                        if (block.filter.isNowPlaying()) {
-                            allSections.add(block.asMovieSection())
-                            allSections.add(GenresSection(genres.getOrThrow()))
-                        } else {
-                            allSections.add(block.asMovieSection())
-                        }
-                    }
-                    Success(allSections.toList()) as Async<List<MovieSection>>
+            flow { emit(moviesService.getAllMovies()) }
+                .zip(flowOf(moviesService.getMovieGenres())) { movieBlocks, genres ->
+                    Success(
+                        createSections(
+                            movieBlocks.getOrThrow(),
+                            genres.getOrThrow()
+                        )
+                    ) as Async<List<MovieSection>>
                 }
                 .onStart { emit(Loading()) }
                 .catch { emit(Fail(it)) }
@@ -66,10 +79,31 @@ class HomeModel @Inject constructor(
         }
     }
 
-    private fun MovieBlock.asMovieSection(): MovieSection =
-        if (filter.isNowPlaying()) {
-            NowPlayingSection(filter.name, movies)
-        } else {
-            ListSection(filter.name, movies)
+    private fun createSections(
+        movieBlocks: List<MovieBlock>,
+        genres: List<Genre>
+    ): List<MovieSection> {
+        val result = mutableListOf<MovieSection>()
+        val blocksWithMovies = movieBlocks.filter { it.movies.isNotEmpty() }
+
+        blocksWithMovies.forEach { block ->
+            // Now playing section should always
+            // be on top and genres section immediately after it
+            if (block.filter.isNowPlaying()) {
+                result.add(0, NowPlayingSection(block.filter.name, block.movies))
+
+                if (genres.isNotEmpty()) {
+                    if (genres.size > GENRES_MAX_SIZE) {
+                        result.add(1, GenresSection(genres.subList(0, GENRES_MAX_SIZE)))
+                    } else {
+                        result.add(1, GenresSection(genres))
+                    }
+                }
+            } else {
+                result.add(ListSection(block.filter.name, block.movies))
+            }
         }
+
+        return result
+    }
 }

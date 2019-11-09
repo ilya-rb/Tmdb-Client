@@ -3,7 +3,8 @@ package com.illiarb.tmdbclient.navigation
 import com.illiarb.tmdblcient.core.navigation.Navigator
 import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
 import com.illiarb.tmdblcient.core.navigation.Router
-import java.util.*
+import java.util.LinkedList
+import java.util.Queue
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,7 +17,9 @@ class ActionsBuffer @Inject constructor() : NavigatorHolder {
     override fun setNavigator(navigator: Navigator) {
         this.navigator = navigator.also {
             while (actionsBuffer.isNotEmpty()) {
-                executeAction(actionsBuffer.poll())
+                actionsBuffer.poll()?.let {
+                    executeAction(it)
+                }
             }
         }
     }

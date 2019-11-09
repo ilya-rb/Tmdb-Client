@@ -94,6 +94,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
         movieDetailsLength.text = getString(R.string.movie_details_duration, runtime)
         movieDetailsYear.text = releaseDate
         movieDetailsCountry.text = country
+        movieDetailsTags.text = movie.getGenresString()
 
         posterPath?.let {
             imageLoader.fromUrl(posterPath, movieDetailsPoster, RequestOptions.create {
@@ -101,23 +102,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
             })
         }
 
-        if (genres.isNotEmpty()) {
-            val builder = StringBuilder()
-
-            genres.forEachIndexed { index, genre ->
-                builder.append(genre.name)
-
-                if (index < genres.size - 1) {
-                    builder.append(", ")
-                }
-            }
-
-            movieDetailsTags.text = builder
-        }
-
-        if (images.isNotEmpty()) {
-            photosAdapter.items = images
-            photosAdapter.notifyDataSetChanged()
-        }
+        photosAdapter.items = images
+        photosAdapter.notifyDataSetChanged()
     }
 }

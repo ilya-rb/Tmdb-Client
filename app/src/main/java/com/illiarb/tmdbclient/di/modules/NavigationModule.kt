@@ -17,5 +17,5 @@ interface NavigationModule {
     fun bindRouter(router: AppRouter): Router
 
     @Binds
-    fun bindNavigatorHolder(buffer: ActionsBuffer): NavigatorHolder
+    fun bindNavigatorHolder(holder: ActionsBuffer): NavigatorHolder
 }

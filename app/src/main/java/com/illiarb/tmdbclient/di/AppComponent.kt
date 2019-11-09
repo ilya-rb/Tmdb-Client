@@ -3,11 +3,14 @@ package com.illiarb.tmdbclient.di
 import com.illiarb.tmdbclient.MobileApplication
 import com.illiarb.tmdbclient.di.modules.AppModule
 import com.illiarb.tmdbclient.di.modules.NavigationModule
-import com.illiarb.tmdbclient.di.modules.WorkModule
 import com.illiarb.tmdbclient.storage.di.StorageComponent
 import com.illiarb.tmdbclient.tools.di.ToolsComponent
 import com.illiarb.tmdblcient.core.di.App
-import com.illiarb.tmdblcient.core.di.providers.*
+import com.illiarb.tmdblcient.core.di.providers.AnalyticsProvider
+import com.illiarb.tmdblcient.core.di.providers.AppProvider
+import com.illiarb.tmdblcient.core.di.providers.StorageProvider
+import com.illiarb.tmdblcient.core.di.providers.TmdbProvider
+import com.illiarb.tmdblcient.core.di.providers.ToolsProvider
 import com.illiarb.tmdclient.analytics.di.AnalyticsComponent
 import com.tmdbclient.service_tmdb.di.TmdbComponent
 import dagger.Component

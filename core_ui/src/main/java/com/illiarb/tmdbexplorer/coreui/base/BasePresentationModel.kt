@@ -1,7 +1,7 @@
 package com.illiarb.tmdbexplorer.coreui.base
 
 import androidx.lifecycle.ViewModel
-import com.illiarb.tmdblcient.core.util.CoroutineScopeFactory
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
@@ -10,16 +10,14 @@ import kotlinx.coroutines.launch
  */
 abstract class BasePresentationModel : ViewModel() {
 
-    private val scope = CoroutineScopeFactory.newViewModelScope
+    private val scope = viewModelScope
+
+    protected fun launch(block: suspend () -> Unit) {
+        scope.launch { block() }
+    }
 
     override fun onCleared() {
         super.onCleared()
         scope.cancel()
-    }
-
-    protected fun launch(block: suspend () -> Unit) {
-        scope.launch {
-            block()
-        }
     }
 }

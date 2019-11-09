@@ -1,22 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="100dp"
-    android:layout_height="150dp">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <!-- TODO: Move to resources -->
+    <FrameLayout
+        android:layout_width="100dp"
+        android:layout_height="@dimen/item_movie_height">
 
-    <ImageView
-        android:id="@+id/itemMoviePoster"
+        <ImageView
+            android:id="@+id/itemMoviePoster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@null"
+            tools:src="@tools:sample/backgrounds/scenic" />
+
+        <View
+            android:id="@+id/itemMoviePosterOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/itemMovieTitle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="@null"
-        tools:src="@tools:sample/backgrounds/scenic" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:gravity="center_horizontal"
+        android:maxLines="2"
+        android:textAppearance="?attr/textAppearanceCaption"
+        android:textColor="?attr/colorOnSurface"
+        tools:text='@tools:sample/lorem' />
 
-    <View
-        android:id="@+id/itemMoviePosterOverlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/selectableItemBackground" />
-
-</FrameLayout>
+</LinearLayout>

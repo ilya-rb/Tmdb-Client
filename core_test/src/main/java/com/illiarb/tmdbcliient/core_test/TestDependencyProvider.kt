@@ -11,7 +11,7 @@ import com.illiarb.tmdblcient.core.di.providers.AnalyticsProvider
 import com.illiarb.tmdblcient.core.di.providers.StorageProvider
 import com.illiarb.tmdblcient.core.di.providers.TmdbProvider
 import com.illiarb.tmdblcient.core.di.providers.ToolsProvider
-import com.illiarb.tmdblcient.core.feature.flags.FeatureFlagStore
+import com.illiarb.tmdblcient.core.feature.FeatureFlagStore
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.services.TmdbService
 import com.illiarb.tmdblcient.core.services.analytics.AnalyticsService

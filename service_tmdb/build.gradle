@@ -39,6 +39,8 @@ dependencies {
 
     implementation project(':core')
     implementation project(':core_storage')
+
+    testImplementation project(':core_test')
     
     implementation deps.dagger
 }

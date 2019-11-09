@@ -12,24 +12,29 @@ import com.illiarb.core_ui_image.CropOptions
 import com.illiarb.core_ui_image.ImageLoader
 import com.illiarb.core_ui_image.RequestOptions
 import com.illiarb.tmdbclient.movies.home.R
+import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieSection
 import com.illiarb.tmdblcient.core.domain.NowPlayingSection
 import kotlinx.android.synthetic.main.item_now_playing_section.view.*
 
-fun nowPlayingDelegate(imageLoader: ImageLoader) =
-    adapterDelegate<NowPlayingSection, MovieSection>(R.layout.item_now_playing_section) {
+fun nowPlayingDelegate(
+    imageLoader: ImageLoader,
+    clickListener: OnClickListener
+) = adapterDelegate<NowPlayingSection, MovieSection>(R.layout.item_now_playing_section) {
 
-        itemView.nowPlayingPager.pageMargin =
-            itemView.resources.getDimensionPixelSize(R.dimen.spacing_small)
+    itemView.nowPlayingPager.pageMargin =
+        itemView.resources.getDimensionPixelSize(R.dimen.spacing_small)
 
-        bind {
-            itemView.nowPlayingPager.adapter = NowPlayingPagerAdapter(imageLoader, item.movies)
-        }
+    bind {
+        itemView.nowPlayingPager.adapter =
+            NowPlayingPagerAdapter(imageLoader, clickListener, item.movies)
     }
+}
 
 class NowPlayingPagerAdapter(
     private val imageLoader: ImageLoader,
+    private val clickListener: OnClickListener,
     private val movies: List<Movie>
 ) : PagerAdapter() {
 
@@ -60,6 +65,10 @@ class NowPlayingPagerAdapter(
                 }
 
                 title.text = movie.title
+
+                setOnClickListener {
+                    clickListener.onClick(movie)
+                }
             }
             .also { container.addView(it) }
     }
