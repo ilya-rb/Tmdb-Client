@@ -3,16 +3,9 @@ package com.illiarb.tmdbclient.functional.screens
 import com.agoda.kakao.common.views.KView
 import com.agoda.kakao.image.KImageView
 import com.agoda.kakao.recycler.KRecyclerView
-import com.illiarb.tmdbclient.home.HomeFragment
 import com.illiarb.tmdbclient.movies.home.R
 
-object HomeScreen : KScreen<HomeScreen>() {
-
-    override val layoutId: Int?
-        get() = R.layout.fragment_movies
-
-    override val viewClass: Class<*>?
-        get() = HomeFragment::class.java
+object HomeScreen {
 
     val appBar = KView { withId(R.id.appBar) }
 

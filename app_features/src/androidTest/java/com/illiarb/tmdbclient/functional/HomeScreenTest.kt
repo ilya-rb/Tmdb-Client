@@ -1,11 +1,8 @@
 package com.illiarb.tmdbclient.functional
 
 import android.app.Activity
-import android.content.Intent
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
-import com.illiarb.tmdbclient.functional.screens.HomeScreen
 import com.kaspersky.kaspresso.kaspresso.Kaspresso
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import org.junit.Rule
@@ -24,17 +21,6 @@ class HomeScreeTest : TestCase(
     val activityTestRule = ActivityTestRule(Activity::class.java, true, false)
 
     @Test
-    fun test() = before {
-        InstrumentationRegistry.getInstrumentation()
-            .context
-            .startActivity(Intent(Intent.ACTION_MAIN))
+    fun test() {
     }
-        .after { }
-        .run {
-            step("Open home screen and scroll down") {
-                HomeScreen {
-                    moviesList.scrollToEnd()
-                }
-            }
-        }
 }

@@ -31,5 +31,5 @@ class DefaultTmdbService @Inject constructor(
         Result.create { repository.getMovieReviews(id) }
 
     private suspend fun getMoviesByType(filter: MovieFilter): List<Movie> =
-        repository.getMoviesByType(filter.code, true)
+        repository.getMoviesByType(filter.code, false)
 }

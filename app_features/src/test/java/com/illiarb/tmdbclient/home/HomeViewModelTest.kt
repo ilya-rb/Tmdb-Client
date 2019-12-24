@@ -5,12 +5,9 @@ import com.illiarb.tmdbcliient.core_test.viewmodel.BaseViewModelTest
 import com.illiarb.tmdblcient.core.domain.GenresSection
 import com.illiarb.tmdblcient.core.domain.NowPlayingSection
 import com.illiarb.tmdblcient.core.util.Async
-import com.illiarb.tmdblcient.core.util.Loading
-import com.illiarb.tmdblcient.core.util.Success
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -40,8 +37,8 @@ class HomeViewModelTest : BaseViewModelTest() {
             states.add(it)
 
             if (states.size == 2) {
-                assertTrue(states.first() is Loading<*>)
-                assertTrue(states[1] is Success<*>)
+                assertTrue(states.first() is Async.Loading<*>)
+                assertTrue(states[1] is Async.Success<*>)
             }
         }
     }
@@ -49,7 +46,7 @@ class HomeViewModelTest : BaseViewModelTest() {
     @Test
     fun `should contain sections with now playing first and genres second`() {
         homeViewModel.movieSections.observeForever {
-            if (it is Success) {
+            if (it is Async.Success) {
                 val sections = it()
 
                 assertTrue(sections[0] is NowPlayingSection)
