@@ -8,7 +8,7 @@ import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataOutput
 /**
  * @author ilya-rb on 30.11.18.
  */
-data class ImageConfig(@SerializedName("base_url") var baseUrl: String) : Persistable {
+data class ImageConfig(@SerializedName("base_url") var baseUrl: String = "") : Persistable {
 
     override fun readExternal(input: DataInput) {
         baseUrl = input.readString()

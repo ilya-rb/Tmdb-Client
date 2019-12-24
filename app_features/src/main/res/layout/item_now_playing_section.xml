@@ -6,23 +6,20 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/nowPlayingTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/spacing_normal"
         android:paddingRight="@dimen/spacing_normal"
         android:paddingBottom="@dimen/spacing_normal"
-        android:textColor="?attr/colorOnSurface"
-        android:text="Now playing"
         android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textColor="?attr/colorOnSurface"
         android:textStyle="bold" />
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/nowPlayingPager"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:clipToPadding="false"
-        android:paddingLeft="@dimen/spacing_normal"
-        android:paddingRight="@dimen/spacing_normal"
         tools:listitem="@layout/item_now_playing_item" />
 
 </LinearLayout>

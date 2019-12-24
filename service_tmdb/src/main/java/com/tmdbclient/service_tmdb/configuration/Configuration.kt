@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.ironz.binaryprefs.serialization.serializer.persistable.Persistable
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataInput
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataOutput
+import java.util.Collections
 
 /**
  * @author ilya-rb on 30.11.18.
@@ -11,10 +12,10 @@ import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataOutput
 data class Configuration(
 
     @SerializedName("images")
-    var images: ImageConfig,
+    var images: ImageConfig = ImageConfig(),
 
     @SerializedName("change_keys")
-    var changeKeys: List<String>
+    var changeKeys: List<String> = Collections.emptyList()
 
 ) : Persistable {
 

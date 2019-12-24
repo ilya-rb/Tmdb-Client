@@ -6,7 +6,6 @@ import com.illiarb.tmdbclient.di.AppComponent
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.tools.Logger
-import com.squareup.leakcanary.LeakCanary
 import timber.log.Timber
 
 class MobileApplication : Application(), App {
@@ -16,12 +15,6 @@ class MobileApplication : Application(), App {
     override fun onCreate() {
         super.onCreate()
 
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return
-        }
-
         configureDi()
         configureLogger()
 
@@ -29,8 +22,6 @@ class MobileApplication : Application(), App {
 
         val appComponent = applicationProvider as AppComponent
         appComponent.inject(this)
-
-        LeakCanary.install(this)
     }
 
     override fun getApplication(): Application = this

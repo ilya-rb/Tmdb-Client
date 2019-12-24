@@ -1,64 +1,60 @@
 package com.illiarb.tmdbclient.details
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.illiarb.core_ui_image.CropOptions
-import com.illiarb.core_ui_image.ImageLoader
-import com.illiarb.core_ui_image.RequestOptions
+import com.illiarb.core_ui_image.RequestOptions.Companion.requestOptions
+import com.illiarb.core_ui_image.loadImage
 import com.illiarb.core_ui_recycler_view.LayoutOrientation
 import com.illiarb.core_ui_recycler_view.LayoutType
 import com.illiarb.core_ui_recycler_view.RecyclerViewBuilder
+import com.illiarb.tmdbclient.details.MovieDetailsViewModel.DefaultDetailsViewModel
 import com.illiarb.tmdbclient.details.di.MovieDetailsComponent
 import com.illiarb.tmdbclient.details.photos.PhotosAdapter
 import com.illiarb.tmdbclient.movies.home.R
-import com.illiarb.tmdbexplorer.coreui.base.BaseFragment
-import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
+import com.illiarb.tmdbclient.movies.home.databinding.FragmentMovieDetailsBinding
+import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
+import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.navigation.Router
-import com.illiarb.tmdblcient.core.util.Success
-import kotlinx.android.synthetic.main.fragment_movie_details.*
+import com.illiarb.tmdblcient.core.util.Async
 import javax.inject.Inject
 
-class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Injectable {
-
-    @Inject
-    lateinit var photosAdapter: PhotosAdapter
-
-    @Inject
-    lateinit var imageLoader: ImageLoader
+class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding>(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    @Inject
-    lateinit var onClickListener: OnClickListener
+    private val photosAdapter = PhotosAdapter()
 
     private val viewModel: MovieDetailsViewModel by lazy(LazyThreadSafetyMode.NONE) {
-        viewModelFactory.create(MovieDetailsViewModel.DefaultDetailsViewModel::class.java)
+        viewModelFactory.create(DefaultDetailsViewModel::class.java)
     }
 
     override fun inject(appProvider: AppProvider) {
         MovieDetailsComponent
             .get(
                 appProvider,
-                requireActivity(),
-                arguments!!.getInt(Router.Action.ShowMovieDetails.EXTRA_MOVIE_DETAILS)
+                requireArguments().getInt(Router.Action.ShowMovieDetails.EXTRA_MOVIE_DETAILS)
             )
             .inject(this)
     }
 
+    override fun getViewBinding(inflater: LayoutInflater): FragmentMovieDetailsBinding =
+        FragmentMovieDetailsBinding.inflate(inflater)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        movieDetailsToolbar.apply {
+        binding.movieDetailsToolbar.apply {
             awareOfWindowInsets()
-            movieDetailsToolbar.setNavigationOnClickListener {
+            setNavigationOnClickListener {
                 requireActivity().onBackPressed()
             }
         }
@@ -69,13 +65,11 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
                 type(LayoutType.Linear())
                 orientation(LayoutOrientation.HORIZONTAL)
                 hasFixedSize(true)
-                spaceBetween {
-                    spacing = resources.getDimensionPixelSize(R.dimen.spacing_normal)
-                }
+                spaceBetween { spacingLeft = view.dimen(R.dimen.spacing_normal) }
             }
-            .setupWith(movieDetailsPhotos)
+            .setupWith(binding.movieDetailsPhotos)
 
-        ViewCompat.requestApplyInsets(view)
+        view.awareOfWindowInsets()
 
         bind(viewModel)
     }
@@ -83,26 +77,25 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
     private fun bind(viewModel: MovieDetailsViewModel) {
         viewModel.movie.observe(viewLifecycleOwner, Observer {
             when (it) {
-                is Success -> showMovieDetails(it())
+                is Async.Success -> showMovieDetails(it())
             }
         })
     }
 
-    private fun showMovieDetails(movie: Movie) = with(movie) {
-        movieDetailsTitle.text = title
-        movieDetailsOverview.text = overview
-        movieDetailsLength.text = getString(R.string.movie_details_duration, runtime)
-        movieDetailsYear.text = releaseDate
-        movieDetailsCountry.text = country
-        movieDetailsTags.text = movie.getGenresString()
-
-        posterPath?.let {
-            imageLoader.fromUrl(posterPath, movieDetailsPoster, RequestOptions.create {
+    private fun showMovieDetails(movie: Movie) {
+        with(binding) {
+            movieDetailsTitle.text = movie.title
+            movieDetailsOverview.text = movie.overview
+            movieDetailsLength.text = getString(R.string.movie_details_duration, movie.runtime)
+            movieDetailsYear.text = movie.releaseDate
+            movieDetailsCountry.text = movie.country
+            movieDetailsTags.text = movie.getGenresString()
+            movieDetailsPoster.loadImage(movie.posterPath, requestOptions {
                 cropOptions(CropOptions.CENTER_CROP)
             })
         }
 
-        photosAdapter.items = images
+        photosAdapter.items = movie.images
         photosAdapter.notifyDataSetChanged()
     }
 }

@@ -4,7 +4,7 @@ apply plugin: 'io.gitlab.arturbosch.detekt'
 detekt {
     toolVersion = "1.0.0-RC12"
     config = files("$rootDir/code_quality_tools/detekt_config.yml")
-    filters = ".*/resources/.*,.*/build/*"
+    //filters = ".*/resources/.*,.*/build/*"
     reports {
         html {
             enabled = true

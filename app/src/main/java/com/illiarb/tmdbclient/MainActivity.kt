@@ -3,9 +3,7 @@ package com.illiarb.tmdbclient
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.NavHostFragment
 import com.illiarb.tmdbclient.di.MainComponent
-import com.illiarb.tmdbexplorer.coreui.common.BackPressedHandler
 import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
@@ -50,21 +48,6 @@ class MainActivity : AppCompatActivity(), Injectable {
     override fun onPause() {
         super.onPause()
         actionsBuffer.removeNavigator()
-    }
-
-    override fun onBackPressed() {
-        val navHost = (nav_host_fragment as NavHostFragment)
-        val handled = navHost.childFragmentManager.fragments.any {
-            if (it is BackPressedHandler) {
-                it.handleBackPress()
-            } else {
-                false
-            }
-        }
-
-        if (!handled) {
-            super.onBackPressed()
-        }
     }
 
     private fun updateConnectionStateLabel(state: ConnectivityStatus.ConnectionState) {

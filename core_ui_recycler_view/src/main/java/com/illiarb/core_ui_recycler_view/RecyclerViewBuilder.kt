@@ -46,7 +46,11 @@ class RecyclerViewBuilder {
 
             adapter = this@RecyclerViewBuilder.adapter
             layoutManager = when (type) {
-                is LayoutType.Linear -> LinearLayoutManager(context, createLinearOrientation(), false)
+                is LayoutType.Linear -> LinearLayoutManager(
+                    context,
+                    createLinearOrientation(),
+                    false
+                )
                 is LayoutType.Grid -> {
                     val grid = type as LayoutType.Grid
                     GridLayoutManager(context, grid.spanCount, createGridOrientation(), false)
@@ -58,8 +62,10 @@ class RecyclerViewBuilder {
             spaceBetween?.let {
                 if (type is LayoutType.Linear) {
                     when (orientation) {
-                        LayoutOrientation.HORIZONTAL -> addItemDecoration(HorizontalDecoration(it.spacing))
-                        LayoutOrientation.VERTICAL -> addItemDecoration(VerticalDecoration(it.spacing))
+                        LayoutOrientation.HORIZONTAL ->
+                            addItemDecoration(HorizontalDecoration(it.spacingLeft, it.spacingRight))
+                        LayoutOrientation.VERTICAL ->
+                            addItemDecoration(VerticalDecoration(it.spacingLeft))
                     }
                 }
             }

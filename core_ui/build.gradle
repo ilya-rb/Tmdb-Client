@@ -18,6 +18,12 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        viewBinding {
+            enabled true
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -33,6 +39,7 @@ dependencies {
 
     api deps.supportDesign
     api deps.constraintLayout
+    api deps.viewpager2
     api deps.adapterDelegates
     api deps.adapterDelegatesDsl
     api deps.lifecycleKtx

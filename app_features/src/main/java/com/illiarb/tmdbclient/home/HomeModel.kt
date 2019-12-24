@@ -2,6 +2,7 @@ package com.illiarb.tmdbclient.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import com.illiarb.tmdbclient.home.HomeViewModel.HomeUiEvent
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import com.illiarb.tmdblcient.core.domain.Genre
@@ -17,13 +18,8 @@ import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.services.TmdbService
 import com.illiarb.tmdblcient.core.util.Async
-import com.illiarb.tmdblcient.core.util.Fail
-import com.illiarb.tmdblcient.core.util.Loading
-import com.illiarb.tmdblcient.core.util.Success
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.zip
 import javax.inject.Inject
@@ -32,7 +28,7 @@ import javax.inject.Inject
  * @author ilya-rb on 08.01.19.
  */
 class HomeModel @Inject constructor(
-    private val featureConfig: FeatureFlagStore,
+    featureConfig: FeatureFlagStore,
     private val moviesService: TmdbService,
     private val router: Router
 ) : BasePresentationModel(), HomeViewModel {
@@ -42,27 +38,21 @@ class HomeModel @Inject constructor(
         private const val GENRES_MAX_SIZE = 8
     }
 
-    private val _movieSectionsData = MutableLiveData<Async<List<MovieSection>>>()
-
-    init {
-        launch {
-            flow { emit(moviesService.getAllMovies()) }
-                .zip(flowOf(moviesService.getMovieGenres())) { movieBlocks, genres ->
-                    Success(
-                        createSections(
-                            movieBlocks.getOrThrow(),
-                            genres.getOrThrow()
-                        )
-                    ) as Async<List<MovieSection>>
-                }
-                .onStart { emit(Loading()) }
-                .catch { emit(Fail(it)) }
-                .collect { _movieSectionsData.value = it }
+    private val _movieSectionsData = flow { emit(moviesService.getAllMovies()) }
+        .zip(flow { emit(moviesService.getMovieGenres()) }) { movieBlocks, genres ->
+            Async.Success(
+                createSections(
+                    movieBlocks.getOrThrow(),
+                    genres.getOrThrow()
+                )
+            ) as Async<List<MovieSection>>
         }
-    }
+        .onStart { emit(Async.Loading()) }
+        .catch { emit(Async.Fail(it)) }
+        .asLiveData()
 
-    private val _isAccountVisible = MutableLiveData<Boolean>()
-        .apply { value = featureConfig.isFeatureEnabled(FeatureFlag.AUTH) }
+    private val _isAccountVisible =
+        MutableLiveData<Boolean>(featureConfig.isFeatureEnabled(FeatureFlag.AUTH))
 
     override val movieSections: LiveData<Async<List<MovieSection>>>
         get() = _movieSectionsData

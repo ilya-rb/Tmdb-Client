@@ -4,16 +4,16 @@ import com.illiarb.tmdblcient.core.domain.Genre
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieBlock
 import com.illiarb.tmdblcient.core.domain.Review
-import com.illiarb.tmdblcient.core.util.Either
+import com.illiarb.tmdblcient.core.util.Result
 
 interface TmdbService {
 
-    suspend fun getAllMovies(): Either<List<MovieBlock>>
+    suspend fun getAllMovies(): Result<List<MovieBlock>>
 
-    suspend fun getMovieGenres(): Either<List<Genre>>
+    suspend fun getMovieGenres(): Result<List<Genre>>
 
-    suspend fun getMovieDetails(id: Int): Either<Movie>
+    suspend fun getMovieDetails(id: Int): Result<Movie>
 
-    suspend fun getMovieReviews(id: Int): Either<List<Review>>
+    suspend fun getMovieReviews(id: Int): Result<List<Review>>
 
 }

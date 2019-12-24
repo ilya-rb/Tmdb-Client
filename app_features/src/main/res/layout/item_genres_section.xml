@@ -7,4 +7,4 @@
     android:layout_marginLeft="@dimen/spacing_normal"
     android:layout_marginRight="@dimen/spacing_normal"
     app:chipSpacingHorizontal="@dimen/spacing_small"
-    app:chipSpacingVertical="@dimen/spacing_small" />
+    app:chipSpacingVertical="@dimen/spacing_micro" />

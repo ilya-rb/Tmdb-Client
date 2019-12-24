@@ -1,6 +1,6 @@
 package com.illiarb.tmdblcient.core.util
 
-import java.util.*
+import java.util.Collections
 
 interface Mapper<From, To> {
 

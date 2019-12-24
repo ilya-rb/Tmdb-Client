@@ -8,6 +8,7 @@ import android.graphics.Path
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 import com.illiarb.tmdbclient.movies.home.R
+import com.illiarb.tmdbexplorer.coreui.ext.dimen
 
 class CurvedImageView @JvmOverloads constructor(
     context: Context,
@@ -26,7 +27,7 @@ class CurvedImageView @JvmOverloads constructor(
 
             curveOffset = attributes.getInt(
                 R.styleable.CurvedImageView_cvCurveOffset,
-                resources.getDimensionPixelSize(R.dimen.movie_details_curve_offset)
+                dimen(R.dimen.movie_details_curve_offset)
             ).toFloat()
 
         } finally {

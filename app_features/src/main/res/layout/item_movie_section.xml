@@ -24,9 +24,11 @@
         android:layout_marginTop="@dimen/spacing_small"
         android:clipToPadding="false"
         android:orientation="vertical"
+        android:paddingStart="@dimen/spacing_normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/itemSectionTitle"
+        tools:ignore="RtlSymmetry"
         tools:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/item_movie"
         tools:orientation="horizontal" />

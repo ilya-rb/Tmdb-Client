@@ -5,9 +5,8 @@ import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieBlock
 import com.illiarb.tmdblcient.core.domain.Review
 import com.illiarb.tmdblcient.core.services.TmdbService
-import com.illiarb.tmdblcient.core.util.Either
+import com.illiarb.tmdblcient.core.util.Result
 import com.tmdbclient.service_tmdb.MoviesRepository
-import kotlinx.coroutines.flow.Flow
 
 class TestTmdbService(
     private val moviesRepository: MoviesRepository = TestMovieRepository()
@@ -22,19 +21,19 @@ class TestTmdbService(
         Genre(5, "Documentary")
     )
 
-    override fun getAllMovies(): Flow<Either<List<MovieBlock>>> = Either.asFlow {
+    override suspend fun getAllMovies(): Result<List<MovieBlock>> = Result.create {
         moviesRepository.getMovieFilters().map {
             MovieBlock(it, moviesRepository.getMoviesByType(it.code))
         }
     }
 
-    override fun getMovieGenres(): Flow<Either<List<Genre>>> = Either.asFlow { testGenres }
+    override suspend fun getMovieGenres(): Result<List<Genre>> = Result.create { testGenres }
 
-    override fun getMovieDetails(id: Int): Flow<Either<Movie>> = Either.asFlow {
+    override suspend fun getMovieDetails(id: Int): Result<Movie> = Result.create {
         moviesRepository.getMovieDetails(id, "images,reviews")
     }
 
-    override fun getMovieReviews(id: Int): Flow<Either<List<Review>>> = Either.asFlow {
+    override suspend fun getMovieReviews(id: Int): Result<List<Review>> = Result.create {
         moviesRepository.getMovieReviews(id)
     }
 }

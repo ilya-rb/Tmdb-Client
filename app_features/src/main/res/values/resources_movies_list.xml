@@ -5,10 +5,14 @@
     <string name="movie_section_more">See all</string>
 
     <!-- Dimens -->
-    <dimen name="item_movie_spacing">@dimen/spacing_normal</dimen>
     <dimen name="item_review_spacing">@dimen/spacing_small</dimen>
+
+    <dimen name="item_movie_spacing">@dimen/spacing_normal</dimen>
     <dimen name="item_movie_height">150dp</dimen>
+    <dimen name="item_movie_width">100dp</dimen>
+
     <dimen name="item_now_playing_poster_small_height">100dp</dimen>
+
     <dimen name="item_movie_section_vertical_padding">@dimen/spacing_normal</dimen>
 
     <style name="TextAppearance.MovieSectionTitle" parent="TextAppearance.AppCompat.Subhead" />

@@ -18,5 +18,5 @@ class MovieDetailsModule(val id: Int) {
     @IntoMap
     @ViewModelKey(MovieDetailsViewModel.DefaultDetailsViewModel::class)
     fun provideMovieDetailsModel(service: TmdbService): ViewModel =
-        MovieDetailsViewModel.DefaultDetailsViewModel(service, id)
+        MovieDetailsViewModel.DefaultDetailsViewModel(id, service)
 }

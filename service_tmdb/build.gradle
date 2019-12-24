@@ -25,6 +25,7 @@ android {
 
             buildConfigField "String", "API_URL", properties["api.url"]
             buildConfigField "String", "API_KEY", properties["api.key"]
+            buildConfigField "String", "IMG_URL", properties["api.imgUrl"]
         }
 
         release {
@@ -41,6 +42,6 @@ dependencies {
     implementation project(':core_storage')
 
     testImplementation project(':core_test')
-    
+
     implementation deps.dagger
 }

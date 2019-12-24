@@ -20,12 +20,7 @@ class AppNavigator @Inject constructor(private val activity: FragmentActivity) :
             is Router.Action.ShowMovieDetails -> R.id.movieDetailsAction
             is Router.Action.Account -> R.id.accountAction
         }
-
-        controller.navigate(
-            destination,
-            setDestinationArgs(action),
-            setNavOptions()
-        )
+        controller.navigate(destination, setDestinationArgs(action), setNavOptions())
     }
 
     private fun setDestinationArgs(action: Router.Action): Bundle {

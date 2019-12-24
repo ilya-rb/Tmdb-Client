@@ -9,7 +9,7 @@
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorSurface">
+        android:theme="@style/Theme.Tmdb.AppBarOverlay">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -18,8 +18,8 @@
             android:paddingBottom="@dimen/spacing_small">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_tmdb" />
@@ -30,7 +30,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:contentDescription="@null"
-                android:padding="@dimen/spacing_normal"
+                android:paddingLeft="@dimen/spacing_normal"
+                android:paddingTop="@dimen/spacing_micro"
+                android:paddingRight="@dimen/spacing_normal"
+                android:paddingBottom="@dimen/spacing_micro"
                 android:src="@drawable/ic_search_black_24dp" />
 
         </FrameLayout>
@@ -41,6 +44,8 @@
         android:id="@+id/moviesList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/spacing_normal"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

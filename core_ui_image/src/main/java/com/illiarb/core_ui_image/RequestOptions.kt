@@ -16,9 +16,8 @@ data class RequestOptions(
 ) {
 
     companion object {
-        inline fun create(builder: RequestOptions.() -> RequestOptions) = builder(
-            RequestOptions()
-        )
+        inline fun requestOptions(builder: RequestOptions.() -> RequestOptions) =
+            builder(RequestOptions())
     }
 
     fun thumbnail(@FloatRange(from = 0.1, to = 0.9) fraction: Float) = apply { thumbnail = fraction }

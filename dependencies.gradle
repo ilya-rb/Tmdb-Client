@@ -3,7 +3,6 @@ gradlePlugins.android = "com.android.tools.build:gradle:$versions.androidGradle"
 gradlePlugins.jacoco = "org.jacoco:org.jacoco.core:$versions.jacocoGradle"
 gradlePlugins.kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
 gradlePlugins.versions = "com.github.ben-manes:gradle-versions-plugin:$versions.versionsGradle"
-gradlePlugins.buildscan = "com.gradle:build-scan-plugin:$versions.buildScanGradle"
 gradlePlugins.firebase = "com.google.gms:google-services:$versions.firebaseGradle"
 gradlePlugins.androidJunit5 = "de.mannodermaus.gradle.plugins:android-junit5:$versions.androidJunit5Gradle"
 
@@ -21,6 +20,7 @@ deps.appcompat = "androidx.appcompat:appcompat:$versions.supportLibrary"
 deps.pallete = "androidx.palette:palette:$versions.supportLibrary"
 deps.recyclerView = "androidx.recyclerview:recyclerview:$versions.supportLibrary"
 deps.constraintLayout = "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
+deps.viewpager2 = "androidx.viewpager2:viewpager2:$versions.viewpager2"
 
 // Firebase
 deps.firebaseCore = "com.google.firebase:firebase-core:$versions.firebaseCore"
@@ -60,8 +60,8 @@ deps.coroutinesAdapter = "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-a
 deps.okHttpLogger = "com.squareup.okhttp3:logging-interceptor:$versions.okHttpLogger"
 
 // Other
-deps.adapterDelegates = "com.hannesdorfmann:adapterdelegates4:4.1.2-SNAPSHOT"
-deps.adapterDelegatesDsl = "com.hannesdorfmann:adapterdelegates4-kotlin-dsl:4.1.1"
+deps.adapterDelegates = "com.hannesdorfmann:adapterdelegates4:4.2.0"
+deps.adapterDelegatesDsl = "com.hannesdorfmann:adapterdelegates4-kotlin-dsl:4.2.0"
 
 // Di
 deps.dagger = "com.google.dagger:dagger:$versions.dagger"
@@ -72,8 +72,7 @@ deps.javax = "javax.inject:javax.inject:$versions.javax"
 deps.timber = "com.jakewharton.timber:timber:$versions.timber"
 
 // Tools
-deps.leakCanary = "com.squareup.leakcanary:leakcanary-support-fragment:$versions.leakCanary"
-deps.leakCanaryRelease = "com.squareup.leakcanary:leakcanary-android-no-op:$versions.leakCanary"
+deps.leakCanary = "com.squareup.leakcanary:leakcanary-android:$versions.leakCanary"
 
 def testDeps = [:]
 testDeps.androidX = "androidx.arch.core:core-testing:2.0.1"
@@ -89,6 +88,8 @@ testDeps.kotlinCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.2
 def androidTestDeps = [:]
 androidTestDeps.runner = "androidx.test:runner:$androidTestVersions.runner"
 androidTestDeps.espresso = "androidx.test.espresso:espresso-core:$androidTestVersions.espresso"
+androidTestDeps.kaspresso = "com.kaspersky.android-components:kaspresso:$androidTestVersions.kaspresso"
+androidTestDeps.kakao = "com.agoda.kakao:kakao:$androidTestVersions.kakao"
 
 ext.gradlePlugins = gradlePlugins
 ext.deps = deps

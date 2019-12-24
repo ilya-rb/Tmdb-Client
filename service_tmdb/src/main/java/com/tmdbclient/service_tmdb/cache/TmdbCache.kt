@@ -37,6 +37,9 @@ class TmdbCache @Inject constructor(app: App) {
     fun storeConfiguration(configuration: Configuration) =
         tmdbStore.putValue(KEY_CONFIGURATION, configuration)
 
+    fun getConfiguration(): Configuration =
+        tmdbStore.getPersistable(KEY_CONFIGURATION, Configuration())
+
     private fun getPersistablesMap(): Map<String, Class<out Persistable>> =
         mapOf(
             KEY_POPULAR to MovieListModel::class.java,
