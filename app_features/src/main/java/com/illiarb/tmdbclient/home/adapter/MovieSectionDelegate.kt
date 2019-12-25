@@ -1,5 +1,6 @@
 package com.illiarb.tmdbclient.home.adapter
 
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +26,7 @@ fun movieSectionDelegate(clickListener: OnClickListener) =
         val adapter = MovieSectionAdapter(clickListener)
         val sectionTitle = itemView.findViewById<TextView>(R.id.itemSectionTitle)
         val sectionList = itemView.findViewById<RecyclerView>(R.id.itemMovieSectionList)
+        val seeAllButton = itemView.findViewById<View>(R.id.itemSectionSeeAll)
 
         RecyclerViewBuilder
             .create {
@@ -40,6 +42,7 @@ fun movieSectionDelegate(clickListener: OnClickListener) =
             sectionTitle.text = item.title
             adapter.items = item.movies
             adapter.notifyDataSetChanged()
+            seeAllButton.setOnClickListener { clickListener.onClick(item.code) }
         }
     }
 

@@ -64,7 +64,7 @@ class NowPlayingPagerAdapter(private val clickListener: OnClickListener) :
 
             bind {
                 title.text = item.title
-                image.loadImage(item.posterPath, requestOptions {
+                image.loadImage(item.backdropPath, requestOptions {
                     cropOptions(CropOptions.CENTER_CROP)
                     cornerRadius(spacing)
                 })

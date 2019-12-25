@@ -10,6 +10,7 @@ import com.bumptech.glide.load.Transformation
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.FitCenter
+import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
@@ -25,7 +26,6 @@ fun ImageView.loadImage(
     onResourceReady: (Drawable) -> Boolean = { false },
     onLoadError: (Throwable) -> Boolean = { false }
 ) {
-
     val request = Glide.with(context).load(url)
 
     options?.let {
@@ -86,6 +86,7 @@ private fun mapOptions(
         when (it) {
             CropOptions.CENTER_CROP -> transformations.add(CenterCrop())
             CropOptions.FIT_CENTER -> transformations.add(FitCenter())
+            CropOptions.CENTER_INSIDE -> transformations.add(CenterInside())
         }
     }
 

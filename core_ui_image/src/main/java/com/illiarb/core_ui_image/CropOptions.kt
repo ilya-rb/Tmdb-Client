@@ -7,5 +7,7 @@ enum class CropOptions {
 
     CENTER_CROP,
 
-    FIT_CENTER
+    FIT_CENTER,
+
+    CENTER_INSIDE
 }

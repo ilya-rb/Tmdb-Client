@@ -18,6 +18,7 @@ import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.services.TmdbService
 import com.illiarb.tmdblcient.core.util.Async
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onStart
@@ -63,8 +64,9 @@ class HomeModel @Inject constructor(
     override fun onUiEvent(event: HomeUiEvent) {
         when (event) {
             is HomeUiEvent.ItemClick -> {
-                val movie = event.item as Movie
-                router.executeAction(ShowMovieDetails(movie.id))
+                when (event.item) {
+                    is Movie -> router.executeAction(ShowMovieDetails(event.item.id))
+                }
             }
         }
     }
@@ -90,7 +92,7 @@ class HomeModel @Inject constructor(
                     }
                 }
             } else {
-                result.add(ListSection(block.filter.name, block.movies))
+                result.add(ListSection(block.filter.code, block.filter.name, block.movies))
             }
         }
 
