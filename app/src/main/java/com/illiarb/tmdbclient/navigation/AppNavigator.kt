@@ -17,8 +17,8 @@ class AppNavigator @Inject constructor(private val activity: FragmentActivity) :
     override fun executeAction(action: Router.Action) {
         val controller = Navigation.findNavController(activity, R.id.nav_host_fragment)
         val destination = when (action) {
-            is Router.Action.ShowMovieDetails -> R.id.movieDetailsAction
-            is Router.Action.Account -> R.id.accountAction
+            is Router.Action.ShowMovieDetails -> R.id.action_moviesFragment_to_movieDetailsFragment
+            is Router.Action.ShowDiscover -> R.id.action_moviesFragment_to_discoverFragment
         }
         controller.navigate(destination, setDestinationArgs(action), setNavOptions())
     }

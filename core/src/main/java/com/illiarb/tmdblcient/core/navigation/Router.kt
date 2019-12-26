@@ -15,6 +15,6 @@ interface Router {
             }
         }
 
-        object Account : Action()
+        object ShowDiscover : Action()
     }
 }

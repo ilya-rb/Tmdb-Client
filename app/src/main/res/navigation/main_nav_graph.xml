@@ -1,23 +1,34 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     app:startDestination="@id/moviesFragment">
-
-    <fragment
-        android:id="@+id/moviesFragment"
-        android:name="com.illiarb.tmdbclient.home.HomeFragment"
-        android:label="MoviesFragment" />
 
     <fragment
         android:id="@+id/movieDetailsFragment"
         android:name="com.illiarb.tmdbclient.details.MovieDetailsFragment"
-        android:label="MovieDetailsFragment" />
+        android:label="MovieDetailsFragment"
+        tools:layout="@layout/fragment_movie_details" />
 
-    <action
-        android:id="@+id/movieDetailsAction"
-        app:destination="@id/movieDetailsFragment" />
+    <fragment
+        android:id="@+id/discoverFragment"
+        android:name="com.illiarb.tmdbclient.discover.DiscoverFragment"
+        android:label="DiscoverFragment"
+        tools:layout="@layout/fragment_discover" />
 
-    <action
-        android:id="@+id/moviesFragmentAction"
-        app:destination="@id/moviesFragment" />
+    <fragment
+        android:id="@+id/moviesFragment"
+        android:name="com.illiarb.tmdbclient.home.HomeFragment"
+        android:label="MoviesFragment"
+        tools:layout="@layout/fragment_movies">
+
+        <action
+            android:id="@+id/action_moviesFragment_to_discoverFragment"
+            app:destination="@id/discoverFragment" />
+
+        <action
+            android:id="@+id/action_moviesFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+
+    </fragment>
 
 </navigation>

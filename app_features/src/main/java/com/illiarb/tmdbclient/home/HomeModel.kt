@@ -69,6 +69,11 @@ class HomeModel @Inject constructor(
                         analyticsService.trackEvent(AnalyticEvent.RouterAction(action))
                         router.executeAction(action)
                     }
+                    is String -> {
+                        val action = Router.Action.ShowDiscover
+                        analyticsService.trackEvent(AnalyticEvent.RouterAction(action))
+                        router.executeAction(action)
+                    }
                 }
             }
         }
