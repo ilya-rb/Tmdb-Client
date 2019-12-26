@@ -11,6 +11,11 @@ sealed class Result<out T : Any> {
         is Error -> throw error
     }
 
+    fun asAsync(): Async<T> = when (this) {
+        is Success -> Async.Success(data)
+        is Error -> Async.Fail(error)
+    }
+
     companion object {
 
         suspend fun <T : Any> create(block: suspend () -> T): Result<T> {

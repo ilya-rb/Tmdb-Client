@@ -11,9 +11,10 @@
         android:layout_height="wrap_content"
         android:theme="@style/Theme.Tmdb.AppBarOverlay">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:paddingTop="@dimen/spacing_small"
             android:paddingBottom="@dimen/spacing_small">
 
@@ -21,8 +22,14 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
+                android:layout_marginStart="@dimen/spacing_normal"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_tmdb" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
 
             <ImageView
                 android:id="@+id/moviesSearch"
@@ -36,11 +43,22 @@
                 android:paddingBottom="@dimen/spacing_micro"
                 android:src="@drawable/ic_search_black_24dp" />
 
-        </FrameLayout>
+            <ImageView
+                android:id="@+id/moviesAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:paddingLeft="@dimen/spacing_normal"
+                android:paddingTop="@dimen/spacing_micro"
+                android:paddingRight="@dimen/spacing_normal"
+                android:paddingBottom="@dimen/spacing_micro"
+                android:src="@drawable/ic_account" />
+
+        </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.illiarb.core_ui_recycler_view.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/moviesList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

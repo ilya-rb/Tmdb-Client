@@ -31,8 +31,6 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val photosAdapter = PhotosAdapter()
-
     private val viewModel: MovieDetailsViewModel by lazy(LazyThreadSafetyMode.NONE) {
         viewModelFactory.create(DefaultDetailsViewModel::class.java)
     }
@@ -59,9 +57,11 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
             }
         }
 
+        val adapter = PhotosAdapter()
+
         RecyclerViewBuilder
             .create {
-                adapter(photosAdapter)
+                adapter(adapter)
                 type(LayoutType.Linear())
                 orientation(LayoutOrientation.HORIZONTAL)
                 hasFixedSize(true)
@@ -71,18 +71,18 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
 
         view.awareOfWindowInsets()
 
-        bind(viewModel)
+        bind(viewModel, adapter)
     }
 
-    private fun bind(viewModel: MovieDetailsViewModel) {
+    private fun bind(viewModel: MovieDetailsViewModel, adapter: PhotosAdapter) {
         viewModel.movie.observe(viewLifecycleOwner, Observer {
             when (it) {
-                is Async.Success -> showMovieDetails(it())
+                is Async.Success -> showMovieDetails(it(), adapter)
             }
         })
     }
 
-    private fun showMovieDetails(movie: Movie) {
+    private fun showMovieDetails(movie: Movie, adapter: PhotosAdapter) {
         with(binding) {
             movieDetailsTitle.text = movie.title
             movieDetailsOverview.text = movie.overview
@@ -95,7 +95,7 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
             })
         }
 
-        photosAdapter.items = movie.images
-        photosAdapter.notifyDataSetChanged()
+        adapter.items = movie.images
+        adapter.notifyDataSetChanged()
     }
 }

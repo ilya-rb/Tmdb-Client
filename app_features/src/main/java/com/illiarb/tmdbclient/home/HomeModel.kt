@@ -17,12 +17,13 @@ import com.illiarb.tmdblcient.core.feature.FeatureFlagStore.FeatureFlag
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.services.TmdbService
+import com.illiarb.tmdblcient.core.services.analytics.AnalyticEvent
+import com.illiarb.tmdblcient.core.services.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.util.Async
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.zip
 import javax.inject.Inject
 
 /**
@@ -31,23 +32,21 @@ import javax.inject.Inject
 class HomeModel @Inject constructor(
     featureConfig: FeatureFlagStore,
     private val moviesService: TmdbService,
-    private val router: Router
+    private val router: Router,
+    private val analyticsService: AnalyticsService
 ) : BasePresentationModel(), HomeViewModel {
 
     companion object {
-        // Max genres displayed in block on screen
+        // Max genres displayed in the section
         private const val GENRES_MAX_SIZE = 8
     }
 
     private val _movieSectionsData = flow { emit(moviesService.getAllMovies()) }
-        .zip(flow { emit(moviesService.getMovieGenres()) }) { movieBlocks, genres ->
-            Async.Success(
-                createSections(
-                    movieBlocks.getOrThrow(),
-                    genres.getOrThrow()
-                )
-            ) as Async<List<MovieSection>>
+        .map {
+            val genres = moviesService.getMovieGenres()
+            createSections(it.getOrThrow(), genres.getOrThrow())
         }
+        .map { Async.Success(it) as Async<List<MovieSection>> }
         .onStart { emit(Async.Loading()) }
         .catch { emit(Async.Fail(it)) }
         .asLiveData()
@@ -65,7 +64,11 @@ class HomeModel @Inject constructor(
         when (event) {
             is HomeUiEvent.ItemClick -> {
                 when (event.item) {
-                    is Movie -> router.executeAction(ShowMovieDetails(event.item.id))
+                    is Movie -> {
+                        val action = ShowMovieDetails(event.item.id)
+                        analyticsService.trackEvent(AnalyticEvent.RouterAction(action))
+                        router.executeAction(action)
+                    }
                 }
             }
         }

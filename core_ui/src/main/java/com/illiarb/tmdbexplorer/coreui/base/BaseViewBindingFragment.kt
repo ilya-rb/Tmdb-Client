@@ -10,7 +10,9 @@ import com.illiarb.tmdbexplorer.coreui.common.FragmentViewBinding
 abstract class BaseViewBindingFragment<B : ViewBinding> : BaseFragment() {
 
     private val bindingWrapper by lazy(LazyThreadSafetyMode.NONE) {
-        FragmentViewBinding(this) { getViewBinding(LayoutInflater.from(requireContext())) }
+        FragmentViewBinding(this) {
+            getViewBinding(LayoutInflater.from(requireContext()))
+        }
     }
 
     protected val binding: B

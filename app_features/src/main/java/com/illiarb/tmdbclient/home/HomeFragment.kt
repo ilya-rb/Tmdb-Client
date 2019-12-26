@@ -7,7 +7,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.illiarb.core_ui_recycler_view.LayoutType
-import com.illiarb.core_ui_recycler_view.RecyclerView
 import com.illiarb.core_ui_recycler_view.RecyclerViewBuilder
 import com.illiarb.tmdbclient.home.HomeViewModel.HomeUiEvent.ItemClick
 import com.illiarb.tmdbclient.home.adapter.MovieAdapter
@@ -17,9 +16,9 @@ import com.illiarb.tmdbclient.movies.home.databinding.FragmentMoviesBinding
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
+import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
-import com.illiarb.tmdblcient.core.domain.MovieSection
 import com.illiarb.tmdblcient.core.tools.Logger
 import com.illiarb.tmdblcient.core.util.Async
 import kotlinx.coroutines.flow.collect
@@ -30,8 +29,6 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private val adapter = MovieAdapter()
 
     private val viewModel: HomeViewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this, viewModelFactory).get(HomeModel::class.java)
@@ -48,6 +45,8 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
         binding.appBar.liftOnScrollTargetViewId = R.id.moviesList
         binding.appBar.isLiftOnScroll = true
 
+        val adapter = MovieAdapter()
+
         RecyclerViewBuilder
             .create {
                 adapter(adapter)
@@ -55,16 +54,24 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
                 hasFixedSize(true)
                 spaceBetween { spacingLeft = view.dimen(R.dimen.item_movie_spacing) }
             }
-            .setupWith(binding.moviesList.recyclerView())
+            .setupWith(binding.moviesList)
 
         view.awareOfWindowInsets()
 
-        bind(viewModel)
+        bind(viewModel, adapter)
     }
 
-    private fun bind(viewModel: HomeViewModel) {
-        viewModel.movieSections.observe(viewLifecycleOwner, Observer(::onMoviesStateChange))
+    private fun bind(viewModel: HomeViewModel, adapter: MovieAdapter) {
         viewModel.isAccountVisible.observe(viewLifecycleOwner, Observer(::setAccountVisible))
+        viewModel.movieSections.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                is Async.Fail -> Logger.e("Got error: ", state.error)
+                is Async.Success -> {
+                    adapter.items = state()
+                    adapter.notifyDataSetChanged()
+                }
+            }
+        })
 
         viewLifecycleOwner.lifecycleScope.launch {
             adapter.clicks().collect {
@@ -73,18 +80,5 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
         }
     }
 
-    private fun onMoviesStateChange(state: Async<List<MovieSection>>) {
-        when (state) {
-            is Async.Loading -> binding.moviesList.moveToState(RecyclerView.State.Loading)
-            is Async.Fail -> Logger.e("Got error: ", state.error)
-            is Async.Success -> {
-                binding.moviesList.moveToState(RecyclerView.State.Content)
-                adapter.items = state()
-                adapter.notifyDataSetChanged()
-            }
-        }
-    }
-
-    private fun setAccountVisible(visible: Boolean) {
-    }
+    private fun setAccountVisible(visible: Boolean) = binding.moviesAccount.setVisible(visible)
 }

@@ -6,7 +6,6 @@ import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.services.TmdbService
 import com.illiarb.tmdblcient.core.util.Async
-import com.illiarb.tmdblcient.core.util.Result
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -23,12 +22,7 @@ interface MovieDetailsViewModel {
     ) : BasePresentationModel(), MovieDetailsViewModel {
 
         private val _movie = flow { emit(tmdbService.getMovieDetails(movieId)) }
-            .map {
-                when (it) {
-                    is Result.Success -> Async.Success(it.data)
-                    is Result.Error -> Async.Fail<Movie>(it.error)
-                }
-            }
+            .map { it.asAsync() }
             .catch { emit(Async.Fail(it)) }
             .onStart { emit(Async.Loading()) }
             .asLiveData()
