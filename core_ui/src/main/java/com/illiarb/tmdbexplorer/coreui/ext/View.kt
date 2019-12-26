@@ -14,9 +14,13 @@ import kotlinx.coroutines.flow.debounce
 private const val VIEW_DEBOUNCED_CLICKS_DELAY = 400L
 
 fun View.awareOfWindowInsets() {
-    ViewCompat.setOnApplyWindowInsetsListener(this) { v, insets ->
-        val params = v.layoutParams as ViewGroup.MarginLayoutParams
-        params.topMargin = insets.systemWindowInsetTop
+    ViewCompat.setOnApplyWindowInsetsListener(this) { _, insets ->
+        setPadding(
+            paddingLeft,
+            paddingTop + insets.systemWindowInsetTop,
+            paddingRight,
+            paddingBottom
+        )
         return@setOnApplyWindowInsetsListener insets.consumeSystemWindowInsets()
     }
 }

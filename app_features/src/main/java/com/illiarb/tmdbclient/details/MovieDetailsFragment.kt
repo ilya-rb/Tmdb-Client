@@ -3,6 +3,7 @@ package com.illiarb.tmdbclient.details
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.illiarb.core_ui_image.CropOptions
@@ -69,9 +70,9 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
             }
             .setupWith(binding.movieDetailsPhotos)
 
-        view.awareOfWindowInsets()
-
         bind(viewModel, adapter)
+
+        ViewCompat.requestApplyInsets(view)
     }
 
     private fun bind(viewModel: MovieDetailsViewModel, adapter: PhotosAdapter) {
