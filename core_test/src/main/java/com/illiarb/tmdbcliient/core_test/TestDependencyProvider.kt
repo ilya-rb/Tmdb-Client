@@ -19,11 +19,7 @@ import com.illiarb.tmdblcient.core.storage.ResourceResolver
 import com.illiarb.tmdblcient.core.tools.ConnectivityStatus
 import com.illiarb.tmdblcient.core.tools.DispatcherProvider
 
-object TestDependencyProvider :
-    StorageProvider,
-    ToolsProvider,
-    AnalyticsProvider,
-    TmdbProvider {
+object TestDependencyProvider : StorageProvider, ToolsProvider, AnalyticsProvider, TmdbProvider {
 
     val router: Router
         get() = TestRouter()

@@ -53,8 +53,7 @@ allprojects {
 
 subprojects {
 
-    // TODO: Fix Jacoco plugin on AGP 4.0
-    // apply(from: "$rootDir/code_quality_tools/jacoco.gradle")
+    apply(from: "$rootDir/code_quality_tools/jacoco.gradle")
 
     afterEvaluate {
         // This allows us see tests execution progress in the output on the CI.
@@ -66,8 +65,8 @@ subprojects {
         }
 
         android.compileOptions {
-            sourceCompatibility(1.8)
-            targetCompatibility(1.8)
+            sourceCompatibility(JavaVersion.VERSION_1_8)
+            targetCompatibility(JavaVersion.VERSION_1_8)
         }
 
         android.lintOptions {

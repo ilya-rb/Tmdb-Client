@@ -88,8 +88,10 @@ testDeps.kotlinCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.2
 def androidTestDeps = [:]
 androidTestDeps.runner = "androidx.test:runner:$androidTestVersions.runner"
 androidTestDeps.espresso = "androidx.test.espresso:espresso-core:$androidTestVersions.espresso"
+androidTestDeps.espressoIntents = "androidx.test.espresso:espresso-intents:$androidTestVersions.espresso"
 androidTestDeps.kaspresso = "com.kaspersky.android-components:kaspresso:$androidTestVersions.kaspresso"
 androidTestDeps.kakao = "com.agoda.kakao:kakao:$androidTestVersions.kakao"
+androidTestDeps.extJunit = "androidx.test.ext:junit:$androidTestVersions.extJunit"
 
 ext.gradlePlugins = gradlePlugins
 ext.deps = deps

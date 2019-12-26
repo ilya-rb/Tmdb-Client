@@ -18,7 +18,8 @@ class HomeViewModelTest : BaseViewModelTest() {
         HomeModel(
             TestDependencyProvider.provideFeatureFlagStore(),
             TestDependencyProvider.provideTmdbService(),
-            TestDependencyProvider.router
+            TestDependencyProvider.router,
+            TestDependencyProvider.provideAnalyticsService()
         )
     }
 

@@ -33,22 +33,24 @@ project.afterEvaluate {
                 group = 'Reporting'
                 description = "Generate Jacoco coverage reports for the ${sourceName.capitalize()} build."
 
-                classDirectories = fileTree(
-                        dir: "${project.buildDir}/tmp/kotlin-classes/${sourcePath}",
-                        excludes: [
-                                '**/R.class',
-                                '**/R$*.class',
-                                '**/*$ViewInjector*.*',
-                                '**/*$ViewBinder*.*',
-                                '**/BuildConfig.*',
-                                '**/Manifest*.*',
-                                '**/*$Lambda$*.*', // Jacoco can not handle several "$" in class name.
-                                '**/*$inlined$*.*', // Kotlin specific, Jacoco can not handle several "$" in class name.
-                                '**/*Module.*', // Modules for Dagger.
-                                '**/*Dagger*.*', // Dagger auto-generated code.
-                                '**/*MembersInjector*.*', // Dagger auto-generated code.
-                                '**/*_Provide*Factory*.*' // Dagger auto-generated code.
-                        ]
+                classDirectories.setFrom(
+                        fileTree(
+                                dir: "${project.buildDir}/tmp/kotlin-classes/${sourcePath}",
+                                excludes: [
+                                        '**/R.class',
+                                        '**/R$*.class',
+                                        '**/*$ViewInjector*.*',
+                                        '**/*$ViewBinder*.*',
+                                        '**/BuildConfig.*',
+                                        '**/Manifest*.*',
+                                        '**/*$Lambda$*.*', // Jacoco can not handle several "$" in class name.
+                                        '**/*$inlined$*.*', // Kotlin specific, Jacoco can not handle several "$" in class name.
+                                        '**/*Module.*', // Modules for Dagger.
+                                        '**/*Dagger*.*', // Dagger auto-generated code.
+                                        '**/*MembersInjector*.*', // Dagger auto-generated code.
+                                        '**/*_Provide*Factory*.*' // Dagger auto-generated code.
+                                ]
+                        )
                 )
 
                 def coverageSourceDirs = [
@@ -57,9 +59,10 @@ project.afterEvaluate {
                         "src/$buildTypeName/java"
                 ]
 
-                additionalSourceDirs = files(coverageSourceDirs)
-                sourceDirectories = files(coverageSourceDirs)
-                executionData = files("${project.buildDir}/jacoco/${testTaskName}.exec")
+                additionalSourceDirs.setFrom(files(coverageSourceDirs))
+                sourceDirectories.setFrom(files(coverageSourceDirs))
+
+                executionData.setFrom(files("${project.buildDir}/jacoco/${testTaskName}.exec"))
 
                 reports {
                     xml.enabled = true

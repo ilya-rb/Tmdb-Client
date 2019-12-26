@@ -4,9 +4,16 @@ import com.agoda.kakao.image.KImageView
 import com.agoda.kakao.recycler.KRecyclerView
 import com.agoda.kakao.text.KButton
 import com.agoda.kakao.text.KTextView
+import com.illiarb.tmdbclient.details.MovieDetailsFragment
 import com.illiarb.tmdbclient.movies.home.R
 
-class MovieDetailsScreen {
+class MovieDetailsScreen : KScreen<MovieDetailsScreen>() {
+
+    override val layoutId: Int?
+        get() = R.layout.fragment_movie_details
+
+    override val viewClass: Class<*>
+        get() = MovieDetailsFragment::class.java
 
     val poster = KImageView { withId(R.id.movieDetailsPoster) }
     val playFab = KButton { withId(R.id.movieDetailsPlay) }

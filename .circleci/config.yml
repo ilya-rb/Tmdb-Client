@@ -120,9 +120,9 @@ workflows:
     jobs:
       - debug-build
 
-#      - unit-tests:
-#          requires:
-#            - debug-build
+      - unit-tests:
+          requires:
+            - debug-build
 
       #- lint:
       #    type: approval
