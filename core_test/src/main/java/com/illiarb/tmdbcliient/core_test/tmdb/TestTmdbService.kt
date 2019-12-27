@@ -7,6 +7,7 @@ import com.illiarb.tmdblcient.core.domain.Review
 import com.illiarb.tmdblcient.core.services.TmdbService
 import com.illiarb.tmdblcient.core.util.Result
 import com.tmdbclient.service_tmdb.MoviesRepository
+import java.util.Collections
 
 class TestTmdbService(
     private val moviesRepository: MoviesRepository = TestMovieRepository()
@@ -36,4 +37,7 @@ class TestTmdbService(
     override suspend fun getMovieReviews(id: Int): Result<List<Review>> = Result.create {
         moviesRepository.getMovieReviews(id)
     }
+
+    override suspend fun discoverMovies(): Result<List<Movie>> =
+        Result.create { Collections.emptyList<Movie>() }
 }
