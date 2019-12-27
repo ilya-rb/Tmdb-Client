@@ -1,5 +1,7 @@
 package com.illiarb.tmdbclient.home.adapter
 
+import android.os.Handler
+import android.os.Looper
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +18,9 @@ import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieSection
 import com.illiarb.tmdblcient.core.domain.NowPlayingSection
+import java.util.Timer
+import java.util.TimerTask
+import java.util.concurrent.TimeUnit
 
 fun nowPlayingDelegate(clickListener: OnClickListener) =
     adapterDelegate<NowPlayingSection, MovieSection>(R.layout.item_now_playing_section) {
@@ -24,6 +29,10 @@ fun nowPlayingDelegate(clickListener: OnClickListener) =
         val nowPlayingTitle = itemView.findViewById<TextView>(R.id.nowPlayingTitle)
         val adapter = NowPlayingPagerAdapter(clickListener)
         val spacing = itemView.dimen(R.dimen.spacing_normal)
+
+        var bannerTimer: Timer? = null
+        val timerHandler = Handler(Looper.getMainLooper())
+        val updateInterval = TimeUnit.SECONDS.toMillis(10L)
 
         nowPlayingPager.adapter = adapter
 
@@ -45,6 +54,30 @@ fun nowPlayingDelegate(clickListener: OnClickListener) =
             nowPlayingTitle.text = item.title
             adapter.items = item.movies
             adapter.notifyDataSetChanged()
+        }
+
+        onViewAttachedToWindow {
+            bannerTimer = Timer().also {
+                it.scheduleAtFixedRate(object : TimerTask() {
+                    override fun run() {
+                        if (adapter.itemCount == 0) return
+
+                        timerHandler.postAtFrontOfQueue {
+                            val currentItem = nowPlayingPager.currentItem
+                            if (currentItem < adapter.items.size - 1) {
+                                nowPlayingPager.setCurrentItem(currentItem + 1, true)
+                            } else {
+                                nowPlayingPager.setCurrentItem(0, true)
+                            }
+                        }
+                    }
+                }, updateInterval, updateInterval)
+            }
+        }
+
+        onViewDetachedFromWindow {
+            timerHandler.removeCallbacksAndMessages(null)
+            bannerTimer?.cancel()
         }
     }
 
