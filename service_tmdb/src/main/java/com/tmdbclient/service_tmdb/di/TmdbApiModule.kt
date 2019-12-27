@@ -8,12 +8,12 @@ import com.illiarb.tmdblcient.core.di.App
 import com.tmdbclient.service_tmdb.BuildConfig
 import com.tmdbclient.service_tmdb.api.ApiKeyInterceptor
 import com.tmdbclient.service_tmdb.api.ConfigurationApi
+import com.tmdbclient.service_tmdb.api.DiscoverApi
 import com.tmdbclient.service_tmdb.api.GenreApi
 import com.tmdbclient.service_tmdb.api.MovieApi
 import com.tmdbclient.service_tmdb.cache.TmdbCache
 import dagger.Module
 import dagger.Provides
-import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
@@ -39,6 +39,11 @@ class TmdbApiModule(val app: App) {
         @JvmStatic
         fun provideMoviesApi(retrofit: Retrofit): MovieApi =
             retrofit.create(MovieApi::class.java)
+
+        @Provides
+        @JvmStatic
+        fun provideDiscoverApi(retrofit: Retrofit): DiscoverApi =
+            retrofit.create(DiscoverApi::class.java)
 
         @Provides
         @JvmStatic

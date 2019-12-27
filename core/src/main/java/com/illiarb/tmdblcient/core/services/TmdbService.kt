@@ -16,4 +16,6 @@ interface TmdbService {
 
     suspend fun getMovieReviews(id: Int): Result<List<Review>>
 
+    suspend fun discoverMovies(): Result<List<Movie>>
+
 }

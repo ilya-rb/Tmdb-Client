@@ -1,18 +1,14 @@
 package com.illiarb.tmdbclient.home.adapter
 
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
-import com.illiarb.core_ui_image.CropOptions
-import com.illiarb.core_ui_image.RequestOptions
-import com.illiarb.core_ui_image.RequestOptions.Companion.requestOptions
-import com.illiarb.core_ui_image.loadImage
 import com.illiarb.core_ui_recycler_view.LayoutOrientation
 import com.illiarb.core_ui_recycler_view.LayoutType
 import com.illiarb.core_ui_recycler_view.RecyclerViewBuilder
+import com.illiarb.tmdbclient.common.delegates.movieDelegate
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
@@ -51,28 +47,6 @@ class MovieSectionAdapter(clickListener: OnClickListener) : ListDelegationAdapte
     init {
         delegatesManager.addDelegate(movieDelegate(clickListener))
     }
-
-    private fun movieDelegate(clickListener: OnClickListener) =
-        adapterDelegate<Movie, Movie>(R.layout.item_movie) {
-
-            val image = itemView.findViewById<ImageView>(R.id.itemMoviePoster)
-            val title = itemView.findViewById<TextView>(R.id.itemMovieTitle)
-            val imageCornerRadius = itemView.dimen(R.dimen.corner_radius_normal)
-
-            itemView.setOnClickListener {
-                clickListener.onClick(item)
-            }
-
-            bind {
-                title.text = item.title
-
-                image.loadImage(item.posterPath, requestOptions {
-                    cornerRadius(imageCornerRadius)
-                    cropOptions(CropOptions.CENTER_CROP)
-                    thumbnail(IMAGE_THUMB_FACTOR)
-                })
-            }
-        }
 
     companion object {
         const val IMAGE_THUMB_FACTOR = 0.2f

@@ -7,14 +7,18 @@ import com.illiarb.tmdblcient.core.domain.MovieFilter
 import com.illiarb.tmdblcient.core.domain.Review
 import com.illiarb.tmdblcient.core.services.TmdbService
 import com.illiarb.tmdblcient.core.util.Result
+import com.tmdbclient.service_tmdb.api.DiscoverApi
 import com.tmdbclient.service_tmdb.api.GenreApi
 import com.tmdbclient.service_tmdb.mappers.GenreListMapper
+import com.tmdbclient.service_tmdb.mappers.MovieMapper
 import javax.inject.Inject
 
 class DefaultTmdbService @Inject constructor(
     private val repository: MoviesRepository,
     private val genreListMapper: GenreListMapper,
-    private val genreApi: GenreApi
+    private val movieMapper: MovieMapper,
+    private val genreApi: GenreApi,
+    private val discoverApi: DiscoverApi
 ) : TmdbService {
 
     override suspend fun getAllMovies(): Result<List<MovieBlock>> = Result.create {
@@ -32,4 +36,9 @@ class DefaultTmdbService @Inject constructor(
 
     private suspend fun getMoviesByType(filter: MovieFilter): List<Movie> =
         repository.getMoviesByType(filter.code, false)
+
+    override suspend fun discoverMovies(): Result<List<Movie>> = Result.create {
+        val results = discoverApi.discoverMoviesAsync().await()
+        movieMapper.mapList(results.results)
+    }
 }
