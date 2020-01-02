@@ -1,4 +1,4 @@
-package com.illiarb.core_ui_recycler_view.decoration
+package com.illiarb.tmdbexplorer.coreui.widget.recyclerview
 
 import android.graphics.Rect
 import android.view.View

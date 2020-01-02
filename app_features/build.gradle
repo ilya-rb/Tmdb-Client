@@ -37,7 +37,6 @@ dependencies {
     implementation project(':core')
     implementation project(':core_ui')
     implementation project(':core_ui_image')
-    implementation project(':core_ui_recycler_view')
 
     implementation deps.dagger
 

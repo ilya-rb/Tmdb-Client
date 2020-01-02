@@ -11,10 +11,12 @@ import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 import com.illiarb.core_ui_image.CropOptions
 import com.illiarb.core_ui_image.RequestOptions.Companion.requestOptions
 import com.illiarb.core_ui_image.loadImage
-import com.illiarb.core_ui_recycler_view.decoration.HorizontalDecoration
+import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
+import com.illiarb.tmdbexplorer.coreui.ext.switchToNextPosition
+import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieSection
 import com.illiarb.tmdblcient.core.domain.NowPlayingSection
@@ -30,55 +32,43 @@ fun nowPlayingDelegate(clickListener: OnClickListener) =
         val adapter = NowPlayingPagerAdapter(clickListener)
         val spacing = itemView.dimen(R.dimen.spacing_normal)
 
-        var bannerTimer: Timer? = null
         val timerHandler = Handler(Looper.getMainLooper())
-        val updateInterval = TimeUnit.SECONDS.toMillis(10L)
+        val updateInterval = TimeUnit.SECONDS.toMillis(5L)
+        var bannerTimer: Timer? = null
 
         nowPlayingPager.adapter = adapter
 
-        // Set offscreen page limit to at least 1, so adjacent pages are always laid out
+        // Set offscreen page limit to at least 1
+        // so adjacent pages are always laid out
         nowPlayingPager.offscreenPageLimit = 1
-        nowPlayingPager.addItemDecoration(HorizontalDecoration(spacingRight = spacing))
+        nowPlayingPager.addItemDecoration(SpaceDecoration(spacingRight = spacing))
 
         // TODO: This will probable will be exposed in later versions
         //  not to rely on getChildAt(0) which might break
+        //  setting padding on inner RecyclerView puts over scroll effect in the right place
         val recyclerView = nowPlayingPager.getChildAt(0) as RecyclerView
-        recyclerView.apply {
-            // setting padding on inner RecyclerView puts over scroll effect in the right place
-            val padding = itemView.dimen(R.dimen.spacing_normal)
-            setPadding(padding, 0, padding, 0)
-            clipToPadding = false
-        }
+        recyclerView.clipToPadding = false
+        recyclerView.updatePadding(left = spacing, right = spacing)
 
         bind {
             nowPlayingTitle.text = item.title
             adapter.items = item.movies
             adapter.notifyDataSetChanged()
-        }
 
-        onViewAttachedToWindow {
-            bannerTimer = Timer().also {
-                it.scheduleAtFixedRate(object : TimerTask() {
-                    override fun run() {
-                        if (adapter.itemCount == 0) return
-
-                        timerHandler.postAtFrontOfQueue {
-                            val currentItem = nowPlayingPager.currentItem
-                            if (currentItem < adapter.items.size - 1) {
-                                nowPlayingPager.setCurrentItem(currentItem + 1, true)
-                            } else {
-                                nowPlayingPager.setCurrentItem(0, true)
-                            }
-                        }
+            bannerTimer = Timer()
+            bannerTimer?.scheduleAtFixedRate(object : TimerTask() {
+                override fun run() {
+                    // Post to main thread as timer operates in a different one
+                    timerHandler.post {
+                        nowPlayingPager.switchToNextPosition()
                     }
-                }, updateInterval, updateInterval)
-            }
+                }
+            }, updateInterval, updateInterval)
         }
 
         onViewDetachedFromWindow {
             timerHandler.removeCallbacksAndMessages(null)
             bannerTimer?.cancel()
-            bannerTimer = null
         }
     }
 

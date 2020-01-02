@@ -7,17 +7,19 @@ import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.illiarb.core_ui_recycler_view.LayoutType
-import com.illiarb.core_ui_recycler_view.RecyclerViewBuilder
+import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.GridItemDecoration
 import com.illiarb.tmdbclient.discover.DiscoverModel.UiEvent.GenreSelected
 import com.illiarb.tmdbclient.discover.di.DiscoverComponent
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentDiscoverBinding
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
+import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.selectedCount
+import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.domain.Genre
@@ -43,12 +45,17 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
 
         val adapter = DiscoverAdapter()
 
-        RecyclerViewBuilder
-            .create {
-                type(LayoutType.Grid(GRID_SPAN_COUNT, view.dimen(R.dimen.spacing_micro)))
-                adapter(adapter)
-            }
-            .setupWith(binding.discoverList)
+        binding.discoverList.let {
+            it.adapter = adapter
+            it.layoutManager = GridLayoutManager(requireContext(), GRID_SPAN_COUNT)
+            it.addItemDecoration(
+                GridItemDecoration(view.dimen(R.dimen.spacing_micro), GRID_SPAN_COUNT)
+            )
+        }
+
+        binding.toolbar.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
+            v.updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
+        }
 
         ViewCompat.requestApplyInsets(view)
 

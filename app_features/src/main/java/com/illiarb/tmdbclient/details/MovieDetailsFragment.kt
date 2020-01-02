@@ -6,12 +6,10 @@ import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.illiarb.core_ui_image.CropOptions
 import com.illiarb.core_ui_image.RequestOptions.Companion.requestOptions
 import com.illiarb.core_ui_image.loadImage
-import com.illiarb.core_ui_recycler_view.LayoutOrientation
-import com.illiarb.core_ui_recycler_view.LayoutType
-import com.illiarb.core_ui_recycler_view.RecyclerViewBuilder
 import com.illiarb.tmdbclient.details.MovieDetailsViewModel.DefaultDetailsViewModel
 import com.illiarb.tmdbclient.details.di.MovieDetailsComponent
 import com.illiarb.tmdbclient.details.photos.PhotosAdapter
@@ -20,6 +18,7 @@ import com.illiarb.tmdbclient.movies.home.databinding.FragmentMovieDetailsBindin
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
+import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.domain.Movie
@@ -34,7 +33,7 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
 
     private val viewModel: MovieDetailsViewModel by lazy(LazyThreadSafetyMode.NONE) {
         viewModelFactory.create(DefaultDetailsViewModel::class.java)
-}
+    }
 
     override fun inject(appProvider: AppProvider) {
         MovieDetailsComponent
@@ -60,15 +59,14 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
 
         val adapter = PhotosAdapter()
 
-        RecyclerViewBuilder
-            .create {
-                adapter(adapter)
-                type(LayoutType.Linear())
-                orientation(LayoutOrientation.HORIZONTAL)
-                hasFixedSize(true)
-                spaceBetween { spacingLeft = view.dimen(R.dimen.spacing_normal) }
-            }
-            .setupWith(binding.movieDetailsPhotos)
+        binding.movieDetailsPhotos.let {
+            it.adapter = adapter
+            it.layoutManager = LinearLayoutManager(requireContext())
+            it.setHasFixedSize(true)
+            it.addItemDecoration(
+                SpaceDecoration(view.dimen(R.dimen.spacing_normal))
+            )
+        }
 
         bind(viewModel, adapter)
 

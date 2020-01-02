@@ -5,11 +5,11 @@
     <color name="tmdb_blue_800">#0069c0</color>
     <color name="tmdb_blue_300">#6EC6FF</color>
 
-    <color name="tmdb_yellow_500">#FFEE58</color>
-    <color name="tmdb_yellow_800">#C9BC1F</color>
-    <color name="tmdb_yellow_300">#FFFF8b</color>
+    <color name="tmdb_deep_orange_500">#FF5722</color>
+    <color name="tmdb_deep_orange_800">#C41C00</color>
+    <color name="tmdb_deep_orange_300">#FF8A50</color>
 
-    <color name="tmdb_black">#121212</color>
+    <color name="tmdb_black">#000</color>
 
     <color name="tmdb_white">#FFF</color>
 

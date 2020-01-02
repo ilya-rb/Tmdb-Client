@@ -2,17 +2,16 @@ package com.illiarb.tmdbclient.home.adapter
 
 import android.view.View
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
-import com.illiarb.core_ui_recycler_view.LayoutOrientation
-import com.illiarb.core_ui_recycler_view.LayoutType
-import com.illiarb.core_ui_recycler_view.RecyclerViewBuilder
 import com.illiarb.tmdbclient.common.delegates.movieDelegate
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.common.SizeSpec
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
+import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdblcient.core.domain.ListSection
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieSection
@@ -25,15 +24,17 @@ fun movieSectionDelegate(clickListener: OnClickListener) =
         val sectionList = itemView.findViewById<RecyclerView>(R.id.itemMovieSectionList)
         val seeAllButton = itemView.findViewById<View>(R.id.itemSectionSeeAll)
 
-        RecyclerViewBuilder
-            .create {
-                adapter(adapter)
-                type(LayoutType.Linear())
-                orientation(LayoutOrientation.HORIZONTAL)
-                hasFixedSize(true)
-                spaceBetween { spacingRight = itemView.dimen(R.dimen.spacing_normal) }
-            }
-            .setupWith(sectionList)
+        sectionList.let {
+            it.adapter = adapter
+            it.layoutManager =
+                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            it.setHasFixedSize(true)
+            it.addItemDecoration(
+                SpaceDecoration(
+                    spacingRight = itemView.dimen(R.dimen.spacing_normal)
+                )
+            )
+        }
 
         bind {
             sectionTitle.text = item.title
