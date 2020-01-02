@@ -9,7 +9,7 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -21,7 +21,6 @@
         android:id="@+id/discoverList"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/spacing_small"
         app:layout_constraintBottom_toTopOf="@id/discoverFiltersContainer"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -35,9 +34,7 @@
         android:id="@+id/discoverOverlay"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:alpha="0"
         android:background="@color/tmdb_black"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/discoverFiltersContainer"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

@@ -1,7 +1,6 @@
 package com.illiarb.tmdbclient.discover
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.illiarb.tmdbclient.discover.DiscoverModel.UiEvent
@@ -9,11 +8,14 @@ import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import com.illiarb.tmdblcient.core.domain.Genre
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.navigation.Router
+import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.services.TmdbService
-import com.illiarb.tmdblcient.core.services.analytics.AnalyticEvent
+import com.illiarb.tmdblcient.core.services.analytics.AnalyticEvent.RouterAction
 import com.illiarb.tmdblcient.core.services.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.util.Result
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import java.util.Collections
@@ -29,7 +31,9 @@ interface DiscoverModel {
 
     sealed class UiEvent {
         class ItemClick(val item: Any) : UiEvent()
-        class FiltersPanelClosed(val id: Int) : UiEvent()
+        class ApplyFilter(val id: Int) : UiEvent()
+        class Init(val genreId: Int) : UiEvent()
+        object ClearFilter : UiEvent()
     }
 }
 
@@ -39,9 +43,10 @@ class DefaultDiscoverModel @Inject constructor(
     private val analyticsService: AnalyticsService
 ) : BasePresentationModel(), DiscoverModel {
 
-    private val _results = flow { emit(tmdbService.discoverMovies().getOrThrow()) }
+    private val resultsChannel = Channel<List<Movie>>()
+    private val _results = resultsChannel.consumeAsFlow()
         .catch { emit(Collections.emptyList()) }
-        .asLiveData() as MutableLiveData
+        .asLiveData()
 
     private val _genres = flow { emit(tmdbService.getMovieGenres().getOrThrow()) }
         .catch { emit(Collections.emptyList()) }
@@ -55,22 +60,34 @@ class DefaultDiscoverModel @Inject constructor(
 
     override fun onUiEvent(event: UiEvent) {
         when (event) {
-            is UiEvent.FiltersPanelClosed -> applyFilter(event.id)
+            is UiEvent.Init -> init(event.genreId)
+            is UiEvent.ApplyFilter -> applyFilter(event.id)
+            is UiEvent.ClearFilter -> applyFilter()
             is UiEvent.ItemClick -> {
                 if (event.item is Movie) {
-                    val action = Router.Action.ShowMovieDetails(event.item.id)
-                    analyticsService.trackEvent(AnalyticEvent.RouterAction(action))
+                    val action = ShowMovieDetails(event.item.id)
+                    analyticsService.trackEvent(RouterAction(action))
                     router.executeAction(action)
                 }
             }
         }
     }
 
-    private fun applyFilter(id: Int) = viewModelScope.launch {
+    private fun init(genreId: Int) = viewModelScope.launch {
+        val result = if (genreId == Genre.GENRE_ALL) {
+            tmdbService.discoverMovies()
+        } else {
+            tmdbService.discoverMovies(genreId)
+        }
+
+        when (result) {
+            is Result.Success -> resultsChannel.offer(result.data)
+        }
+    }
+
+    private fun applyFilter(id: Int = -1) = viewModelScope.launch {
         when (val result = tmdbService.discoverMovies(id)) {
-            is Result.Success -> {
-                _results.value = result.data
-            }
+            is Result.Success -> resultsChannel.offer(result.data)
         }
     }
 }

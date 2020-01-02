@@ -15,9 +15,10 @@ import com.illiarb.tmdblcient.core.domain.NowPlayingSection
 import com.illiarb.tmdblcient.core.feature.FeatureFlagStore
 import com.illiarb.tmdblcient.core.feature.FeatureFlagStore.FeatureFlag
 import com.illiarb.tmdblcient.core.navigation.Router
+import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.services.TmdbService
-import com.illiarb.tmdblcient.core.services.analytics.AnalyticEvent
+import com.illiarb.tmdblcient.core.services.analytics.AnalyticEvent.RouterAction
 import com.illiarb.tmdblcient.core.services.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.util.Async
 import kotlinx.coroutines.flow.catch
@@ -63,17 +64,16 @@ class HomeModel @Inject constructor(
     override fun onUiEvent(event: HomeUiEvent) {
         when (event) {
             is HomeUiEvent.ItemClick -> {
-                when (event.item) {
-                    is Movie -> {
-                        val action = ShowMovieDetails(event.item.id)
-                        analyticsService.trackEvent(AnalyticEvent.RouterAction(action))
-                        router.executeAction(action)
-                    }
-                    is String -> {
-                        val action = Router.Action.ShowDiscover
-                        analyticsService.trackEvent(AnalyticEvent.RouterAction(action))
-                        router.executeAction(action)
-                    }
+                val action = when (event.item) {
+                    is Movie -> ShowMovieDetails(event.item.id)
+                    is Genre -> ShowDiscover(event.item.id)
+                    is String -> ShowDiscover()
+                    else -> null
+                }
+
+                action?.let {
+                    analyticsService.trackEvent(RouterAction(it))
+                    router.executeAction(it)
                 }
             }
         }

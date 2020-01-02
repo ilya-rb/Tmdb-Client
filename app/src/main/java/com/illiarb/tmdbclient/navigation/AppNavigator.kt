@@ -7,6 +7,8 @@ import androidx.navigation.Navigation
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdblcient.core.navigation.Navigator
 import com.illiarb.tmdblcient.core.navigation.Router
+import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
+import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import javax.inject.Inject
 
 /**
@@ -17,16 +19,19 @@ class AppNavigator @Inject constructor(private val activity: FragmentActivity) :
     override fun executeAction(action: Router.Action) {
         val controller = Navigation.findNavController(activity, R.id.nav_host_fragment)
         val destination = when (action) {
-            is Router.Action.ShowMovieDetails -> R.id.action_to_movie_details
-            is Router.Action.ShowDiscover -> R.id.action_moviesFragment_to_discoverFragment
+            is ShowMovieDetails -> R.id.action_to_movie_details
+            is ShowDiscover -> R.id.action_moviesFragment_to_discoverFragment
         }
         controller.navigate(destination, setDestinationArgs(action), setNavOptions())
     }
 
     private fun setDestinationArgs(action: Router.Action): Bundle {
         return when (action) {
-            is Router.Action.ShowMovieDetails -> Bundle().apply {
-                putInt(Router.Action.ShowMovieDetails.EXTRA_MOVIE_DETAILS, action.id)
+            is ShowMovieDetails -> Bundle().apply {
+                putInt(ShowMovieDetails.EXTRA_MOVIE_DETAILS, action.id)
+            }
+            is ShowDiscover -> Bundle().apply {
+                putInt(ShowDiscover.EXTRA_GENRE_ID, action.id)
             }
             else -> Bundle.EMPTY
         }

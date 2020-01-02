@@ -22,6 +22,7 @@ import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.domain.Genre
+import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -44,7 +45,7 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // discoverGenres added via <include> tag and not supported by view binding
+        // filters layout added via <include> tag and not supported by view binding
         discoverGenres = binding.root.findViewById(R.id.discoverGenres)
 
         val adapter = DiscoverAdapter()
@@ -63,14 +64,26 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
             v.updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
         }
 
-        binding.discoverOverlay.setOnClickListener {
-            binding.discoverRoot.transitionToStart()
-            viewModel.onUiEvent(UiEvent.FiltersPanelClosed(discoverGenres.checkedChipId))
+        binding.root.findViewById<View>(R.id.discoverApplyFilter).setOnClickListener {
+            dismissFiltersPanel()
+            viewModel.onUiEvent(UiEvent.ApplyFilter(discoverGenres.checkedChipId))
+        }
+
+        binding.root.findViewById<View>(R.id.discoverClearFilter).setOnClickListener {
+            discoverGenres.clearCheck()
+            dismissFiltersPanel()
+            viewModel.onUiEvent(UiEvent.ClearFilter)
         }
 
         ViewCompat.requestApplyInsets(view)
 
         bind(viewModel, adapter)
+
+        arguments?.let {
+            val genreId = it.getInt(ShowDiscover.EXTRA_GENRE_ID, Genre.GENRE_ALL)
+            discoverGenres.check(genreId)
+            viewModel.onUiEvent(UiEvent.Init(genreId))
+        }
     }
 
     override fun getViewBinding(inflater: LayoutInflater): FragmentDiscoverBinding =
@@ -84,9 +97,12 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
                 viewModel.onUiEvent(UiEvent.ItemClick(it))
             }
         }
-
         viewModel.results.observe(viewLifecycleOwner, adapter)
         viewModel.genres.observe(viewLifecycleOwner, discoverGenres.genres())
+    }
+
+    private fun dismissFiltersPanel() {
+        binding.discoverRoot.transitionToStart()
     }
 
     private fun ChipGroup.genres(): Observer<List<Genre>> = Observer { genres ->

@@ -11,6 +11,6 @@ class MovieAdapter(
     init {
         delegatesManager.addDelegate(movieSectionDelegate(clickListener))
         delegatesManager.addDelegate(nowPlayingDelegate(clickListener))
-        delegatesManager.addDelegate(genresSectionDelegate())
+        delegatesManager.addDelegate(genresSectionDelegate(clickListener))
     }
 }

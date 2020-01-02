@@ -8,17 +8,17 @@
     android:background="@color/tmdb_white"
     android:elevation="@dimen/elevation_normal"
     android:orientation="vertical"
-    tools:layout_marginTop="50dp"
     tools:layout_width="match_parent"
     tools:viewBindingIgnore="true">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/discoverApplyFilter"
             style="?attr/materialTextButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,6 +40,7 @@
             android:layout_weight="1" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/discoverClearFilter"
             style="?attr/materialTextButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,6 +52,9 @@
         android:id="@+id/discoverGenres"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginEnd="@dimen/spacing_normal"
+        android:layout_marginBottom="@dimen/spacing_normal"
         app:singleSelection="true" />
 
 </LinearLayout>
