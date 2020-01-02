@@ -34,7 +34,7 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
 
     private val viewModel: MovieDetailsViewModel by lazy(LazyThreadSafetyMode.NONE) {
         viewModelFactory.create(DefaultDetailsViewModel::class.java)
-    }
+}
 
     override fun inject(appProvider: AppProvider) {
         MovieDetailsComponent

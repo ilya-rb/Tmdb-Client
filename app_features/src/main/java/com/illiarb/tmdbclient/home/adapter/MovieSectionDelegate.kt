@@ -11,6 +11,7 @@ import com.illiarb.core_ui_recycler_view.RecyclerViewBuilder
 import com.illiarb.tmdbclient.common.delegates.movieDelegate
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
+import com.illiarb.tmdbexplorer.coreui.common.SizeSpec
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdblcient.core.domain.ListSection
 import com.illiarb.tmdblcient.core.domain.Movie
@@ -45,7 +46,13 @@ fun movieSectionDelegate(clickListener: OnClickListener) =
 class MovieSectionAdapter(clickListener: OnClickListener) : ListDelegationAdapter<List<Movie>>() {
 
     init {
-        delegatesManager.addDelegate(movieDelegate(clickListener))
+        delegatesManager.addDelegate(
+            movieDelegate(
+                clickListener,
+                SizeSpec.Fixed(R.dimen.item_movie_width),
+                SizeSpec.Fixed(R.dimen.item_movie_height)
+            )
+        )
     }
 
     companion object {

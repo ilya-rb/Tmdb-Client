@@ -3,6 +3,7 @@ package com.illiarb.core_ui_recycler_view
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.illiarb.core_ui_recycler_view.decoration.GridItemDecoration
 import com.illiarb.core_ui_recycler_view.decoration.HorizontalDecoration
 import com.illiarb.core_ui_recycler_view.decoration.VerticalDecoration
 
@@ -68,6 +69,11 @@ class RecyclerViewBuilder {
                             addItemDecoration(VerticalDecoration(it.spacingLeft))
                     }
                 }
+            }
+
+            if (type is LayoutType.Grid) {
+                val grid = type as LayoutType.Grid
+                addItemDecoration(GridItemDecoration(grid.spaceBetween, grid.spanCount))
             }
         }
     }

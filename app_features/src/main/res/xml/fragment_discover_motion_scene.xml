@@ -5,16 +5,29 @@
     <Transition
         app:constraintSetEnd="@id/end"
         app:constraintSetStart="@id/start"
-        app:duration="1000">
+        app:duration="500">
 
         <OnSwipe
             app:dragDirection="dragUp"
             app:touchAnchorId="@id/discoverFiltersContainer"
-            app:touchAnchorSide="top" />
+            app:touchAnchorSide="top"
+            app:touchRegionId="@id/discoverFiltersContainer" />
+
+        <OnClick
+            app:clickAction="transitionToStart"
+            app:targetId="@+id/discoverOverlay" />
 
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
+
+        <Constraint
+            android:id="@id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Constraint
             android:id="@id/discoverList"
@@ -23,7 +36,7 @@
             app:layout_constraintBottom_toTopOf="@id/discoverFiltersContainer"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <Constraint
             android:id="@id/discoverOverlay"
@@ -31,6 +44,7 @@
             android:layout_height="0dp"
             android:alpha="0"
             android:background="@color/tmdb_black"
+            android:clickable="false"
             app:layout_constraintBottom_toTopOf="@id/discoverFiltersContainer"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -52,13 +66,21 @@
     <ConstraintSet android:id="@+id/end">
 
         <Constraint
+            android:id="@id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
             android:id="@id/discoverList"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/discoverFiltersContainer"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <Constraint
             android:id="@id/discoverOverlay"
@@ -66,6 +88,7 @@
             android:layout_height="0dp"
             android:alpha="0.5"
             android:background="@color/tmdb_black"
+            android:clickable="true"
             app:layout_constraintBottom_toTopOf="@id/discoverFiltersContainer"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

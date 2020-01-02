@@ -25,10 +25,10 @@
             android:id="@+id/action_moviesFragment_to_discoverFragment"
             app:destination="@id/discoverFragment" />
 
-        <action
-            android:id="@+id/action_moviesFragment_to_movieDetailsFragment"
-            app:destination="@id/movieDetailsFragment" />
-
     </fragment>
+
+    <action
+        android:id="@+id/action_to_movie_details"
+        app:destination="@id/movieDetailsFragment" />
 
 </navigation>

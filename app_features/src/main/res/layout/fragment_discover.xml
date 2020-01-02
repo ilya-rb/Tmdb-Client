@@ -4,19 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/tmdb_white"
     app:layoutDescription="@xml/fragment_discover_motion_scene">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:title="Discover" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/discoverList"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/spacing_normal"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_margin="@dimen/spacing_small"
         app:layout_constraintBottom_toTopOf="@id/discoverFiltersContainer"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         tools:itemCount="10"
         tools:layoutManager="GridLayoutManager"
         tools:listitem="@layout/item_movie"
@@ -28,6 +36,7 @@
         android:layout_height="0dp"
         android:alpha="0"
         android:background="@color/tmdb_black"
+        android:clickable="false"
         app:layout_constraintBottom_toTopOf="@id/discoverFiltersContainer"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -52,6 +61,7 @@
             android:background="@drawable/bg_discover_swipe_view" />
 
         <TextView
+            android:id="@+id/discoverFiltersTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_normal"
@@ -62,9 +72,8 @@
             android:id="@+id/discoverGenres"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_normal"
-            android:layout_marginEnd="@dimen/spacing_normal"
-            app:singleSelection="false" />
+            android:layout_margin="@dimen/spacing_normal"
+            app:singleSelection="true" />
 
     </LinearLayout>
 

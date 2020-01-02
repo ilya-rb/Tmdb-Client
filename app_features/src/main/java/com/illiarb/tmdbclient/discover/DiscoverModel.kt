@@ -9,6 +9,7 @@ import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.services.TmdbService
 import com.illiarb.tmdblcient.core.services.analytics.AnalyticEvent
 import com.illiarb.tmdblcient.core.services.analytics.AnalyticsService
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import java.util.Collections

@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/item_movie_width"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
     android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/itemMovieCard"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_movie_height"
         app:cardCornerRadius="@dimen/corner_radius_normal"

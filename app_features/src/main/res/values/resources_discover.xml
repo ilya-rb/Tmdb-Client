@@ -2,5 +2,8 @@
 <resources>
 
     <string name="discover_genres_title">Genres</string>
+    <string name="discover_selected_count">%1$d Selected</string>
+
+    <dimen name="discover_item_movie_height">200dp</dimen>
 
 </resources>

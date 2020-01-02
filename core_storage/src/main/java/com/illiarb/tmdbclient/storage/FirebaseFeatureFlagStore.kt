@@ -11,7 +11,8 @@ import javax.inject.Singleton
 class FirebaseFeatureFlagStore @Inject constructor() : FeatureFlagStore {
 
     private val remoteConfig = FirebaseRemoteConfig.getInstance().apply {
-        setDefaults(R.xml.remote_config_defaults)
+        setDefaultsAsync(R.xml.remote_config_defaults)
+            .addOnFailureListener { Logger.e("Failed to set remote config defaults $it") }
     }
 
     init {

@@ -14,7 +14,6 @@ import com.illiarb.tmdbclient.home.di.HomeComponent
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentMoviesBinding
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
-import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdblcient.core.di.Injectable
@@ -55,8 +54,6 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
                 spaceBetween { spacingLeft = view.dimen(R.dimen.item_movie_spacing) }
             }
             .setupWith(binding.moviesList)
-
-        view.awareOfWindowInsets()
 
         bind(viewModel, adapter)
     }

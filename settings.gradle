@@ -8,4 +8,5 @@ include ':app',
         ':core_ui_recycler_view',
         ':core_test',
         ':app_features',
-        ':core_tools'
+        ':core_tools',
+        ':debug'

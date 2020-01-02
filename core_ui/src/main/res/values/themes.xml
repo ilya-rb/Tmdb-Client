@@ -20,6 +20,10 @@
         <item name="textAppearanceButton">@style/TextAppearance.Tmdb.Button</item>
         <item name="textAppearanceOverline">@style/TextAppearance.Tmdb.Overline</item>
 
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Tmdb.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Tmdb.SmallComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Tmdb.SmallComponent</item>
+
     </style>
 
     <!-- Main Application theme. -->
@@ -39,14 +43,6 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">true</item>
 
-    </style>
-
-    <style name="Theme.Tmdb.AppBarOverlay" parent="ThemeOverlay.MaterialComponents">
-        <item name="colorPrimary">@color/tmdb_white</item>
-    </style>
-
-    <style name="Theme.Tmdb.MovieDetailsAppBarOverlay" parent="ThemeOverlay.MaterialComponents">
-        <item name="colorPrimary">@android:color/transparent</item>
     </style>
 
 </resources>

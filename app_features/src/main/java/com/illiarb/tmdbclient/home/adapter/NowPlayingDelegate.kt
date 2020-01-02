@@ -78,6 +78,7 @@ fun nowPlayingDelegate(clickListener: OnClickListener) =
         onViewDetachedFromWindow {
             timerHandler.removeCallbacksAndMessages(null)
             bannerTimer?.cancel()
+            bannerTimer = null
         }
     }
 

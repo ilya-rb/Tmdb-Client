@@ -8,12 +8,17 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.illiarb.core_ui_recycler_view.LayoutType
 import com.illiarb.core_ui_recycler_view.RecyclerViewBuilder
+import com.illiarb.tmdbclient.discover.DiscoverModel.UiEvent.GenreSelected
 import com.illiarb.tmdbclient.discover.di.DiscoverComponent
+import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentDiscoverBinding
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
 import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
+import com.illiarb.tmdbexplorer.coreui.ext.dimen
+import com.illiarb.tmdbexplorer.coreui.ext.selectedCount
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.domain.Genre
@@ -41,12 +46,12 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
 
         RecyclerViewBuilder
             .create {
-                type(LayoutType.Grid(GRID_SPAN_COUNT))
+                type(LayoutType.Grid(GRID_SPAN_COUNT, view.dimen(R.dimen.spacing_micro)))
                 adapter(adapter)
             }
             .setupWith(binding.discoverList)
 
-        binding.discoverList.awareOfWindowInsets()
+        binding.toolbar.awareOfWindowInsets()
 
         ViewCompat.requestApplyInsets(view)
 
@@ -65,27 +70,33 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
             }
         }
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            binding.discoverGenres.selectedCount().collect {
+                binding.discoverFiltersTitle.text = getString(R.string.discover_selected_count, it)
+            }
+        }
+
         viewModel.results.observe(viewLifecycleOwner, adapter)
-        viewModel.genres.observe(viewLifecycleOwner, Observer { genres ->
-            genres
-                .map { genre ->
-                    val chip = Chip(
-                        requireContext(),
-                        null,
-                        com.google.android.material.R.style.Widget_MaterialComponents_Chip_Choice
-                    )
-                    bindChip(chip, genre)
-                    chip
-                }
-                .forEach(binding.discoverGenres::addView)
+        viewModel.genres.observe(viewLifecycleOwner, binding.discoverGenres.genres { genre, _ ->
+            viewModel.onUiEvent(GenreSelected(genre.id))
         })
     }
 
-    private fun bindChip(chip: Chip, genre: Genre) {
-        chip.text = genre.name
-        chip.id = genre.id
-        chip.setOnClickListener {
-            viewModel.onUiEvent(DiscoverModel.UiEvent.GenreSelected(chip.id))
+    private inline fun ChipGroup.genres(
+        crossinline onGenreClicked: (Genre, Boolean) -> Unit
+    ): Observer<List<Genre>> = Observer { genres ->
+        removeAllViews()
+
+        genres.forEach { genre ->
+            val chip = Chip(context)
+
+            chip.text = genre.name
+            chip.id = genre.id
+            chip.setOnCheckedChangeListener { _, isChecked ->
+                onGenreClicked(genre, isChecked)
+            }
+
+            binding.discoverGenres.addView(chip)
         }
     }
 }
