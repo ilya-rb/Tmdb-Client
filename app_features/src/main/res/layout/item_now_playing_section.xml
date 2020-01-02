@@ -13,7 +13,7 @@
         android:paddingRight="@dimen/spacing_normal"
         android:paddingBottom="@dimen/spacing_normal"
         android:textAppearance="?attr/textAppearanceHeadline5"
-        android:textColor="?attr/colorOnSurface"
+        android:textColor="?attr/colorOnBackground"
         android:textStyle="bold" />
 
     <androidx.viewpager2.widget.ViewPager2

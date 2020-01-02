@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:cardElevation="@dimen/elevation_normal"
     tools:layout_height="200dp">
 
     <ImageView
@@ -26,7 +28,7 @@
         android:maxLines="2"
         android:padding="@dimen/spacing_normal"
         android:textAppearance="?attr/textAppearanceHeadline5"
-        android:textColor="?attr/colorSurface"
+        android:textColor="@color/tmdb_white"
         tools:text="@tools:sample/lorem/random" />
 
-</FrameLayout>
+</com.google.android.material.card.MaterialCardView>

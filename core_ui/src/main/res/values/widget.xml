@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <style name="Theme.Tmdb.Button" parent="Widget.MaterialComponents.Button" />
-    <style name="Theme.Tmdb.TextView" parent="Widget.MaterialComponents.TextView" />
-
-</resources>

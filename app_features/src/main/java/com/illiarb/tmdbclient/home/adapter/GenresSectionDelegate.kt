@@ -14,7 +14,11 @@ fun genresSectionDelegate() =
         bind {
             item.genres.forEach { genre ->
                 chipGroup.addView(
-                    Chip(itemView.context).apply { text = genre.name }
+                    Chip(
+                        itemView.context,
+                        null,
+                        com.illiarb.tmdbexplorer.coreui.R.attr.materialChipAction
+                    ).apply { text = genre.name }
                 )
             }
         }

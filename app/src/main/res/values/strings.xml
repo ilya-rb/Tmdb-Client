@@ -1,11 +1,8 @@
 <resources>
-    <string name="app_name">TmdbClient</string>
-    <string name="dynamic_feature_account">account</string>
+    <string name="app_name">TMDB client</string>
 
     <!-- Messages -->
     <string name="network_not_connected">Not connected to network</string>
-
-    <!-- Shortcuts -->
-    <string name="search_shortcut_short_label">Search</string>
+    <string name="network_not_connected_settings_panel">Open settings</string>
 
 </resources>

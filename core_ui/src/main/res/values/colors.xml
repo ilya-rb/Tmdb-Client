@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="tmdb_purple_200">#BB86FC</color>
-    <color name="tmdb_blue_700">#3700B3</color>
-    <color name="tmdb_amber_500">#FFC107</color>
+    <color name="tmdb_blue_500">#2196f3</color>
+    <color name="tmdb_blue_800">#0069c0</color>
+    <color name="tmdb_blue_300">#6EC6FF</color>
+
+    <color name="tmdb_yellow_500">#FFEE58</color>
+    <color name="tmdb_yellow_800">#C9BC1F</color>
+    <color name="tmdb_yellow_300">#FFFF8b</color>
+
     <color name="tmdb_black">#121212</color>
+
     <color name="tmdb_white">#FFF</color>
+
     <color name="tmdb_red">#CF6679</color>
 
 </resources>

@@ -23,7 +23,8 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/spacing_normal"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_tmdb" />
+                android:src="@drawable/ic_tmdb"
+                android:tint="?attr/colorOnPrimary" />
 
             <Space
                 android:layout_width="0dp"
@@ -40,7 +41,8 @@
                 android:paddingTop="@dimen/spacing_micro"
                 android:paddingRight="@dimen/spacing_normal"
                 android:paddingBottom="@dimen/spacing_micro"
-                android:src="@drawable/ic_search" />
+                android:src="@drawable/ic_search"
+                android:tint="?attr/colorOnPrimary" />
 
             <ImageView
                 android:id="@+id/moviesAccount"
@@ -51,7 +53,8 @@
                 android:paddingTop="@dimen/spacing_micro"
                 android:paddingRight="@dimen/spacing_normal"
                 android:paddingBottom="@dimen/spacing_micro"
-                android:src="@drawable/ic_account" />
+                android:src="@drawable/ic_account"
+                android:tint="?attr/colorOnPrimary" />
 
         </LinearLayout>
 

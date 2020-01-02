@@ -10,7 +10,6 @@
         android:id="@+id/itemMovieCard"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_movie_height"
-        app:cardCornerRadius="@dimen/corner_radius_normal"
         app:cardElevation="@dimen/elevation_normal">
 
         <ImageView

@@ -1,20 +1,23 @@
 package com.illiarb.tmdbclient
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import com.illiarb.tmdb.debug.DebugSelectorFragment
+import com.illiarb.tmdbclient.databinding.ActivityMainBinding
 import com.illiarb.tmdbclient.di.MainComponent
-import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
-import com.illiarb.tmdbexplorer.coreui.ext.setVisible
-import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.navigation.Navigator
 import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
 import com.illiarb.tmdblcient.core.tools.ConnectivityStatus
-import kotlinx.android.synthetic.main.activity_main.*
+import com.illiarb.tmdblcient.core.tools.ConnectivityStatus.ConnectionState
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,15 +33,25 @@ class MainActivity : AppCompatActivity(), Injectable {
     @Inject
     lateinit var connectivityStatus: ConnectivityStatus
 
+    private lateinit var binding: ActivityMainBinding
+
+    private var connectionSnackbar: Snackbar? = null
+
     override fun inject(appProvider: AppProvider) =
         MainComponent.get(appProvider, this).inject(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         if (BuildConfig.DEBUG) {
-            setupDebugView()
+            binding.btnDebug.visibility = View.VISIBLE
+            binding.btnDebug.setOnClickListener {
+                DebugSelectorFragment.newInstance()
+                    .show(supportFragmentManager, DebugSelectorFragment::class.java.name)
+            }
         }
 
         lifecycleScope.launch {
@@ -58,22 +71,28 @@ class MainActivity : AppCompatActivity(), Injectable {
         actionsBuffer.removeNavigator()
     }
 
-    private fun updateConnectionStateLabel(state: ConnectivityStatus.ConnectionState) {
-        connectionStatusLabel.setVisible(state == ConnectivityStatus.ConnectionState.NOT_CONNECTED)
+    private fun updateConnectionStateLabel(state: ConnectionState) {
+        when (state) {
+            ConnectionState.CONNECTED -> connectionSnackbar?.dismiss()
+            ConnectionState.NOT_CONNECTED -> {
+                connectionSnackbar = Snackbar.make(
+                    binding.root,
+                    R.string.network_not_connected,
+                    Snackbar.LENGTH_INDEFINITE
+                ).apply {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        setupSnackbarConnectivityAction()
+                    }
+                }
+                connectionSnackbar!!.show()
+            }
+        }
     }
 
-    private fun setupDebugView() {
-        val btnDebug = findViewById<View>(R.id.btnDebug)
-
-        btnDebug.visibility = View.VISIBLE
-
-        btnDebug.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
-            view.updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
-        }
-
-        btnDebug.setOnClickListener {
-            DebugSelectorFragment.newInstance()
-                .show(supportFragmentManager, DebugSelectorFragment::class.java.name)
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun Snackbar.setupSnackbarConnectivityAction() {
+        setAction(R.string.network_not_connected_settings_panel) {
+            startActivity(Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY))
         }
     }
 }

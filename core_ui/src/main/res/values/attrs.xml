@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="materialTextButtonStyle" />
+    <attr name="materialChipFilter" />
+    <attr name="materialChipAction" />
+    <attr name="materialChipEntry" />
+    <attr name="materialChipChoice" />
+    <attr name="materialTextInputOutlined" />
+    <attr name="materialTextInputFilled" />
+
+</resources>

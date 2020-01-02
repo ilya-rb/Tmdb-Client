@@ -21,25 +21,43 @@
         <item name="textAppearanceOverline">@style/TextAppearance.Tmdb.Overline</item>
 
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Tmdb.SmallComponent</item>
-        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Tmdb.SmallComponent</item>
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Tmdb.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">
+            @style/ShapeAppearance.Tmdb.SmallComponent
+        </item>
 
+        <item name="materialTextButtonStyle">
+            @style/Widget.MaterialComponents.Button.TextButton
+        </item>
+
+        <item name="materialChipAction">@style/Widget.MaterialComponents.Chip.Action</item>
+        <item name="materialChipEntry">@style/Widget.MaterialComponents.Chip.Entry</item>
+        <item name="materialChipFilter">@style/Widget.MaterialComponents.Chip.Filter</item>
+        <item name="materialChipChoice">@style/Widget.MaterialComponents.Chip.Choice</item>
+
+        <item name="materialTextInputFilled">
+            @style/Widget.MaterialComponents.TextInputLayout.FilledBox
+        </item>
+
+        <item name="materialTextInputOutlined">
+            @style/Widget.MaterialComponents.TextInputLayout.OutlinedBox
+        </item>
     </style>
 
     <!-- Main Application theme. -->
     <style name="Theme.Tmdb" parent="Base.Theme.Tmdb">
 
-        <item name="colorPrimary">@color/tmdb_purple_200</item>
-        <item name="colorPrimaryVariant">@color/tmdb_blue_700</item>
-        <item name="colorSecondary">@color/tmdb_amber_500</item>
+        <item name="colorPrimary">@color/tmdb_blue_500</item>
+        <item name="colorPrimaryVariant">@color/tmdb_blue_800</item>
+        <item name="colorSecondary">@color/tmdb_yellow_500</item>
+        <item name="colorSecondaryVariant">@color/tmdb_yellow_800</item>
         <item name="colorSurface">@color/tmdb_white</item>
-        <item name="colorError">@color/tmdb_red</item>
-        <item name="colorOnBackground">@color/tmdb_black</item>
         <item name="colorOnSurface">@color/tmdb_black</item>
+        <item name="colorError">@color/tmdb_red</item>
         <item name="colorOnError">@color/tmdb_white</item>
+        <item name="colorOnBackground">@color/tmdb_black</item>
 
         <item name="android:colorBackground">@color/tmdb_white</item>
-        <item name="android:fontFamily">@font/montserrat</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">true</item>
 

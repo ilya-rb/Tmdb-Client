@@ -15,7 +15,9 @@ import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentMoviesBinding
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
+import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.setVisible
+import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.tools.Logger
@@ -43,6 +45,9 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
 
         binding.appBar.liftOnScrollTargetViewId = R.id.moviesList
         binding.appBar.isLiftOnScroll = true
+        binding.appBar.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
+            v.updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
+        }
 
         val adapter = MovieAdapter()
 

@@ -1,7 +1,5 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 apply from: dependenciesFilePath
@@ -21,6 +19,12 @@ android {
         vectorDrawables.useSupportLibrary true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        viewBinding {
+            enabled true
+        }
     }
 
     buildTypes {

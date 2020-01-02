@@ -12,7 +12,7 @@
         android:paddingLeft="@dimen/spacing_normal"
         android:paddingRight="@dimen/spacing_normal"
         android:textAppearance="?attr/textAppearanceBody1"
-        android:textColor="?attr/colorOnSurface"
+        android:textColor="?attr/colorOnBackground"
         app:layout_constraintBottom_toBottomOf="@id/itemSectionSeeAll"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -20,7 +20,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/itemSectionSeeAll"
-        style="?attr/materialButtonOutlinedStyle"
+        style="?attr/materialTextButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/spacing_normal"

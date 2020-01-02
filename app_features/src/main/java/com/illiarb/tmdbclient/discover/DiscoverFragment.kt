@@ -16,7 +16,6 @@ import com.illiarb.tmdbclient.discover.di.DiscoverComponent
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentDiscoverBinding
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
-import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.selectedCount
 import com.illiarb.tmdblcient.core.di.Injectable
@@ -50,8 +49,6 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
                 adapter(adapter)
             }
             .setupWith(binding.discoverList)
-
-        binding.toolbar.awareOfWindowInsets()
 
         ViewCompat.requestApplyInsets(view)
 
@@ -88,7 +85,11 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
         removeAllViews()
 
         genres.forEach { genre ->
-            val chip = Chip(context)
+            val chip = Chip(
+                context,
+                null,
+                com.illiarb.tmdbexplorer.coreui.R.attr.materialChipChoice
+            )
 
             chip.text = genre.name
             chip.id = genre.id
