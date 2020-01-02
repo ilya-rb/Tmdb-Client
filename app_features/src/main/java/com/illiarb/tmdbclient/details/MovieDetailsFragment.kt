@@ -61,7 +61,8 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
 
         binding.movieDetailsPhotos.let {
             it.adapter = adapter
-            it.layoutManager = LinearLayoutManager(requireContext())
+            it.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             it.setHasFixedSize(true)
             it.addItemDecoration(
                 SpaceDecoration(view.dimen(R.dimen.spacing_normal))

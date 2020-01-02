@@ -37,8 +37,9 @@ class DefaultTmdbService @Inject constructor(
     private suspend fun getMoviesByType(filter: MovieFilter): List<Movie> =
         repository.getMoviesByType(filter.code, false)
 
-    override suspend fun discoverMovies(): Result<List<Movie>> = Result.create {
-        val results = discoverApi.discoverMoviesAsync().await()
+    override suspend fun discoverMovies(genreId: Int): Result<List<Movie>> = Result.create {
+        val results =
+            discoverApi.discoverMoviesAsync(if (genreId != -1) genreId.toString() else null).await()
         movieMapper.mapList(results.results)
     }
 }

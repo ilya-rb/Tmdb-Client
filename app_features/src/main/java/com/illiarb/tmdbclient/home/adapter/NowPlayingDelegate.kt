@@ -55,15 +55,16 @@ fun nowPlayingDelegate(clickListener: OnClickListener) =
             adapter.items = item.movies
             adapter.notifyDataSetChanged()
 
-            bannerTimer = Timer()
-            bannerTimer?.scheduleAtFixedRate(object : TimerTask() {
-                override fun run() {
-                    // Post to main thread as timer operates in a different one
-                    timerHandler.post {
-                        nowPlayingPager.switchToNextPosition()
-                    }
-                }
-            }, updateInterval, updateInterval)
+            // TODO: Fix timer
+//            bannerTimer = Timer()
+//            bannerTimer?.scheduleAtFixedRate(object : TimerTask() {
+//                override fun run() {
+//                    // Post to main thread as timer operates in a different one
+//                    timerHandler.post {
+//                        nowPlayingPager.switchToNextPosition()
+//                    }
+//                }
+//            }, updateInterval, updateInterval)
         }
 
         onViewDetachedFromWindow {

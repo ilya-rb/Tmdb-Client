@@ -13,10 +13,6 @@
             app:touchAnchorSide="top"
             app:touchRegionId="@id/discoverFiltersContainer" />
 
-        <OnClick
-            app:clickAction="transitionToStart"
-            app:targetId="@+id/discoverOverlay" />
-
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
@@ -43,8 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:alpha="0"
-            android:background="@color/tmdb_black"
-            android:clickable="false"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/discoverFiltersContainer"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -87,8 +82,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:alpha="0.5"
-            android:background="@color/tmdb_black"
-            android:clickable="true"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@id/discoverFiltersContainer"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

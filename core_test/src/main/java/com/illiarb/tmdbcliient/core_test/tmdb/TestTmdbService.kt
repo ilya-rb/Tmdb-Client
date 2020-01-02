@@ -38,6 +38,6 @@ class TestTmdbService(
         moviesRepository.getMovieReviews(id)
     }
 
-    override suspend fun discoverMovies(): Result<List<Movie>> =
+    override suspend fun discoverMovies(genreId: Int): Result<List<Movie>> =
         Result.create { Collections.emptyList<Movie>() }
 }

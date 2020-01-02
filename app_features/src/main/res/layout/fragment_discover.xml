@@ -2,6 +2,7 @@
 <androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/discoverRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutDescription="@xml/fragment_discover_motion_scene">
@@ -36,45 +37,19 @@
         android:layout_height="0dp"
         android:alpha="0"
         android:background="@color/tmdb_black"
-        android:clickable="false"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/discoverFiltersContainer"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+    <include
         android:id="@+id/discoverFiltersContainer"
+        layout="@layout/layout_discover_filter"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/tmdb_white"
-        android:elevation="@dimen/elevation_normal"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-
-        <View
-            android:layout_width="40dp"
-            android:layout_height="5dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/spacing_normal"
-            android:background="@drawable/bg_discover_swipe_view" />
-
-        <TextView
-            android:id="@+id/discoverFiltersTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_normal"
-            android:text="@string/discover_genres_title"
-            android:textAppearance="?attr/textAppearanceBody1" />
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/discoverGenres"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_normal"
-            app:singleSelection="true" />
-
-    </LinearLayout>
+        app:layout_constraintRight_toRightOf="parent" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
