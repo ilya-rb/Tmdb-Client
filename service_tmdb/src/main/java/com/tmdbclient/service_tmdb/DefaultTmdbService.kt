@@ -31,7 +31,11 @@ class DefaultTmdbService @Inject constructor(
     }
 
     override suspend fun getTrending(): Result<TrendingSection> = Result.create {
-        val results = trendingApi.getTrendingAsync("all", "week").await()
+        val results = trendingApi.getTrendingAsync(
+            TrendingApi.TRENDING_TYPE_ALL,
+            TrendingApi.TRENDING_THIS_WEEK
+        ).await()
+
         TrendingSection(trendingMapper.mapList(results.results))
     }
 
@@ -48,8 +52,11 @@ class DefaultTmdbService @Inject constructor(
         repository.getMoviesByType(filter.code, false)
 
     override suspend fun discoverMovies(genreId: Int): Result<List<Movie>> = Result.create {
-        val results =
-            discoverApi.discoverMoviesAsync(if (genreId != -1) genreId.toString() else null).await()
+        val results = if (genreId == -1) {
+            discoverApi.discoverMoviesAsync().await()
+        } else {
+            discoverApi.discoverMoviesAsync(genreId.toString()).await()
+        }
         movieMapper.mapList(results.results)
     }
 }

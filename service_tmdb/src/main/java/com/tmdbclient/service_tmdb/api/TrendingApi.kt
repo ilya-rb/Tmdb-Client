@@ -8,6 +8,11 @@ import retrofit2.http.Path
 
 interface TrendingApi {
 
+    companion object {
+        const val TRENDING_THIS_WEEK = "week"
+        const val TRENDING_TYPE_ALL = "all"
+    }
+
     @GET("trending/{media_type}/{time_window}")
     fun getTrendingAsync(
         @Path("media_type") mediaType: String,

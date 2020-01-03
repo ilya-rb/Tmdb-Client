@@ -6,6 +6,7 @@ import com.tmdbclient.service_tmdb.configuration.ImageUrlCreator
 import com.tmdbclient.service_tmdb.model.MovieModel
 import com.tmdbclient.service_tmdb.model.PersonModel
 import com.tmdbclient.service_tmdb.model.TrendingModel
+import com.tmdbclient.service_tmdb.model.TvShowModel
 import java.util.Collections
 import javax.inject.Inject
 
@@ -18,6 +19,11 @@ class TrendingMapper @Inject constructor(
             is MovieModel -> TrendingItem(
                 imageUrlCreator.createImageUrl(from.posterPath),
                 from.title
+            )
+
+            is TvShowModel -> TrendingItem(
+                imageUrlCreator.createImageUrl(from.posterPath),
+                from.name
             )
 
             is PersonModel -> TrendingItem(
@@ -36,5 +42,5 @@ class TrendingMapper @Inject constructor(
     }
 
     private fun isTypeSupported(item: TrendingModel): Boolean =
-        item is MovieModel || item is PersonModel
+        item is MovieModel || item is PersonModel || item is TvShowModel
 }
