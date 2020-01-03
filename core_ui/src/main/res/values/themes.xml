@@ -42,14 +42,17 @@
         <item name="materialTextInputOutlined">
             @style/Widget.MaterialComponents.TextInputLayout.OutlinedBox
         </item>
+
     </style>
 
     <!-- Main Application theme. -->
     <style name="Theme.Tmdb" parent="Base.Theme.Tmdb">
 
         <item name="colorPrimary">@color/tmdb_blue_500</item>
+        <item name="colorOnPrimary">@color/tmdb_white</item>
         <item name="colorPrimaryVariant">@color/tmdb_blue_800</item>
         <item name="colorSecondary">@color/tmdb_deep_orange_500</item>
+        <item name="colorOnSecondary">@color/tmdb_white</item>
         <item name="colorSecondaryVariant">@color/tmdb_deep_orange_800</item>
         <item name="colorSurface">@color/tmdb_white</item>
         <item name="colorOnSurface">@color/tmdb_black</item>

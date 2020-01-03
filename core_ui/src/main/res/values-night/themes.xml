@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Tmdb" parent="Base.Theme.Tmdb">
+
+        <item name="colorPrimary">@color/tmdb_blue_500</item>
+        <item name="colorOnPrimary">@color/tmdb_white</item>
+        <item name="colorPrimaryVariant">@color/tmdb_blue_800</item>
+        <item name="colorSecondary">@color/tmdb_deep_orange_500</item>
+        <item name="colorOnSecondary">@color/tmdb_white</item>
+        <item name="colorSecondaryVariant">@color/tmdb_deep_orange_800</item>
+        <item name="colorSurface">@color/tmdb_black</item>
+        <item name="colorOnSurface">@color/tmdb_white</item>
+        <item name="colorError">@color/tmdb_red</item>
+        <item name="colorOnError">@color/tmdb_white</item>
+        <item name="colorOnBackground">@color/tmdb_white</item>
+
+        <item name="android:colorBackground">@color/tmdb_black</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+
+    </style>
+
+</resources>
