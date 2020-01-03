@@ -103,6 +103,9 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
 
         viewModel.results.observe(viewLifecycleOwner, adapter)
         viewModel.genres.observe(viewLifecycleOwner, discoverGenres.genres())
+        viewModel.screenTitle.observe(viewLifecycleOwner, Observer {
+            binding.toolbar.title = it
+        })
     }
 
     private fun dismissFiltersPanel() {
