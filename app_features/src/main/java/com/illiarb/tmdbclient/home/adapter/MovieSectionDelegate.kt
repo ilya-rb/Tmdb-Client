@@ -58,8 +58,4 @@ class MovieSectionAdapter(clickListener: OnClickListener) : ListDelegationAdapte
             )
         )
     }
-
-    companion object {
-        const val IMAGE_THUMB_FACTOR = 0.2f
-    }
 }

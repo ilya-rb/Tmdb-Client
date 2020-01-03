@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.illiarb.tmdbclient.home.HomeViewModel.HomeUiEvent.ItemClick
+import com.illiarb.tmdbclient.home.HomeModel.UiEvent
 import com.illiarb.tmdbclient.home.adapter.MovieAdapter
 import com.illiarb.tmdbclient.home.di.HomeComponent
 import com.illiarb.tmdbclient.movies.home.R
@@ -20,7 +20,6 @@ import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
-import com.illiarb.tmdblcient.core.tools.Logger
 import com.illiarb.tmdblcient.core.util.Async
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -31,8 +30,8 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val viewModel: HomeViewModel by lazy(LazyThreadSafetyMode.NONE) {
-        ViewModelProvider(this, viewModelFactory).get(HomeModel::class.java)
+    private val viewModel: HomeModel by lazy(LazyThreadSafetyMode.NONE) {
+        ViewModelProvider(this, viewModelFactory).get(DefaultHomeModel::class.java)
     }
 
     override fun getViewBinding(inflater: LayoutInflater): FragmentMoviesBinding =
@@ -50,6 +49,8 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
                 v.updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
             }
         }
+
+        binding.moviesSwipeRefresh.isEnabled = false
 
         val adapter = MovieAdapter()
 
@@ -69,21 +70,21 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
         bind(viewModel, adapter)
     }
 
-    private fun bind(viewModel: HomeViewModel, adapter: MovieAdapter) {
+    private fun bind(viewModel: HomeModel, adapter: MovieAdapter) {
         viewModel.isAccountVisible.observe(viewLifecycleOwner, Observer(::setAccountVisible))
+
         viewModel.movieSections.observe(viewLifecycleOwner, Observer { state ->
-            when (state) {
-                is Async.Fail -> Logger.e("Got error: ", state.error)
-                is Async.Success -> {
-                    adapter.items = state()
-                    adapter.notifyDataSetChanged()
-                }
+            binding.moviesSwipeRefresh.isRefreshing = state is Async.Loading
+
+            if (state is Async.Success) {
+                adapter.items = state()
+                adapter.notifyDataSetChanged()
             }
         })
 
         viewLifecycleOwner.lifecycleScope.launch {
             adapter.clicks().collect {
-                viewModel.onUiEvent(ItemClick(it))
+                viewModel.onUiEvent(UiEvent.ItemClick(it))
             }
         }
     }

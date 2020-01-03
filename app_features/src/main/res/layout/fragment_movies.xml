@@ -1,69 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/moviesSwipeRefresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="@dimen/spacing_small"
-            android:paddingBottom="@dimen/spacing_small">
-
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/spacing_normal"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_tmdb"
-                android:tint="?attr/colorOnPrimary" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:id="@+id/moviesSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:contentDescription="@null"
-                android:paddingLeft="@dimen/spacing_normal"
-                android:paddingTop="@dimen/spacing_micro"
-                android:paddingRight="@dimen/spacing_normal"
-                android:paddingBottom="@dimen/spacing_micro"
-                android:src="@drawable/ic_search"
-                android:tint="?attr/colorOnPrimary" />
-
-            <ImageView
-                android:id="@+id/moviesAccount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@null"
-                android:paddingLeft="@dimen/spacing_normal"
-                android:paddingTop="@dimen/spacing_micro"
-                android:paddingRight="@dimen/spacing_normal"
-                android:paddingBottom="@dimen/spacing_micro"
-                android:src="@drawable/ic_account"
-                android:tint="?attr/colorOnPrimary" />
-
-        </LinearLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/moviesList"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:orientation="vertical">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/spacing_small"
+                android:paddingBottom="@dimen/spacing_small">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_tmdb"
+                    android:tint="?attr/colorOnPrimary" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/moviesSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:contentDescription="@null"
+                    android:paddingLeft="@dimen/spacing_normal"
+                    android:paddingTop="@dimen/spacing_micro"
+                    android:paddingRight="@dimen/spacing_normal"
+                    android:paddingBottom="@dimen/spacing_micro"
+                    android:src="@drawable/ic_search"
+                    android:tint="?attr/colorOnPrimary" />
+
+                <ImageView
+                    android:id="@+id/moviesAccount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@null"
+                    android:paddingLeft="@dimen/spacing_normal"
+                    android:paddingTop="@dimen/spacing_micro"
+                    android:paddingRight="@dimen/spacing_normal"
+                    android:paddingBottom="@dimen/spacing_micro"
+                    android:src="@drawable/ic_account"
+                    android:tint="?attr/colorOnPrimary" />
+
+            </LinearLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/moviesList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

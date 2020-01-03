@@ -16,7 +16,7 @@ deps.playCore = "com.google.android.play:core:$versions.playCore"
 
 // AndroidX
 deps.supportDesign = "com.google.android.material:material:$versions.supportLibrary"
-deps.appcompat = "androidx.appcompat:appcompat:$versions.supportLibrary"
+deps.swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:$versions.swipeRefreshLayout"
 deps.pallete = "androidx.palette:palette:$versions.supportLibrary"
 deps.recyclerView = "androidx.recyclerview:recyclerview:$versions.supportLibrary"
 deps.constraintLayout = "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"

@@ -7,7 +7,6 @@ import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 import com.illiarb.core_ui_image.CropOptions
 import com.illiarb.core_ui_image.RequestOptions
 import com.illiarb.core_ui_image.loadImage
-import com.illiarb.tmdbclient.home.adapter.MovieSectionAdapter
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.common.SizeSpec
@@ -40,7 +39,7 @@ fun movieDelegate(
         image.loadImage(item.posterPath, RequestOptions.requestOptions {
             cornerRadius(imageCornerRadius)
             cropOptions(CropOptions.CENTER_CROP)
-            thumbnail(MovieSectionAdapter.IMAGE_THUMB_FACTOR)
+            useCrossFade(false)
         })
     }
 }

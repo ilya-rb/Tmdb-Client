@@ -18,7 +18,7 @@ sealed class Result<out T : Any> {
 
     companion object {
 
-        suspend fun <T : Any> create(block: suspend () -> T): Result<T> {
+        inline fun <T : Any> create(block: () -> T): Result<T> {
             return try {
                 Success(block())
             } catch (e: Exception) {

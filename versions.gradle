@@ -21,6 +21,7 @@ versions.with {
 
     // Support
     supportLibrary = "1.2.0-alpha03"
+    swipeRefreshLayout = "1.0.0"
     playCore = "1.6.4"
     constraintLayout = "2.0.0-beta4"
     viewpager2 = "1.0.0"
