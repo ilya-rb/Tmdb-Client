@@ -102,7 +102,15 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
         }
 
         viewModel.results.observe(viewLifecycleOwner, adapter)
+
         viewModel.genres.observe(viewLifecycleOwner, discoverGenres.genres())
+
+        viewModel.selectedChip.observe(viewLifecycleOwner, Observer {
+            if (discoverGenres.checkedChipId != it) {
+                discoverGenres.check(it)
+            }
+        })
+
         viewModel.screenTitle.observe(viewLifecycleOwner, Observer {
             binding.toolbar.title = it
         })
@@ -113,17 +121,19 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
     }
 
     private fun ChipGroup.genres(): Observer<List<Genre>> = Observer { genres ->
-        removeAllViews()
+        if (discoverGenres.childCount == 0) {
+            genres.forEach { genre ->
+                val chip = Chip(
+                    context,
+                    null,
+                    com.illiarb.tmdbexplorer.coreui.R.attr.materialChipChoice
+                )
 
-        genres.forEach { genre ->
-            val chip = Chip(
-                context,
-                null,
-                com.illiarb.tmdbexplorer.coreui.R.attr.materialChipChoice
-            )
-            chip.text = genre.name
-            chip.id = genre.id
-            addView(chip)
+                chip.text = genre.name
+                chip.id = genre.id
+
+                addView(chip)
+            }
         }
     }
 }

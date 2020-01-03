@@ -24,12 +24,14 @@ interface DiscoverModel {
 
     val screenTitle: LiveData<String>
 
+    val selectedChip: LiveData<Int>
+
     fun onUiEvent(event: UiEvent)
 
     sealed class UiEvent {
         class ItemClick(val item: Any) : UiEvent()
         class ApplyFilter(val id: Int) : UiEvent()
-        class Init(val genreId: Int) : UiEvent()
+        class Init(val id: Int) : UiEvent()
         object ClearFilter : UiEvent()
     }
 }
@@ -43,6 +45,7 @@ class DefaultDiscoverModel @Inject constructor(
     private val _results = MutableLiveData<List<Movie>>()
     private val _screenTitle = MutableLiveData<String>()
     private val _genres = MutableLiveData<List<Genre>>()
+    private val _selectedChip = MutableLiveData<Int>()
 
     override val results: LiveData<List<Movie>>
         get() = _results
@@ -53,15 +56,19 @@ class DefaultDiscoverModel @Inject constructor(
     override val screenTitle: LiveData<String>
         get() = _screenTitle
 
+    override val selectedChip: LiveData<Int>
+        get() = _selectedChip
+
     override fun onUiEvent(event: UiEvent) {
         when (event) {
-            is UiEvent.Init -> init(event.genreId)
+            is UiEvent.Init -> init(event.id)
             is UiEvent.ClearFilter -> applyFilter()
 
             is UiEvent.ApplyFilter -> {
                 val selected = _genres.value?.find { it.id == event.id }
                 selected?.let { genre ->
                     _screenTitle.value = genre.name
+                    _selectedChip.value = genre.id
                     applyFilter(genre.id)
                 }
             }
@@ -77,21 +84,21 @@ class DefaultDiscoverModel @Inject constructor(
     }
 
     private fun init(genreId: Int) = viewModelScope.launch {
-        when (val genres = tmdbService.getMovieGenres()) {
-            is Result.Success -> _genres.postValue(genres.data)
-            is Result.Error -> {
-                // TODO:
-            }
-        }
-
-        val result = if (genreId == Genre.GENRE_ALL) {
+        val movies = if (genreId == Genre.GENRE_ALL) {
             tmdbService.discoverMovies()
         } else {
             tmdbService.discoverMovies(genreId)
         }
 
-        when (result) {
-            is Result.Success -> _results.postValue(result.data)
+        when (movies) {
+            is Result.Success -> _results.postValue(movies.data)
+            is Result.Error -> {
+                // TODO:
+            }
+        }
+
+        when (val genres = tmdbService.getMovieGenres()) {
+            is Result.Success -> _genres.postValue(genres.data)
             is Result.Error -> {
                 // TODO:
             }
