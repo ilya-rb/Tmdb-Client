@@ -26,12 +26,15 @@ fun movieSectionDelegate(clickListener: OnClickListener) =
 
         sectionList.let {
             it.adapter = adapter
-            it.layoutManager =
-                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            it.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             it.setHasFixedSize(true)
             it.addItemDecoration(
                 SpaceDecoration(
-                    spacingRight = itemView.dimen(R.dimen.spacing_normal)
+                    orientation = LinearLayoutManager.HORIZONTAL,
+                    spacingLeft = itemView.dimen(R.dimen.spacing_small),
+                    spacingLeftFirst = itemView.dimen(R.dimen.spacing_normal),
+                    spacingRight = itemView.dimen(R.dimen.spacing_small),
+                    spacingRightLast = itemView.dimen(R.dimen.spacing_normal)
                 )
             )
         }

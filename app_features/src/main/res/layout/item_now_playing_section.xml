@@ -14,7 +14,8 @@
         android:paddingBottom="@dimen/spacing_normal"
         android:textAppearance="?attr/textAppearanceHeadline5"
         android:textColor="?attr/colorOnBackground"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:text="@tools:sample/lorem" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/nowPlayingPager"

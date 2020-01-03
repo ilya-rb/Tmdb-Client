@@ -5,12 +5,15 @@ import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieBlock
 import com.illiarb.tmdblcient.core.domain.MovieFilter
 import com.illiarb.tmdblcient.core.domain.Review
+import com.illiarb.tmdblcient.core.domain.TrendingSection
 import com.illiarb.tmdblcient.core.services.TmdbService
 import com.illiarb.tmdblcient.core.util.Result
 import com.tmdbclient.service_tmdb.api.DiscoverApi
 import com.tmdbclient.service_tmdb.api.GenreApi
+import com.tmdbclient.service_tmdb.api.TrendingApi
 import com.tmdbclient.service_tmdb.mappers.GenreListMapper
 import com.tmdbclient.service_tmdb.mappers.MovieMapper
+import com.tmdbclient.service_tmdb.mappers.TrendingMapper
 import javax.inject.Inject
 
 class DefaultTmdbService @Inject constructor(
@@ -18,11 +21,18 @@ class DefaultTmdbService @Inject constructor(
     private val genreListMapper: GenreListMapper,
     private val movieMapper: MovieMapper,
     private val genreApi: GenreApi,
-    private val discoverApi: DiscoverApi
+    private val discoverApi: DiscoverApi,
+    private val trendingApi: TrendingApi,
+    private val trendingMapper: TrendingMapper
 ) : TmdbService {
 
     override suspend fun getAllMovies(): Result<List<MovieBlock>> = Result.create {
         repository.getMovieFilters().map { MovieBlock(it, getMoviesByType(it)) }
+    }
+
+    override suspend fun getTrending(): Result<TrendingSection> = Result.create {
+        val results = trendingApi.getTrendingAsync("all", "week").await()
+        TrendingSection(trendingMapper.mapList(results.results))
     }
 
     override suspend fun getMovieGenres(): Result<List<Genre>> =

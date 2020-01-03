@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:cardElevation="@dimen/elevation_normal"
-    tools:layout_height="200dp">
+    tools:layout_height="200dp"
+    tools:viewBindingIgnore="true">
 
     <ImageView
         android:id="@+id/itemNowPlayingImage"

@@ -12,6 +12,7 @@ import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieBlock
 import com.illiarb.tmdblcient.core.domain.MovieSection
 import com.illiarb.tmdblcient.core.domain.NowPlayingSection
+import com.illiarb.tmdblcient.core.domain.TrendingSection
 import com.illiarb.tmdblcient.core.feature.FeatureFlagStore
 import com.illiarb.tmdblcient.core.feature.FeatureFlagStore.FeatureFlag
 import com.illiarb.tmdblcient.core.navigation.Router
@@ -45,7 +46,8 @@ class HomeModel @Inject constructor(
     private val _movieSectionsData = flow { emit(moviesService.getAllMovies()) }
         .map {
             val genres = moviesService.getMovieGenres()
-            createSections(it.getOrThrow(), genres.getOrThrow())
+            val trending = moviesService.getTrending()
+            createSections(it.getOrThrow(), genres.getOrThrow(), trending.getOrThrow())
         }
         .map { Async.Success(it) as Async<List<MovieSection>> }
         .onStart { emit(Async.Loading()) }
@@ -81,7 +83,8 @@ class HomeModel @Inject constructor(
 
     private fun createSections(
         movieBlocks: List<MovieBlock>,
-        genres: List<Genre>
+        genres: List<Genre>,
+        trending: TrendingSection
     ): List<MovieSection> {
         val result = mutableListOf<MovieSection>()
         val blocksWithMovies = movieBlocks.filter { it.movies.isNotEmpty() }
@@ -102,6 +105,10 @@ class HomeModel @Inject constructor(
             } else {
                 result.add(ListSection(block.filter.code, block.filter.name, block.movies))
             }
+        }
+
+        if (trending.items.isNotEmpty()) {
+            result.add(1, trending)
         }
 
         return result

@@ -13,6 +13,7 @@ import com.tmdbclient.service_tmdb.mappers.ReviewMapper
 import com.tmdbclient.service_tmdb.model.MovieModel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
+import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -69,7 +70,7 @@ interface MoviesRepository {
                     .map {
                         MovieFilter(
                             it,
-                            it.toLowerCase().replace(" ", "_")
+                            it.toLowerCase(Locale.getDefault()).replace(" ", "_")
                         )
                     }
             }

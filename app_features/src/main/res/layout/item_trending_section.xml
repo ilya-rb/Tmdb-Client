@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:viewBindingIgnore="true">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/spacing_normal"
+        android:paddingRight="@dimen/spacing_normal"
+        android:text="@string/trending_section_title"
+        android:textAppearance="?attr/textAppearanceBody1" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/itemTrendingSectionList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal"
+        tools:layoutManager="LinearLayoutManager"
+        tools:listitem="@layout/item_trending"
+        tools:orientation="horizontal" />
+
+</LinearLayout>

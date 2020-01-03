@@ -3,10 +3,13 @@
 
     <!-- Strings -->
     <string name="movie_section_more">See all</string>
+    <string name="genre_section_title">Explore genres</string>
+    <string name="trending_section_title">Trending now</string>
 
     <!-- Dimens -->
     <dimen name="item_movie_spacing">@dimen/spacing_normal</dimen>
     <dimen name="item_movie_height">150dp</dimen>
     <dimen name="item_movie_width">100dp</dimen>
+    <dimen name="item_trending_image_size">80dp</dimen>
 
 </resources>

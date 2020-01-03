@@ -56,7 +56,7 @@ data class MovieModel(
     @SerializedName("production_countries")
     val productionCountries: List<ProductionCountryModel> = Collections.emptyList()
 
-) : Persistable {
+) : Persistable, TrendingModel {
 
     override fun readExternal(input: DataInput) =
         with(input) {

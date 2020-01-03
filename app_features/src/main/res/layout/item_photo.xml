@@ -7,4 +7,5 @@
     android:adjustViewBounds="true"
     android:contentDescription="@null"
     tools:scaleType="fitXY"
-    tools:src="@tools:sample/backgrounds/scenic" />
+    tools:src="@tools:sample/backgrounds/scenic"
+    tools:viewBindingIgnore="true" />

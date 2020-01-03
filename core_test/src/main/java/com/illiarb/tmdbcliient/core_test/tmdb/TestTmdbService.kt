@@ -3,7 +3,9 @@ package com.illiarb.tmdbcliient.core_test.tmdb
 import com.illiarb.tmdblcient.core.domain.Genre
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieBlock
+import com.illiarb.tmdblcient.core.domain.MovieSection
 import com.illiarb.tmdblcient.core.domain.Review
+import com.illiarb.tmdblcient.core.domain.TrendingSection
 import com.illiarb.tmdblcient.core.services.TmdbService
 import com.illiarb.tmdblcient.core.util.Result
 import com.tmdbclient.service_tmdb.MoviesRepository
@@ -27,6 +29,9 @@ class TestTmdbService(
             MovieBlock(it, moviesRepository.getMoviesByType(it.code))
         }
     }
+
+    override suspend fun getTrending(): Result<TrendingSection> =
+        Result.Success(TrendingSection(Collections.emptyList()))
 
     override suspend fun getMovieGenres(): Result<List<Genre>> = Result.create { testGenres }
 

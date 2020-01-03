@@ -11,6 +11,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.CenterInside
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
@@ -87,6 +88,7 @@ private fun mapOptions(
             CropOptions.CENTER_CROP -> transformations.add(CenterCrop())
             CropOptions.FIT_CENTER -> transformations.add(FitCenter())
             CropOptions.CENTER_INSIDE -> transformations.add(CenterInside())
+            CropOptions.CIRCLE -> transformations.add(CircleCrop())
         }
     }
 

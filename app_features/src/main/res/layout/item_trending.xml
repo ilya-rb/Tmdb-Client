@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/item_trending_image_size"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:ignore="UseCompoundDrawables"
+    tools:viewBindingIgnore="true">
+
+    <ImageView
+        android:id="@+id/itemTrendingImage"
+        android:layout_width="@dimen/item_trending_image_size"
+        android:layout_height="@dimen/item_trending_image_size"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@null"
+        tools:src="@tools:sample/backgrounds/scenic" />
+
+    <TextView
+        android:id="@+id/itemTrendingName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:ellipsize="marquee"
+        android:gravity="center_horizontal"
+        android:maxLines="2"
+        android:textAppearance="?attr/textAppearanceCaption"
+        android:textColor="?attr/colorOnBackground"
+        tools:text="@tools:sample/lorem" />
+
+</LinearLayout>

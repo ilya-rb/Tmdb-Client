@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.chip.ChipGroup xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/genresChipGroup"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/spacing_normal"
-    android:layout_marginRight="@dimen/spacing_normal"
-    app:chipSpacingHorizontal="@dimen/spacing_small"
-    app:chipSpacingVertical="@dimen/spacing_micro" />
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/spacing_normal"
+    android:paddingRight="@dimen/spacing_normal"
+    tools:viewBindingIgnore="true">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/genre_section_title"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:textColor="?attr/colorOnBackground" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/genresChipGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_small"
+        app:chipSpacingHorizontal="@dimen/spacing_small"
+        app:chipSpacingVertical="@dimen/spacing_micro" />
+
+</LinearLayout>

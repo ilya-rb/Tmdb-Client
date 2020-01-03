@@ -11,7 +11,10 @@ import com.tmdbclient.service_tmdb.api.ConfigurationApi
 import com.tmdbclient.service_tmdb.api.DiscoverApi
 import com.tmdbclient.service_tmdb.api.GenreApi
 import com.tmdbclient.service_tmdb.api.MovieApi
+import com.tmdbclient.service_tmdb.api.TrendingApi
 import com.tmdbclient.service_tmdb.cache.TmdbCache
+import com.tmdbclient.service_tmdb.model.TrendingModel
+import com.tmdbclient.service_tmdb.serializer.TrendingItemDeserializer
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -39,6 +42,11 @@ class TmdbApiModule(val app: App) {
         @JvmStatic
         fun provideMoviesApi(retrofit: Retrofit): MovieApi =
             retrofit.create(MovieApi::class.java)
+
+        @Provides
+        @JvmStatic
+        fun provideTrendingApi(retrofit: Retrofit): TrendingApi =
+            retrofit.create(TrendingApi::class.java)
 
         @Provides
         @JvmStatic
@@ -72,6 +80,11 @@ class TmdbApiModule(val app: App) {
 
         @Provides
         @JvmStatic
+        fun provideTrendingItemDeserializer(): TrendingItemDeserializer =
+            TrendingItemDeserializer()
+
+        @Provides
+        @JvmStatic
         fun provideTmdbRetrofit(
             okHttpClient: OkHttpClient,
             callAdapterFactory: CallAdapter.Factory,
@@ -90,9 +103,10 @@ class TmdbApiModule(val app: App) {
 
         @Provides
         @JvmStatic
-        fun provideTmdbGson(): Gson =
+        fun provideTmdbGson(trendingDeserializer: TrendingItemDeserializer): Gson =
             GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .registerTypeAdapter(TrendingModel::class.java, trendingDeserializer)
                 .create()
 
         @Provides

@@ -83,8 +83,7 @@ class MainActivity : AppCompatActivity(), Injectable {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                         setupSnackbarConnectivityAction()
                     }
-                }
-                connectionSnackbar!!.show()
+                }.also { it.show() }
             }
         }
     }

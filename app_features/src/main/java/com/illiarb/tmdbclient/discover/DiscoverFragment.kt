@@ -42,6 +42,15 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
         ViewModelProvider(this, viewModelFactory).get(DefaultDiscoverModel::class.java)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            val genreId = it.getInt(ShowDiscover.EXTRA_GENRE_ID, Genre.GENRE_ALL)
+            viewModel.onUiEvent(UiEvent.Init(genreId))
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -78,12 +87,6 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
         ViewCompat.requestApplyInsets(view)
 
         bind(viewModel, adapter)
-
-        arguments?.let {
-            val genreId = it.getInt(ShowDiscover.EXTRA_GENRE_ID, Genre.GENRE_ALL)
-            discoverGenres.check(genreId)
-            viewModel.onUiEvent(UiEvent.Init(genreId))
-        }
     }
 
     override fun getViewBinding(inflater: LayoutInflater): FragmentDiscoverBinding =
@@ -97,6 +100,7 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
                 viewModel.onUiEvent(UiEvent.ItemClick(it))
             }
         }
+
         viewModel.results.observe(viewLifecycleOwner, adapter)
         viewModel.genres.observe(viewLifecycleOwner, discoverGenres.genres())
     }
@@ -114,10 +118,8 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
                 null,
                 com.illiarb.tmdbexplorer.coreui.R.attr.materialChipChoice
             )
-
             chip.text = genre.name
             chip.id = genre.id
-
             addView(chip)
         }
     }

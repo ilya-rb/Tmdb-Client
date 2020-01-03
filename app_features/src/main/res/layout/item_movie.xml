@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/item_movie_width"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:viewBindingIgnore="true">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/itemMovieCard"
