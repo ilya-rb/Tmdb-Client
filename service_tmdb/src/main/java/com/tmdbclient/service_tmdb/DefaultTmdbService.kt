@@ -13,9 +13,7 @@ import com.illiarb.tmdblcient.core.domain.TrendingSection
 import com.illiarb.tmdblcient.core.services.TmdbService
 import com.illiarb.tmdblcient.core.util.Result
 import com.tmdbclient.service_tmdb.api.DiscoverApi
-import com.tmdbclient.service_tmdb.api.GenreApi
 import com.tmdbclient.service_tmdb.api.TrendingApi
-import com.tmdbclient.service_tmdb.mappers.GenreListMapper
 import com.tmdbclient.service_tmdb.mappers.MovieMapper
 import com.tmdbclient.service_tmdb.mappers.TrendingMapper
 import kotlinx.coroutines.async
@@ -24,9 +22,8 @@ import javax.inject.Inject
 
 class DefaultTmdbService @Inject constructor(
     private val repository: MoviesRepository,
-    private val genreListMapper: GenreListMapper,
     private val movieMapper: MovieMapper,
-    private val genreApi: GenreApi,
+    private val genresRepository: GenresRepository,
     private val discoverApi: DiscoverApi,
     private val trendingApi: TrendingApi,
     private val trendingMapper: TrendingMapper
@@ -53,7 +50,7 @@ class DefaultTmdbService @Inject constructor(
         Result.create { repository.getMovieReviews(id) }
 
     override suspend fun getMovieGenres(): Result<List<Genre>> =
-        Result.create { genreListMapper.map(genreApi.getGenresAsync().await()) }
+        Result.create { genresRepository.getGenres() }
 
     override suspend fun discoverMovies(genreId: Int): Result<List<Movie>> = Result.create {
         val results = if (genreId == -1) {

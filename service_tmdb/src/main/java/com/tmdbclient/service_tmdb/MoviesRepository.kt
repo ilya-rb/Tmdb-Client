@@ -27,59 +27,60 @@ interface MoviesRepository {
 
     suspend fun getMovieFilters(): List<MovieFilter>
 
-    @Singleton
-    class DefaultMoviesRepository @Inject constructor(
-        private val moviesService: MovieApi,
-        private val dispatcherProvider: DispatcherProvider,
-        private val persistableStorage: TmdbCache,
-        private val movieMapper: MovieMapper,
-        private val reviewMapper: ReviewMapper,
-        private val resourceResolver: ResourceResolver
-    ) : MoviesRepository {
+}
 
-        override suspend fun getMoviesByType(type: String, refresh: Boolean): List<Movie> =
-            withContext(dispatcherProvider.io) {
-                if (refresh) {
-                    return@withContext movieMapper.mapList(fetchFromNetworkAndStore(type))
+@Singleton
+class DefaultMoviesRepository @Inject constructor(
+    private val moviesService: MovieApi,
+    private val dispatcherProvider: DispatcherProvider,
+    private val persistableStorage: TmdbCache,
+    private val movieMapper: MovieMapper,
+    private val reviewMapper: ReviewMapper,
+    private val resourceResolver: ResourceResolver
+) : MoviesRepository {
+
+    override suspend fun getMoviesByType(type: String, refresh: Boolean): List<Movie> =
+        withContext(dispatcherProvider.io) {
+            if (refresh) {
+                return@withContext movieMapper.mapList(fetchFromNetworkAndStore(type))
+            }
+
+            val cached = persistableStorage.getMoviesByType(type)
+            if (cached.isEmpty()) {
+                movieMapper.mapList(fetchFromNetworkAndStore(type))
+            } else {
+                movieMapper.mapList(cached)
+            }
+        }
+
+    override suspend fun getMovieDetails(id: Int, appendToResponse: String): Movie =
+        withContext(dispatcherProvider.io) {
+            val details = moviesService.getMovieDetailsAsync(id, appendToResponse).await()
+            movieMapper.map(details)
+        }
+
+    override suspend fun getMovieReviews(id: Int): List<Review> =
+        withContext(dispatcherProvider.io) {
+            val reviews = moviesService.getMovieReviewsAsync(id).await()
+            reviewMapper.mapList(reviews.results)
+        }
+
+    override suspend fun getMovieFilters(): List<MovieFilter> =
+        withContext(dispatcherProvider.io) {
+            resourceResolver
+                .getStringArray(R.array.movie_filters)
+                .map {
+                    MovieFilter(
+                        it,
+                        it.toLowerCase(Locale.getDefault()).replace(" ", "_")
+                    )
                 }
+        }
 
-                val cached = persistableStorage.getMoviesByType(type)
-                if (cached.isEmpty()) {
-                    movieMapper.mapList(fetchFromNetworkAndStore(type))
-                } else {
-                    movieMapper.mapList(cached)
-                }
-            }
-
-        override suspend fun getMovieDetails(id: Int, appendToResponse: String): Movie =
-            withContext(dispatcherProvider.io) {
-                val details = moviesService.getMovieDetailsAsync(id, appendToResponse).await()
-                movieMapper.map(details)
-            }
-
-        override suspend fun getMovieReviews(id: Int): List<Review> =
-            withContext(dispatcherProvider.io) {
-                val reviews = moviesService.getMovieReviewsAsync(id).await()
-                reviewMapper.mapList(reviews.results)
-            }
-
-        override suspend fun getMovieFilters(): List<MovieFilter> =
-            withContext(dispatcherProvider.io) {
-                resourceResolver
-                    .getStringArray(R.array.movie_filters)
-                    .map {
-                        MovieFilter(
-                            it,
-                            it.toLowerCase(Locale.getDefault()).replace(" ", "_")
-                        )
-                    }
-            }
-
-        private suspend fun fetchFromNetworkAndStore(type: String): List<MovieModel> =
-            coroutineScope {
-                val result = moviesService.getMoviesByTypeAsync(type).await().results
-                persistableStorage.storeMovies(type, result)
-                result
-            }
-    }
+    private suspend fun fetchFromNetworkAndStore(type: String): List<MovieModel> =
+        coroutineScope {
+            val result = moviesService.getMoviesByTypeAsync(type).await().results
+            persistableStorage.storeMovies(type, result)
+            result
+        }
 }
