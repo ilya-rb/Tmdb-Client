@@ -70,6 +70,8 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
             )
         }
 
+        binding.discoverSwipeRefresh.isEnabled = false
+
         binding.toolbar.setNavigationOnClickListener {
             activity?.onBackPressed()
         }
@@ -107,29 +109,31 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
         }
 
         viewModel.results.observe(viewLifecycleOwner, adapter)
-
         viewModel.genres.observe(viewLifecycleOwner, discoverGenres.genres())
-
-        viewModel.selectedChip.observe(viewLifecycleOwner, Observer {
-            if (discoverGenres.checkedChipId != it) {
-                discoverGenres.check(it)
-            }
-        })
-
-        viewModel.isLoading.observe(viewLifecycleOwner, Observer {
-            binding.discoverSwipeRefresh.isRefreshing = it
-        })
-
-        viewModel.screenTitle.observe(viewLifecycleOwner, Observer {
-            binding.toolbar.title = when (it) {
-                is Text.AsString -> it.text
-                is Text.AsResource -> getString(it.id)
-            }
-        })
+        viewModel.selectedChip.observe(viewLifecycleOwner, Observer(::selectChip))
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer(::showLoading))
+        viewModel.screenTitle.observe(viewLifecycleOwner, Observer(::setScreenTitle))
     }
 
     private fun dismissFiltersPanel() {
         binding.discoverRoot.transitionToStart()
+    }
+
+    private fun selectChip(id: Int) {
+        if (discoverGenres.checkedChipId != id) {
+            discoverGenres.check(id)
+        }
+    }
+
+    private fun setScreenTitle(title: Text) {
+        binding.toolbar.title = when (title) {
+            is Text.AsString -> title.text
+            is Text.AsResource -> getString(title.id)
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.discoverSwipeRefresh.isRefreshing = isLoading
     }
 
     private fun ChipGroup.genres(): Observer<List<Genre>> = Observer { genres ->
