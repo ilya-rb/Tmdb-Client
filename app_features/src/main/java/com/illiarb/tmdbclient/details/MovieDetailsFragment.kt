@@ -1,5 +1,6 @@
 package com.illiarb.tmdbclient.details
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -49,7 +50,7 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
         super.onViewCreated(view, savedInstanceState)
 
         binding.movieDetailsToolbar.apply {
-            navigationIcon?.setTint(R.attr.colorOnBackground)
+            navigationIcon?.setTint(Color.WHITE)
 
             doOnApplyWindowInsets { v, windowInsets, initialPadding ->
                 v.updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
@@ -66,17 +67,17 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
 
         binding.swipeRefresh.isEnabled = false
 
-        val adapter = DelegatesAdapter({ listOf(photoDelegate(it)) })
+        val photosAdapter = DelegatesAdapter({ listOf(photoDelegate(it)) })
 
-        binding.movieDetailsPhotos.let {
-            it.adapter = adapter
-            it.layoutManager = LinearLayoutManager(
+        binding.movieDetailsPhotos.apply {
+            adapter = photosAdapter
+            layoutManager = LinearLayoutManager(
                 view.context,
                 LinearLayoutManager.HORIZONTAL,
                 false
             )
-            it.setHasFixedSize(true)
-            it.addItemDecoration(
+            setHasFixedSize(true)
+            addItemDecoration(
                 SpaceDecoration(
                     orientation = LinearLayoutManager.HORIZONTAL,
                     spacingLeftFirst = view.dimen(R.dimen.spacing_normal),
@@ -85,11 +86,14 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
                     spacingRightLast = view.dimen(R.dimen.spacing_normal)
                 )
             )
+            doOnApplyWindowInsets { v, windowInsets, initialPadding ->
+                v.updatePadding(bottom = initialPadding.bottom + windowInsets.systemWindowInsetBottom)
+            }
         }
 
         ViewCompat.requestApplyInsets(view)
 
-        bind(viewModel, adapter)
+        bind(viewModel, photosAdapter)
     }
 
     private fun bind(viewModel: MovieDetailsModel, adapter: DelegatesAdapter<String>) {

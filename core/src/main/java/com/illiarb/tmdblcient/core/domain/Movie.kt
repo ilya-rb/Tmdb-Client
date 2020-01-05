@@ -19,10 +19,10 @@ data class Movie(
 ) {
 
     companion object {
-        const val DELIMITER_COMMA_SPACED = ", "
+        const val DELIMITER_SLASH_SPACED = " / "
     }
 
-    fun getGenresString(delimiter: String = DELIMITER_COMMA_SPACED): String? {
+    fun getGenresString(delimiter: String = DELIMITER_SLASH_SPACED): String? {
         if (genres.isNotEmpty()) {
             return buildString {
                 genres.forEachIndexed { index, genre ->

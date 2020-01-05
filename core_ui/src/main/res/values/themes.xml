@@ -63,6 +63,7 @@
         <item name="android:colorBackground">@color/tmdb_white</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
 
     </style>
 

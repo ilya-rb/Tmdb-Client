@@ -57,7 +57,7 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
 
         binding.moviesSwipeRefresh.isEnabled = false
 
-        val adapter = DelegatesAdapter({
+        val sectionsAdapter = DelegatesAdapter({
             listOf(
                 movieSectionDelegate(it),
                 nowPlayingDelegate(it),
@@ -66,10 +66,10 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
             )
         })
 
-        binding.moviesList.let {
-            it.adapter = adapter
-            it.layoutManager = LinearLayoutManager(requireContext())
-            it.addItemDecoration(
+        binding.moviesList.apply {
+            adapter = sectionsAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+            addItemDecoration(
                 SpaceDecoration(
                     spacingTop = view.dimen(R.dimen.spacing_small),
                     spacingTopFirst = view.dimen(R.dimen.spacing_normal),
@@ -77,9 +77,12 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
                     spacingBottomLast = view.dimen(R.dimen.spacing_normal)
                 )
             )
+            doOnApplyWindowInsets { v, windowInsets, initialPadding ->
+                v.updatePadding(bottom = initialPadding.bottom + windowInsets.systemWindowInsetBottom)
+            }
         }
 
-        bind(viewModel, adapter)
+        bind(viewModel, sectionsAdapter)
     }
 
     private fun bind(viewModel: HomeModel, adapter: DelegatesAdapter<MovieSection>) {
