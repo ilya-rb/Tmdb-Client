@@ -10,19 +10,23 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.illiarb.tmdbclient.common.delegates.movieDelegate
 import com.illiarb.tmdbclient.discover.DiscoverModel.UiEvent
 import com.illiarb.tmdbclient.discover.di.DiscoverComponent
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentDiscoverBinding
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
+import com.illiarb.tmdbexplorer.coreui.common.SizeSpec
 import com.illiarb.tmdbexplorer.coreui.common.Text
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
+import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.domain.Genre
+import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -58,7 +62,15 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
         // filters layout added via <include> tag and not supported by view binding
         discoverGenres = binding.root.findViewById(R.id.discoverGenres)
 
-        val adapter = DiscoverAdapter()
+        val adapter = DelegatesAdapter({
+            listOf(
+                movieDelegate(
+                    it,
+                    SizeSpec.MatchParent,
+                    SizeSpec.Fixed(R.dimen.discover_item_movie_height)
+                )
+            )
+        })
 
         binding.discoverList.let {
             it.adapter = adapter
@@ -101,7 +113,7 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
 
     override fun inject(appProvider: AppProvider) = DiscoverComponent.get(appProvider).inject(this)
 
-    private fun bind(viewModel: DiscoverModel, adapter: DiscoverAdapter) {
+    private fun bind(viewModel: DiscoverModel, adapter: DelegatesAdapter<Movie>) {
         viewLifecycleOwner.lifecycleScope.launch {
             adapter.clicks().collect {
                 viewModel.onUiEvent(UiEvent.ItemClick(it))

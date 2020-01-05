@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.home.adapter
+package com.illiarb.tmdbclient.home.delegates
 
 import android.widget.ImageView
 import android.widget.TextView

@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.home.adapter
+package com.illiarb.tmdbclient.home.delegates
 
 import android.os.Handler
 import android.os.Looper
@@ -15,13 +15,11 @@ import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
-import com.illiarb.tmdbexplorer.coreui.ext.switchToNextPosition
 import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieSection
 import com.illiarb.tmdblcient.core.domain.NowPlayingSection
 import java.util.Timer
-import java.util.TimerTask
 import java.util.concurrent.TimeUnit
 
 fun nowPlayingDelegate(clickListener: OnClickListener) =

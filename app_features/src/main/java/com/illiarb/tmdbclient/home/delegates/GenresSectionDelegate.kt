@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.home.adapter
+package com.illiarb.tmdbclient.home.delegates
 
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup

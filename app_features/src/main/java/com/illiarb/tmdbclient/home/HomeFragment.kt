@@ -8,7 +8,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.illiarb.tmdbclient.home.HomeModel.UiEvent
-import com.illiarb.tmdbclient.home.adapter.MovieAdapter
+import com.illiarb.tmdbclient.home.delegates.genresSectionDelegate
+import com.illiarb.tmdbclient.home.delegates.movieSectionDelegate
+import com.illiarb.tmdbclient.home.delegates.nowPlayingDelegate
+import com.illiarb.tmdbclient.home.delegates.trendingSectionDelegate
 import com.illiarb.tmdbclient.home.di.HomeComponent
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentMoviesBinding
@@ -17,9 +20,11 @@ import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
+import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
+import com.illiarb.tmdblcient.core.domain.MovieSection
 import com.illiarb.tmdblcient.core.util.Async
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -52,7 +57,14 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
 
         binding.moviesSwipeRefresh.isEnabled = false
 
-        val adapter = MovieAdapter()
+        val adapter = DelegatesAdapter({
+            listOf(
+                movieSectionDelegate(it),
+                nowPlayingDelegate(it),
+                genresSectionDelegate(it),
+                trendingSectionDelegate(it)
+            )
+        })
 
         binding.moviesList.let {
             it.adapter = adapter
@@ -70,22 +82,28 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
         bind(viewModel, adapter)
     }
 
-    private fun bind(viewModel: HomeModel, adapter: MovieAdapter) {
-        viewModel.isAccountVisible.observe(viewLifecycleOwner, Observer(::setAccountVisible))
-
-        viewModel.movieSections.observe(viewLifecycleOwner, Observer { state ->
-            binding.moviesSwipeRefresh.isRefreshing = state is Async.Loading
-
-            if (state is Async.Success) {
-                adapter.items = state()
-                adapter.notifyDataSetChanged()
-            }
-        })
-
+    private fun bind(viewModel: HomeModel, adapter: DelegatesAdapter<MovieSection>) {
         viewLifecycleOwner.lifecycleScope.launch {
             adapter.clicks().collect {
                 viewModel.onUiEvent(UiEvent.ItemClick(it))
             }
+        }
+
+        viewModel.isAccountVisible.observe(viewLifecycleOwner, Observer(::setAccountVisible))
+
+        viewModel.movieSections.observe(viewLifecycleOwner, Observer {
+            showMovieSections(it, adapter)
+        })
+    }
+
+    private fun showMovieSections(
+        state: Async<List<MovieSection>>,
+        adapter: DelegatesAdapter<MovieSection>
+    ) {
+        binding.moviesSwipeRefresh.isRefreshing = state is Async.Loading
+
+        if (state is Async.Success) {
+            adapter.submitList(state())
         }
     }
 
