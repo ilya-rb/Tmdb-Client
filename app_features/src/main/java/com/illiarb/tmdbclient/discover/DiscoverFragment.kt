@@ -116,6 +116,10 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
             }
         })
 
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer {
+            binding.discoverSwipeRefresh.isRefreshing = it
+        })
+
         viewModel.screenTitle.observe(viewLifecycleOwner, Observer {
             binding.toolbar.title = when (it) {
                 is Text.AsString -> it.text

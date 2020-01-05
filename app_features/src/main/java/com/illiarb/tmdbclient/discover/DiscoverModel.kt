@@ -106,9 +106,13 @@ class DefaultDiscoverModel @Inject constructor(
             _selectedChip.value = selected.id
         }
 
+        _isLoading.value = true
+
         val movies = tmdbService.discoverMovies(id)
         if (movies is Result.Success) {
             _results.value = movies.data
         }
+
+        _isLoading.value = false
     }
 }
