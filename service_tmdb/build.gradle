@@ -26,6 +26,7 @@ android {
             buildConfigField "String", "API_URL", properties["api.url"]
             buildConfigField "String", "API_KEY", properties["api.key"]
             buildConfigField "String", "IMG_URL", properties["api.imgUrl"]
+            buildConfigField "String", "IMG_SIZE", properties["api.imgSize"]
         }
 
         release {

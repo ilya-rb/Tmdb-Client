@@ -2,6 +2,7 @@ package com.tmdbclient.service_tmdb.mappers
 
 import com.illiarb.tmdblcient.core.domain.TrendingSection.TrendingItem
 import com.illiarb.tmdblcient.core.util.Mapper
+import com.tmdbclient.service_tmdb.configuration.ImageType
 import com.tmdbclient.service_tmdb.configuration.ImageUrlCreator
 import com.tmdbclient.service_tmdb.model.MovieModel
 import com.tmdbclient.service_tmdb.model.PersonModel
@@ -17,17 +18,17 @@ class TrendingMapper @Inject constructor(
     override fun map(from: TrendingModel): TrendingItem {
         return when (from) {
             is MovieModel -> TrendingItem(
-                imageUrlCreator.createImageUrl(from.posterPath),
+                imageUrlCreator.createImageUrl(from.posterPath, ImageType.Poster),
                 from.title
             )
 
             is TvShowModel -> TrendingItem(
-                imageUrlCreator.createImageUrl(from.posterPath),
+                imageUrlCreator.createImageUrl(from.posterPath, ImageType.Poster),
                 from.name
             )
 
             is PersonModel -> TrendingItem(
-                imageUrlCreator.createImageUrl(from.profilePath),
+                imageUrlCreator.createImageUrl(from.profilePath, ImageType.Profile),
                 from.name
             )
 

@@ -16,6 +16,11 @@ interface MovieDetailsModel {
 
     val movie: LiveData<Async<Movie>>
 
+    fun onUiEvent(event: UiEvent)
+
+    sealed class UiEvent {
+        object PlayClicked : UiEvent()
+    }
 }
 
 class DefaultDetailsViewModel @Inject constructor(
@@ -31,4 +36,8 @@ class DefaultDetailsViewModel @Inject constructor(
 
     override val movie: LiveData<Async<Movie>>
         get() = _movie
+
+    override fun onUiEvent(event: MovieDetailsModel.UiEvent) {
+
+    }
 }

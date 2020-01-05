@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.illiarb.core_ui_image.CropOptions
 import com.illiarb.core_ui_image.RequestOptions.Companion.requestOptions
 import com.illiarb.core_ui_image.loadImage
+import com.illiarb.tmdbclient.details.MovieDetailsModel.UiEvent
 import com.illiarb.tmdbclient.details.delegates.photoDelegate
 import com.illiarb.tmdbclient.details.di.MovieDetailsComponent
 import com.illiarb.tmdbclient.movies.home.R
@@ -57,6 +58,10 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
             setNavigationOnClickListener {
                 requireActivity().onBackPressed()
             }
+        }
+
+        binding.movieDetailsPlay.setOnClickListener {
+            viewModel.onUiEvent(UiEvent.PlayClicked)
         }
 
         binding.swipeRefresh.isEnabled = false
