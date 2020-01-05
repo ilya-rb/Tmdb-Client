@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.details.ui
+package com.illiarb.tmdbclient.details.widget
 
 import android.content.Context
 import android.content.res.TypedArray

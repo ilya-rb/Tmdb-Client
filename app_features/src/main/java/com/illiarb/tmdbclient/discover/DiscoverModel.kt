@@ -35,12 +35,12 @@ interface DiscoverModel {
     sealed class UiEvent {
         class ItemClick(val item: Any) : UiEvent()
         class ApplyFilter(val id: Int) : UiEvent()
-        class Init(val id: Int) : UiEvent()
         object ClearFilter : UiEvent()
     }
 }
 
 class DefaultDiscoverModel @Inject constructor(
+    private val genreId: Int,
     private val tmdbService: TmdbService,
     private val router: Router,
     private val analyticsService: AnalyticsService
@@ -67,9 +67,18 @@ class DefaultDiscoverModel @Inject constructor(
     override val isLoading: LiveData<Boolean>
         get() = _isLoading
 
+    init {
+        viewModelScope.launch {
+            val genres = tmdbService.getMovieGenres()
+            if (genres is Result.Success) {
+                _genres.value = genres.data
+                applyFilter(genreId)
+            }
+        }
+    }
+
     override fun onUiEvent(event: UiEvent) {
         when (event) {
-            is UiEvent.Init -> init(event.id)
             is UiEvent.ClearFilter -> applyFilter()
             is UiEvent.ApplyFilter -> applyFilter(event.id)
             is UiEvent.ItemClick -> {
@@ -79,14 +88,6 @@ class DefaultDiscoverModel @Inject constructor(
                     router.executeAction(action)
                 }
             }
-        }
-    }
-
-    private fun init(genreId: Int) = viewModelScope.launch {
-        val genres = tmdbService.getMovieGenres()
-        if (genres is Result.Success) {
-            _genres.value = genres.data
-            applyFilter(genreId)
         }
     }
 

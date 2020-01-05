@@ -5,23 +5,30 @@ import com.google.firebase.FirebaseApp
 import com.illiarb.tmdbclient.di.AppComponent
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
+import com.illiarb.tmdblcient.core.storage.WorkManager
+import com.illiarb.tmdblcient.core.storage.WorkManager.WorkType
 import com.illiarb.tmdblcient.core.tools.Logger
 import timber.log.Timber
+import javax.inject.Inject
 
 class MobileApplication : Application(), App {
+
+    @Inject
+    lateinit var workManager: WorkManager
 
     private val applicationProvider by lazy { AppComponent.get(this) }
 
     override fun onCreate() {
         super.onCreate()
 
-        configureDi()
-        configureLogger()
-
-        FirebaseApp.initializeApp(this)
-
         val appComponent = applicationProvider as AppComponent
         appComponent.inject(this)
+
+        configureDi()
+        configureLogger()
+        configureWorkers()
+
+        FirebaseApp.initializeApp(this)
     }
 
     override fun getApplication(): Application = this
@@ -29,6 +36,10 @@ class MobileApplication : Application(), App {
     override fun getAppProvider(): AppProvider = applicationProvider
 
     private fun configureDi() = MobileAppInjector(this).registerLifecycleCallbacks()
+
+    private fun configureWorkers() {
+        workManager.scheduleWork(WorkType.ConfigurationFetch)
+    }
 
     private fun configureLogger() {
         if (BuildConfig.DEBUG) {

@@ -37,12 +37,8 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
     }
 
     override fun inject(appProvider: AppProvider) {
-        MovieDetailsComponent
-            .get(
-                appProvider,
-                requireArguments().getInt(ShowMovieDetails.EXTRA_MOVIE_DETAILS)
-            )
-            .inject(this)
+        val id = requireArguments().getInt(ShowMovieDetails.EXTRA_MOVIE_DETAILS)
+        MovieDetailsComponent.get(appProvider, id).inject(this)
     }
 
     override fun getViewBinding(inflater: LayoutInflater): FragmentMovieDetailsBinding =

@@ -3,6 +3,7 @@ package com.illiarb.tmdbclient.di
 import com.illiarb.tmdbclient.MobileApplication
 import com.illiarb.tmdbclient.di.modules.AppModule
 import com.illiarb.tmdbclient.di.modules.NavigationModule
+import com.illiarb.tmdbclient.di.modules.WorkModule
 import com.illiarb.tmdbclient.storage.di.StorageComponent
 import com.illiarb.tmdbclient.tools.di.ToolsComponent
 import com.illiarb.tmdblcient.core.di.App
@@ -17,7 +18,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Component(
-    modules = [AppModule::class, NavigationModule::class],
+    modules = [AppModule::class, NavigationModule::class, WorkModule::class],
     dependencies = [
         StorageProvider::class,
         ToolsProvider::class,

@@ -47,13 +47,9 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
         ViewModelProvider(this, viewModelFactory).get(DefaultDiscoverModel::class.java)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            val genreId = it.getInt(ShowDiscover.EXTRA_GENRE_ID, Genre.GENRE_ALL)
-            viewModel.onUiEvent(UiEvent.Init(genreId))
-        }
+    override fun inject(appProvider: AppProvider) {
+        val id = arguments?.getInt(ShowDiscover.EXTRA_GENRE_ID, Genre.GENRE_ALL) ?: Genre.GENRE_ALL
+        DiscoverComponent.get(appProvider, id).inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -110,8 +106,6 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
 
     override fun getViewBinding(inflater: LayoutInflater): FragmentDiscoverBinding =
         FragmentDiscoverBinding.inflate(inflater)
-
-    override fun inject(appProvider: AppProvider) = DiscoverComponent.get(appProvider).inject(this)
 
     private fun bind(viewModel: DiscoverModel, adapter: DelegatesAdapter<Movie>) {
         viewLifecycleOwner.lifecycleScope.launch {

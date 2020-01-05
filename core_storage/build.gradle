@@ -41,8 +41,6 @@ dependencies {
     api deps.converterGson
     api deps.coroutinesAdapter
     api deps.okHttpLogger
-    // Job scheduler
-    api deps.workManager
 
     testImplementation project(':core_test')
 }

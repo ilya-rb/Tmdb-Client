@@ -11,6 +11,8 @@ import com.illiarb.tmdblcient.core.domain.MovieSection
 import com.illiarb.tmdblcient.core.feature.FeatureFlagStore
 import com.illiarb.tmdblcient.core.feature.FeatureFlagStore.FeatureFlag
 import com.illiarb.tmdblcient.core.navigation.Router
+import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
+import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.services.TmdbService
 import com.illiarb.tmdblcient.core.services.analytics.AnalyticEvent.RouterAction
 import com.illiarb.tmdblcient.core.services.analytics.AnalyticsService
@@ -63,9 +65,9 @@ class DefaultHomeModel @Inject constructor(
         when (event) {
             is UiEvent.ItemClick -> {
                 val action = when (event.item) {
-                    is Movie -> Router.Action.ShowMovieDetails(event.item.id)
-                    is Genre -> Router.Action.ShowDiscover(event.item.id)
-                    is String -> Router.Action.ShowDiscover()
+                    is Movie -> ShowMovieDetails(event.item.id)
+                    is Genre -> ShowDiscover(event.item.id)
+                    is String -> ShowDiscover()
                     else -> null
                 }
 

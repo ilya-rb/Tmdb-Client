@@ -4,14 +4,11 @@ import android.content.Context
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
-import com.tmdbclient.service_tmdb.api.ConfigurationApi
-import com.tmdbclient.service_tmdb.cache.TmdbCache
-import com.tmdbclient.service_tmdb.configuration.ConfigurationFetchWork
-import dagger.Lazy
+import com.illiarb.tmdblcient.core.storage.WorkManager
 import javax.inject.Inject
 
 class DaggerWorkerFactory @Inject constructor(
-    private val configurationFetchWork: Lazy<ConfigurationFetchWork>
+    private val configurationFetchWorker: WorkManager.Worker
 ) : WorkerFactory() {
 
     override fun createWorker(
@@ -19,8 +16,9 @@ class DaggerWorkerFactory @Inject constructor(
         workerClassName: String,
         workerParameters: WorkerParameters
     ): ListenableWorker? =
-        when (workerClassName) {
-            ConfigurationFetchWork::class.java.name -> configurationFetchWork.get()
-            else -> null
+        if (configurationFetchWorker.isWorkerSuited(workerClassName)) {
+            configurationFetchWorker.workCreator(appContext, workerParameters)
+        } else {
+            null
         }
 }

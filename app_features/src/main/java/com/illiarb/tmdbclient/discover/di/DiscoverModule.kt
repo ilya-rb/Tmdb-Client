@@ -2,17 +2,30 @@ package com.illiarb.tmdbclient.discover.di
 
 import androidx.lifecycle.ViewModel
 import com.illiarb.tmdbclient.discover.DefaultDiscoverModel
-import com.illiarb.tmdbclient.discover.DiscoverModel
 import com.illiarb.tmdbexplorer.coreui.di.ViewModelKey
-import dagger.Binds
+import com.illiarb.tmdblcient.core.navigation.Router
+import com.illiarb.tmdblcient.core.services.TmdbService
+import com.illiarb.tmdblcient.core.services.analytics.AnalyticsService
 import dagger.Module
+import dagger.Provides
 import dagger.multibindings.IntoMap
 
 @Module
-interface DiscoverModule {
+class DiscoverModule(private val genreId: Int) {
 
-    @Binds
+    @Provides
     @IntoMap
     @ViewModelKey(DefaultDiscoverModel::class)
-    fun bindDiscoverModel(model: DefaultDiscoverModel): ViewModel
+    fun provideDiscoverModel(
+        tmdbService: TmdbService,
+        router: Router,
+        analyticsService: AnalyticsService
+    ): ViewModel {
+        return DefaultDiscoverModel(
+            genreId,
+            tmdbService,
+            router,
+            analyticsService
+        )
+    }
 }

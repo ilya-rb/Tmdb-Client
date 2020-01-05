@@ -1,7 +1,13 @@
 package com.tmdbclient.service_tmdb.configuration
 
 import android.content.Context
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.Worker
+import androidx.work.WorkerParameters
+import com.illiarb.tmdblcient.core.storage.WorkManager
 import com.tmdbclient.service_tmdb.api.ConfigurationApi
 import com.tmdbclient.service_tmdb.cache.TmdbCache
 import kotlinx.coroutines.runBlocking
@@ -21,13 +27,11 @@ class ConfigurationFetchWork(
     companion object {
 
         // 2 Days
-        private const val WORKER_REPEAT_INTERVAL = 2L
+        private const val REPEAT_INTERVAL = 2L
 
         fun createWorkRequest(): PeriodicWorkRequest =
-            PeriodicWorkRequestBuilder<ConfigurationFetchWork>(
-                WORKER_REPEAT_INTERVAL, TimeUnit.DAYS
-            )
-                .addTag(ConfigurationFetchWork::class.java.name)
+            PeriodicWorkRequestBuilder<ConfigurationFetchWork>(REPEAT_INTERVAL, TimeUnit.DAYS)
+                .addTag(WorkManager.WorkType.ConfigurationFetch.code)
                 .setConstraints(
                     Constraints.Builder()
                         .setRequiredNetworkType(NetworkType.CONNECTED)

@@ -15,9 +15,10 @@ import dagger.Component
 interface DiscoverComponent {
 
     companion object {
-        fun get(appProvider: AppProvider): DiscoverComponent =
+        fun get(appProvider: AppProvider, genreId: Int): DiscoverComponent =
             DaggerDiscoverComponent.builder()
                 .appProvider(appProvider)
+                .discoverModule(DiscoverModule(genreId))
                 .build()
     }
 

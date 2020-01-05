@@ -5,6 +5,9 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.illiarb.tmdbclient.storage.di.modules.NetworkModule
 import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.storage.WorkManager
+import com.illiarb.tmdblcient.core.storage.WorkRequestCreator
+import com.illiarb.tmdblcient.core.storage.WorkerCreator
 import com.tmdbclient.service_tmdb.BuildConfig
 import com.tmdbclient.service_tmdb.api.ApiKeyInterceptor
 import com.tmdbclient.service_tmdb.api.ConfigurationApi
@@ -13,10 +16,12 @@ import com.tmdbclient.service_tmdb.api.GenreApi
 import com.tmdbclient.service_tmdb.api.MovieApi
 import com.tmdbclient.service_tmdb.api.TrendingApi
 import com.tmdbclient.service_tmdb.cache.TmdbCache
+import com.tmdbclient.service_tmdb.configuration.ConfigurationFetchWork
 import com.tmdbclient.service_tmdb.model.TrendingModel
 import com.tmdbclient.service_tmdb.serializer.TrendingItemDeserializer
 import dagger.Module
 import dagger.Provides
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
@@ -32,6 +37,20 @@ class TmdbApiModule(val app: App) {
     @Provides
     @Singleton
     fun provideTmdbCache(): TmdbCache = TmdbCache(app)
+
+    @Provides
+    fun provideTmdbOkHttpClient(
+        apiKeyInterceptor: ApiKeyInterceptor,
+        httpLoggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient =
+        OkHttpClient.Builder()
+            .connectTimeout(NetworkModule.CONNECT_TIMEOUT, TimeUnit.SECONDS)
+            .readTimeout(NetworkModule.READ_TIMEOUT, TimeUnit.SECONDS)
+            .writeTimeout(NetworkModule.WRITE_TIMEOUT, TimeUnit.SECONDS)
+            .addInterceptor(apiKeyInterceptor)
+            .addInterceptor(httpLoggingInterceptor)
+            .cache(Cache(app.getApplication().filesDir, CACHE_SIZE_BYTES))
+            .build()
 
     @Module
     companion object {
@@ -62,21 +81,6 @@ class TmdbApiModule(val app: App) {
         @JvmStatic
         fun provideConfigurationApi(retrofit: Retrofit): ConfigurationApi =
             retrofit.create(ConfigurationApi::class.java)
-
-        @Provides
-        @JvmStatic
-        fun provideTmdbOkHttpClient(
-            apiKeyInterceptor: ApiKeyInterceptor,
-            httpLoggingInterceptor: HttpLoggingInterceptor
-        ): OkHttpClient =
-            OkHttpClient.Builder()
-                .connectTimeout(NetworkModule.CONNECT_TIMEOUT, TimeUnit.SECONDS)
-                .readTimeout(NetworkModule.READ_TIMEOUT, TimeUnit.SECONDS)
-                .writeTimeout(NetworkModule.WRITE_TIMEOUT, TimeUnit.SECONDS)
-                .addInterceptor(apiKeyInterceptor)
-                .addInterceptor(httpLoggingInterceptor)
-                //.cache(Cache(app.getApplication().filesDir, CACHE_SIZE_BYTES))
-                .build()
 
         @Provides
         @JvmStatic
@@ -113,5 +117,31 @@ class TmdbApiModule(val app: App) {
         @JvmStatic
         fun provideApiConverterFactory(gson: Gson): Converter.Factory =
             GsonConverterFactory.create(gson)
+
+        @Provides
+        @JvmStatic
+        fun provideConfigurationFetchWorker(
+            configurationApi: ConfigurationApi,
+            cache: TmdbCache
+        ): WorkManager.Worker {
+            return object : WorkManager.Worker {
+
+                override fun isWorkerSuited(workerClassName: String): Boolean =
+                    workerClassName == ConfigurationFetchWork::class.java.name
+
+                override val workRequestCreator: WorkRequestCreator
+                    get() = { ConfigurationFetchWork.createWorkRequest() }
+
+                override val workCreator: WorkerCreator
+                    get() = { context, workerParameters ->
+                        ConfigurationFetchWork(
+                            context,
+                            workerParameters,
+                            configurationApi,
+                            cache
+                        )
+                    }
+            }
+        }
     }
 }
