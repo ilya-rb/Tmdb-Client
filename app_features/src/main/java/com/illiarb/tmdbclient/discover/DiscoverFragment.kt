@@ -3,6 +3,7 @@ package com.illiarb.tmdbclient.discover
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +21,7 @@ import com.illiarb.tmdbexplorer.coreui.common.SizeSpec
 import com.illiarb.tmdbexplorer.coreui.common.Text
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
+import com.illiarb.tmdbexplorer.coreui.ext.updateMargin
 import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
@@ -42,6 +44,7 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var discoverGenres: ChipGroup
+    private lateinit var filtersContainer: ViewGroup
 
     private val viewModel: DiscoverModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this, viewModelFactory).get(DefaultDiscoverModel::class.java)
@@ -57,6 +60,7 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
 
         // filters layout added via <include> tag and not supported by view binding
         discoverGenres = binding.root.findViewById(R.id.discoverGenres)
+        filtersContainer = binding.root.findViewById(R.id.discoverFiltersContainer)
 
         val adapter = DelegatesAdapter({
             listOf(
@@ -86,6 +90,10 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
 
         binding.toolbar.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
             v.updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
+        }
+
+        filtersContainer.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
+            v.updateMargin(bottom = initialPadding.bottom + windowInsets.systemWindowInsetBottom)
         }
 
         binding.root.findViewById<View>(R.id.discoverApplyFilter).setOnClickListener {
