@@ -126,7 +126,7 @@ class TmdbApiModule(val app: App) {
         ): WorkManager.Worker {
             return object : WorkManager.Worker {
 
-                override fun isWorkerSuited(workerClassName: String): Boolean =
+                override fun isWorkerSuitable(workerClassName: String): Boolean =
                     workerClassName == ConfigurationFetchWork::class.java.name
 
                 override val workRequestCreator: WorkRequestCreator

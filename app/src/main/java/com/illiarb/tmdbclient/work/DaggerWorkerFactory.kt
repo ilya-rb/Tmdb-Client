@@ -16,7 +16,7 @@ class DaggerWorkerFactory @Inject constructor(
         workerClassName: String,
         workerParameters: WorkerParameters
     ): ListenableWorker? =
-        if (configurationFetchWorker.isWorkerSuited(workerClassName)) {
+        if (configurationFetchWorker.isWorkerSuitable(workerClassName)) {
             configurationFetchWorker.workCreator(appContext, workerParameters)
         } else {
             null

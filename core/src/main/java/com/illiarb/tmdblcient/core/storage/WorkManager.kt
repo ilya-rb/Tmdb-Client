@@ -27,6 +27,6 @@ interface WorkManager {
 
         val workRequestCreator: WorkRequestCreator
 
-        fun isWorkerSuited(workerClassName: String): Boolean
+        fun isWorkerSuitable(workerClassName: String): Boolean
     }
 }
