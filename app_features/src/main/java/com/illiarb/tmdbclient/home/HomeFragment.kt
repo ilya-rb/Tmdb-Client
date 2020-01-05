@@ -66,23 +66,27 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
             )
         })
 
+        setupMoviesList(sectionsAdapter)
+
+        bind(viewModel, sectionsAdapter)
+    }
+
+    private fun setupMoviesList(sectionsAdapter: DelegatesAdapter<MovieSection>) {
         binding.moviesList.apply {
             adapter = sectionsAdapter
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(
                 SpaceDecoration(
-                    spacingTop = view.dimen(R.dimen.spacing_small),
-                    spacingTopFirst = view.dimen(R.dimen.spacing_normal),
-                    spacingBottom = view.dimen(R.dimen.spacing_small),
-                    spacingBottomLast = view.dimen(R.dimen.spacing_normal)
+                    spacingTop = dimen(R.dimen.spacing_small),
+                    spacingTopFirst = dimen(R.dimen.spacing_normal),
+                    spacingBottom = dimen(R.dimen.spacing_small),
+                    spacingBottomLast = dimen(R.dimen.spacing_normal)
                 )
             )
-            doOnApplyWindowInsets { v, windowInsets, initialPadding ->
-                v.updatePadding(bottom = initialPadding.bottom + windowInsets.systemWindowInsetBottom)
+            doOnApplyWindowInsets { v, insets, initialPadding ->
+                v.updatePadding(bottom = initialPadding.bottom + insets.systemWindowInsetBottom)
             }
         }
-
-        bind(viewModel, sectionsAdapter)
     }
 
     private fun bind(viewModel: HomeModel, adapter: DelegatesAdapter<MovieSection>) {

@@ -1,6 +1,8 @@
 package com.tmdbclient.service_tmdb.configuration
 
 import com.google.gson.annotations.SerializedName
+import com.illiarb.tmdbclient.storage.local.readStringList
+import com.illiarb.tmdbclient.storage.local.writeStringList
 import com.ironz.binaryprefs.serialization.serializer.persistable.Persistable
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataInput
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataOutput
@@ -21,23 +23,13 @@ data class Configuration(
 
     override fun readExternal(input: DataInput) {
         images.readExternal(input)
-        changeKeys = mutableListOf<String>().apply {
-            val size = input.readInt()
-            for (key in 0..size) {
-                add(input.readString())
-            }
-        }
+        changeKeys = mutableListOf<String>().also { input.readStringList(it) }
     }
 
     override fun deepClone(): Persistable = this
 
     override fun writeExternal(output: DataOutput) {
         images.writeExternal(output)
-
-        output.writeInt(changeKeys.size)
-
-        changeKeys.forEach {
-            output.writeString(it)
-        }
+        output.writeStringList(changeKeys)
     }
 }

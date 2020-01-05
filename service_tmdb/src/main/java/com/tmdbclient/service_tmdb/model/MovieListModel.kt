@@ -1,5 +1,7 @@
 package com.tmdbclient.service_tmdb.model
 
+import com.illiarb.tmdbclient.storage.local.readPersistableList
+import com.illiarb.tmdbclient.storage.local.writePersistableList
 import com.ironz.binaryprefs.serialization.serializer.persistable.Persistable
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataInput
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataOutput
@@ -13,22 +15,13 @@ data class MovieListModel(var movies: List<MovieModel>) : Persistable {
     constructor() : this(Collections.emptyList())
 
     override fun readExternal(input: DataInput) {
-        movies = mutableListOf<MovieModel>().apply {
-            val size = input.readInt()
-            for (i in 0 until size) {
-                MovieModel()
-                    .also { it.readExternal(input) }
-                    .also { add(it) }
-            }
+        movies = mutableListOf<MovieModel>().also {
+            input.readPersistableList(it) { MovieModel() }
         }
     }
 
     override fun writeExternal(output: DataOutput) {
-        output.writeInt(movies.size)
-
-        movies.forEach {
-            it.writeExternal(output)
-        }
+        output.writePersistableList(movies)
     }
 
     override fun deepClone(): Persistable = this

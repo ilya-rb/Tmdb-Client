@@ -57,6 +57,7 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupSystemInsets()
 
         // filters layout added via <include> tag and not supported by view binding
         discoverGenres = binding.root.findViewById(R.id.discoverGenres)
@@ -88,14 +89,6 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
             activity?.onBackPressed()
         }
 
-        binding.toolbar.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
-            v.updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
-        }
-
-        filtersContainer.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
-            v.updateMargin(bottom = initialPadding.bottom + windowInsets.systemWindowInsetBottom)
-        }
-
         binding.root.findViewById<View>(R.id.discoverApplyFilter).setOnClickListener {
             dismissFiltersPanel()
             viewModel.onUiEvent(UiEvent.ApplyFilter(discoverGenres.checkedChipId))
@@ -114,6 +107,16 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
 
     override fun getViewBinding(inflater: LayoutInflater): FragmentDiscoverBinding =
         FragmentDiscoverBinding.inflate(inflater)
+
+    private fun setupSystemInsets() {
+        binding.toolbar.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
+            v.updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
+        }
+
+        filtersContainer.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
+            v.updateMargin(bottom = initialPadding.bottom + windowInsets.systemWindowInsetBottom)
+        }
+    }
 
     private fun bind(viewModel: DiscoverModel, adapter: DelegatesAdapter<Movie>) {
         viewLifecycleOwner.lifecycleScope.launch {
