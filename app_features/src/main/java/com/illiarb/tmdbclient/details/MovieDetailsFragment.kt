@@ -10,19 +10,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.illiarb.core_ui_image.CropOptions
 import com.illiarb.core_ui_image.RequestOptions.Companion.requestOptions
 import com.illiarb.core_ui_image.loadImage
-import com.illiarb.tmdbclient.details.MovieDetailsViewModel.DefaultDetailsViewModel
+import com.illiarb.tmdbclient.details.delegates.photoDelegate
 import com.illiarb.tmdbclient.details.di.MovieDetailsComponent
-import com.illiarb.tmdbclient.details.photos.PhotosAdapter
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentMovieDetailsBinding
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
-import com.illiarb.tmdbexplorer.coreui.ext.awareOfWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
+import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
+import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
+import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.domain.Movie
-import com.illiarb.tmdblcient.core.navigation.Router
+import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.util.Async
 import javax.inject.Inject
 
@@ -31,7 +32,7 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val viewModel: MovieDetailsViewModel by lazy(LazyThreadSafetyMode.NONE) {
+    private val viewModel: MovieDetailsModel by lazy(LazyThreadSafetyMode.NONE) {
         viewModelFactory.create(DefaultDetailsViewModel::class.java)
     }
 
@@ -39,7 +40,7 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
         MovieDetailsComponent
             .get(
                 appProvider,
-                requireArguments().getInt(Router.Action.ShowMovieDetails.EXTRA_MOVIE_DETAILS)
+                requireArguments().getInt(ShowMovieDetails.EXTRA_MOVIE_DETAILS)
             )
             .inject(this)
     }
@@ -51,38 +52,56 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
         super.onViewCreated(view, savedInstanceState)
 
         binding.movieDetailsToolbar.apply {
-            awareOfWindowInsets()
+            navigationIcon?.setTint(R.attr.colorOnBackground)
+
+            doOnApplyWindowInsets { v, windowInsets, initialPadding ->
+                v.updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
+            }
+
             setNavigationOnClickListener {
                 requireActivity().onBackPressed()
             }
         }
 
-        val adapter = PhotosAdapter()
+        binding.swipeRefresh.isEnabled = false
+
+        val adapter = DelegatesAdapter({ listOf(photoDelegate(it)) })
 
         binding.movieDetailsPhotos.let {
             it.adapter = adapter
-            it.layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            it.layoutManager = LinearLayoutManager(
+                view.context,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
             it.setHasFixedSize(true)
             it.addItemDecoration(
-                SpaceDecoration(view.dimen(R.dimen.spacing_normal))
+                SpaceDecoration(
+                    orientation = LinearLayoutManager.HORIZONTAL,
+                    spacingLeftFirst = view.dimen(R.dimen.spacing_normal),
+                    spacingLeft = view.dimen(R.dimen.spacing_small),
+                    spacingRight = view.dimen(R.dimen.spacing_small),
+                    spacingRightLast = view.dimen(R.dimen.spacing_normal)
+                )
             )
         }
 
-        bind(viewModel, adapter)
-
         ViewCompat.requestApplyInsets(view)
+
+        bind(viewModel, adapter)
     }
 
-    private fun bind(viewModel: MovieDetailsViewModel, adapter: PhotosAdapter) {
+    private fun bind(viewModel: MovieDetailsModel, adapter: DelegatesAdapter<String>) {
         viewModel.movie.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is Async.Success -> showMovieDetails(it(), adapter)
+            binding.swipeRefresh.isRefreshing = it is Async.Loading
+
+            if (it is Async.Success) {
+                showMovieDetails(it(), adapter)
             }
         })
     }
 
-    private fun showMovieDetails(movie: Movie, adapter: PhotosAdapter) {
+    private fun showMovieDetails(movie: Movie, adapter: DelegatesAdapter<String>) {
         with(binding) {
             movieDetailsTitle.text = movie.title
             movieDetailsOverview.text = movie.overview
@@ -94,8 +113,6 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
                 cropOptions(CropOptions.CENTER_CROP)
             })
         }
-
-        adapter.items = movie.images
-        adapter.notifyDataSetChanged()
+        adapter.submitList(movie.images)
     }
 }

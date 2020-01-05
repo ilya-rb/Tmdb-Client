@@ -1,8 +1,10 @@
 package com.illiarb.tmdbexplorer.coreui.ext
 
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
+import androidx.annotation.AttrRes
 import androidx.core.view.ViewCompat
 import com.illiarb.tmdbexplorer.coreui.common.SizeSpec
 import kotlinx.coroutines.channels.awaitClose
@@ -48,6 +50,12 @@ fun View.setVisible(visible: Boolean) {
     } else {
         View.GONE
     }
+}
+
+fun View.getColorAttr(@AttrRes id: Int): Int {
+    val outValue = TypedValue()
+    context.theme.resolveAttribute(id, outValue, true)
+    return outValue.data
 }
 
 fun View.debouncedClicks(): Flow<Unit> = callbackFlow {

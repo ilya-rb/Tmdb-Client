@@ -12,22 +12,23 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
-interface MovieDetailsViewModel {
+interface MovieDetailsModel {
 
     val movie: LiveData<Async<Movie>>
 
-    class DefaultDetailsViewModel @Inject constructor(
-        private val movieId: Int,
-        private val tmdbService: TmdbService
-    ) : BasePresentationModel(), MovieDetailsViewModel {
+}
 
-        private val _movie = flow { emit(tmdbService.getMovieDetails(movieId)) }
-            .map { it.asAsync() }
-            .catch { emit(Async.Fail(it)) }
-            .onStart { emit(Async.Loading()) }
-            .asLiveData()
+class DefaultDetailsViewModel @Inject constructor(
+    private val movieId: Int,
+    private val tmdbService: TmdbService
+) : BasePresentationModel(), MovieDetailsModel {
 
-        override val movie: LiveData<Async<Movie>>
-            get() = _movie
-    }
+    private val _movie = flow { emit(tmdbService.getMovieDetails(movieId)) }
+        .map { it.asAsync() }
+        .catch { emit(Async.Fail(it)) }
+        .onStart { emit(Async.Loading()) }
+        .asLiveData()
+
+    override val movie: LiveData<Async<Movie>>
+        get() = _movie
 }

@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.details.di
 
 import androidx.lifecycle.ViewModel
-import com.illiarb.tmdbclient.details.MovieDetailsViewModel
+import com.illiarb.tmdbclient.details.DefaultDetailsViewModel
 import com.illiarb.tmdbexplorer.coreui.di.ViewModelKey
 import com.illiarb.tmdblcient.core.services.TmdbService
 import dagger.Module
@@ -16,7 +16,7 @@ class MovieDetailsModule(val id: Int) {
 
     @Provides
     @IntoMap
-    @ViewModelKey(MovieDetailsViewModel.DefaultDetailsViewModel::class)
+    @ViewModelKey(DefaultDetailsViewModel::class)
     fun provideMovieDetailsModel(service: TmdbService): ViewModel =
-        MovieDetailsViewModel.DefaultDetailsViewModel(id, service)
+        DefaultDetailsViewModel(id, service)
 }
