@@ -15,6 +15,7 @@ import com.illiarb.tmdbclient.discover.di.DiscoverComponent
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentDiscoverBinding
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
+import com.illiarb.tmdbexplorer.coreui.common.Text
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
@@ -69,6 +70,10 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
             )
         }
 
+        binding.toolbar.setNavigationOnClickListener {
+            activity?.onBackPressed()
+        }
+
         binding.toolbar.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
             v.updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
         }
@@ -112,7 +117,10 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
         })
 
         viewModel.screenTitle.observe(viewLifecycleOwner, Observer {
-            binding.toolbar.title = it
+            binding.toolbar.title = when (it) {
+                is Text.AsString -> it.text
+                is Text.AsResource -> getString(it.id)
+            }
         })
     }
 

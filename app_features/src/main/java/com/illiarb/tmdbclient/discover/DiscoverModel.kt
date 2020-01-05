@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.illiarb.tmdbclient.discover.DiscoverModel.UiEvent
+import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
+import com.illiarb.tmdbexplorer.coreui.common.Text
 import com.illiarb.tmdblcient.core.domain.Genre
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.navigation.Router
@@ -22,9 +24,11 @@ interface DiscoverModel {
 
     val genres: LiveData<List<Genre>>
 
-    val screenTitle: LiveData<String>
+    val screenTitle: LiveData<Text>
 
     val selectedChip: LiveData<Int>
+
+    val isLoading: LiveData<Boolean>
 
     fun onUiEvent(event: UiEvent)
 
@@ -43,9 +47,10 @@ class DefaultDiscoverModel @Inject constructor(
 ) : BasePresentationModel(), DiscoverModel {
 
     private val _results = MutableLiveData<List<Movie>>()
-    private val _screenTitle = MutableLiveData<String>()
+    private val _screenTitle = MutableLiveData<Text>()
     private val _genres = MutableLiveData<List<Genre>>()
     private val _selectedChip = MutableLiveData<Int>()
+    private val _isLoading = MutableLiveData<Boolean>()
 
     override val results: LiveData<List<Movie>>
         get() = _results
@@ -53,26 +58,20 @@ class DefaultDiscoverModel @Inject constructor(
     override val genres: LiveData<List<Genre>>
         get() = _genres
 
-    override val screenTitle: LiveData<String>
+    override val screenTitle: LiveData<Text>
         get() = _screenTitle
 
     override val selectedChip: LiveData<Int>
         get() = _selectedChip
 
+    override val isLoading: LiveData<Boolean>
+        get() = _isLoading
+
     override fun onUiEvent(event: UiEvent) {
         when (event) {
             is UiEvent.Init -> init(event.id)
             is UiEvent.ClearFilter -> applyFilter()
-
-            is UiEvent.ApplyFilter -> {
-                val selected = _genres.value?.find { it.id == event.id }
-                selected?.let { genre ->
-                    _screenTitle.value = genre.name
-                    _selectedChip.value = genre.id
-                    applyFilter(genre.id)
-                }
-            }
-
+            is UiEvent.ApplyFilter -> applyFilter(event.id)
             is UiEvent.ItemClick -> {
                 if (event.item is Movie) {
                     val action = ShowMovieDetails(event.item.id)
@@ -84,33 +83,32 @@ class DefaultDiscoverModel @Inject constructor(
     }
 
     private fun init(genreId: Int) = viewModelScope.launch {
-        val movies = if (genreId == Genre.GENRE_ALL) {
-            tmdbService.discoverMovies()
-        } else {
-            tmdbService.discoverMovies(genreId)
-        }
-
-        when (movies) {
-            is Result.Success -> _results.postValue(movies.data)
-            is Result.Error -> {
-                // TODO:
-            }
-        }
-
-        when (val genres = tmdbService.getMovieGenres()) {
-            is Result.Success -> _genres.postValue(genres.data)
-            is Result.Error -> {
-                // TODO:
-            }
+        val genres = tmdbService.getMovieGenres()
+        if (genres is Result.Success) {
+            _genres.value = genres.data
+            applyFilter(genreId)
         }
     }
 
-    private fun applyFilter(id: Int = -1) = viewModelScope.launch {
-        when (val result = tmdbService.discoverMovies(id)) {
-            is Result.Success -> _results.postValue(result.data)
-            is Result.Error -> {
-                // TODO:
-            }
+    private fun applyFilter(id: Int = Genre.GENRE_ALL) = viewModelScope.launch {
+        if (_selectedChip.value == id) {
+            // do nothing if this genre are already applied
+            return@launch
+        }
+
+        val genres = _genres.value
+        val selected = genres?.find { it.id == id }
+
+        if (selected == null) {
+            _screenTitle.value = Text.AsResource(R.string.discover_genres_title)
+        } else {
+            _screenTitle.value = Text.AsString(selected.name)
+            _selectedChip.value = selected.id
+        }
+
+        val movies = tmdbService.discoverMovies(id)
+        if (movies is Result.Success) {
+            _results.value = movies.data
         }
     }
 }
