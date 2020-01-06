@@ -14,7 +14,6 @@
         android:paddingBottom="@dimen/spacing_normal"
         android:textAppearance="?attr/textAppearanceHeadline5"
         android:textColor="?attr/colorOnBackground"
-        android:textStyle="bold"
         tools:text="@tools:sample/lorem" />
 
     <androidx.recyclerview.widget.RecyclerView

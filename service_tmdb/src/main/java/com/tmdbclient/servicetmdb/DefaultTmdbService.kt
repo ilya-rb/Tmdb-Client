@@ -103,7 +103,7 @@ class DefaultTmdbService @Inject constructor(
         }
 
         if (trending.items.isNotEmpty()) {
-            result.add(1, trending)
+            result.add(0, trending)
         }
 
         return result
