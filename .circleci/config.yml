@@ -73,15 +73,15 @@ jobs:
       - checkout
 
       - restore_cache:
-        key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
 
       - run:
-        name: Download configuration files
-        command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
+          name: Download configuration files
+          command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
 
       - run:
-        name: Run detekt
-        command: ./gradlew detekt
+          name: Run detekt
+          command: ./gradlew detekt
 
 workflows:
   version: 2
@@ -96,4 +96,4 @@ workflows:
 
       - lint:
           requires:
-            - unit-tests
+            - debug-build
