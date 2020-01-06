@@ -80,38 +80,8 @@ jobs:
         command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
 
       - run:
-        name: Run Unit Tests
+        name: Run detekt
         command: ./gradlew detekt
-
-  release-build:
-    <<: *defaults
-
-    steps:
-      - checkout
-
-      - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
-
-      - run:
-          name: Download configuration files
-          command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
-
-      - run:
-          name: Download Dependencies
-          command: ./gradlew androidDependencies
-
-      - run:
-          name: Build Project
-          command: ./gradlew assembleRelease --scan --exclude-task test --exclude-task lint
-
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
-
-      - store_artifacts:
-          path: app/build/reports
-          destination: reports
 
 workflows:
   version: 2
@@ -126,4 +96,4 @@ workflows:
 
       - lint:
           requires:
-            - debug-build
+            - unit-tests
