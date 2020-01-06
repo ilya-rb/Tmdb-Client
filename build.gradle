@@ -91,7 +91,7 @@ subprojects { project ->
 
             xmlReport false
 
-            htmlOutput file("reports/android_lint/${project.name}_report.html")
+            htmlOutput file("reports/${project.name}_lint_report.html")
         }
     }
 }
