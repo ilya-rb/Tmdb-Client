@@ -1,7 +1,5 @@
 package com.illiarb.tmdbclient.home.delegates
 
-import android.os.Handler
-import android.os.Looper
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -11,16 +9,14 @@ import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 import com.illiarb.coreuiimage.CropOptions
 import com.illiarb.coreuiimage.RequestOptions.Companion.requestOptions
 import com.illiarb.coreuiimage.loadImage
-import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
+import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieSection
 import com.illiarb.tmdblcient.core.domain.NowPlayingSection
-import java.util.Timer
-import java.util.concurrent.TimeUnit
 
 fun nowPlayingDelegate(clickListener: OnClickListener) =
     adapterDelegate<NowPlayingSection, MovieSection>(R.layout.item_now_playing_section) {
@@ -30,12 +26,7 @@ fun nowPlayingDelegate(clickListener: OnClickListener) =
         val adapter = NowPlayingPagerAdapter(clickListener)
         val spacing = itemView.dimen(R.dimen.spacing_normal)
 
-        val timerHandler = Handler(Looper.getMainLooper())
-        val updateInterval = TimeUnit.SECONDS.toMillis(5L)
-        var bannerTimer: Timer? = null
-
         nowPlayingPager.adapter = adapter
-
         // Set offscreen page limit to at least 1
         // so adjacent pages are always laid out
         nowPlayingPager.offscreenPageLimit = 1
@@ -52,26 +43,10 @@ fun nowPlayingDelegate(clickListener: OnClickListener) =
             nowPlayingTitle.text = item.title
             adapter.items = item.movies
             adapter.notifyDataSetChanged()
-
-            // TODO: Fix timer
-//            bannerTimer = Timer()
-//            bannerTimer?.scheduleAtFixedRate(object : TimerTask() {
-//                override fun run() {
-//                    // Post to main thread as timer operates in a different one
-//                    timerHandler.post {
-//                        nowPlayingPager.switchToNextPosition()
-//                    }
-//                }
-//            }, updateInterval, updateInterval)
-        }
-
-        onViewDetachedFromWindow {
-            timerHandler.removeCallbacksAndMessages(null)
-            bannerTimer?.cancel()
         }
     }
 
-class NowPlayingPagerAdapter(private val clickListener: OnClickListener) :
+private class NowPlayingPagerAdapter(private val clickListener: OnClickListener) :
     ListDelegationAdapter<List<Movie>>() {
 
     init {

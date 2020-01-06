@@ -37,7 +37,5 @@ class DefaultDetailsViewModel @Inject constructor(
     override val movie: LiveData<Async<Movie>>
         get() = _movie
 
-    override fun onUiEvent(event: MovieDetailsModel.UiEvent) {
-
-    }
+    override fun onUiEvent(event: MovieDetailsModel.UiEvent) = Unit
 }

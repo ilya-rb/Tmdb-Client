@@ -17,6 +17,7 @@ import com.illiarb.tmdblcient.core.domain.MovieSection
 import com.illiarb.tmdblcient.core.domain.TrendingSection
 import com.illiarb.tmdblcient.core.domain.TrendingSection.TrendingItem
 
+@Suppress("LongMethod")
 fun trendingSectionDelegate(clickListener: OnClickListener) =
     adapterDelegate<TrendingSection, MovieSection>(R.layout.item_trending_section) {
 

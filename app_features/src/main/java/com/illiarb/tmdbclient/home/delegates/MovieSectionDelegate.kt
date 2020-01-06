@@ -16,6 +16,7 @@ import com.illiarb.tmdblcient.core.domain.ListSection
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieSection
 
+@Suppress("LongMethod")
 fun movieSectionDelegate(clickListener: OnClickListener) =
     adapterDelegate<ListSection, MovieSection>(R.layout.item_movie_section) {
 
@@ -26,7 +27,8 @@ fun movieSectionDelegate(clickListener: OnClickListener) =
 
         sectionList.let {
             it.adapter = adapter
-            it.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            it.layoutManager =
+                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             it.setHasFixedSize(true)
             it.addItemDecoration(
                 SpaceDecoration(
@@ -47,7 +49,8 @@ fun movieSectionDelegate(clickListener: OnClickListener) =
         }
     }
 
-class MovieSectionAdapter(clickListener: OnClickListener) : ListDelegationAdapter<List<Movie>>() {
+private class MovieSectionAdapter(clickListener: OnClickListener) :
+    ListDelegationAdapter<List<Movie>>() {
 
     init {
         delegatesManager.addDelegate(
