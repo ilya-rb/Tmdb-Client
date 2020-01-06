@@ -89,3 +89,7 @@ subprojects {
 task clean(type: Delete) {
     delete(rootProject.buildDir)
 }
+
+task syncConfig(type: Exec) {
+    commandLine 'sh', "$rootDir/ci_config/upload_config.sh"
+}

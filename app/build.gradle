@@ -61,7 +61,3 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
-
-task syncConfig(type: Exec) {
-    commandLine 'sh', "$rootDir/ci_config/upload_config.sh"
-}
