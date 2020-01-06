@@ -27,6 +27,7 @@
         android:elevation="@dimen/elevation_normal"
         android:padding="@dimen/spacing_normal"
         android:src="@drawable/ic_developer_board"
+        android:tint="?attr/colorOnBackground"
         android:visibility="gone"
         tools:ignore="HardcodedText"
         tools:visibility="visible" />
