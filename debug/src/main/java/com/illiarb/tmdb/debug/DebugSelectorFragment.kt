@@ -37,7 +37,25 @@ class DebugSelectorFragment : BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val prefs = view.context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        super.onViewCreated(view, savedInstanceState)
+
+        setupFpsTracker()
+
+        binding.btnUiComponents.setOnClickListener {
+            showFragment(UiComponentsFragment.newInstance())
+            dismiss()
+        }
+    }
+
+    private fun showFragment(fragment: Fragment) {
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(android.R.id.content, fragment, fragment::class.java.name)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
+    private fun setupFpsTracker() {
+        val prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val showFps = prefs.getBoolean(PREF_SHOW_FPS, false)
 
         if (showFps) {
@@ -56,18 +74,6 @@ class DebugSelectorFragment : BottomSheetDialogFragment() {
                 stopFpsTracker()
             }
         }
-
-        binding.btnUiComponents.setOnClickListener {
-            showFragment(UiComponentsFragment.newInstance())
-            dismiss()
-        }
-    }
-
-    private fun showFragment(fragment: Fragment) {
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(android.R.id.content, fragment, fragment::class.java.name)
-        transaction.addToBackStack(null)
-        transaction.commit()
     }
 
     private fun stopFpsTracker() {
@@ -75,6 +81,7 @@ class DebugSelectorFragment : BottomSheetDialogFragment() {
         isTrackerPlaying = false
     }
 
+    @Suppress("MagicNumber")
     private fun startFpsTracker() {
         if (fpsTracker == null) {
             fpsTracker = Takt.stock(requireActivity().application)
