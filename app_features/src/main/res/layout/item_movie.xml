@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/item_movie_width"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:viewBindingIgnore="true">
 
-    <com.google.android.material.card.MaterialCardView
+    <FrameLayout
         android:id="@+id/itemMovieCard"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_movie_height"
-        app:cardElevation="@dimen/elevation_normal">
+        android:layout_height="@dimen/item_movie_height">
 
         <ImageView
             android:id="@+id/itemMoviePoster"
@@ -26,7 +24,7 @@
             android:layout_height="match_parent"
             android:background="?attr/selectableItemBackground" />
 
-    </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
 
     <TextView
         android:id="@+id/itemMovieTitle"
