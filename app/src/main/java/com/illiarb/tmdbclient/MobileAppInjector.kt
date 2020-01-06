@@ -32,23 +32,12 @@ class MobileAppInjector(private val app: App) : Application.ActivityLifecycleCal
         }
     }
 
-    override fun onActivityPaused(activity: Activity?) {
-    }
-
-    override fun onActivityResumed(activity: Activity?) {
-    }
-
-    override fun onActivityStarted(activity: Activity?) {
-    }
-
-    override fun onActivityDestroyed(activity: Activity?) {
-    }
-
-    override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) {
-    }
-
-    override fun onActivityStopped(activity: Activity?) {
-    }
+    override fun onActivityPaused(activity: Activity?) = Unit
+    override fun onActivityResumed(activity: Activity?) = Unit
+    override fun onActivityStarted(activity: Activity?) = Unit
+    override fun onActivityDestroyed(activity: Activity?) = Unit
+    override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) = Unit
+    override fun onActivityStopped(activity: Activity?) = Unit
 
     private fun fragmentLifecycleCallbacks(): FragmentManager.FragmentLifecycleCallbacks {
         return object : FragmentManager.FragmentLifecycleCallbacks() {
