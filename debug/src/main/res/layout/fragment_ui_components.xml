@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/tmdb_white"
+    android:background="?android:attr/colorBackground"
     tools:ignore="HardcodedText">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/tmdb_white"
         android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -31,7 +30,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginEnd="@dimen/spacing_normal"
-                    android:text="Night mode" />
+                    android:text="Night mode"
+                    android:textAppearance="?attr/textAppearanceBody1" />
 
             </androidx.appcompat.widget.Toolbar>
 

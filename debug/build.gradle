@@ -33,5 +33,4 @@ android {
 
 dependencies {
     implementation project(':core_ui')
-    implementation 'jp.wasabeef:takt:2.0.1'
 }

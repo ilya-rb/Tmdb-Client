@@ -41,6 +41,9 @@ class UiComponentsFragment : Fragment() {
             binding.tabs.addTab(binding.tabs.newTab().setText("Tab $i"))
         }
 
+        binding.nightMode.isChecked =
+            AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
+
         binding.nightMode.setOnCheckedChangeListener { _, isChecked ->
             AppCompatDelegate.setDefaultNightMode(
                 if (isChecked) {
@@ -49,7 +52,6 @@ class UiComponentsFragment : Fragment() {
                     AppCompatDelegate.MODE_NIGHT_NO
                 }
             )
-            requireActivity().recreate()
         }
     }
 }
