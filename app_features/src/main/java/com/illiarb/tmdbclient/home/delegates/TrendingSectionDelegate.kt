@@ -28,12 +28,9 @@ fun trendingSectionDelegate(clickListener: OnClickListener) =
             it.adapter = adapter
             it.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             it.addItemDecoration(
-                SpaceDecoration(
-                    orientation = LinearLayoutManager.HORIZONTAL,
-                    spacingLeft = itemView.dimen(R.dimen.spacing_small),
-                    spacingLeftFirst = itemView.dimen(R.dimen.spacing_normal),
-                    spacingRight = itemView.dimen(R.dimen.spacing_small),
-                    spacingRightLast = itemView.dimen(R.dimen.spacing_normal)
+                SpaceDecoration.edgeInnerSpace(
+                    it.dimen(R.dimen.spacing_normal),
+                    it.dimen(R.dimen.spacing_small)
                 )
             )
         }

@@ -20,6 +20,19 @@ class SpaceDecoration(
     private val orientation: Int = LinearLayoutManager.VERTICAL
 ) : RecyclerView.ItemDecoration() {
 
+    companion object {
+
+        fun edgeInnerSpace(edgeSpace: Int, innerSpace: Int): SpaceDecoration {
+            return SpaceDecoration(
+                orientation = LinearLayoutManager.HORIZONTAL,
+                spacingLeftFirst = edgeSpace,
+                spacingLeft = innerSpace,
+                spacingRight = innerSpace,
+                spacingRightLast = edgeSpace
+            )
+        }
+    }
+
     override fun getItemOffsets(
         outRect: Rect,
         view: View,

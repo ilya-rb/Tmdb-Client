@@ -57,11 +57,15 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupSystemInsets()
 
         // filters layout added via <include> tag and not supported by view binding
         discoverGenres = binding.root.findViewById(R.id.discoverGenres)
         filtersContainer = binding.root.findViewById(R.id.discoverFiltersContainer)
+
+        binding.discoverSwipeRefresh.isEnabled = false
+
+        setupToolbar()
+        setupFilters()
 
         val adapter = DelegatesAdapter({
             listOf(
@@ -73,20 +77,30 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
             )
         })
 
-        binding.discoverList.let {
-            it.adapter = adapter
-            it.layoutManager = GridLayoutManager(requireContext(), GRID_SPAN_COUNT)
+        setupDiscoverList(adapter)
 
-            val spacing = view.dimen(R.dimen.spacing_small)
-            it.addItemDecoration(
-                SpaceDecoration(spacing, spacing, spacing, spacing)
-            )
-        }
+        ViewCompat.requestApplyInsets(view)
 
-        binding.discoverSwipeRefresh.isEnabled = false
+        bind(viewModel, adapter)
+    }
 
+    override fun getViewBinding(inflater: LayoutInflater): FragmentDiscoverBinding =
+        FragmentDiscoverBinding.inflate(inflater)
+
+
+    private fun setupToolbar() {
         binding.toolbar.setNavigationOnClickListener {
             activity?.onBackPressed()
+        }
+
+        binding.toolbar.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
+            v.updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
+        }
+    }
+
+    private fun setupFilters() {
+        filtersContainer.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
+            v.updateMargin(bottom = initialPadding.bottom + windowInsets.systemWindowInsetBottom)
         }
 
         binding.root.findViewById<View>(R.id.discoverApplyFilter).setOnClickListener {
@@ -99,22 +113,15 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
             dismissFiltersPanel()
             viewModel.onUiEvent(UiEvent.ClearFilter)
         }
-
-        ViewCompat.requestApplyInsets(view)
-
-        bind(viewModel, adapter)
     }
 
-    override fun getViewBinding(inflater: LayoutInflater): FragmentDiscoverBinding =
-        FragmentDiscoverBinding.inflate(inflater)
+    private fun setupDiscoverList(discoverAdapter: DelegatesAdapter<Movie>) {
+        binding.discoverList.apply {
+            adapter = discoverAdapter
+            layoutManager = GridLayoutManager(requireContext(), GRID_SPAN_COUNT)
 
-    private fun setupSystemInsets() {
-        binding.toolbar.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
-            v.updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
-        }
-
-        filtersContainer.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
-            v.updateMargin(bottom = initialPadding.bottom + windowInsets.systemWindowInsetBottom)
+            val spacing = dimen(R.dimen.spacing_small)
+            addItemDecoration(SpaceDecoration(spacing, spacing, spacing, spacing))
         }
     }
 

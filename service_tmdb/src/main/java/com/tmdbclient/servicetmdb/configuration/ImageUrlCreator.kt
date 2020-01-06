@@ -14,10 +14,10 @@ class ImageUrlCreator @Inject constructor(private val cache: TmdbCache) {
         val urlBuilder = StringBuilder()
         val defaultSize = BuildConfig.IMG_SIZE
 
-        val baseUrl = if (configuration.images.baseUrl.isEmpty()) {
+        val baseUrl = if (configuration.images.secureBaseUrl.isEmpty()) {
             BuildConfig.IMG_URL
         } else {
-            configuration.images.baseUrl
+            configuration.images.secureBaseUrl
         }
 
         val size = when (imageType) {

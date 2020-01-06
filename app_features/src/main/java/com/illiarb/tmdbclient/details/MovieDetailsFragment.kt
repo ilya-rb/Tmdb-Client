@@ -49,8 +49,25 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupToolbar()
+
+        binding.swipeRefresh.isEnabled = false
+        binding.movieDetailsPlay.setOnClickListener {
+            viewModel.onUiEvent(UiEvent.PlayClicked)
+        }
+
+        val photosAdapter = DelegatesAdapter({ listOf(photoDelegate(it)) })
+
+        setupPhotosList(photosAdapter)
+
+        ViewCompat.requestApplyInsets(view)
+
+        bind(viewModel, photosAdapter)
+    }
+
+    private fun setupToolbar() {
         binding.movieDetailsToolbar.apply {
-            navigationIcon?.setTint(Color.WHITE)
+            navigationIcon?.mutate()?.setTint(Color.WHITE)
 
             doOnApplyWindowInsets { v, windowInsets, initialPadding ->
                 v.updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
@@ -60,19 +77,13 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
                 requireActivity().onBackPressed()
             }
         }
+    }
 
-        binding.movieDetailsPlay.setOnClickListener {
-            viewModel.onUiEvent(UiEvent.PlayClicked)
-        }
-
-        binding.swipeRefresh.isEnabled = false
-
-        val photosAdapter = DelegatesAdapter({ listOf(photoDelegate(it)) })
-
+    private fun setupPhotosList(photosAdapter: DelegatesAdapter<String>) {
         binding.movieDetailsPhotos.apply {
             adapter = photosAdapter
             layoutManager = LinearLayoutManager(
-                view.context,
+                requireContext(),
                 LinearLayoutManager.HORIZONTAL,
                 false
             )
@@ -80,20 +91,16 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
             addItemDecoration(
                 SpaceDecoration(
                     orientation = LinearLayoutManager.HORIZONTAL,
-                    spacingLeftFirst = view.dimen(R.dimen.spacing_normal),
-                    spacingLeft = view.dimen(R.dimen.spacing_small),
-                    spacingRight = view.dimen(R.dimen.spacing_small),
-                    spacingRightLast = view.dimen(R.dimen.spacing_normal)
+                    spacingLeftFirst = dimen(R.dimen.spacing_normal),
+                    spacingLeft = dimen(R.dimen.spacing_small),
+                    spacingRight = dimen(R.dimen.spacing_small),
+                    spacingRightLast = dimen(R.dimen.spacing_normal)
                 )
             )
             doOnApplyWindowInsets { v, windowInsets, initialPadding ->
                 v.updatePadding(bottom = initialPadding.bottom + windowInsets.systemWindowInsetBottom)
             }
         }
-
-        ViewCompat.requestApplyInsets(view)
-
-        bind(viewModel, photosAdapter)
     }
 
     private fun bind(viewModel: MovieDetailsModel, adapter: DelegatesAdapter<String>) {
