@@ -4,7 +4,7 @@ import com.illiarb.tmdbcliient.coretest.entity.FakeEntityFactory
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieFilter
 import com.illiarb.tmdblcient.core.domain.Review
-import com.tmdbclient.service_tmdb.MoviesRepository
+import com.tmdbclient.servicetmdb.MoviesRepository
 import java.util.Collections
 import java.util.Random
 

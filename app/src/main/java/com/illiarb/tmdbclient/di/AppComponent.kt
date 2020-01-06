@@ -13,7 +13,7 @@ import com.illiarb.tmdblcient.core.di.providers.StorageProvider
 import com.illiarb.tmdblcient.core.di.providers.TmdbProvider
 import com.illiarb.tmdblcient.core.di.providers.ToolsProvider
 import com.illiarb.tmdclient.analytics.di.AnalyticsComponent
-import com.tmdbclient.service_tmdb.di.TmdbComponent
+import com.tmdbclient.servicetmdb.di.TmdbComponent
 import dagger.Component
 import javax.inject.Singleton
 

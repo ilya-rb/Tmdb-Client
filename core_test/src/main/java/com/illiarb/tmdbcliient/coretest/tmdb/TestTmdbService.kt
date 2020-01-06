@@ -9,7 +9,7 @@ import com.illiarb.tmdblcient.core.domain.Review
 import com.illiarb.tmdblcient.core.domain.TrendingSection
 import com.illiarb.tmdblcient.core.services.TmdbService
 import com.illiarb.tmdblcient.core.util.Result
-import com.tmdbclient.service_tmdb.MoviesRepository
+import com.tmdbclient.servicetmdb.MoviesRepository
 import java.util.Collections
 
 @Suppress("MagicNumber")
