@@ -9,7 +9,8 @@
     <FrameLayout
         android:id="@+id/itemMovieCard"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_movie_height">
+        android:layout_height="@dimen/item_movie_height"
+        android:stateListAnimator="@xml/sla_scale_down">
 
         <ImageView
             android:id="@+id/itemMoviePoster"

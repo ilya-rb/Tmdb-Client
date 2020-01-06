@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:stateListAnimator="@xml/sla_scale_down"
     tools:layout_height="200dp"
     tools:viewBindingIgnore="true">
 
