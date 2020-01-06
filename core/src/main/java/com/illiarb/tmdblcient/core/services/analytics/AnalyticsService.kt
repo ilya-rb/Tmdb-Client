@@ -5,7 +5,7 @@ package com.illiarb.tmdblcient.core.services.analytics
  */
 interface AnalyticsService {
 
-    val factory: AnalyticEventFactory
+    val factory: AnalyticsEventFactory
 
     fun trackEvent(event: AnalyticEvent)
 }

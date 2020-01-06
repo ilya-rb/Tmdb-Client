@@ -1,7 +1,7 @@
 package com.illiarb.tmdbcliient.coretest.analytics
 
 import com.illiarb.tmdblcient.core.services.analytics.AnalyticEvent
-import com.illiarb.tmdblcient.core.services.analytics.AnalyticEventFactory
+import com.illiarb.tmdblcient.core.services.analytics.AnalyticsEventFactory
 import com.illiarb.tmdblcient.core.services.analytics.AnalyticsService
 
 /**
@@ -9,7 +9,7 @@ import com.illiarb.tmdblcient.core.services.analytics.AnalyticsService
  */
 class TestAnalyticsService : AnalyticsService {
 
-    override val factory: AnalyticEventFactory
+    override val factory: AnalyticsEventFactory
         get() = TestAnalyticEventFactory()
 
     override fun trackEvent(event: AnalyticEvent) = Unit

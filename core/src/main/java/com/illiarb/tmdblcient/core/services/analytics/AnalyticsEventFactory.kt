@@ -5,7 +5,7 @@ import com.illiarb.tmdblcient.core.navigation.Router
 /**
  * @author ilya-rb on 20.02.19.
  */
-interface AnalyticEventFactory {
+interface AnalyticsEventFactory {
 
     fun createMovieSearchEvent(query: String): AnalyticEvent
 

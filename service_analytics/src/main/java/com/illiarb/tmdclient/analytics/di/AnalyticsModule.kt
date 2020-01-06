@@ -1,6 +1,6 @@
 package com.illiarb.tmdclient.analytics.di
 
-import com.illiarb.tmdblcient.core.services.analytics.AnalyticEventFactory
+import com.illiarb.tmdblcient.core.services.analytics.AnalyticsEventFactory
 import com.illiarb.tmdblcient.core.services.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdclient.analytics.BuildConfig
@@ -18,11 +18,11 @@ import dagger.Provides
 class AnalyticsModule(private val app: App) {
 
     @Provides
-    fun provideAnalyticsEventFactory(): AnalyticEventFactory = DefaultAnalyticEventFactory()
+    fun provideAnalyticsEventFactory(): AnalyticsEventFactory = DefaultAnalyticEventFactory()
 
     @Provides
     fun provideAnalyticsService(
-        eventFactory: AnalyticEventFactory,
+        eventFactory: AnalyticsEventFactory,
         firebaseAnalyticTracker: FirebaseAnalyticTracker,
         debugAnalyticsTracker: DebugAnalyticsTracker
     ): AnalyticsService {
