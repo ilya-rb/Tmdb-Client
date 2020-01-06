@@ -9,7 +9,7 @@ detekt {
     reports {
         html {
             enabled = true
-            destination = file("$rootDir/reports/${project.name}_detekt.html")
+            destination = file("$rootDir/reports/detekt/${project.name}_report.html")
         }
     }
     idea {
