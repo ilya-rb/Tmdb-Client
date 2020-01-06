@@ -3,11 +3,12 @@ package com.illiarb.tmdbexplorer.coreui.ext
 import android.view.View
 import android.view.WindowInsets
 import androidx.core.view.ViewCompat
+import com.illiarb.tmdbexplorer.coreui.common.Padding
 
 // Grabbed from here:
 // https://medium.com/androiddevelopers/windowinsets-listeners-to-layouts-8f9ccc8fa4d1
 
-fun View.doOnApplyWindowInsets(f: (View, WindowInsets, InitialPadding) -> Unit) {
+fun View.doOnApplyWindowInsets(f: (View, WindowInsets, Padding) -> Unit) {
     // Create a snapshot of the view's padding state
     val initialPadding = recordInitialPaddingForView(this)
     // Set an actual OnApplyWindowInsetsListener which proxies to the given
@@ -52,11 +53,9 @@ fun View.awareOfWindowInsets() {
 }
 
 private fun recordInitialPaddingForView(view: View) =
-    InitialPadding(
+    Padding(
         view.paddingLeft,
         view.paddingTop,
         view.paddingRight,
         view.paddingBottom
     )
-
-data class InitialPadding(val left: Int, val top: Int, val right: Int, val bottom: Int)

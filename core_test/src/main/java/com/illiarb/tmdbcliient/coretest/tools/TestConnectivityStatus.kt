@@ -1,4 +1,4 @@
-package com.illiarb.tmdbcliient.core_test.tools
+package com.illiarb.tmdbcliient.coretest.tools
 
 import com.illiarb.tmdblcient.core.tools.ConnectivityStatus
 import kotlinx.coroutines.flow.Flow

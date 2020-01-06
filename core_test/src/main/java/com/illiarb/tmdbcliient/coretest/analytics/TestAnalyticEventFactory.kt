@@ -1,4 +1,4 @@
-package com.illiarb.tmdbcliient.core_test.analytics
+package com.illiarb.tmdbcliient.coretest.analytics
 
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.services.analytics.AnalyticEvent

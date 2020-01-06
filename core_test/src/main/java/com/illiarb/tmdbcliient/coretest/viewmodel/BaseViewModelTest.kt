@@ -1,4 +1,4 @@
-package com.illiarb.tmdbcliient.core_test.viewmodel
+package com.illiarb.tmdbcliient.coretest.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.Dispatchers

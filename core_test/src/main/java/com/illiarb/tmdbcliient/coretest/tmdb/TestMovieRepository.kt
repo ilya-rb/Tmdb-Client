@@ -1,6 +1,6 @@
-package com.illiarb.tmdbcliient.core_test.tmdb
+package com.illiarb.tmdbcliient.coretest.tmdb
 
-import com.illiarb.tmdbcliient.core_test.entity.FakeEntityFactory
+import com.illiarb.tmdbcliient.coretest.entity.FakeEntityFactory
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieFilter
 import com.illiarb.tmdblcient.core.domain.Review
@@ -8,6 +8,7 @@ import com.tmdbclient.service_tmdb.MoviesRepository
 import java.util.Collections
 import java.util.Random
 
+@Suppress("MagicNumber")
 class TestMovieRepository : MoviesRepository {
 
     private val movieFilters = listOf(

@@ -1,4 +1,4 @@
-package com.illiarb.tmdbcliient.core_test.storage
+package com.illiarb.tmdbcliient.coretest.storage
 
 import com.illiarb.tmdblcient.core.feature.FeatureFlagStore
 

@@ -1,14 +1,9 @@
 package com.illiarb.tmdbclient.home
 
-import com.illiarb.tmdbcliient.core_test.TestDependencyProvider
-import com.illiarb.tmdbcliient.core_test.viewmodel.BaseViewModelTest
-import com.illiarb.tmdblcient.core.domain.GenresSection
-import com.illiarb.tmdblcient.core.domain.NowPlayingSection
-import com.illiarb.tmdblcient.core.util.Async
+import com.illiarb.tmdbcliient.coretest.TestDependencyProvider
+import com.illiarb.tmdbcliient.coretest.viewmodel.BaseViewModelTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Assert
-import org.junit.Assert.assertTrue
 import org.junit.Test
 
 @ExperimentalCoroutinesApi

@@ -1,2 +1,2 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.illiarb.tmdbcliient.core_test" />
+    package="com.illiarb.tmdbcliient.coretest" />

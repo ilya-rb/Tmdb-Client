@@ -26,32 +26,35 @@ class SpaceDecoration(
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        fun isFirst(): Boolean = parent.getChildAdapterPosition(view) == 0
-        fun isLast(): Boolean = parent.getChildAdapterPosition(view) == parent.childCount
-
         outRect.setEmpty()
-
         outRect.left = spacingLeft
         outRect.right = spacingRight
         outRect.top = spacingTop
         outRect.bottom = spacingBottom
 
         if (orientation == LinearLayoutManager.VERTICAL) {
-            if (isFirst()) {
+            if (isFirstItem(parent, view)) {
                 outRect.top = spacingTopFirst
             }
 
-            if (isLast()) {
+            if (isLastItem(parent, view)) {
                 outRect.bottom = spacingBottomLast
             }
         } else {
-            if (isFirst()) {
+            if (isFirstItem(parent, view)) {
                 outRect.left = spacingLeftFirst
             }
 
-            if (isLast()) {
+            if (isLastItem(parent, view)) {
                 outRect.right = spacingRightLast
             }
         }
     }
+
+    private fun isFirstItem(parent: RecyclerView, view: View): Boolean =
+        parent.getChildAdapterPosition(view) == 0
+
+    private fun isLastItem(parent: RecyclerView, view: View): Boolean =
+        parent.getChildAdapterPosition(view) == parent.childCount
+
 }

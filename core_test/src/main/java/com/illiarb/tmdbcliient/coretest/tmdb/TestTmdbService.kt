@@ -1,4 +1,4 @@
-package com.illiarb.tmdbcliient.core_test.tmdb
+package com.illiarb.tmdbcliient.coretest.tmdb
 
 import com.illiarb.tmdblcient.core.domain.Genre
 import com.illiarb.tmdblcient.core.domain.GenresSection
@@ -12,6 +12,7 @@ import com.illiarb.tmdblcient.core.util.Result
 import com.tmdbclient.service_tmdb.MoviesRepository
 import java.util.Collections
 
+@Suppress("MagicNumber")
 class TestTmdbService(
     private val moviesRepository: MoviesRepository = TestMovieRepository()
 ) : TmdbService {

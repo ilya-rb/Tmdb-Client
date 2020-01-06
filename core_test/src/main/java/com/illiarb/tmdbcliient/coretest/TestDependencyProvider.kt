@@ -1,12 +1,12 @@
-package com.illiarb.tmdbcliient.core_test
+package com.illiarb.tmdbcliient.coretest
 
-import com.illiarb.tmdbcliient.core_test.analytics.TestAnalyticsService
-import com.illiarb.tmdbcliient.core_test.navigation.TestRouter
-import com.illiarb.tmdbcliient.core_test.storage.TestFeatureFlagStore
-import com.illiarb.tmdbcliient.core_test.storage.TestResourceResolver
-import com.illiarb.tmdbcliient.core_test.tmdb.TestTmdbService
-import com.illiarb.tmdbcliient.core_test.tools.TestConnectivityStatus
-import com.illiarb.tmdbcliient.core_test.tools.TestDispatcherProvider
+import com.illiarb.tmdbcliient.coretest.analytics.TestAnalyticsService
+import com.illiarb.tmdbcliient.coretest.navigation.TestRouter
+import com.illiarb.tmdbcliient.coretest.storage.TestFeatureFlagStore
+import com.illiarb.tmdbcliient.coretest.storage.TestResourceResolver
+import com.illiarb.tmdbcliient.coretest.tmdb.TestTmdbService
+import com.illiarb.tmdbcliient.coretest.tools.TestConnectivityStatus
+import com.illiarb.tmdbcliient.coretest.tools.TestDispatcherProvider
 import com.illiarb.tmdblcient.core.di.providers.AnalyticsProvider
 import com.illiarb.tmdblcient.core.di.providers.StorageProvider
 import com.illiarb.tmdblcient.core.di.providers.TmdbProvider

@@ -1,6 +1,6 @@
 package com.illiarb.tmdbclient.details
 
-import com.illiarb.tmdbcliient.core_test.viewmodel.BaseViewModelTest
+import com.illiarb.tmdbcliient.coretest.viewmodel.BaseViewModelTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
