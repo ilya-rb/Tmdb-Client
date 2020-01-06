@@ -48,6 +48,13 @@ jobs:
     steps:
       - checkout
 
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+
+      - run:
+          name: Download configuration files
+          command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
+
       - run:
           name: Run Unit Tests
           command: ./gradlew testDebugUnitTestCoverage
@@ -64,6 +71,13 @@ jobs:
 
     steps:
       - checkout
+
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+
+      - run:
+          name: Download configuration files
+          command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
 
       - run:
           name: Run detekt
