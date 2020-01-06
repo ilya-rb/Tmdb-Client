@@ -87,7 +87,6 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
     override fun getViewBinding(inflater: LayoutInflater): FragmentDiscoverBinding =
         FragmentDiscoverBinding.inflate(inflater)
 
-
     private fun setupToolbar() {
         binding.toolbar.setNavigationOnClickListener {
             activity?.onBackPressed()
