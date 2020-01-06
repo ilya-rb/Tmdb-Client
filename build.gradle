@@ -28,13 +28,13 @@ plugins {
 
 allprojects {
 
-    apply(from: "$rootDir/code_quality_tools/detekt.gradle")
-    apply(plugin: "com.github.ben-manes.versions")
+    apply from: "$rootDir/code_quality_tools/detekt.gradle"
+    apply plugin: "com.github.ben-manes.versions"
 
     repositories {
         google()
-        maven { url("https://jitpack.io") }
-        maven { url("https://oss.sonatype.org/content/repositories/snapshots/") }
+        maven { url "https://jitpack.io" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         jcenter()
     }
 
@@ -52,42 +52,52 @@ allprojects {
     }
 }
 
-subprojects {
+subprojects { project ->
 
-    apply(from: "$rootDir/code_quality_tools/jacoco.gradle")
+    apply from: "$rootDir/code_quality_tools/jacoco.gradle"
 
     afterEvaluate {
         // This allows us see tests execution progress in the output on the CI.
         android.testOptions.unitTests.all {
             testLogging {
-                events('passed', 'skipped', 'failed', 'standardOut', 'standardError')
-                exceptionFormat('full')
+                events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+                exceptionFormat 'full'
             }
         }
 
         android.compileOptions {
-            sourceCompatibility(JavaVersion.VERSION_1_8)
-            targetCompatibility(JavaVersion.VERSION_1_8)
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
         }
 
         android.lintOptions {
-            warningsAsErrors(true)
-            abortOnError(false)
+            warningsAsErrors true
+            abortOnError false
 
             // App does not have deep linking
-            disable('GoogleAppIndexingWarning')
+            disable 'GoogleAppIndexingWarning'
             // Okio references java.nio that does not presented in Android SDK
-            disable('InvalidPackage')
+            disable 'InvalidPackage'
+            // Warning for kotlin flows
+            disable 'UnsafeExperimentalUsageError', 'UnsafeExperimentalUsageWarning'
 
-            checkAllWarnings(true)
-            showAll(true)
-            explainIssues(true)
+            // View binding issues for unused resources and ids
+            // disable('UnusedResources')
+            // disable('UnusedIds')
+
+            checkAllWarnings true
+            showAll true
+            explainIssues true
+
+            xmlReport false
+
+            htmlOutput file("reports/android_lint/${project.name}_report.html")
         }
     }
 }
 
 task clean(type: Delete) {
-    delete(rootProject.buildDir)
+    delete rootProject.buildDir
 }
 
 task syncConfig(type: Exec) {

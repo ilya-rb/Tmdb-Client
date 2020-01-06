@@ -80,8 +80,20 @@ jobs:
           command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
 
       - run:
+          name: Run Android lint
+          command: ./gradlew lintDebug
+
+      - store_artifacts:
+          path: reports/android_lint
+          destination: reports/android_lint
+
+      - run:
           name: Run detekt
           command: ./gradlew detekt
+
+      - store_artifacts:
+          path: reports/detekt
+          destination: reports/detekt
 
 workflows:
   version: 2
