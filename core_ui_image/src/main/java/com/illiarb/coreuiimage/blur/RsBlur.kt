@@ -1,15 +1,20 @@
-package com.illiarb.core_ui_image.blur
+package com.illiarb.coreuiimage.blur
 
 import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
-import android.renderscript.*
+import android.renderscript.Allocation
+import android.renderscript.Element
+import android.renderscript.RSRuntimeException
+import android.renderscript.RenderScript
+import android.renderscript.ScriptIntrinsicBlur
 
 internal object RsBlur {
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Throws(RSRuntimeException::class)
+    @Suppress("LongMethod")
     fun blur(context: Context, bitmap: Bitmap, radius: Int): Bitmap {
         var rs: RenderScript? = null
         var input: Allocation? = null

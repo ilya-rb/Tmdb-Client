@@ -1,7 +1,7 @@
-package com.illiarb.core_ui_image
+package com.illiarb.coreuiimage
 
 import androidx.annotation.FloatRange
-import com.illiarb.core_ui_image.blur.BlurParams
+import com.illiarb.coreuiimage.blur.BlurParams
 
 /**
  * @author ilya-rb on 29.12.18.

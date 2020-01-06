@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
-import com.illiarb.core_ui_image.CropOptions
-import com.illiarb.core_ui_image.RequestOptions.Companion.requestOptions
-import com.illiarb.core_ui_image.loadImage
+import com.illiarb.coreuiimage.CropOptions
+import com.illiarb.coreuiimage.RequestOptions.Companion.requestOptions
+import com.illiarb.coreuiimage.loadImage
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener

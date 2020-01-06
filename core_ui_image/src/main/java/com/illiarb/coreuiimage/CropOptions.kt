@@ -1,4 +1,4 @@
-package com.illiarb.core_ui_image
+package com.illiarb.coreuiimage
 
 /**
  * @author ilya-rb on 29.12.18.

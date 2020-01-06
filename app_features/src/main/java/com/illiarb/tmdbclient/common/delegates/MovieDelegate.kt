@@ -4,9 +4,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
-import com.illiarb.core_ui_image.CropOptions
-import com.illiarb.core_ui_image.RequestOptions
-import com.illiarb.core_ui_image.loadImage
+import com.illiarb.coreuiimage.CropOptions
+import com.illiarb.coreuiimage.RequestOptions
+import com.illiarb.coreuiimage.loadImage
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.common.SizeSpec

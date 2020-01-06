@@ -1,4 +1,4 @@
-package com.illiarb.core_ui_image.blur
+package com.illiarb.coreuiimage.blur
 
 class BlurParams(val radius: Int = DEFAULT_RADIUS, val sampling: Int = DEFAULT_DOWN_SAMPLING) {
 

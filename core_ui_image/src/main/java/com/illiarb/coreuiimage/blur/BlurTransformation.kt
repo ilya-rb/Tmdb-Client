@@ -1,4 +1,4 @@
-package com.illiarb.core_ui_image.blur
+package com.illiarb.coreuiimage.blur
 
 import android.content.Context
 import android.graphics.Bitmap

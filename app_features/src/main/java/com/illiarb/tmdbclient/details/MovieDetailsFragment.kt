@@ -8,9 +8,9 @@ import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.illiarb.core_ui_image.CropOptions
-import com.illiarb.core_ui_image.RequestOptions.Companion.requestOptions
-import com.illiarb.core_ui_image.loadImage
+import com.illiarb.coreuiimage.CropOptions
+import com.illiarb.coreuiimage.RequestOptions.Companion.requestOptions
+import com.illiarb.coreuiimage.loadImage
 import com.illiarb.tmdbclient.details.MovieDetailsModel.UiEvent
 import com.illiarb.tmdbclient.details.delegates.photoDelegate
 import com.illiarb.tmdbclient.details.di.MovieDetailsComponent

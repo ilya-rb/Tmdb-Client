@@ -1,4 +1,4 @@
-package com.illiarb.core_ui_image
+package com.illiarb.coreuiimage
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -16,7 +16,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.illiarb.core_ui_image.blur.BlurTransformation
+import com.illiarb.coreuiimage.blur.BlurTransformation
 
 /**
  * @author ilya-rb on 29.12.18.
@@ -72,6 +72,7 @@ fun ImageView.clearImage() {
     Glide.with(context).clear(this)
 }
 
+@Suppress("ComplexMethod")
 private fun mapOptions(
     context: Context,
     options: RequestOptions
@@ -98,7 +99,7 @@ private fun mapOptions(
 
     if (transformations.isNotEmpty()) {
         result.apply {
-            transform(*transformations.toTypedArray())
+            transformations.forEach { transform(it) }
         }
     }
 

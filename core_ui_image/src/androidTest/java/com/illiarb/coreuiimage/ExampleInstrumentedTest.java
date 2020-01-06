@@ -1,4 +1,4 @@
-package com.illiarb.core_ui_image;
+package com.illiarb.coreuiimage;
 
 import android.content.Context;
 import androidx.test.InstrumentationRegistry;
