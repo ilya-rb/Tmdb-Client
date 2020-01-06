@@ -39,7 +39,6 @@ dependencies {
     api deps.supportDesign
     api deps.swipeRefreshLayout
     api deps.constraintLayout
-    api deps.viewpager2
     api deps.adapterDelegates
     api deps.adapterDelegatesDsl
     api deps.lifecycleKtx

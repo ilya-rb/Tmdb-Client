@@ -1,34 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:stateListAnimator="@xml/sla_scale_down"
-    tools:layout_height="200dp"
     tools:viewBindingIgnore="true">
 
     <ImageView
         android:id="@+id/itemNowPlayingImage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="200dp"
         android:contentDescription="@null"
         android:scaleType="fitXY"
         tools:src="@tools:sample/backgrounds/scenic" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#77000000" />
 
     <TextView
         android:id="@+id/itemNowPlayingTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:gravity="center_horizontal"
         android:maxLines="2"
-        android:padding="@dimen/spacing_normal"
-        android:textAppearance="?attr/textAppearanceHeadline5"
-        android:textColor="@color/tmdb_white"
+        android:padding="@dimen/spacing_small"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:textColor="?attr/colorOnBackground"
         tools:text="@tools:sample/lorem/random" />
 
-</FrameLayout>
+</LinearLayout>

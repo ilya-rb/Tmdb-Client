@@ -20,7 +20,6 @@ deps.swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:$versi
 deps.pallete = "androidx.palette:palette:$versions.supportLibrary"
 deps.recyclerView = "androidx.recyclerview:recyclerview:$versions.supportLibrary"
 deps.constraintLayout = "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
-deps.viewpager2 = "androidx.viewpager2:viewpager2:$versions.viewpager2"
 
 // Firebase
 deps.firebaseCore = "com.google.firebase:firebase-core:$versions.firebaseCore"

@@ -17,10 +17,15 @@
         android:textStyle="bold"
         tools:text="@tools:sample/lorem" />
 
-    <androidx.viewpager2.widget.ViewPager2
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/nowPlayingPager"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        tools:listitem="@layout/item_now_playing_item" />
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingLeft="@dimen/spacing_normal"
+        android:paddingRight="@dimen/spacing_normal"
+        tools:layoutManager="LinearLayoutManager"
+        tools:listitem="@layout/item_now_playing_item"
+        tools:orientation="horizontal" />
 
 </LinearLayout>
