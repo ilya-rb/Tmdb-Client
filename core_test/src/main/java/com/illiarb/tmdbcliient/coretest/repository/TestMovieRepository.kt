@@ -4,6 +4,7 @@ import com.illiarb.tmdbcliient.coretest.entity.FakeEntityFactory
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieFilter
 import com.illiarb.tmdblcient.core.domain.Review
+import com.illiarb.tmdblcient.core.interactor.MoviesInteractor
 import com.illiarb.tmdblcient.core.util.Result
 import com.tmdbclient.servicetmdb.repository.MoviesRepository
 import java.util.Collections
@@ -33,8 +34,13 @@ class TestMovieRepository : MoviesRepository {
         )
     }
 
-    override suspend fun getMovieDetails(id: Int, appendToResponse: String): Result<Movie> =
-        Result.Success(FakeEntityFactory.createFakeMovie())
+    override suspend fun getMovieDetails(id: Int, appendToResponse: String): Result<Movie> {
+        var movie = FakeEntityFactory.createFakeMovie()
+        if (appendToResponse.contains(MoviesInteractor.KEY_INCLUDE_IMAGES)) {
+            movie = movie.copy(images = listOf("image1", "image2"))
+        }
+        return Result.Success(movie)
+    }
 
     override suspend fun getMovieReviews(id: Int): Result<List<Review>> =
         Result.Success(Collections.emptyList())

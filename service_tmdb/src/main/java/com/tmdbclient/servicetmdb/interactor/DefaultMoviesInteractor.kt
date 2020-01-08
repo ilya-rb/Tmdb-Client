@@ -23,10 +23,6 @@ class DefaultMoviesInteractor @Inject constructor(
     private val dispatcherProvider: DispatcherProvider
 ) : MoviesInteractor {
 
-    companion object {
-        const val KEY_INCLUDE_IMAGES = "images"
-    }
-
     override suspend fun getAllMovies(): Result<List<MovieBlock>> {
         return repository.getMovieFilters().mapOnSuccess { filters ->
             filters.map {
@@ -41,7 +37,7 @@ class DefaultMoviesInteractor @Inject constructor(
 
     override suspend fun getMovieDetails(movieId: Int): Result<Movie> {
         val configuration = withContext(dispatcherProvider.io) { cache.getConfiguration() }
-        val imageKey = configuration.changeKeys.find { it == KEY_INCLUDE_IMAGES }
+        val imageKey = configuration.changeKeys.find { it == MoviesInteractor.KEY_INCLUDE_IMAGES }
 
         return if (imageKey == null) {
             repository.getMovieDetails(movieId, "")

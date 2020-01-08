@@ -6,6 +6,10 @@ import com.illiarb.tmdblcient.core.util.Result
 
 interface MoviesInteractor {
 
+    companion object {
+        const val KEY_INCLUDE_IMAGES = "images"
+    }
+
     suspend fun getAllMovies(): Result<List<MovieBlock>>
 
     suspend fun getMovieDetails(movieId: Int): Result<Movie>
