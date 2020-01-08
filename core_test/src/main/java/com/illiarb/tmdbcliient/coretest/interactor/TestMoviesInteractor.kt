@@ -1,11 +1,11 @@
 package com.illiarb.tmdbcliient.coretest.interactor
 
+import com.illiarb.tmdbcliient.coretest.entity.FakeEntityFactory
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieBlock
 import com.illiarb.tmdblcient.core.interactor.MoviesInteractor
 import com.illiarb.tmdblcient.core.util.Result
 import com.tmdbclient.servicetmdb.repository.MoviesRepository
-import java.util.Collections
 
 class TestMoviesInteractor(
     private val moviesRepository: MoviesRepository
@@ -28,6 +28,11 @@ class TestMoviesInteractor(
     }
 
     override suspend fun discoverMovies(genreId: Int): Result<List<Movie>> {
-        return Result.Success(Collections.emptyList())
+        val movieList = FakeEntityFactory.createFakeMovieList(5) {
+            FakeEntityFactory.createFakeMovie().copy(
+                genres = listOf(FakeEntityFactory.createGenre(genreId))
+            )
+        }
+        return Result.Success(movieList)
     }
 }

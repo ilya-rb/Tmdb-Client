@@ -9,7 +9,7 @@ class TestGenresRepository : GenresRepository {
     @Suppress("MagicNumber")
     private val testGenres = listOf(
         Genre(0, "Action"),
-        Genre(1, "Adventure"),
+        Genre(1, "Drama"),
         Genre(2, "Animation"),
         Genre(3, "Comedy"),
         Genre(4, "Crime"),
