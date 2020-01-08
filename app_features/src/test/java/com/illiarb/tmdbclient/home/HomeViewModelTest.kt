@@ -1,10 +1,10 @@
 package com.illiarb.tmdbclient.home
 
 import com.illiarb.tmdbcliient.coretest.TestDependencyProvider
+import com.illiarb.tmdbcliient.coretest.ext.getOrAwaitValue
 import com.illiarb.tmdbcliient.coretest.viewmodel.BaseViewModelTest
 import com.illiarb.tmdblcient.core.util.Async
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -23,22 +23,16 @@ class HomeViewModelTest : BaseViewModelTest() {
 
     @Test
     fun `it should return false for account feature`() = runBlockingTest {
-        homeViewModel.isAccountVisible.observeForever {
-            assertFalse(it)
-        }
+        val isAccountVisible = homeViewModel.isAccountVisible.getOrAwaitValue()
+        assertFalse(isAccountVisible)
     }
 
     @Test
-    fun `should post a loading and the content`() {
-        val states = mutableListOf<Async<*>>()
+    fun `should post a loading and the content`() = runBlockingTest {
+        val state = homeViewModel.movieSections.getOrAwaitValue()
+        assertTrue(state is Async.Loading)
 
-        homeViewModel.movieSections.observeForever {
-            states.add(it)
-
-            if (states.size == 2) {
-                assertTrue(states.first() is Async.Loading<*>)
-                assertTrue(states[1] is Async.Success<*>)
-            }
-        }
+        val data = homeViewModel.movieSections.getOrAwaitValue()
+        assertTrue(data is Async.Success)
     }
 }

@@ -5,21 +5,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import com.illiarb.tmdbclient.home.HomeModel.UiEvent
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
+import com.illiarb.tmdblcient.core.analytics.AnalyticEvent.RouterAction
+import com.illiarb.tmdblcient.core.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.domain.Genre
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieSection
 import com.illiarb.tmdblcient.core.feature.FeatureFlagStore
 import com.illiarb.tmdblcient.core.feature.FeatureFlagStore.FeatureFlag
+import com.illiarb.tmdblcient.core.interactor.HomeInteractor
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
-import com.illiarb.tmdblcient.core.analytics.AnalyticEvent.RouterAction
-import com.illiarb.tmdblcient.core.analytics.AnalyticsService
-import com.illiarb.tmdblcient.core.interactor.HomeInteractor
 import com.illiarb.tmdblcient.core.util.Async
 import com.illiarb.tmdblcient.core.util.Async.Fail
 import com.illiarb.tmdblcient.core.util.Async.Loading
-import com.illiarb.tmdblcient.core.util.Async.Success
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -46,8 +45,8 @@ class DefaultHomeModel @Inject constructor(
     private val analyticsService: AnalyticsService
 ) : BasePresentationModel(), HomeModel {
 
-    private val _movieSectionsData = flow { emit(homeInteractor.getHomeSections().getOrThrow()) }
-        .map { Success(it) as Async<List<MovieSection>> }
+    private val _movieSectionsData = flow { emit(homeInteractor.getHomeSections()) }
+        .map { it.asAsync() }
         .onStart { emit(Loading()) }
         .catch { emit(Fail(it)) }
         .asLiveData()

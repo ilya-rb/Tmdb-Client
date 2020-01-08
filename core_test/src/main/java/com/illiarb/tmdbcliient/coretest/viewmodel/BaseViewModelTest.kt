@@ -1,6 +1,8 @@
 package com.illiarb.tmdbcliient.coretest.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.illiarb.tmdbcliient.coretest.rules.MainCoroutineRule
+import com.illiarb.tmdbcliient.coretest.rules.runBlocking
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -16,15 +18,12 @@ abstract class BaseViewModelTest {
     @get:Rule
     val instantTaskRule = InstantTaskExecutorRule()
 
-    private val testDispatcher = TestCoroutineDispatcher()
+    @get:Rule
+    val mainCoroutineRule = MainCoroutineRule()
 
-    @Before
-    fun setup() {
-        Dispatchers.setMain(testDispatcher)
-    }
-
-    @After
-    fun cleanup() {
-        Dispatchers.resetMain()
+    protected fun runBlockingTest(block: suspend () -> Unit) {
+        mainCoroutineRule.runBlocking {
+            block()
+        }
     }
 }
