@@ -33,6 +33,7 @@ import com.illiarb.tmdblcient.core.tools.DispatcherProvider
 import com.tmdbclient.servicetmdb.repository.GenresRepository
 import com.tmdbclient.servicetmdb.repository.MoviesRepository
 
+@Suppress("TooManyFunctions")
 object TestDependencyProvider : StorageProvider,
     ToolsProvider,
     AnalyticsProvider,

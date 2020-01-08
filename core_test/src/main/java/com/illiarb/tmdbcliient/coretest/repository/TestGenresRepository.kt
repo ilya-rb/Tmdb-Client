@@ -6,6 +6,7 @@ import com.tmdbclient.servicetmdb.repository.GenresRepository
 
 class TestGenresRepository : GenresRepository {
 
+    @Suppress("MagicNumber")
     private val testGenres = listOf(
         Genre(0, "Action"),
         Genre(1, "Adventure"),
