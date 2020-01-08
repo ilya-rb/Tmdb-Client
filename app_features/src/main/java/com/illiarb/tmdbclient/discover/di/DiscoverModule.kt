@@ -4,8 +4,9 @@ import androidx.lifecycle.ViewModel
 import com.illiarb.tmdbclient.discover.DefaultDiscoverModel
 import com.illiarb.tmdbexplorer.coreui.di.ViewModelKey
 import com.illiarb.tmdblcient.core.navigation.Router
-import com.illiarb.tmdblcient.core.services.TmdbService
-import com.illiarb.tmdblcient.core.services.analytics.AnalyticsService
+import com.illiarb.tmdblcient.core.analytics.AnalyticsService
+import com.illiarb.tmdblcient.core.interactor.GenresInteractor
+import com.illiarb.tmdblcient.core.interactor.MoviesInteractor
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
@@ -17,13 +18,15 @@ class DiscoverModule(private val genreId: Int) {
     @IntoMap
     @ViewModelKey(DefaultDiscoverModel::class)
     fun provideDiscoverModel(
-        tmdbService: TmdbService,
+        genresInteractor: GenresInteractor,
+        moviesInteractor: MoviesInteractor,
         router: Router,
         analyticsService: AnalyticsService
     ): ViewModel {
         return DefaultDiscoverModel(
             genreId,
-            tmdbService,
+            genresInteractor,
+            moviesInteractor,
             router,
             analyticsService
         )

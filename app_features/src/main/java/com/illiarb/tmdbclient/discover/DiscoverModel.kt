@@ -11,9 +11,10 @@ import com.illiarb.tmdblcient.core.domain.Genre
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
-import com.illiarb.tmdblcient.core.services.TmdbService
-import com.illiarb.tmdblcient.core.services.analytics.AnalyticEvent.RouterAction
-import com.illiarb.tmdblcient.core.services.analytics.AnalyticsService
+import com.illiarb.tmdblcient.core.analytics.AnalyticEvent.RouterAction
+import com.illiarb.tmdblcient.core.analytics.AnalyticsService
+import com.illiarb.tmdblcient.core.interactor.GenresInteractor
+import com.illiarb.tmdblcient.core.interactor.MoviesInteractor
 import com.illiarb.tmdblcient.core.util.Result
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -41,7 +42,8 @@ interface DiscoverModel {
 
 class DefaultDiscoverModel @Inject constructor(
     private val genreId: Int,
-    private val tmdbService: TmdbService,
+    private val genresInteractor: GenresInteractor,
+    private val moviesInteractor: MoviesInteractor,
     private val router: Router,
     private val analyticsService: AnalyticsService
 ) : BasePresentationModel(), DiscoverModel {
@@ -69,7 +71,7 @@ class DefaultDiscoverModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val genres = tmdbService.getMovieGenres()
+            val genres = genresInteractor.getAllGenres()
             if (genres is Result.Success) {
                 _genres.value = genres.data
                 applyFilter(genreId)
@@ -109,7 +111,7 @@ class DefaultDiscoverModel @Inject constructor(
 
         _isLoading.value = true
 
-        val movies = tmdbService.discoverMovies(id)
+        val movies = moviesInteractor.discoverMovies(id)
         if (movies is Result.Success) {
             _results.value = movies.data
         }

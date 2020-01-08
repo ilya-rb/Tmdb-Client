@@ -1,6 +1,6 @@
 package com.illiarb.tmdblcient.core.di.providers
 
-import com.illiarb.tmdblcient.core.services.analytics.AnalyticsService
+import com.illiarb.tmdblcient.core.analytics.AnalyticsService
 
 interface AnalyticsProvider {
 

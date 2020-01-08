@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import com.illiarb.tmdblcient.core.domain.Movie
-import com.illiarb.tmdblcient.core.services.TmdbService
+import com.illiarb.tmdblcient.core.interactor.MoviesInteractor
 import com.illiarb.tmdblcient.core.util.Async
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -25,10 +25,10 @@ interface MovieDetailsModel {
 
 class DefaultDetailsViewModel @Inject constructor(
     private val movieId: Int,
-    private val tmdbService: TmdbService
+    private val moviesInteractor: MoviesInteractor
 ) : BasePresentationModel(), MovieDetailsModel {
 
-    private val _movie = flow { emit(tmdbService.getMovieDetails(movieId)) }
+    private val _movie = flow { emit(moviesInteractor.getMovieDetails(movieId)) }
         .map { it.asAsync() }
         .catch { emit(Async.Fail(it)) }
         .onStart { emit(Async.Loading()) }

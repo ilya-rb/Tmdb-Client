@@ -2,6 +2,7 @@ package com.tmdbclient.servicetmdb.di
 
 import com.illiarb.tmdbclient.storage.di.modules.NetworkModule
 import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.di.providers.InteractorsProvider
 import com.illiarb.tmdblcient.core.di.providers.StorageProvider
 import com.illiarb.tmdblcient.core.di.providers.TmdbProvider
 import com.illiarb.tmdblcient.core.di.providers.ToolsProvider
@@ -19,7 +20,7 @@ import javax.inject.Singleton
         NetworkModule::class
     ]
 )
-interface TmdbComponent : TmdbProvider {
+interface TmdbComponent : TmdbProvider, InteractorsProvider {
 
     companion object {
 
@@ -27,7 +28,7 @@ interface TmdbComponent : TmdbProvider {
             app: App,
             toolsProvider: ToolsProvider,
             storageProvider: StorageProvider
-        ): TmdbProvider =
+        ): TmdbComponent =
             DaggerTmdbComponent.builder()
                 .toolsProvider(toolsProvider)
                 .storageProvider(storageProvider)

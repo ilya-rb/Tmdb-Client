@@ -1,7 +1,8 @@
-package com.tmdbclient.servicetmdb
+package com.tmdbclient.servicetmdb.repository
 
 import com.illiarb.tmdblcient.core.domain.Genre
 import com.illiarb.tmdblcient.core.tools.DispatcherProvider
+import com.illiarb.tmdblcient.core.util.Result
 import com.tmdbclient.servicetmdb.api.GenreApi
 import com.tmdbclient.servicetmdb.cache.TmdbCache
 import com.tmdbclient.servicetmdb.mappers.GenreMapper
@@ -11,7 +12,7 @@ import javax.inject.Singleton
 
 interface GenresRepository {
 
-    suspend fun getGenres(): List<Genre>
+    suspend fun getGenres(): Result<List<Genre>>
 }
 
 @Singleton
@@ -22,14 +23,16 @@ class DefaultGenresRepository @Inject constructor(
     private val genreMapper: GenreMapper
 ) : GenresRepository {
 
-    override suspend fun getGenres(): List<Genre> = withContext(dispatcherProvider.io) {
-        val cachedGenres = cache.getGenres()
-        if (cachedGenres.isNotEmpty()) {
-            genreMapper.mapList(cachedGenres)
-        } else {
-            val genres = genreApi.getGenresAsync().await().genres
-            cache.storeGenres(genres)
-            genreMapper.mapList(genres)
+    override suspend fun getGenres(): Result<List<Genre>> = Result.create {
+        withContext(dispatcherProvider.io) {
+            val cachedGenres = cache.getGenres()
+            if (cachedGenres.isNotEmpty()) {
+                genreMapper.mapList(cachedGenres)
+            } else {
+                val genres = genreApi.getGenresAsync().await().genres
+                cache.storeGenres(genres)
+                genreMapper.mapList(genres)
+            }
         }
     }
 }

@@ -3,7 +3,8 @@ package com.illiarb.tmdclient.analytics.trackers
 import android.annotation.SuppressLint
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.illiarb.tmdblcient.core.services.analytics.AnalyticEvent
+import com.illiarb.tmdblcient.core.analytics.AnalyticEvent
+import com.illiarb.tmdblcient.core.analytics.AnalyticEvent.RouterAction
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdclient.analytics.AnalyticsTracker
 import javax.inject.Inject
@@ -23,8 +24,7 @@ class FirebaseAnalyticTracker @Inject constructor(app: App) : AnalyticsTracker {
     private fun createBundleFromEvent(event: AnalyticEvent): Bundle =
         Bundle().apply {
             when (event) {
-                is AnalyticEvent.RouterAction -> putString("screen_name", event.action.toString())
-                is AnalyticEvent.MovieSearched -> putString("search_query", event.query)
+                is RouterAction -> putString("screen_name", event.action.toString())
                 else -> Bundle.EMPTY
             }
         }

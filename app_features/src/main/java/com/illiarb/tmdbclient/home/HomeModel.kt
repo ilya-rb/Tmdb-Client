@@ -13,9 +13,9 @@ import com.illiarb.tmdblcient.core.feature.FeatureFlagStore.FeatureFlag
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
-import com.illiarb.tmdblcient.core.services.TmdbService
-import com.illiarb.tmdblcient.core.services.analytics.AnalyticEvent.RouterAction
-import com.illiarb.tmdblcient.core.services.analytics.AnalyticsService
+import com.illiarb.tmdblcient.core.analytics.AnalyticEvent.RouterAction
+import com.illiarb.tmdblcient.core.analytics.AnalyticsService
+import com.illiarb.tmdblcient.core.interactor.HomeInteractor
 import com.illiarb.tmdblcient.core.util.Async
 import com.illiarb.tmdblcient.core.util.Async.Fail
 import com.illiarb.tmdblcient.core.util.Async.Loading
@@ -41,12 +41,12 @@ interface HomeModel {
 
 class DefaultHomeModel @Inject constructor(
     featureConfig: FeatureFlagStore,
-    private val tmdbService: TmdbService,
+    private val homeInteractor: HomeInteractor,
     private val router: Router,
     private val analyticsService: AnalyticsService
 ) : BasePresentationModel(), HomeModel {
 
-    private val _movieSectionsData = flow { emit(tmdbService.getMovieSections().getOrThrow()) }
+    private val _movieSectionsData = flow { emit(homeInteractor.getHomeSections().getOrThrow()) }
         .map { Success(it) as Async<List<MovieSection>> }
         .onStart { emit(Loading()) }
         .catch { emit(Fail(it)) }

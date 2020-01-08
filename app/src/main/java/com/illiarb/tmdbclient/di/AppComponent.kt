@@ -9,6 +9,7 @@ import com.illiarb.tmdbclient.tools.di.ToolsComponent
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.di.providers.AnalyticsProvider
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
+import com.illiarb.tmdblcient.core.di.providers.InteractorsProvider
 import com.illiarb.tmdblcient.core.di.providers.StorageProvider
 import com.illiarb.tmdblcient.core.di.providers.TmdbProvider
 import com.illiarb.tmdblcient.core.di.providers.ToolsProvider
@@ -23,6 +24,7 @@ import javax.inject.Singleton
         StorageProvider::class,
         ToolsProvider::class,
         AnalyticsProvider::class,
+        InteractorsProvider::class,
         TmdbProvider::class
     ]
 )
@@ -42,6 +44,7 @@ interface AppComponent : AppProvider {
                 .toolsProvider(toolsProvider)
                 .analyticsProvider(analyticsProvider)
                 .tmdbProvider(tmdbProvider)
+                .interactorsProvider(tmdbProvider)
                 .appModule(AppModule(app))
                 .build()
         }

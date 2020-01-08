@@ -11,6 +11,13 @@ sealed class Result<out T : Any> {
         is Error -> throw error
     }
 
+    inline fun <R : Any> mapOnSuccess(block: (T) -> R): Result<R> {
+        return when (this) {
+            is Success -> Success(block(data))
+            is Error -> this
+        }
+    }
+
     fun asAsync(): Async<T> = when (this) {
         is Success -> Async.Success(data)
         is Error -> Async.Fail(error)

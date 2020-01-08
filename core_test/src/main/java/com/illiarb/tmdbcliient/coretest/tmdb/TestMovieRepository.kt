@@ -4,12 +4,13 @@ import com.illiarb.tmdbcliient.coretest.entity.FakeEntityFactory
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieFilter
 import com.illiarb.tmdblcient.core.domain.Review
-import com.tmdbclient.servicetmdb.MoviesRepository
+import com.tmdbclient.servicetmdb.repository.MoviesRepository
 import java.util.Collections
 import java.util.Random
 
 @Suppress("MagicNumber")
-class TestMovieRepository : MoviesRepository {
+class TestMovieRepository :
+    MoviesRepository {
 
     private val movieFilters = listOf(
         MovieFilter("Popular", MovieFilter.TYPE_POPULAR),

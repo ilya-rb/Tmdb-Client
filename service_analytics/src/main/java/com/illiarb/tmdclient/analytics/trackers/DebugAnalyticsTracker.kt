@@ -1,6 +1,6 @@
 package com.illiarb.tmdclient.analytics.trackers
 
-import com.illiarb.tmdblcient.core.services.analytics.AnalyticEvent
+import com.illiarb.tmdblcient.core.analytics.AnalyticEvent
 import com.illiarb.tmdblcient.core.tools.Logger
 import com.illiarb.tmdclient.analytics.AnalyticsTracker
 import javax.inject.Inject
