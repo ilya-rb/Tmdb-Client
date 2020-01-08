@@ -23,11 +23,6 @@ class DefaultHomeInteractor @Inject constructor(
     private val trendingInteractor: TrendingInteractor
 ) : HomeInteractor {
 
-    companion object {
-        // Max genres displayed in the section
-        private const val GENRES_MAX_SIZE = 8
-    }
-
     override suspend fun getHomeSections(): Result<List<MovieSection>> = coroutineScope {
         Result.create {
             val movies = async { moviesInteractor.getAllMovies().getOrThrow() }
@@ -45,18 +40,21 @@ class DefaultHomeInteractor @Inject constructor(
         return movieBlocks
             .filter { it.movies.isNotEmpty() }
             .map {
-                // Now playing section should always be on top
                 if (it.filter.isNowPlaying()) {
                     NowPlayingSection(it.filter.name, it.movies)
                 } else {
                     ListSection(it.filter.code, it.filter.name, it.movies)
                 }
             }
+            .sortedByDescending {
+                // Now playing section should always be on top
+                it is NowPlayingSection
+            }
             .toMutableList()
             .also {
                 if (genres.isNotEmpty()) {
-                    if (genres.size > GENRES_MAX_SIZE) {
-                        it.add(1, GenresSection(genres.subList(0, GENRES_MAX_SIZE)))
+                    if (genres.size > HomeInteractor.GENRES_MAX_SIZE) {
+                        it.add(1, GenresSection(genres.subList(0, HomeInteractor.GENRES_MAX_SIZE)))
                     } else {
                         it.add(1, GenresSection(genres))
                     }
