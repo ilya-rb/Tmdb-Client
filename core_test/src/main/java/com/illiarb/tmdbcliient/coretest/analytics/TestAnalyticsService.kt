@@ -6,8 +6,7 @@ import com.illiarb.tmdblcient.core.analytics.AnalyticsService
 /**
  * @author ilya-rb on 22.02.19.
  */
-class TestAnalyticsService :
-    AnalyticsService {
+class TestAnalyticsService : AnalyticsService {
 
     override fun trackEvent(event: AnalyticEvent) = Unit
 }
