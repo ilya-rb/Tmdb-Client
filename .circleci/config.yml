@@ -61,7 +61,7 @@ jobs:
 
       - run:
           name: Upload code coverage report
-          command: bash <(curl -s https://codecov.io/bash) -f reports/jacoco/xml/*.xml
+          command: bash <(curl -s https://codecov.io/bash) -f reports/jacoco/xml/*
 
       - store_test_results:
           path: app/test/test-results

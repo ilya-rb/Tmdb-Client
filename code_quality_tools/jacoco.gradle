@@ -66,10 +66,10 @@ project.afterEvaluate {
 
                 reports {
                     xml.enabled = true
-                    xml.destination file("${project.rootDir}/reports/jacoco/xml/${project.name}")
+                    xml.destination file("${project.rootDir}/reports/jacoco/xml/${project.name}.xml")
 
                     html.enabled = true
-                    html.destination file("${project.rootDir}/reports/jacoco/${project.name}")
+                    html.destination file("${project.rootDir}/reports/jacoco/${project.name}.html")
                 }
             }
 
