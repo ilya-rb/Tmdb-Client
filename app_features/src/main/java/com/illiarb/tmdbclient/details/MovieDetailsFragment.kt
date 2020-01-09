@@ -110,12 +110,12 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
             binding.swipeRefresh.isRefreshing = it is Async.Loading
 
             if (it is Async.Success) {
-                showMovieDetails(it(), adapter)
+                showMovieDetails(it())
             }
         })
     }
 
-    private fun showMovieDetails(movie: Movie, adapter: DelegatesAdapter<String>) {
+    private fun showMovieDetails(movie: Movie) {
         with(binding) {
             movieDetailsTitle.text = movie.title
             movieDetailsOverview.text = movie.overview

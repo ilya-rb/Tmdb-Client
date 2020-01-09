@@ -27,8 +27,8 @@ object FakeEntityFactory {
     private fun defaultMovieCreator(): () -> Movie = {
         Movie(
             123123,
-            "/ffgmdfg",
-            "/kgdg445",
+            null,
+            null,
             emptyList(),
             "http://google.com",
             emptyList(),
@@ -39,8 +39,8 @@ object FakeEntityFactory {
             "Movie title",
             emptyList(),
             7.4f,
-            9,
-            ""
+            "",
+            9
         )
     }
 }

@@ -1,44 +1,23 @@
 package com.tmdbclient.servicetmdb.configuration
 
-import com.tmdbclient.servicetmdb.BuildConfig
-import com.tmdbclient.servicetmdb.cache.TmdbCache
+import com.illiarb.tmdblcient.core.domain.Image
 import javax.inject.Inject
 
-class ImageUrlCreator @Inject constructor(private val cache: TmdbCache) {
+class ImageUrlCreator @Inject constructor() {
 
-    fun createImageUrl(
-        path: String?,
-        imageType: ImageType
-    ): String {
-        val configuration = cache.getConfiguration()
-        val urlBuilder = StringBuilder()
-        val defaultSize = BuildConfig.IMG_SIZE
-
-        val baseUrl = if (configuration.images.secureBaseUrl.isEmpty()) {
-            BuildConfig.IMG_URL
-        } else {
-            configuration.images.secureBaseUrl
+    fun createImage(imageConfig: ImageConfig, path: String?, imageType: ImageType): Image {
+        if (path == null) {
+            return Image("", "", emptyList())
         }
 
-        val size = when (imageType) {
-            ImageType.Backdrop ->
-                configuration.images.backdropSizes.firstOrNull() ?: defaultSize
-            ImageType.Poster ->
-                configuration.images.posterSizes.firstOrNull() ?: defaultSize
-            ImageType.Profile ->
-                configuration.images.profileSizes.firstOrNull() ?: defaultSize
+        val sizes = when (imageType) {
+            ImageType.Backdrop -> imageConfig.backdropSizes
+            ImageType.Poster -> imageConfig.posterSizes
+            ImageType.Profile -> imageConfig.profileSizes
         }
 
-        urlBuilder.append(baseUrl.ensureEndingSlash())
-        urlBuilder.append(size.ensureEndingSlash())
-        urlBuilder.append(path?.removeStartSlashIfNeeded())
-
-        return urlBuilder.toString()
+        return Image(imageConfig.secureBaseUrl.ensureEndingSlash(), path, sizes)
     }
 
-    private fun String.ensureEndingSlash(): String =
-        if (endsWith('/')) this else this.plus('/')
-
-    private fun String.removeStartSlashIfNeeded(): String =
-        if (!isNullOrBlank() && startsWith('/')) substring(1) else this
+    private fun String.ensureEndingSlash(): String = if (endsWith('/')) this else this.plus('/')
 }

@@ -32,4 +32,10 @@ data class Configuration(
         images.writeExternal(output)
         output.writeStringList(changeKeys)
     }
+
+    fun isNotEmpty(): Boolean = images.secureBaseUrl.isNotEmpty()
+            && images.backdropSizes.isNotEmpty()
+            && images.posterSizes.isNotEmpty()
+            && images.profileSizes.isNotEmpty()
+            && changeKeys.isNotEmpty()
 }

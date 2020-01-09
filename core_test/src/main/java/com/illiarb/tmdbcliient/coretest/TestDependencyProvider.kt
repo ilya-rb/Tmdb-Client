@@ -6,6 +6,7 @@ import com.illiarb.tmdbcliient.coretest.interactor.TestHomeInteractor
 import com.illiarb.tmdbcliient.coretest.interactor.TestMoviesInteractor
 import com.illiarb.tmdbcliient.coretest.interactor.TestTrendingInteractor
 import com.illiarb.tmdbcliient.coretest.navigation.TestRouter
+import com.illiarb.tmdbcliient.coretest.repository.TestConfigurationRepository
 import com.illiarb.tmdbcliient.coretest.repository.TestGenresRepository
 import com.illiarb.tmdbcliient.coretest.repository.TestMovieRepository
 import com.illiarb.tmdbcliient.coretest.storage.TestFeatureFlagStore
@@ -30,6 +31,7 @@ import com.illiarb.tmdblcient.core.storage.WorkRequestCreator
 import com.illiarb.tmdblcient.core.storage.WorkerCreator
 import com.illiarb.tmdblcient.core.tools.ConnectivityStatus
 import com.illiarb.tmdblcient.core.tools.DispatcherProvider
+import com.tmdbclient.servicetmdb.repository.ConfigurationRepository
 import com.tmdbclient.servicetmdb.repository.GenresRepository
 import com.tmdbclient.servicetmdb.repository.MoviesRepository
 
@@ -42,7 +44,7 @@ object TestDependencyProvider : StorageProvider,
 
     fun provideMovieRepository(): MoviesRepository = TestMovieRepository()
 
-    fun provideGenresRepository(): GenresRepository = TestGenresRepository()
+    fun provideConfigurationRepository(): ConfigurationRepository = TestConfigurationRepository()
 
     val router: Router
         get() = TestRouter()
@@ -76,4 +78,6 @@ object TestDependencyProvider : StorageProvider,
             override val workRequestCreator: WorkRequestCreator get() = { TODO() }
         }
     }
+
+    private fun provideGenresRepository(): GenresRepository = TestGenresRepository()
 }

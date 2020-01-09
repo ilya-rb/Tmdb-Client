@@ -31,7 +31,8 @@ class MoviesInteractorTest {
             GenreMapper(),
             PersonMapper(),
             ReviewMapper(),
-            ImageUrlCreator(cache)
+            TestDependencyProvider.provideConfigurationRepository(),
+            ImageUrlCreator()
         ),
         cache,
         TestDependencyProvider.provideDispatcherProvider()

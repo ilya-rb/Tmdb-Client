@@ -1,6 +1,7 @@
 package com.illiarb.tmdbcliient.coretest.repository
 
 import com.illiarb.tmdbcliient.coretest.entity.FakeEntityFactory
+import com.illiarb.tmdblcient.core.domain.Image
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieFilter
 import com.illiarb.tmdblcient.core.domain.Review
@@ -37,7 +38,12 @@ class TestMovieRepository : MoviesRepository {
     override suspend fun getMovieDetails(id: Int, appendToResponse: String): Result<Movie> {
         var movie = FakeEntityFactory.createFakeMovie()
         if (appendToResponse.contains(MoviesInteractor.KEY_INCLUDE_IMAGES)) {
-            movie = movie.copy(images = listOf("image1", "image2"))
+            movie = movie.copy(
+                images = listOf(
+                    Image("image1", "image", emptyList()),
+                    Image("image1", "image", emptyList())
+                )
+            )
         }
         return Result.Success(movie)
     }

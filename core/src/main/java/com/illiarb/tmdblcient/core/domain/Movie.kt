@@ -2,8 +2,8 @@ package com.illiarb.tmdblcient.core.domain
 
 data class Movie(
     val id: Int,
-    val posterPath: String?,
-    val backdropPath: String?,
+    val posterPath: Image?,
+    val backdropPath: Image?,
     val genres: List<Genre>,
     val homepage: String?,
     val credits: List<Person>,
@@ -12,10 +12,10 @@ data class Movie(
     val reviews: List<Review>,
     val runtime: Int,
     val title: String,
-    val images: List<String>,
+    val images: List<Image>,
     val voteAverage: Float,
-    val rating: Int = 0,
-    val country: String?
+    val country: String?,
+    val rating: Int = 0
 ) {
 
     companion object {

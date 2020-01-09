@@ -1,25 +1,30 @@
 package com.tmdbclient.servicetmdb.mappers
 
 import com.illiarb.tmdblcient.core.domain.Movie
-import com.illiarb.tmdblcient.core.util.Mapper
+import com.illiarb.tmdblcient.core.util.SuspendableMapper
 import com.tmdbclient.servicetmdb.configuration.ImageType
 import com.tmdbclient.servicetmdb.configuration.ImageUrlCreator
 import com.tmdbclient.servicetmdb.model.MovieModel
-import java.util.*
+import com.tmdbclient.servicetmdb.repository.ConfigurationRepository
+import java.util.Collections
 import javax.inject.Inject
 
 class MovieMapper @Inject constructor(
     private val genreMapper: GenreMapper,
     private val personMapper: PersonMapper,
     private val reviewMapper: ReviewMapper,
-    private val imageUrlProvider: ImageUrlCreator
-) : Mapper<MovieModel, Movie> {
+    private val configurationRepository: ConfigurationRepository,
+    private val imageUrlCreator: ImageUrlCreator
+) : SuspendableMapper<MovieModel, Movie> {
 
-    override fun map(from: MovieModel): Movie =
-        Movie(
+    override suspend fun map(from: MovieModel): Movie {
+        val result = configurationRepository.getConfiguration().getOrThrow()
+        val config = result.images
+
+        return Movie(
             from.id,
-            imageUrlProvider.createImageUrl(from.posterPath, ImageType.Poster),
-            imageUrlProvider.createImageUrl(from.backdropPath, ImageType.Backdrop),
+            imageUrlCreator.createImage(config, from.posterPath, ImageType.Poster),
+            imageUrlCreator.createImage(config, from.backdropPath, ImageType.Backdrop),
             genreMapper.mapList(from.genres),
             from.homepage,
             personMapper.mapList(from.credits?.cast),
@@ -29,9 +34,10 @@ class MovieMapper @Inject constructor(
             from.runtime,
             from.title,
             from.images?.backdrops?.map {
-                imageUrlProvider.createImageUrl(it.filePath, ImageType.Backdrop)
+                imageUrlCreator.createImage(config, it.filePath, ImageType.Backdrop)
             } ?: Collections.emptyList(),
             from.voteAverage,
-            country = from.productionCountries.firstOrNull()?.name
+            from.productionCountries.firstOrNull()?.name
         )
+    }
 }

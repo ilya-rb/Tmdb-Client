@@ -7,9 +7,10 @@ import com.illiarb.coreuiimage.RequestOptions
 import com.illiarb.coreuiimage.loadImage
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
+import com.illiarb.tmdblcient.core.domain.Image
 
 fun photoDelegate(clickListener: OnClickListener) =
-    adapterDelegate<String, String>(R.layout.item_photo) {
+    adapterDelegate<Image, Image>(R.layout.item_photo) {
 
         val radius = itemView.resources.getDimensionPixelSize(R.dimen.corner_radius_normal)
         val imageView = itemView.findViewById<ImageView>(R.id.moviePhoto)
