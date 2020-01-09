@@ -28,6 +28,7 @@ import androidx.ui.res.vectorResource
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.getColorAttr
 
+@Suppress("FunctionNaming")
 class SettingsFragment : Fragment() {
 
     override fun onCreateView(
@@ -42,6 +43,7 @@ class SettingsFragment : Fragment() {
     }
 
     @Composable
+    @Suppress("MagicNumber")
     private fun SettingsScreen() {
         val colors = +MaterialTheme.colors()
 
