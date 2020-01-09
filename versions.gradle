@@ -26,6 +26,9 @@ versions.with {
     constraintLayout = "2.0.0-beta4"
     play_services_version = "16.0.0"
 
+    // Compose
+    compose = "0.1.0-dev03"
+
     // Firebase
     firebaseCore = "17.2.1"
     firebaseConfig = "19.1.0"

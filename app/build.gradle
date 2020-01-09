@@ -46,6 +46,7 @@ dependencies {
     implementation project(':service_analytics')
     implementation project(':service_tmdb')
     implementation project(':app_features')
+    implementation project(':app_features_settings')
     implementation project(':debug')
 
     implementation deps.dagger

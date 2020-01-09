@@ -31,6 +31,16 @@ class SpaceDecoration(
                 spacingRightLast = edgeSpace
             )
         }
+
+        fun edgeInnerSpaceVertical(edgeSpace: Int, innerSpace: Int): SpaceDecoration {
+            return SpaceDecoration(
+                orientation = LinearLayoutManager.VERTICAL,
+                spacingTopFirst = edgeSpace,
+                spacingTop = innerSpace,
+                spacingBottom = innerSpace,
+                spacingBottomLast = edgeSpace
+            )
+        }
     }
 
     override fun getItemOffsets(

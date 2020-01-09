@@ -22,5 +22,7 @@ interface Router {
                 const val EXTRA_GENRE_ID = "id"
             }
         }
+
+        object ShowSettings : Action()
     }
 }

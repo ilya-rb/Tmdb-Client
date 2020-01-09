@@ -21,6 +21,12 @@ deps.pallete = "androidx.palette:palette:$versions.supportLibrary"
 deps.recyclerView = "androidx.recyclerview:recyclerview:$versions.supportLibrary"
 deps.constraintLayout = "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
 
+// Compose
+deps.composeTooling = "androidx.ui:ui-tooling:$versions.compose"
+deps.composeLayout = "androidx.ui:ui-layout:$versions.compose"
+deps.composeMaterial = "androidx.ui:ui-material:$versions.compose"
+deps.composeFoundation = "androidx.ui:ui-foundation:$versions.compose"
+
 // Firebase
 deps.firebaseCore = "com.google.firebase:firebase-core:$versions.firebaseCore"
 deps.firebaseRemoteConfig = "com.google.firebase:firebase-config:$versions.firebaseConfig"

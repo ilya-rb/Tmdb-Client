@@ -9,6 +9,7 @@ import com.illiarb.tmdblcient.core.navigation.Navigator
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
+import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowSettings
 import javax.inject.Inject
 
 /**
@@ -21,6 +22,7 @@ class AppNavigator @Inject constructor(private val activity: FragmentActivity) :
         val destination = when (action) {
             is ShowMovieDetails -> R.id.action_to_movie_details
             is ShowDiscover -> R.id.action_moviesFragment_to_discoverFragment
+            is ShowSettings -> R.id.action_movies_to_settings
         }
         controller.navigate(destination, setDestinationArgs(action), setNavOptions())
     }

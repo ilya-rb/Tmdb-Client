@@ -1,9 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
-// Required as JUnit 5 doesn't support android modules out of the box.
-apply plugin: "de.mannodermaus.android-junit5"
-
 apply from: dependenciesFilePath
 
 android {
@@ -17,16 +14,6 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
-
-    testOptions {
-        junitPlatform {
-            filters {
-                engines {
-                    include 'spek2'
-                }
-            }
-        }
     }
 
     buildTypes {
@@ -45,8 +32,6 @@ dependencies {
     api testDeps.mockito
     api testDeps.mockitoInline
     api testDeps.mockitoKotlin
-    api testDeps.spekJvm
-    api testDeps.spekJunit5
     api testDeps.kotlinReflect
     api testDeps.kotlinCoroutines
     api testDeps.androidX

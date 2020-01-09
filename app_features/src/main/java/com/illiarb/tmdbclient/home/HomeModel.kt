@@ -35,6 +35,7 @@ interface HomeModel {
 
     sealed class UiEvent {
         data class ItemClick(val item: Any) : UiEvent()
+        object SettingsClick : UiEvent()
     }
 }
 
@@ -75,6 +76,7 @@ class DefaultHomeModel @Inject constructor(
                     router.executeAction(it)
                 }
             }
+            is UiEvent.SettingsClick -> router.executeAction(Router.Action.ShowSettings)
         }
     }
 }

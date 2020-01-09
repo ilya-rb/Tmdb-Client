@@ -65,6 +65,10 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
             }
         }
 
+        binding.moviesSettings.setOnClickListener {
+            viewModel.onUiEvent(UiEvent.SettingsClick)
+        }
+
         binding.moviesSwipeRefresh.isEnabled = false
 
         setupMoviesList()
@@ -83,11 +87,9 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
             adapter = this@HomeFragment.adapter
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(
-                SpaceDecoration(
-                    spacingTop = dimen(R.dimen.spacing_small),
-                    spacingTopFirst = dimen(R.dimen.spacing_normal),
-                    spacingBottom = dimen(R.dimen.spacing_small),
-                    spacingBottomLast = dimen(R.dimen.spacing_normal)
+                SpaceDecoration.edgeInnerSpaceVertical(
+                    dimen(R.dimen.spacing_normal),
+                    dimen(R.dimen.spacing_small)
                 )
             )
             removeAdapterOnDetach()
@@ -99,16 +101,10 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
 
     private fun bind(viewModel: HomeModel) {
         viewModel.isAccountVisible.observe(viewLifecycleOwner, Observer(::setAccountVisible))
-        viewModel.movieSections.observe(
-            viewLifecycleOwner,
-            Observer { showMovieSections(it, adapter) }
-        )
+        viewModel.movieSections.observe(viewLifecycleOwner, Observer(::showMovieSections))
     }
 
-    private fun showMovieSections(
-        state: Async<List<MovieSection>>,
-        adapter: DelegatesAdapter<MovieSection>
-    ) {
+    private fun showMovieSections(state: Async<List<MovieSection>>) {
         binding.moviesSwipeRefresh.isRefreshing = state is Async.Loading
 
         if (state is Async.Success) {

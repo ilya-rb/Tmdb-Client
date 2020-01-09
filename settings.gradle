@@ -18,5 +18,6 @@ include ':app',
         ':core_ui_image',
         ':core_test',
         ':app_features',
+        ':app_features_settings',
         ':core_tools',
         ':debug'

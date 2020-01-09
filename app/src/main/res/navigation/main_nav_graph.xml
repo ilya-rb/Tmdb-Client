@@ -16,10 +16,19 @@
         tools:layout="@layout/fragment_discover" />
 
     <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.illiarb.tmdbexplorer.appfeatures.settings.SettingsFragment"
+        tools:layout="SettingsFragment" />
+
+    <fragment
         android:id="@+id/moviesFragment"
         android:name="com.illiarb.tmdbclient.home.HomeFragment"
         android:label="MoviesFragment"
         tools:layout="@layout/fragment_movies">
+
+        <action
+            android:id="@+id/action_movies_to_settings"
+            app:destination="@id/settingsFragment" />
 
         <action
             android:id="@+id/action_moviesFragment_to_discoverFragment"
