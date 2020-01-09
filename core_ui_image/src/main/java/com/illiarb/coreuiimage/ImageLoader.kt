@@ -17,7 +17,8 @@ import com.illiarb.tmdblcient.core.domain.Image
 /**
  * @author ilya-rb on 29.12.18.
  */
-private val IMAGE_SIZE_PATTERN = "w(\\d+)$".toRegex()
+
+private val imageSizePattern = "w(\\d+)$".toRegex()
 
 fun ImageView.loadImage(image: Image?, options: RequestOptions? = null) {
     if (image == null) {
@@ -80,6 +81,7 @@ private fun mapOptions(
  * Source:
  * https://github.com/chrisbanes/tivi/blob/master/tmdb/src/main/java/app/tivi/tmdb/TmdbImageUrlProvider.kt
  */
+@Suppress("ComplexMethod", "ReturnCount")
 private fun selectSize(sizes: List<String>, imageWidth: Int): String {
     var previousSize: String? = null
     var previousWidth = 0
@@ -109,5 +111,5 @@ private fun selectSize(sizes: List<String>, imageWidth: Int): String {
 }
 
 private fun extractWidthAsIntFrom(size: String): Int? {
-    return IMAGE_SIZE_PATTERN.matchEntire(size)?.groups?.get(1)?.value?.toInt()
+    return imageSizePattern.matchEntire(size)?.groups?.get(1)?.value?.toInt()
 }
