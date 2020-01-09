@@ -7,7 +7,6 @@ import com.illiarb.tmdbcliient.coretest.rules.MainCoroutineRule
 import com.illiarb.tmdbcliient.coretest.rules.runBlocking
 import com.illiarb.tmdblcient.core.util.Async
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -23,17 +22,10 @@ class HomeViewModelTest {
 
     private val homeViewModel: HomeModel by lazy {
         DefaultHomeModel(
-            TestDependencyProvider.provideFeatureFlagStore(),
             TestDependencyProvider.provideHomeInteractor(),
             TestDependencyProvider.router,
             TestDependencyProvider.provideAnalyticsService()
         )
-    }
-
-    @Test
-    fun `it should return false for account feature`() = mainCoroutineRule.runBlocking {
-        val isAccountVisible = homeViewModel.isAccountVisible.getOrAwaitValue()
-        assertFalse(isAccountVisible)
     }
 
     @Test
