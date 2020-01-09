@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.ui.core.Text
 import androidx.ui.core.dp
 import androidx.ui.core.setContent
-import androidx.ui.foundation.DrawImage
 import androidx.ui.graphics.Color
 import androidx.ui.graphics.vector.DrawVector
 import androidx.ui.layout.Arrangement
@@ -25,7 +24,6 @@ import androidx.ui.material.ColorPalette
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.Switch
 import androidx.ui.material.TopAppBar
-import androidx.ui.res.imageResource
 import androidx.ui.res.vectorResource
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.getColorAttr
