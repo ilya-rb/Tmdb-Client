@@ -26,6 +26,7 @@ android {
 
 dependencies {
     implementation project(':core')
+    implementation project(':core_storage')
     implementation project(':service_tmdb')
 
     api testDeps.junit
