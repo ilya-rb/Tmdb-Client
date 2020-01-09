@@ -37,34 +37,10 @@
                     android:layout_weight="1" />
 
                 <ImageView
-                    android:id="@+id/moviesSearch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:contentDescription="@null"
-                    android:paddingLeft="@dimen/spacing_normal"
-                    android:paddingTop="@dimen/spacing_micro"
-                    android:paddingRight="@dimen/spacing_normal"
-                    android:paddingBottom="@dimen/spacing_micro"
-                    android:src="@drawable/ic_search"
-                    android:tint="?attr/colorOnPrimary" />
-
-                <ImageView
-                    android:id="@+id/moviesAccount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@null"
-                    android:paddingLeft="@dimen/spacing_normal"
-                    android:paddingTop="@dimen/spacing_micro"
-                    android:paddingRight="@dimen/spacing_normal"
-                    android:paddingBottom="@dimen/spacing_micro"
-                    android:src="@drawable/ic_account"
-                    android:tint="?attr/colorOnPrimary" />
-
-                <ImageView
                     android:id="@+id/moviesSettings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@null"
                     android:paddingLeft="@dimen/spacing_normal"
                     android:paddingTop="@dimen/spacing_micro"

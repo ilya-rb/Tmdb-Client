@@ -1,7 +1,6 @@
 package com.illiarb.tmdbclient.home
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import com.illiarb.tmdbclient.home.HomeModel.UiEvent
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
@@ -10,8 +9,6 @@ import com.illiarb.tmdblcient.core.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.domain.Genre
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieSection
-import com.illiarb.tmdblcient.core.feature.FeatureFlagStore
-import com.illiarb.tmdblcient.core.feature.FeatureFlagStore.FeatureFlag
 import com.illiarb.tmdblcient.core.interactor.HomeInteractor
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
@@ -29,8 +26,6 @@ interface HomeModel {
 
     val movieSections: LiveData<Async<List<MovieSection>>>
 
-    val isAccountVisible: LiveData<Boolean>
-
     fun onUiEvent(event: UiEvent)
 
     sealed class UiEvent {
@@ -40,7 +35,6 @@ interface HomeModel {
 }
 
 class DefaultHomeModel @Inject constructor(
-    featureConfig: FeatureFlagStore,
     private val homeInteractor: HomeInteractor,
     private val router: Router,
     private val analyticsService: AnalyticsService
@@ -52,14 +46,8 @@ class DefaultHomeModel @Inject constructor(
         .catch { emit(Fail(it)) }
         .asLiveData()
 
-    private val _isAccountVisible =
-        MutableLiveData<Boolean>(featureConfig.isFeatureEnabled(FeatureFlag.AUTH))
-
     override val movieSections: LiveData<Async<List<MovieSection>>>
         get() = _movieSectionsData
-
-    override val isAccountVisible: LiveData<Boolean>
-        get() = _isAccountVisible
 
     override fun onUiEvent(event: UiEvent) {
         when (event) {

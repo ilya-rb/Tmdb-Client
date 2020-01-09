@@ -6,19 +6,28 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.Composable
 import androidx.compose.FrameLayout
+import androidx.compose.unaryPlus
 import androidx.fragment.app.Fragment
 import androidx.ui.core.Text
 import androidx.ui.core.dp
 import androidx.ui.core.setContent
+import androidx.ui.foundation.DrawImage
 import androidx.ui.graphics.Color
+import androidx.ui.graphics.vector.DrawVector
+import androidx.ui.layout.Arrangement
 import androidx.ui.layout.Column
 import androidx.ui.layout.Container
 import androidx.ui.layout.EdgeInsets
 import androidx.ui.layout.Row
+import androidx.ui.layout.Spacing
+import androidx.ui.layout.WidthSpacer
 import androidx.ui.material.ColorPalette
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.Switch
 import androidx.ui.material.TopAppBar
+import androidx.ui.res.imageResource
+import androidx.ui.res.vectorResource
+import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.getColorAttr
 
 class SettingsFragment : Fragment() {
@@ -31,18 +40,28 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        (view as ViewGroup).setContent {
-            SettingsScreen()
-        }
+        (view as ViewGroup).setContent { SettingsScreen() }
     }
 
     @Composable
     private fun SettingsScreen() {
+        val colors = +MaterialTheme.colors()
+
         AppTheme {
-            Column {
-                TopAppBar(title = { Text(getString(R.string.settings_title)) })
-                Container(padding = EdgeInsets(16.dp)) {
+            // Need to figure out how to set window insets
+            Column(modifier = Spacing(top = 24.dp)) {
+                TopAppBar(
+                    title = { Text(getString(R.string.settings_title)) },
+                    actionData = listOf(TopAppBarAction.Back),
+                    navigationIcon = {
+                        DrawVector(
+                            vectorImage = +vectorResource(R.drawable.ic_arrow_back),
+                            tintColor = colors.onBackground
+                        )
+                    },
+                    action = {}
+                )
+                Container(padding = EdgeInsets(dimen(R.dimen.spacing_small).dp)) {
                     Content()
                 }
             }
@@ -51,13 +70,21 @@ class SettingsFragment : Fragment() {
 
     @Composable
     private fun Content() {
-        Row {
-            Text("Night mode")
-            Switch(
-                checked = false,
-                onCheckedChange = { /* No-op */ }
-            )
+        Row(arrangement = Arrangement.End) {
+            NightModeToggle()
         }
+    }
+
+    @Composable
+    private fun NightModeToggle() {
+        val typography = +MaterialTheme.typography()
+
+        Text(getString(R.string.settings_night_mode), style = typography.body1)
+        WidthSpacer(width = dimen(R.dimen.spacing_small).dp)
+        Switch(
+            checked = true,
+            onCheckedChange = {}
+        )
     }
 
     @Composable
@@ -78,5 +105,9 @@ class SettingsFragment : Fragment() {
                 onBackground = Color(view.getColorAttr(R.attr.colorOnBackground))
             )
         ) { block() }
+    }
+
+    enum class TopAppBarAction {
+        Back
     }
 }

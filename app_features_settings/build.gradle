@@ -40,6 +40,4 @@ dependencies {
     implementation deps.composeFoundation
 
     testImplementation project(':core_test')
-
-    androidTestImplementation project(':core_test')
 }

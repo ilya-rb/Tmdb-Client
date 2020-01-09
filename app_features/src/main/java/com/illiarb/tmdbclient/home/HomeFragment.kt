@@ -19,7 +19,6 @@ import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.removeAdapterOnDetach
-import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
@@ -100,7 +99,6 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     }
 
     private fun bind(viewModel: HomeModel) {
-        viewModel.isAccountVisible.observe(viewLifecycleOwner, Observer(::setAccountVisible))
         viewModel.movieSections.observe(viewLifecycleOwner, Observer(::showMovieSections))
     }
 
@@ -111,6 +109,4 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
             adapter.submitList(state())
         }
     }
-
-    private fun setAccountVisible(visible: Boolean) = binding.moviesAccount.setVisible(visible)
 }
