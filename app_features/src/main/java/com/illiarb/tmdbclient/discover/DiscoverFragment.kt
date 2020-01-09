@@ -21,6 +21,7 @@ import com.illiarb.tmdbexplorer.coreui.common.SizeSpec
 import com.illiarb.tmdbexplorer.coreui.common.Text
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
+import com.illiarb.tmdbexplorer.coreui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbexplorer.coreui.ext.updateMargin
 import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
@@ -28,7 +29,6 @@ import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.domain.Genre
-import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -45,6 +45,16 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
 
     private lateinit var discoverGenres: ChipGroup
     private lateinit var filtersContainer: ViewGroup
+
+    private val adapter = DelegatesAdapter({
+        listOf(
+            movieDelegate(
+                it,
+                SizeSpec.MatchParent,
+                SizeSpec.Fixed(R.dimen.discover_item_movie_height)
+            )
+        )
+    })
 
     private val viewModel: DiscoverModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this, viewModelFactory).get(DefaultDiscoverModel::class.java)
@@ -66,22 +76,17 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
 
         setupToolbar()
         setupFilters()
+        setupDiscoverList()
 
-        val adapter = DelegatesAdapter({
-            listOf(
-                movieDelegate(
-                    it,
-                    SizeSpec.MatchParent,
-                    SizeSpec.Fixed(R.dimen.discover_item_movie_height)
-                )
-            )
-        })
-
-        setupDiscoverList(adapter)
+        lifecycleScope.launch {
+            adapter.clicks().collect {
+                viewModel.onUiEvent(UiEvent.ItemClick(it))
+            }
+        }
 
         ViewCompat.requestApplyInsets(view)
 
-        bind(viewModel, adapter)
+        bind(viewModel)
     }
 
     override fun getViewBinding(inflater: LayoutInflater): FragmentDiscoverBinding =
@@ -114,23 +119,18 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
         }
     }
 
-    private fun setupDiscoverList(discoverAdapter: DelegatesAdapter<Movie>) {
+    private fun setupDiscoverList() {
         binding.discoverList.apply {
-            adapter = discoverAdapter
+            adapter = this@DiscoverFragment.adapter
             layoutManager = GridLayoutManager(requireContext(), GRID_SPAN_COUNT)
+            removeAdapterOnDetach()
 
             val spacing = dimen(R.dimen.spacing_small)
             addItemDecoration(SpaceDecoration(spacing, spacing, spacing, spacing))
         }
     }
 
-    private fun bind(viewModel: DiscoverModel, adapter: DelegatesAdapter<Movie>) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            adapter.clicks().collect {
-                viewModel.onUiEvent(UiEvent.ItemClick(it))
-            }
-        }
-
+    private fun bind(viewModel: DiscoverModel) {
         viewModel.results.observe(viewLifecycleOwner, adapter)
         viewModel.genres.observe(viewLifecycleOwner, discoverGenres.genres())
         viewModel.selectedChip.observe(viewLifecycleOwner, Observer(::selectChip))

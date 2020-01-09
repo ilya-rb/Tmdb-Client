@@ -18,6 +18,7 @@ import com.illiarb.tmdbclient.movies.home.databinding.FragmentMoviesBinding
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
+import com.illiarb.tmdbexplorer.coreui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
@@ -39,6 +40,15 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
         ViewModelProvider(this, viewModelFactory).get(DefaultHomeModel::class.java)
     }
 
+    private val adapter = DelegatesAdapter({
+        listOf(
+            movieSectionDelegate(it),
+            nowPlayingDelegate(it),
+            genresSectionDelegate(it),
+            trendingSectionDelegate(it)
+        )
+    })
+
     override fun getViewBinding(inflater: LayoutInflater): FragmentMoviesBinding =
         FragmentMoviesBinding.inflate(inflater)
 
@@ -57,23 +67,20 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
 
         binding.moviesSwipeRefresh.isEnabled = false
 
-        val sectionsAdapter = DelegatesAdapter({
-            listOf(
-                movieSectionDelegate(it),
-                nowPlayingDelegate(it),
-                genresSectionDelegate(it),
-                trendingSectionDelegate(it)
-            )
-        })
+        setupMoviesList()
 
-        setupMoviesList(sectionsAdapter)
+        lifecycleScope.launch {
+            adapter.clicks().collect {
+                viewModel.onUiEvent(UiEvent.ItemClick(it))
+            }
+        }
 
-        bind(viewModel, sectionsAdapter)
+        bind(viewModel)
     }
 
-    private fun setupMoviesList(sectionsAdapter: DelegatesAdapter<MovieSection>) {
+    private fun setupMoviesList() {
         binding.moviesList.apply {
-            adapter = sectionsAdapter
+            adapter = this@HomeFragment.adapter
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(
                 SpaceDecoration(
@@ -83,24 +90,19 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
                     spacingBottomLast = dimen(R.dimen.spacing_normal)
                 )
             )
+            removeAdapterOnDetach()
             doOnApplyWindowInsets { v, insets, initialPadding ->
                 v.updatePadding(bottom = initialPadding.bottom + insets.systemWindowInsetBottom)
             }
         }
     }
 
-    private fun bind(viewModel: HomeModel, adapter: DelegatesAdapter<MovieSection>) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            adapter.clicks().collect {
-                viewModel.onUiEvent(UiEvent.ItemClick(it))
-            }
-        }
-
+    private fun bind(viewModel: HomeModel) {
         viewModel.isAccountVisible.observe(viewLifecycleOwner, Observer(::setAccountVisible))
-
-        viewModel.movieSections.observe(viewLifecycleOwner, Observer {
-            showMovieSections(it, adapter)
-        })
+        viewModel.movieSections.observe(
+            viewLifecycleOwner,
+            Observer { showMovieSections(it, adapter) }
+        )
     }
 
     private fun showMovieSections(

@@ -19,6 +19,7 @@ import com.illiarb.tmdbclient.movies.home.databinding.FragmentMovieDetailsBindin
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
+import com.illiarb.tmdbexplorer.coreui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
@@ -33,6 +34,8 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val adapter = DelegatesAdapter({ listOf(photoDelegate(it)) })
 
     private val viewModel: MovieDetailsModel by lazy(LazyThreadSafetyMode.NONE) {
         viewModelFactory.create(DefaultDetailsViewModel::class.java)
@@ -56,13 +59,11 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
             viewModel.onUiEvent(UiEvent.PlayClicked)
         }
 
-        val photosAdapter = DelegatesAdapter({ listOf(photoDelegate(it)) })
-
-        setupPhotosList(photosAdapter)
+        setupPhotosList()
 
         ViewCompat.requestApplyInsets(view)
 
-        bind(viewModel, photosAdapter)
+        bind(viewModel)
     }
 
     private fun setupToolbar() {
@@ -79,14 +80,15 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
         }
     }
 
-    private fun setupPhotosList(photosAdapter: DelegatesAdapter<String>) {
+    private fun setupPhotosList() {
         binding.movieDetailsPhotos.apply {
-            adapter = photosAdapter
+            adapter = this@MovieDetailsFragment.adapter
             layoutManager = LinearLayoutManager(
                 requireContext(),
                 LinearLayoutManager.HORIZONTAL,
                 false
             )
+            removeAdapterOnDetach()
             setHasFixedSize(true)
             addItemDecoration(
                 SpaceDecoration(
@@ -103,7 +105,7 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
         }
     }
 
-    private fun bind(viewModel: MovieDetailsModel, adapter: DelegatesAdapter<String>) {
+    private fun bind(viewModel: MovieDetailsModel) {
         viewModel.movie.observe(viewLifecycleOwner, Observer {
             binding.swipeRefresh.isRefreshing = it is Async.Loading
 
