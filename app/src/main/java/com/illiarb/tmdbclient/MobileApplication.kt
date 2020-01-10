@@ -1,6 +1,7 @@
 package com.illiarb.tmdbclient
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.FirebaseApp
 import com.illiarb.tmdbclient.di.AppComponent
 import com.illiarb.tmdblcient.core.di.App
@@ -29,6 +30,9 @@ class MobileApplication : Application(), App {
         configureWorkers()
 
         FirebaseApp.initializeApp(this)
+
+        // Set night mode enabled by default
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
 
     override fun getApplication(): Application = this
