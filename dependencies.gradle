@@ -95,6 +95,7 @@ androidTestDeps.runner = "androidx.test:runner:$androidTestVersions.runner"
 androidTestDeps.espresso = "androidx.test.espresso:espresso-core:$androidTestVersions.espresso"
 androidTestDeps.espressoIntents = "androidx.test.espresso:espresso-intents:$androidTestVersions.espresso"
 androidTestDeps.kaspresso = "com.kaspersky.android-components:kaspresso:$androidTestVersions.kaspresso"
+androidTestDeps.uiAutomator = "androidx.test.uiautomator:uiautomator:$androidTestVersions.uiautomator"
 androidTestDeps.kakao = "com.agoda.kakao:kakao:$androidTestVersions.kakao"
 androidTestDeps.extJunit = "androidx.test.ext:junit:$androidTestVersions.extJunit"
 

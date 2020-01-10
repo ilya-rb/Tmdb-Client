@@ -13,8 +13,6 @@ android {
 
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildFeatures {
@@ -41,14 +39,4 @@ dependencies {
     implementation deps.dagger
 
     testImplementation project(':core_test')
-
-    androidTestImplementation project(':core_test')
-    androidTestImplementation androidTestDeps.espressoIntents
-    androidTestImplementation androidTestDeps.runner
-    androidTestImplementation androidTestDeps.kakao
-    androidTestImplementation androidTestDeps.extJunit
-    androidTestImplementation (androidTestDeps.kaspresso) {
-        exclude group: "com.android.support"
-        exclude group: "com.google.code.gson"
-    }
 }

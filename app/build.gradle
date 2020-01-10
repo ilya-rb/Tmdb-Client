@@ -18,7 +18,7 @@ android {
 
         vectorDrawables.useSupportLibrary true
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.illiarb.tmdbexplorer.functional.AppRunner"
     }
 
     buildFeatures {
@@ -59,6 +59,16 @@ dependencies {
     implementation deps.playCore
 
     debugImplementation deps.leakCanary
+
+    androidTestImplementation androidTestDeps.espressoIntents
+    androidTestImplementation androidTestDeps.runner
+    androidTestImplementation androidTestDeps.kakao
+    androidTestImplementation androidTestDeps.extJunit
+    androidTestImplementation androidTestDeps.uiAutomator
+
+    androidTestImplementation(androidTestDeps.kaspresso) {
+        exclude group: 'com.kaspersky.android-components', module: 'adbserver-device'
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'

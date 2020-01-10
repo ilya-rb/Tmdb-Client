@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.functional.screens
+package com.illiarb.tmdbexplorer.functional.screens
 
 import androidx.annotation.LayoutRes
 import com.agoda.kakao.screen.Screen

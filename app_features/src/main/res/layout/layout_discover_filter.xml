@@ -5,7 +5,7 @@
     android:id="@+id/discoverFiltersContainer"
     android:layout_width="0dp"
     android:layout_height="?attr/actionBarSize"
-    android:background="@color/tmdb_white"
+    android:background="?attr/colorSurface"
     android:elevation="@dimen/elevation_normal"
     android:orientation="vertical"
     tools:layout_width="match_parent"

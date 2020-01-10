@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.functional.screens
+package com.illiarb.tmdbexplorer.functional.screens
 
 import com.agoda.kakao.image.KImageView
 import com.agoda.kakao.recycler.KRecyclerView

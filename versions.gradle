@@ -73,6 +73,7 @@ androidTestVersions.with {
     extJunit = "1.1.0"
     kaspresso = "1.0.2-alpha2"
     kakao = "2.2.0"
+    uiautomator = "2.2.0"
 }
 
 ext.projectInfo = projectInfo
