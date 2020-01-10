@@ -25,15 +25,9 @@ android {
 }
 
 dependencies {
-
     api deps.kotlin
     api deps.kotlinCoroutines
     api deps.workManager
 
     implementation deps.javax
-
-    testImplementation testDeps.junit
-
-    androidTestImplementation androidTestDeps.espresso
-    androidTestImplementation androidTestDeps.runner
 }

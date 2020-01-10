@@ -36,8 +36,4 @@ dependencies {
     api testDeps.kotlinReflect
     api testDeps.kotlinCoroutines
     api testDeps.androidX
-
-    androidTestImplementation androidTestDeps.kaspresso
-    androidTestImplementation androidTestDeps.runner
-    androidTestImplementation androidTestDeps.kakao
 }

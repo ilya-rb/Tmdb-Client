@@ -91,6 +91,7 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
                     dimen(R.dimen.spacing_small)
                 )
             )
+            isNestedScrollingEnabled = false
             removeAdapterOnDetach()
             doOnApplyWindowInsets { v, insets, initialPadding ->
                 v.updatePadding(bottom = initialPadding.bottom + insets.systemWindowInsetBottom)

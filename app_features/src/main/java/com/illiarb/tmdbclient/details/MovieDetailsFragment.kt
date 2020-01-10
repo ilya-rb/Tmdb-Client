@@ -7,6 +7,7 @@ import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.coreuiimage.CropOptions
@@ -31,6 +32,8 @@ import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.util.Async
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding>(), Injectable {
@@ -71,6 +74,12 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
             viewModel.onUiEvent(UiEvent.PlayClicked)
         }
 
+        lifecycleScope.launch {
+            moviesAdapter.clicks().collect {
+                viewModel.onUiEvent(UiEvent.ItemClick(it))
+            }
+        }
+
         setupMoviesList()
         setupPhotosList()
 
@@ -98,6 +107,7 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
             adapter = moviesAdapter
             layoutManager = createHorizontalLayoutManager()
             removeAdapterOnDetach()
+            isNestedScrollingEnabled = false
             addItemDecoration(createHorizontalListDecoration())
             doOnApplyWindowInsets { v, windowInsets, initialPadding ->
                 v.updatePadding(bottom = initialPadding.bottom + windowInsets.systemWindowInsetBottom)
@@ -109,6 +119,8 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
         binding.movieDetailsPhotos.apply {
             adapter = photosAdapter
             layoutManager = createHorizontalLayoutManager()
+            setHasFixedSize(true)
+            isNestedScrollingEnabled = false
             removeAdapterOnDetach()
             addItemDecoration(createHorizontalListDecoration())
         }
