@@ -27,6 +27,10 @@ class TestMoviesInteractor(
         return moviesRepository.getMovieDetails(movieId, "")
     }
 
+    override suspend fun getSimilarMovies(movieId: Int): Result<List<Movie>> {
+        return Result.Success(emptyList())
+    }
+
     @Suppress("MagicNumber")
     override suspend fun discoverMovies(genreId: Int): Result<List<Movie>> {
         val movieList = FakeEntityFactory.createFakeMovieList(5) {

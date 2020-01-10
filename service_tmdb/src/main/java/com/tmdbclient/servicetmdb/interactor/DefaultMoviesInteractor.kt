@@ -9,6 +9,7 @@ import com.illiarb.tmdblcient.core.tools.DispatcherProvider
 import com.illiarb.tmdblcient.core.util.Result
 import com.tmdbclient.servicetmdb.repository.MoviesRepository
 import com.tmdbclient.servicetmdb.api.DiscoverApi
+import com.tmdbclient.servicetmdb.api.MovieApi
 import com.tmdbclient.servicetmdb.cache.TmdbCache
 import com.tmdbclient.servicetmdb.mappers.MovieMapper
 import kotlinx.coroutines.withContext
@@ -18,6 +19,7 @@ import javax.inject.Inject
 class DefaultMoviesInteractor @Inject constructor(
     private val repository: MoviesRepository,
     private val discoverApi: DiscoverApi,
+    private val movieApi: MovieApi,
     private val movieMapper: MovieMapper,
     private val cache: TmdbCache,
     private val dispatcherProvider: DispatcherProvider
@@ -51,6 +53,13 @@ class DefaultMoviesInteractor @Inject constructor(
             val id = if (genreId == Genre.GENRE_ALL) null else genreId.toString()
             val movies = discoverApi.discoverMoviesAsync(id).await().results
             movieMapper.mapList(movies)
+        }
+    }
+
+    override suspend fun getSimilarMovies(movieId: Int): Result<List<Movie>> {
+        return Result.create {
+            val results = movieApi.getSimilarMoviesAsync(movieId).await()
+            movieMapper.mapList(results.results)
         }
     }
 

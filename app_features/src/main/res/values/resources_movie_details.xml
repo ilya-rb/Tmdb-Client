@@ -6,6 +6,7 @@
     <string name="movie_details_country">Country</string>
     <string name="movie_details_length">Length</string>
     <string name="movie_details_photos">Photos</string>
+    <string name="movie_details_similar">More like this</string>
     <string name="movie_details_duration">%1$d min</string>
 
     <!-- Dimens -->

@@ -19,6 +19,9 @@ interface MovieApi {
         @Query("append_to_response") appendToResponse: String
     ): Deferred<MovieModel>
 
+    @GET("movie/{id}/similar")
+    fun getSimilarMoviesAsync(@Path("id") id: Int): Deferred<ResultsModel<MovieModel>>
+
     @GET("movie/{id}/reviews")
     fun getMovieReviewsAsync(@Path("id") id: Int): Deferred<ResultsModel<ReviewModel>>
 }

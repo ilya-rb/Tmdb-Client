@@ -8,15 +8,18 @@ import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.coreuiimage.CropOptions
 import com.illiarb.coreuiimage.RequestOptions.Companion.requestOptions
 import com.illiarb.coreuiimage.loadImage
+import com.illiarb.tmdbclient.common.delegates.movieDelegate
 import com.illiarb.tmdbclient.details.MovieDetailsModel.UiEvent
 import com.illiarb.tmdbclient.details.delegates.photoDelegate
 import com.illiarb.tmdbclient.details.di.MovieDetailsComponent
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentMovieDetailsBinding
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
+import com.illiarb.tmdbexplorer.coreui.common.SizeSpec
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.removeAdapterOnDetach
@@ -35,7 +38,16 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val adapter = DelegatesAdapter({ listOf(photoDelegate(it)) })
+    private val photosAdapter = DelegatesAdapter({ listOf(photoDelegate(it)) })
+    private val moviesAdapter = DelegatesAdapter({
+        listOf(
+            movieDelegate(
+                it,
+                SizeSpec.Fixed(R.dimen.item_movie_width),
+                SizeSpec.Fixed(R.dimen.item_movie_height)
+            )
+        )
+    })
 
     private val viewModel: MovieDetailsModel by lazy(LazyThreadSafetyMode.NONE) {
         viewModelFactory.create(DefaultDetailsViewModel::class.java)
@@ -59,6 +71,7 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
             viewModel.onUiEvent(UiEvent.PlayClicked)
         }
 
+        setupMoviesList()
         setupPhotosList()
 
         ViewCompat.requestApplyInsets(view)
@@ -80,39 +93,52 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
         }
     }
 
-    private fun setupPhotosList() {
-        binding.movieDetailsPhotos.apply {
-            adapter = this@MovieDetailsFragment.adapter
-            layoutManager = LinearLayoutManager(
-                requireContext(),
-                LinearLayoutManager.HORIZONTAL,
-                false
-            )
+    private fun setupMoviesList() {
+        binding.movieDetailsSimilar.apply {
+            adapter = moviesAdapter
+            layoutManager = createHorizontalLayoutManager()
             removeAdapterOnDetach()
-            setHasFixedSize(true)
-            addItemDecoration(
-                SpaceDecoration(
-                    orientation = LinearLayoutManager.HORIZONTAL,
-                    spacingLeftFirst = dimen(R.dimen.spacing_normal),
-                    spacingLeft = dimen(R.dimen.spacing_small),
-                    spacingRight = dimen(R.dimen.spacing_small),
-                    spacingRightLast = dimen(R.dimen.spacing_normal)
-                )
-            )
+            addItemDecoration(createHorizontalListDecoration())
             doOnApplyWindowInsets { v, windowInsets, initialPadding ->
                 v.updatePadding(bottom = initialPadding.bottom + windowInsets.systemWindowInsetBottom)
             }
         }
     }
 
-    private fun bind(viewModel: MovieDetailsModel) {
-        viewModel.movie.observe(viewLifecycleOwner, Observer {
-            binding.swipeRefresh.isRefreshing = it is Async.Loading
+    private fun setupPhotosList() {
+        binding.movieDetailsPhotos.apply {
+            adapter = photosAdapter
+            layoutManager = createHorizontalLayoutManager()
+            removeAdapterOnDetach()
+            addItemDecoration(createHorizontalListDecoration())
+        }
+    }
 
-            if (it is Async.Success) {
-                showMovieDetails(it())
+    private fun createHorizontalLayoutManager(): RecyclerView.LayoutManager =
+        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+    private fun createHorizontalListDecoration(): RecyclerView.ItemDecoration {
+        return SpaceDecoration(
+            orientation = LinearLayoutManager.HORIZONTAL,
+            spacingLeftFirst = dimen(R.dimen.spacing_normal),
+            spacingLeft = dimen(R.dimen.spacing_small),
+            spacingRight = dimen(R.dimen.spacing_small),
+            spacingRightLast = dimen(R.dimen.spacing_normal)
+        )
+    }
+
+    private fun bind(viewModel: MovieDetailsModel) {
+        viewModel.movie.observe(
+            viewLifecycleOwner,
+            Observer {
+                binding.swipeRefresh.isRefreshing = it is Async.Loading
+
+                if (it is Async.Success) {
+                    showMovieDetails(it())
+                }
             }
-        })
+        )
+        viewModel.similarMovies.observe(viewLifecycleOwner, moviesAdapter)
     }
 
     private fun showMovieDetails(movie: Movie) {
@@ -127,6 +153,6 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
                 cropOptions(CropOptions.CENTER_CROP)
             })
         }
-        adapter.submitList(movie.images)
+        photosAdapter.submitList(movie.images)
     }
 }

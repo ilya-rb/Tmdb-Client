@@ -14,5 +14,7 @@ interface MoviesInteractor {
 
     suspend fun getMovieDetails(movieId: Int): Result<Movie>
 
+    suspend fun getSimilarMovies(movieId: Int): Result<List<Movie>>
+
     suspend fun discoverMovies(genreId: Int): Result<List<Movie>>
 }
