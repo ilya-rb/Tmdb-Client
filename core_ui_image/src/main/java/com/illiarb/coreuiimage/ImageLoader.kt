@@ -25,6 +25,8 @@ fun ImageView.loadImage(image: Image?, options: RequestOptions? = null) {
         return
     }
 
+    clear()
+
     doOnLayout {
         val selectedSize = selectSize(image.sizes, it.width)
         val request = Glide.with(context).load(image.buildFullUrl(selectedSize))
@@ -43,6 +45,10 @@ fun ImageView.loadImage(image: Image?, options: RequestOptions? = null) {
 
         request.into(this)
     }
+}
+
+fun ImageView.clear() {
+    Glide.with(this).clear(this)
 }
 
 @Suppress("ComplexMethod")
