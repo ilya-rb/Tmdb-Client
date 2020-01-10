@@ -13,6 +13,7 @@ import com.illiarb.tmdblcient.core.interactor.HomeInteractor
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
+import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowSettings
 import com.illiarb.tmdblcient.core.util.Async
 import com.illiarb.tmdblcient.core.util.Async.Fail
 import com.illiarb.tmdblcient.core.util.Async.Loading
@@ -64,7 +65,11 @@ class DefaultHomeModel @Inject constructor(
                     router.executeAction(it)
                 }
             }
-            is UiEvent.SettingsClick -> router.executeAction(Router.Action.ShowSettings)
+            is UiEvent.SettingsClick -> {
+                val action = ShowSettings
+                analyticsService.trackEvent(RouterAction(action))
+                router.executeAction(action)
+            }
         }
     }
 }

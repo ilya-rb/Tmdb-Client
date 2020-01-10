@@ -3,7 +3,6 @@ package com.tmdbclient.servicetmdb.mapper
 import com.illiarb.tmdblcient.core.util.Result
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import com.tmdbclient.servicetmdb.BuildConfig
 import com.tmdbclient.servicetmdb.configuration.Configuration
 import com.tmdbclient.servicetmdb.configuration.ImageConfig
 import com.tmdbclient.servicetmdb.configuration.ImageUrlCreator
@@ -21,6 +20,7 @@ import org.junit.Test
 
 class MovieMapperTest {
 
+    private val secureBaseUrl = "https://base-url.com"
     private val configurationRepository = mock<ConfigurationRepository>()
     private val imageUrlCreator = ImageUrlCreator()
     private val movieMapper = MovieMapper(
@@ -37,7 +37,7 @@ class MovieMapperTest {
 
         val input = MovieModel(backdropPath = "backdrop_path")
         val result = movieMapper.map(input)
-        assertTrue(result.backdropPath!!.baseUrl.startsWith(BuildConfig.IMG_URL))
+        assertTrue(result.backdropPath!!.baseUrl.startsWith(secureBaseUrl))
     }
 
     @Test
@@ -46,7 +46,7 @@ class MovieMapperTest {
 
         val input = MovieModel(posterPath = "poster_path")
         val result = movieMapper.map(input)
-        assertTrue(result.posterPath!!.baseUrl.startsWith(BuildConfig.IMG_URL))
+        assertTrue(result.posterPath!!.baseUrl.startsWith(secureBaseUrl))
     }
 
     @Test
@@ -57,7 +57,7 @@ class MovieMapperTest {
         val result = movieMapper.map(input)
 
         result.images.forEach {
-            assertTrue(it.baseUrl.startsWith(BuildConfig.IMG_URL))
+            assertTrue(it.baseUrl.startsWith(secureBaseUrl))
         }
     }
 
@@ -72,7 +72,7 @@ class MovieMapperTest {
     private suspend fun mockConfiguration() {
         whenever(configurationRepository.getConfiguration()).thenReturn(
             Result.Success(
-                Configuration(images = ImageConfig(secureBaseUrl = BuildConfig.IMG_URL))
+                Configuration(images = ImageConfig(secureBaseUrl = secureBaseUrl))
             )
         )
     }
