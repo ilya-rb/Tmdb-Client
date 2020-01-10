@@ -4,6 +4,7 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.AttrRes
+import androidx.core.view.ViewCompat
 import com.illiarb.tmdbexplorer.coreui.common.SizeSpec
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -88,4 +89,54 @@ fun View.focusChanges(): Flow<Boolean> = callbackFlow {
 
     onFocusChangeListener = focusChangeListener
     awaitClose { onFocusChangeListener = null }
+}
+
+/**
+ * Source:
+ * https://android.googlesource.com/platform/frameworks/support/core/ktx/src/main/java/androidx/core/view/View.kt
+ * Performs the given action when this view is next laid out.
+ *
+ * The action will only be invoked once on the next layout and then removed.
+ *
+ * @see doOnLayout
+ */
+inline fun View.doOnNextLayout(crossinline action: (view: View) -> Unit) {
+    addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
+        override fun onLayoutChange(
+            view: View,
+            left: Int,
+            top: Int,
+            right: Int,
+            bottom: Int,
+            oldLeft: Int,
+            oldTop: Int,
+            oldRight: Int,
+            oldBottom: Int
+        ) {
+            view.removeOnLayoutChangeListener(this)
+            action(view)
+        }
+    })
+}
+
+/**
+ * Source:
+ * https://android.googlesource.com/platform/frameworks/support/core/ktx/src/main/java/androidx/core/view/View.kt
+ *
+ * Performs the given action when this view is laid out. If the view has been laid out and it
+ * has not requested a layout, the action will be performed straight away, otherwise the
+ * action will be performed after the view is next laid out.
+ *
+ * The action will only be invoked once on the next layout and then removed.
+ *
+ * @see doOnNextLayout
+ */
+inline fun View.doOnLayout(crossinline action: (view: View) -> Unit) {
+    if (ViewCompat.isLaidOut(this) && !isLayoutRequested) {
+        action(this)
+    } else {
+        doOnNextLayout {
+            action(it)
+        }
+    }
 }

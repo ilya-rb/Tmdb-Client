@@ -24,6 +24,7 @@ android {
 
 dependencies {
     implementation project(':core')
+    implementation project(':core_ui')
 
     implementation deps.glide
     implementation deps.kotlin

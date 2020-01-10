@@ -46,7 +46,7 @@
                     android:paddingTop="@dimen/spacing_micro"
                     android:paddingRight="@dimen/spacing_normal"
                     android:paddingBottom="@dimen/spacing_micro"
-                    android:src="@drawable/ic_build"
+                    android:src="@drawable/ic_settings"
                     android:tint="?attr/colorOnPrimary" />
 
             </LinearLayout>

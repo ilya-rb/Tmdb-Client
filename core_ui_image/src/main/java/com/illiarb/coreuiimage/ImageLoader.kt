@@ -12,12 +12,12 @@ import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.illiarb.coreuiimage.blur.BlurTransformation
+import com.illiarb.tmdbexplorer.coreui.ext.doOnLayout
 import com.illiarb.tmdblcient.core.domain.Image
 
 /**
  * @author ilya-rb on 29.12.18.
  */
-
 private val imageSizePattern = "w(\\d+)$".toRegex()
 
 fun ImageView.loadImage(image: Image?, options: RequestOptions? = null) {
@@ -25,22 +25,24 @@ fun ImageView.loadImage(image: Image?, options: RequestOptions? = null) {
         return
     }
 
-    val selectedSize = selectSize(image.sizes, width)
-    val request = Glide.with(context).load(image.buildFullUrl(selectedSize))
+    doOnLayout {
+        val selectedSize = selectSize(image.sizes, it.width)
+        val request = Glide.with(context).load(image.buildFullUrl(selectedSize))
 
-    options?.let {
-        request.apply(mapOptions(context, it))
+        options?.apply {
+            request.apply(mapOptions(context, this))
 
-        if (it.useCrossFade) {
-            request.transition(DrawableTransitionOptions.withCrossFade())
+            if (useCrossFade) {
+                request.transition(DrawableTransitionOptions.withCrossFade())
+            }
+
+            if (thumbnail != 0f) {
+                request.thumbnail(thumbnail)
+            }
         }
 
-        if (it.thumbnail != 0f) {
-            request.thumbnail(it.thumbnail)
-        }
+        request.into(this)
     }
-
-    request.into(this)
 }
 
 @Suppress("ComplexMethod")
