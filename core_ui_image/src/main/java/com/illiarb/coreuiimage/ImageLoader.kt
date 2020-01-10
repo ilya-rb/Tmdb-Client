@@ -20,7 +20,10 @@ import com.illiarb.tmdblcient.core.domain.Image
  */
 private val imageSizePattern = "w(\\d+)$".toRegex()
 
-fun ImageView.loadImage(image: Image?, options: RequestOptions? = null) {
+fun ImageView.loadImage(
+    image: Image?,
+    requestOptions: RequestOptions.() -> RequestOptions = { this }
+) {
     if (image == null) {
         return
     }
@@ -30,17 +33,16 @@ fun ImageView.loadImage(image: Image?, options: RequestOptions? = null) {
     doOnLayout {
         val selectedSize = selectSize(image.sizes, it.width)
         val request = Glide.with(context).load(image.buildFullUrl(selectedSize))
+        val options = requestOptions(RequestOptions())
 
-        options?.apply {
-            request.apply(mapOptions(context, this))
+        request.apply(mapOptions(context, options))
 
-            if (useCrossFade) {
-                request.transition(DrawableTransitionOptions.withCrossFade())
-            }
+        if (options.useCrossFade) {
+            request.transition(DrawableTransitionOptions.withCrossFade())
+        }
 
-            if (thumbnail != 0f) {
-                request.thumbnail(thumbnail)
-            }
+        if (options.thumbnail != 0f) {
+            request.thumbnail(options.thumbnail)
         }
 
         request.into(this)

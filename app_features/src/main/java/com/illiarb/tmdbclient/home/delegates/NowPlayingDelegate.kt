@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 import com.illiarb.coreuiimage.CropOptions
-import com.illiarb.coreuiimage.RequestOptions.Companion.requestOptions
 import com.illiarb.coreuiimage.loadImage
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
+import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieSection
@@ -55,14 +55,19 @@ private class NowPlayingPagerAdapter(private val clickListener: OnClickListener)
 
             val title = itemView.findViewById<TextView>(R.id.itemNowPlayingTitle)
             val image = itemView.findViewById<ImageView>(R.id.itemNowPlayingImage)
+            val rating = itemView.findViewById<TextView>(R.id.itemNowPlayingRating)
             val spacing = itemView.resources.getDimensionPixelSize(R.dimen.corner_radius_normal)
 
             bind {
                 title.text = item.title
-                image.loadImage(item.backdropPath, requestOptions {
-                    cropOptions(CropOptions.CENTER_CROP)
+
+                rating.setVisible(item.voteAverage > 0)
+                rating.text = item.voteAverage.toString()
+
+                image.loadImage(item.backdropPath) {
+                    crop(CropOptions.CENTER_CROP)
                     cornerRadius(spacing)
-                })
+                }
 
                 itemView.setOnClickListener {
                     clickListener.onClick(item)

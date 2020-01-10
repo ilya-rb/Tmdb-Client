@@ -15,18 +15,23 @@ data class RequestOptions(
     var useCrossFade: Boolean = true
 ) {
 
-    companion object {
-        inline fun requestOptions(builder: RequestOptions.() -> RequestOptions) =
-            builder(RequestOptions())
+    fun thumbnail(@FloatRange(from = 0.1, to = 0.9) fraction: Float) = apply {
+        thumbnail = fraction
     }
 
-    fun thumbnail(@FloatRange(from = 0.1, to = 0.9) fraction: Float) = apply { thumbnail = fraction }
+    fun crop(options: CropOptions) = apply {
+        cropOptions = options
+    }
 
-    fun cropOptions(options: CropOptions) = apply { cropOptions = options }
+    fun cornerRadius(radius: Int) = apply {
+        cornerRadius = radius
+    }
 
-    fun cornerRadius(radius: Int) = apply { cornerRadius = radius }
+    fun blur(params: BlurParams) = apply {
+        blurParams = params
+    }
 
-    fun blur(params: BlurParams) = apply { blurParams = params }
-
-    fun useCrossFade(use: Boolean) = apply { useCrossFade = use }
+    fun crossFade(use: Boolean) = apply {
+        useCrossFade = use
+    }
 }

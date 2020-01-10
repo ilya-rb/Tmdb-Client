@@ -5,7 +5,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 import com.illiarb.coreuiimage.CropOptions
-import com.illiarb.coreuiimage.RequestOptions
 import com.illiarb.coreuiimage.loadImage
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
@@ -41,10 +40,10 @@ fun movieDelegate(
         rating.setVisible(item.voteAverage != 0f)
         rating.text = item.voteAverage.toString()
 
-        image.loadImage(item.posterPath, RequestOptions.requestOptions {
+        image.loadImage(item.posterPath) {
             cornerRadius(imageCornerRadius)
-            cropOptions(CropOptions.CENTER_CROP)
-            useCrossFade(false)
-        })
+            crop(CropOptions.CENTER_CROP)
+            crossFade(false)
+        }
     }
 }

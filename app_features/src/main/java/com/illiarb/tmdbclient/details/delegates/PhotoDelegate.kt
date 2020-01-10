@@ -3,7 +3,6 @@ package com.illiarb.tmdbclient.details.delegates
 import android.widget.ImageView
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 import com.illiarb.coreuiimage.CropOptions
-import com.illiarb.coreuiimage.RequestOptions
 import com.illiarb.coreuiimage.loadImage
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
@@ -20,9 +19,9 @@ fun photoDelegate(clickListener: OnClickListener) =
         }
 
         bind {
-            imageView.loadImage(item, RequestOptions.requestOptions {
+            imageView.loadImage(item) {
                 cornerRadius(radius)
-                cropOptions(CropOptions.CENTER_CROP)
-            })
+                crop(CropOptions.CENTER_CROP)
+            }
         }
     }

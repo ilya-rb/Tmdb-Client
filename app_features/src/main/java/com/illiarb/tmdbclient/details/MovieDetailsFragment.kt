@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.coreuiimage.CropOptions
-import com.illiarb.coreuiimage.RequestOptions.Companion.requestOptions
 import com.illiarb.coreuiimage.loadImage
 import com.illiarb.tmdbclient.common.delegates.movieDelegate
 import com.illiarb.tmdbclient.details.MovieDetailsModel.UiEvent
@@ -161,9 +160,9 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
             movieDetailsYear.text = movie.releaseDate
             movieDetailsCountry.text = movie.country
             movieDetailsTags.text = movie.getGenresString()
-            movieDetailsPoster.loadImage(movie.posterPath, requestOptions {
-                cropOptions(CropOptions.CENTER_CROP)
-            })
+            movieDetailsPoster.loadImage(movie.posterPath) {
+                crop(CropOptions.CENTER_CROP)
+            }
         }
         photosAdapter.submitList(movie.images)
     }

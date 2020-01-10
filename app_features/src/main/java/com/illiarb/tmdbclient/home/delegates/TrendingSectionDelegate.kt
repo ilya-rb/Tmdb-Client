@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 import com.illiarb.coreuiimage.CropOptions
-import com.illiarb.coreuiimage.RequestOptions
 import com.illiarb.coreuiimage.loadImage
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
@@ -26,7 +25,11 @@ fun trendingSectionDelegate(clickListener: OnClickListener) =
 
         trendingList.let {
             it.adapter = adapter
-            it.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            it.layoutManager = LinearLayoutManager(
+                itemView.context,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
             it.addItemDecoration(
                 SpaceDecoration.edgeInnerSpace(
                     it.dimen(R.dimen.spacing_normal),
@@ -56,9 +59,9 @@ private class TrendingSectionAdapter(clickListener: OnClickListener) :
 
             bind {
                 name.text = item.name
-                image.loadImage(item.image, RequestOptions.requestOptions {
-                    cropOptions(CropOptions.CIRCLE)
-                })
+                image.loadImage(item.image) {
+                    crop(CropOptions.CIRCLE)
+                }
 
                 itemView.setOnClickListener {
                     clickListener.onClick(item)
