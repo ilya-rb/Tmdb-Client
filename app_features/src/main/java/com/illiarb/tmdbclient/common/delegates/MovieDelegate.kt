@@ -12,6 +12,7 @@ import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.common.SizeSpec
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.setSize
+import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdblcient.core.domain.Movie
 
 fun movieDelegate(
@@ -23,6 +24,7 @@ fun movieDelegate(
     val image = itemView.findViewById<ImageView>(R.id.itemMoviePoster)
     val title = itemView.findViewById<TextView>(R.id.itemMovieTitle)
     val card = itemView.findViewById<View>(R.id.itemMovieCard)
+    val rating = itemView.findViewById<TextView>(R.id.itemMovieRating)
     val imageCornerRadius = itemView.dimen(R.dimen.corner_radius_normal)
 
     itemView.setSize(widthSpec = widthSpec)
@@ -35,6 +37,9 @@ fun movieDelegate(
 
     bind {
         title.text = item.title
+
+        rating.setVisible(item.voteAverage != 0f)
+        rating.text = item.voteAverage.toString()
 
         image.loadImage(item.posterPath, RequestOptions.requestOptions {
             cornerRadius(imageCornerRadius)

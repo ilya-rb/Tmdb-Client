@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/item_movie_width"
     android:layout_height="wrap_content"
@@ -33,10 +34,21 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_small"
         android:ellipsize="end"
-        android:gravity="center_horizontal"
         android:maxLines="2"
         android:textAppearance="?attr/textAppearanceCaption"
-        android:textColor="?attr/colorOnSurface"
+        android:textColor="?attr/colorOnBackground"
+        tools:text="@tools:sample/lorem" />
+
+    <TextView
+        android:id="@+id/itemMovieRating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_star"
+        android:drawablePadding="@dimen/spacing_micro"
+        android:gravity="center_vertical"
+        android:textAppearance="?attr/textAppearanceCaption"
+        android:textColor="?attr/colorOnBackground"
+        app:drawableTint="?attr/colorSecondary"
         tools:text="@tools:sample/lorem" />
 
 </LinearLayout>
