@@ -1,11 +1,9 @@
 package com.tmdbclient.servicetmdb.model
 
 import com.google.gson.annotations.SerializedName
-import com.illiarb.tmdblcient.core.domain.Video
 import com.ironz.binaryprefs.serialization.serializer.persistable.Persistable
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataInput
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataOutput
-import java.util.*
 
 data class MovieModel(
 
@@ -34,7 +32,7 @@ data class MovieModel(
     val budget: Int = 0,
 
     @SerializedName("genres")
-    val genres: List<GenreModel>? = Collections.emptyList(),
+    val genres: List<GenreModel>? = emptyList(),
 
     @SerializedName("homepage")
     val homepage: String? = null,
@@ -54,11 +52,11 @@ data class MovieModel(
     @SerializedName("credits")
     val credits: CreditsModel? = null,
 
-    @SerializedName("videos")
-    val videos: ResultsModel<Video>? = null,
+    @SerializedName("video")
+    val video: Boolean = false,
 
     @SerializedName("production_countries")
-    val productionCountries: List<ProductionCountryModel> = Collections.emptyList()
+    val productionCountries: List<ProductionCountryModel> = emptyList()
 
 ) : Persistable, TrendingModel {
 

@@ -14,6 +14,7 @@ import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieBlock
 import com.illiarb.tmdblcient.core.domain.MovieSection
 import com.illiarb.tmdblcient.core.domain.TrendingSection
+import com.illiarb.tmdblcient.core.domain.Video
 import com.illiarb.tmdblcient.core.feature.FeatureFlagStore
 import com.illiarb.tmdblcient.core.interactor.GenresInteractor
 import com.illiarb.tmdblcient.core.interactor.HomeInteractor
@@ -107,6 +108,9 @@ class TestApplication : Application(), App {
                 Result.Success(emptyList())
 
             override suspend fun discoverMovies(genreId: Int): Result<List<Movie>> =
+                Result.Success(emptyList())
+
+            override suspend fun getMovieVideos(movieId: Int): Result<List<Video>> =
                 Result.Success(emptyList())
         }
     }

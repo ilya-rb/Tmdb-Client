@@ -1,13 +1,11 @@
 package com.tmdbclient.servicetmdb.mappers
 
 import com.illiarb.tmdblcient.core.domain.Movie
-import com.illiarb.tmdblcient.core.domain.Video
 import com.illiarb.tmdblcient.core.util.SuspendableMapper
 import com.tmdbclient.servicetmdb.configuration.ImageType
 import com.tmdbclient.servicetmdb.configuration.ImageUrlCreator
 import com.tmdbclient.servicetmdb.model.MovieModel
 import com.tmdbclient.servicetmdb.repository.ConfigurationRepository
-import java.util.Collections
 import javax.inject.Inject
 
 class MovieMapper @Inject constructor(
@@ -36,11 +34,11 @@ class MovieMapper @Inject constructor(
             from.title,
             from.images?.backdrops?.map {
                 imageUrlCreator.createImage(config, it.filePath, ImageType.Backdrop)
-            } ?: Collections.emptyList(),
+            } ?: emptyList(),
             from.voteAverage,
             from.productionCountries.firstOrNull()?.name,
             0,
-            from.videos?.results?.filter { it.site == Video.SITE_YOUTUBE } ?: emptyList()
+            from.video
         )
     }
 }

@@ -7,10 +7,10 @@ import androidx.navigation.Navigation
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdblcient.core.navigation.Navigator
 import com.illiarb.tmdblcient.core.navigation.Router
-import com.illiarb.tmdblcient.core.navigation.Router.Action.PlayVideo
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowSettings
+import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowVideos
 import javax.inject.Inject
 
 /**
@@ -24,7 +24,7 @@ class AppNavigator @Inject constructor(private val activity: FragmentActivity) :
             is ShowMovieDetails -> R.id.action_to_movie_details
             is ShowDiscover -> R.id.action_moviesFragment_to_discoverFragment
             is ShowSettings -> R.id.action_movies_to_settings
-            is PlayVideo -> R.id.movie_to_player
+            is ShowVideos -> R.id.movie_to_player
         }
         controller.navigate(destination, setDestinationArgs(action), setNavOptions())
     }
@@ -37,8 +37,8 @@ class AppNavigator @Inject constructor(private val activity: FragmentActivity) :
             is ShowDiscover -> Bundle().apply {
                 putInt(ShowDiscover.EXTRA_GENRE_ID, action.id)
             }
-            is PlayVideo -> Bundle().apply {
-                putString(PlayVideo.EXTRA_VIDEO_ID, action.videoId)
+            is ShowVideos -> Bundle().apply {
+                putInt(ShowVideos.EXTRA_MOVIE_ID, action.movieId)
             }
             else -> Bundle.EMPTY
         }

@@ -1,5 +1,6 @@
 package com.tmdbclient.servicetmdb.api
 
+import com.illiarb.tmdblcient.core.domain.Video
 import com.tmdbclient.servicetmdb.model.MovieModel
 import com.tmdbclient.servicetmdb.model.ResultsModel
 import com.tmdbclient.servicetmdb.model.ReviewModel
@@ -24,4 +25,7 @@ interface MovieApi {
 
     @GET("movie/{id}/reviews")
     fun getMovieReviewsAsync(@Path("id") id: Int): Deferred<ResultsModel<ReviewModel>>
+
+    @GET("movie/{id}/videos")
+    fun getMovieVideosAsync(@Path("id") id: Int): Deferred<ResultsModel<Video>>
 }

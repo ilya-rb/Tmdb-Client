@@ -41,7 +41,7 @@ object FakeEntityFactory {
             7.4f,
             "",
             9,
-            emptyList()
+            false
         )
     }
 }

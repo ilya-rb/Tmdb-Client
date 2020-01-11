@@ -5,6 +5,7 @@ import com.illiarb.tmdblcient.core.interactor.MoviesInteractor
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieBlock
 import com.illiarb.tmdblcient.core.domain.MovieFilter
+import com.illiarb.tmdblcient.core.domain.Video
 import com.illiarb.tmdblcient.core.tools.DispatcherProvider
 import com.illiarb.tmdblcient.core.util.Result
 import com.tmdbclient.servicetmdb.repository.MoviesRepository
@@ -40,12 +41,11 @@ class DefaultMoviesInteractor @Inject constructor(
     override suspend fun getMovieDetails(movieId: Int): Result<Movie> {
         val configuration = withContext(dispatcherProvider.io) { cache.getConfiguration() }
         val imageKey = configuration.changeKeys.find { it == MoviesInteractor.KEY_INCLUDE_IMAGES }
-        val videoKey = configuration.changeKeys.find { it == MoviesInteractor.KEY_INCLUDE_VIDEOS }
 
         return if (imageKey == null) {
             repository.getMovieDetails(movieId, "")
         } else {
-            repository.getMovieDetails(movieId, "$imageKey,$videoKey")
+            repository.getMovieDetails(movieId, imageKey)
         }
     }
 
@@ -61,6 +61,12 @@ class DefaultMoviesInteractor @Inject constructor(
         return Result.create {
             val results = movieApi.getSimilarMoviesAsync(movieId).await()
             movieMapper.mapList(results.results)
+        }
+    }
+
+    override suspend fun getMovieVideos(movieId: Int): Result<List<Video>> {
+        return Result.create {
+            movieApi.getMovieVideosAsync(movieId).await().results
         }
     }
 

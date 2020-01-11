@@ -7,11 +7,10 @@ import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import com.illiarb.tmdblcient.core.analytics.AnalyticEvent.RouterAction
 import com.illiarb.tmdblcient.core.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.domain.Movie
-import com.illiarb.tmdblcient.core.domain.Video
 import com.illiarb.tmdblcient.core.interactor.MoviesInteractor
 import com.illiarb.tmdblcient.core.navigation.Router
-import com.illiarb.tmdblcient.core.navigation.Router.Action.PlayVideo
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
+import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowVideos
 import com.illiarb.tmdblcient.core.util.Async
 import com.illiarb.tmdblcient.core.util.Result
 import kotlinx.coroutines.flow.catch
@@ -29,7 +28,7 @@ interface MovieDetailsModel {
     fun onUiEvent(event: UiEvent)
 
     sealed class UiEvent {
-        class PlayClicked(val video: Video) : UiEvent()
+        object PlayClicked : UiEvent()
         class ItemClick(val item: Any) : UiEvent()
     }
 }
@@ -73,7 +72,7 @@ class DefaultDetailsViewModel @Inject constructor(
                 }
             }
             is UiEvent.PlayClicked -> {
-                val action = PlayVideo(event.video.key)
+                val action = ShowVideos(movieId)
                 analyticsService.trackEvent(RouterAction(action))
                 router.executeAction(action)
             }

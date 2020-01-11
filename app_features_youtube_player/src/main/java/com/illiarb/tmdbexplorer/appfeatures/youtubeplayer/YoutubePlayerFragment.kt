@@ -1,56 +1,101 @@
 package com.illiarb.tmdbexplorer.appfeatures.youtubeplayer
 
-import android.annotation.SuppressLint
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.illiarb.tmdbexplorer.appfeatures.youtubeplayer.YoutubePlayerModel.UiEvent
 import com.illiarb.tmdbexplorer.appfeatures.youtubeplayer.databinding.FragmentYoutubePlayerBinding
+import com.illiarb.tmdbexplorer.appfeatures.youtubeplayer.di.YoutubePlayerComponent
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
-import com.illiarb.tmdblcient.core.navigation.Router.Action.PlayVideo
+import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
+import com.illiarb.tmdbexplorer.coreui.ext.removeAdapterOnDetach
+import com.illiarb.tmdbexplorer.coreui.ext.updateMargin
+import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
+import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
+import com.illiarb.tmdblcient.core.di.Injectable
+import com.illiarb.tmdblcient.core.di.providers.AppProvider
+import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowVideos
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerCallback
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-@SuppressLint("SourceLockedOrientationActivity")
-class YoutubePlayerFragment : BaseViewBindingFragment<FragmentYoutubePlayerBinding>() {
+class YoutubePlayerFragment : BaseViewBindingFragment<FragmentYoutubePlayerBinding>(), Injectable {
 
-    private var previousOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        activity?.let {
-            previousOrientation = it.requestedOrientation
-            it.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        }
-        return super.onCreateView(inflater, container, savedInstanceState)
+    private val videosAdapter = DelegatesAdapter({ listOf(videoDelegate(it)) })
+
+    private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
+        ViewModelProvider(this, viewModelFactory).get(DefaultYoutubePlayerModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewLifecycleOwner.lifecycle.addObserver(binding.youtubePlayer)
 
-        binding.youtubePlayer.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-            override fun onReady(youTubePlayer: YouTubePlayer) {
-                super.onReady(youTubePlayer)
+        setupVideoPlayer()
+        setupVideoList()
 
-                val id = requireArguments().getString(PlayVideo.EXTRA_VIDEO_ID)
-                require(!id.isNullOrBlank()) {
-                    "Arguments should contain valid youtube video id"
-                }
-                youTubePlayer.loadVideo(id, 0f)
+        lifecycleScope.launch {
+            videosAdapter.clicks().collect {
+                viewModel.onUiEvent(UiEvent.ItemClick(it))
             }
-        })
+        }
+
+        bind()
+
+        ViewCompat.requestApplyInsets(view)
     }
 
-    override fun onDestroyView() {
-        activity?.requestedOrientation = previousOrientation
-        super.onDestroyView()
+    override fun inject(appProvider: AppProvider) {
+        val movieId = requireArguments().getInt(ShowVideos.EXTRA_MOVIE_ID)
+        require(movieId != 0) {
+            "Arguments must contain valid movie id"
+        }
+        YoutubePlayerComponent.get(appProvider, movieId).inject(this)
     }
 
     override fun getViewBinding(inflater: LayoutInflater): FragmentYoutubePlayerBinding =
         FragmentYoutubePlayerBinding.inflate(inflater)
+
+    private fun setupVideoPlayer() {
+        viewLifecycleOwner.lifecycle.addObserver(binding.youtubePlayer)
+
+        binding.youtubePlayer.doOnApplyWindowInsets { view, windowInsets, _ ->
+            view.updateMargin(top = windowInsets.systemWindowInsetTop)
+        }
+    }
+
+    private fun setupVideoList() {
+        binding.youtubeVideosList.apply {
+            adapter = videosAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+            removeAdapterOnDetach()
+            doOnApplyWindowInsets { view, windowInsets, padding ->
+                view.updatePadding(bottom = padding.bottom + windowInsets.systemWindowInsetBottom)
+            }
+        }
+    }
+
+    private fun bind() {
+        viewModel.videos.observe(viewLifecycleOwner, videosAdapter)
+        viewModel.selectedVideo.observe(viewLifecycleOwner, Observer {
+            playVideo(it.video.key)
+        })
+    }
+
+    private fun playVideo(videoId: String) {
+        binding.youtubePlayer.getYouTubePlayerWhenReady(object : YouTubePlayerCallback {
+            override fun onYouTubePlayer(youTubePlayer: YouTubePlayer) {
+                youTubePlayer.loadVideo(videoId, 0f)
+            }
+        })
+    }
 }

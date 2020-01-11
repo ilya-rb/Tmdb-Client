@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/youtubePlayer"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:handleNetworkEvents="true" />
+    android:orientation="vertical">
+
+    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/youtubePlayer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/youtube_player_height"
+        app:handleNetworkEvents="true" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/youtubeVideosList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layoutManager="LinearLayoutManager"
+        tools:listitem="@layout/item_video"
+        tools:orientation="vertical" />
+
+</LinearLayout>

@@ -191,9 +191,9 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
                 crop(CropOptions.CENTER_CROP)
             }
 
-            movieDetailsPlay.setVisible(movie.videos.isNotEmpty())
+//            movieDetailsPlay.setVisible(movie.video)
             movieDetailsPlay.setOnClickListener {
-                viewModel.onUiEvent(UiEvent.PlayClicked(movie.videos.first()))
+                viewModel.onUiEvent(UiEvent.PlayClicked)
             }
         }
 

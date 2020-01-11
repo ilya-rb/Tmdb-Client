@@ -16,7 +16,7 @@ data class Movie(
     val voteAverage: Float,
     val country: String?,
     val rating: Int = 0,
-    val videos: List<Video>
+    val video: Boolean
 ) {
 
     companion object {

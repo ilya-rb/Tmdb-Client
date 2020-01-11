@@ -23,9 +23,9 @@ interface Router {
             }
         }
 
-        class PlayVideo(val videoId: String) : Action() {
+        class ShowVideos(val movieId: Int) : Action() {
             companion object {
-                const val EXTRA_VIDEO_ID = "id"
+                const val EXTRA_MOVIE_ID = "id"
             }
         }
 
