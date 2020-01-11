@@ -4,12 +4,6 @@
     app:startDestination="@id/moviesFragment">
 
     <fragment
-        android:id="@+id/movieDetailsFragment"
-        android:name="com.illiarb.tmdbclient.details.MovieDetailsFragment"
-        android:label="MovieDetailsFragment"
-        tools:layout="@layout/fragment_movie_details" />
-
-    <fragment
         android:id="@+id/discoverFragment"
         android:name="com.illiarb.tmdbclient.discover.DiscoverFragment"
         android:label="DiscoverFragment"
@@ -19,6 +13,23 @@
         android:id="@+id/settingsFragment"
         android:name="com.illiarb.tmdbexplorer.appfeatures.settings.SettingsFragment"
         tools:layout="SettingsFragment" />
+
+    <fragment
+        android:id="@+id/youtubePlayerFragment"
+        android:name="com.illiarb.tmdbexplorer.appfeatures.youtubeplayer.YoutubePlayerFragment"
+        tools:layout="@layout/fragment_youtube_player" />
+
+    <fragment
+        android:id="@+id/movieDetailsFragment"
+        android:name="com.illiarb.tmdbclient.details.MovieDetailsFragment"
+        android:label="MovieDetailsFragment"
+        tools:layout="@layout/fragment_movie_details">
+
+        <action
+            android:id="@+id/movie_to_player"
+            app:destination="@+id/youtubePlayerFragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/moviesFragment"

@@ -7,8 +7,10 @@ import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import com.illiarb.tmdblcient.core.analytics.AnalyticEvent.RouterAction
 import com.illiarb.tmdblcient.core.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.domain.Movie
+import com.illiarb.tmdblcient.core.domain.Video
 import com.illiarb.tmdblcient.core.interactor.MoviesInteractor
 import com.illiarb.tmdblcient.core.navigation.Router
+import com.illiarb.tmdblcient.core.navigation.Router.Action.PlayVideo
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.util.Async
 import com.illiarb.tmdblcient.core.util.Result
@@ -27,7 +29,7 @@ interface MovieDetailsModel {
     fun onUiEvent(event: UiEvent)
 
     sealed class UiEvent {
-        object PlayClicked : UiEvent()
+        class PlayClicked(val video: Video) : UiEvent()
         class ItemClick(val item: Any) : UiEvent()
     }
 }
@@ -62,9 +64,16 @@ class DefaultDetailsViewModel @Inject constructor(
         get() = _similarMovies
 
     override fun onUiEvent(event: UiEvent) {
-        if (event is UiEvent.ItemClick) {
-            if (event.item is Movie) {
-                val action = ShowMovieDetails(event.item.id)
+        when (event) {
+            is UiEvent.ItemClick -> {
+                if (event.item is Movie) {
+                    val action = ShowMovieDetails(event.item.id)
+                    analyticsService.trackEvent(RouterAction(action))
+                    router.executeAction(action)
+                }
+            }
+            is UiEvent.PlayClicked -> {
+                val action = PlayVideo(event.video.key)
                 analyticsService.trackEvent(RouterAction(action))
                 router.executeAction(action)
             }

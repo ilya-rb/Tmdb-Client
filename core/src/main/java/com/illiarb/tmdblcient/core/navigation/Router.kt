@@ -23,6 +23,12 @@ interface Router {
             }
         }
 
+        class PlayVideo(val videoId: String) : Action() {
+            companion object {
+                const val EXTRA_VIDEO_ID = "id"
+            }
+        }
+
         object ShowSettings : Action()
     }
 }

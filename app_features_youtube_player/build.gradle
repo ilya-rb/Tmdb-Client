@@ -1,0 +1,38 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+apply from: dependenciesFilePath
+
+android {
+    compileSdkVersion projectInfo.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion projectInfo.minSdkVersion
+        targetSdkVersion projectInfo.targetSdkVersion
+
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    kapt deps.daggerCompiler
+
+    implementation project(':core')
+    implementation project(':core_ui')
+
+    implementation deps.dagger
+    implementation deps.youtubePlayer
+}

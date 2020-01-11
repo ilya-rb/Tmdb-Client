@@ -40,7 +40,8 @@ object FakeEntityFactory {
             emptyList(),
             7.4f,
             "",
-            9
+            9,
+            emptyList()
         )
     }
 }

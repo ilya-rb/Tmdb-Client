@@ -67,6 +67,7 @@ deps.okHttpLogger = "com.squareup.okhttp3:logging-interceptor:$versions.okHttpLo
 // Other
 deps.adapterDelegates = "com.hannesdorfmann:adapterdelegates4:4.2.0"
 deps.adapterDelegatesDsl = "com.hannesdorfmann:adapterdelegates4-kotlin-dsl:4.2.0"
+deps.youtubePlayer = "com.pierfrancescosoffritti.androidyoutubeplayer:core:$versions.youtubePlayer"
 
 // Di
 deps.dagger = "com.google.dagger:dagger:$versions.dagger"

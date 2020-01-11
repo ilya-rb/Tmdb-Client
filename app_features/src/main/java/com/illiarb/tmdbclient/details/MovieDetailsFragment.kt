@@ -23,6 +23,7 @@ import com.illiarb.tmdbexplorer.coreui.common.SizeSpec
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.removeAdapterOnDetach
+import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
@@ -77,9 +78,6 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
         setupToolbar()
 
         binding.swipeRefresh.isEnabled = false
-        binding.movieDetailsPlay.setOnClickListener {
-            viewModel.onUiEvent(UiEvent.PlayClicked)
-        }
 
         lifecycleScope.launch {
             moviesAdapter.clicks().collect {
@@ -192,7 +190,13 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
             movieDetailsPoster.loadImage(movie.posterPath) {
                 crop(CropOptions.CENTER_CROP)
             }
+
+            movieDetailsPlay.setVisible(movie.videos.isNotEmpty())
+            movieDetailsPlay.setOnClickListener {
+                viewModel.onUiEvent(UiEvent.PlayClicked(movie.videos.first()))
+            }
         }
+
         photosAdapter.submitList(movie.images)
     }
 }

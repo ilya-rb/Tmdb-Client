@@ -1,6 +1,7 @@
 package com.tmdbclient.servicetmdb.mappers
 
 import com.illiarb.tmdblcient.core.domain.Movie
+import com.illiarb.tmdblcient.core.domain.Video
 import com.illiarb.tmdblcient.core.util.SuspendableMapper
 import com.tmdbclient.servicetmdb.configuration.ImageType
 import com.tmdbclient.servicetmdb.configuration.ImageUrlCreator
@@ -37,7 +38,9 @@ class MovieMapper @Inject constructor(
                 imageUrlCreator.createImage(config, it.filePath, ImageType.Backdrop)
             } ?: Collections.emptyList(),
             from.voteAverage,
-            from.productionCountries.firstOrNull()?.name
+            from.productionCountries.firstOrNull()?.name,
+            0,
+            from.videos?.results?.filter { it.site == Video.SITE_YOUTUBE } ?: emptyList()
         )
     }
 }

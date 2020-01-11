@@ -1,6 +1,7 @@
 package com.tmdbclient.servicetmdb.model
 
 import com.google.gson.annotations.SerializedName
+import com.illiarb.tmdblcient.core.domain.Video
 import com.ironz.binaryprefs.serialization.serializer.persistable.Persistable
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataInput
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataOutput
@@ -52,6 +53,9 @@ data class MovieModel(
 
     @SerializedName("credits")
     val credits: CreditsModel? = null,
+
+    @SerializedName("videos")
+    val videos: ResultsModel<Video>? = null,
 
     @SerializedName("production_countries")
     val productionCountries: List<ProductionCountryModel> = Collections.emptyList()

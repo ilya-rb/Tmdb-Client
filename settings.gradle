@@ -19,5 +19,6 @@ include ':app',
         ':core_test',
         ':app_features',
         ':app_features_settings',
+        ':app_features_youtube_player',
         ':core_tools',
         ':debug'
