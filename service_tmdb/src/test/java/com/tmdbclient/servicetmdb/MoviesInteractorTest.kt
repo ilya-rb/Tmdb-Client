@@ -6,6 +6,7 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import com.tmdbclient.servicetmdb.api.DiscoverApi
+import com.tmdbclient.servicetmdb.api.MovieApi
 import com.tmdbclient.servicetmdb.cache.TmdbCache
 import com.tmdbclient.servicetmdb.configuration.Configuration
 import com.tmdbclient.servicetmdb.configuration.ImageUrlCreator
@@ -22,11 +23,13 @@ class MoviesInteractorTest {
 
     private val cache = mock<TmdbCache>()
     private val discoverApi = mock<DiscoverApi>()
+    private val movieApi = mock<MovieApi>()
     private val moviesRepository = TestDependencyProvider.provideMovieRepository()
 
     private val interactor = DefaultMoviesInteractor(
         moviesRepository,
         discoverApi,
+        movieApi,
         MovieMapper(
             GenreMapper(),
             PersonMapper(),
