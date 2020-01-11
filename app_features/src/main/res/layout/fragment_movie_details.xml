@@ -74,7 +74,7 @@
                 tools:text="@tools:sample/lorem" />
 
             <TextView
-                android:id="@+id/movieDetailsYearTitle"
+                android:id="@+id/movieDetailsDateTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_normal"
@@ -95,10 +95,10 @@
                 android:text="@string/movie_details_country"
                 android:textAppearance="?attr/textAppearanceCaption"
                 android:textColor="?attr/colorAccent"
-                app:layout_constraintBottom_toBottomOf="@id/movieDetailsYearTitle"
+                app:layout_constraintBottom_toBottomOf="@id/movieDetailsDateTitle"
                 app:layout_constraintEnd_toStartOf="@id/movieDetailsLengthTitle"
-                app:layout_constraintStart_toEndOf="@id/movieDetailsYearTitle"
-                app:layout_constraintTop_toTopOf="@id/movieDetailsYearTitle" />
+                app:layout_constraintStart_toEndOf="@id/movieDetailsDateTitle"
+                app:layout_constraintTop_toTopOf="@id/movieDetailsDateTitle" />
 
             <TextView
                 android:id="@+id/movieDetailsLengthTitle"
@@ -108,13 +108,13 @@
                 android:text="@string/movie_details_length"
                 android:textAppearance="?attr/textAppearanceCaption"
                 android:textColor="?attr/colorAccent"
-                app:layout_constraintBottom_toBottomOf="@id/movieDetailsYearTitle"
+                app:layout_constraintBottom_toBottomOf="@id/movieDetailsDateTitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/movieDetailsCountryTitle"
-                app:layout_constraintTop_toTopOf="@id/movieDetailsYearTitle" />
+                app:layout_constraintTop_toTopOf="@id/movieDetailsDateTitle" />
 
             <TextView
-                android:id="@+id/movieDetailsYear"
+                android:id="@+id/movieDetailsDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_small"
@@ -124,7 +124,7 @@
                 app:layout_constraintEnd_toStartOf="@id/movieDetailsCountry"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/movieDetailsYearTitle"
+                app:layout_constraintTop_toBottomOf="@id/movieDetailsDateTitle"
                 tools:text="2019" />
 
             <TextView
@@ -134,10 +134,10 @@
                 android:gravity="center_horizontal"
                 android:textAppearance="?attr/textAppearanceCaption"
                 android:textColor="?attr/colorOnSurface"
-                app:layout_constraintBottom_toBottomOf="@id/movieDetailsYear"
+                app:layout_constraintBottom_toBottomOf="@id/movieDetailsDate"
                 app:layout_constraintEnd_toStartOf="@id/movieDetailsLength"
-                app:layout_constraintStart_toEndOf="@id/movieDetailsYear"
-                app:layout_constraintTop_toTopOf="@id/movieDetailsYear"
+                app:layout_constraintStart_toEndOf="@id/movieDetailsDate"
+                app:layout_constraintTop_toTopOf="@id/movieDetailsDate"
                 tools:text="USA" />
 
             <TextView
@@ -147,10 +147,10 @@
                 android:gravity="center_horizontal"
                 android:textAppearance="?attr/textAppearanceCaption"
                 android:textColor="?attr/colorOnSurface"
-                app:layout_constraintBottom_toBottomOf="@id/movieDetailsYear"
+                app:layout_constraintBottom_toBottomOf="@id/movieDetailsDate"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/movieDetailsCountry"
-                app:layout_constraintTop_toTopOf="@id/movieDetailsYear"
+                app:layout_constraintTop_toTopOf="@id/movieDetailsDate"
                 tools:text="112 min" />
 
             <TextView
@@ -164,7 +164,7 @@
                 android:textColor="?attr/colorOnSurface"
                 app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
                 app:layout_constraintStart_toStartOf="@id/guidelineStart"
-                app:layout_constraintTop_toBottomOf="@id/movieDetailsYear"
+                app:layout_constraintTop_toBottomOf="@id/movieDetailsDate"
                 tools:text="@tools:sample/lorem/random" />
 
             <TextView

@@ -33,9 +33,17 @@ import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.util.Async
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Locale
 import javax.inject.Inject
 
 class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding>(), Injectable {
+
+    companion object {
+        const val DISPLAY_DATE_FORMAT_PATTERN = "dd MMM yyyy"
+        const val PARSE_DATE_FORMAT_PATTERN = "yyyy-mm-dd"
+    }
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -152,14 +160,35 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
         viewModel.similarMovies.observe(viewLifecycleOwner, moviesAdapter)
     }
 
+    private fun String.asFormattedDate(parseFormat: String, displayFormat: String): String {
+        val dateParser = SimpleDateFormat(parseFormat, Locale.getDefault())
+        val dateFormatter = SimpleDateFormat(displayFormat, Locale.getDefault())
+
+        return try {
+            val date = dateParser.parse(this)
+            if (date == null) {
+                this
+            } else {
+                dateFormatter.format(date)
+            }
+        } catch (e: ParseException) {
+            this
+        }
+    }
+
     private fun showMovieDetails(movie: Movie) {
         with(binding) {
             movieDetailsTitle.text = movie.title
             movieDetailsOverview.text = movie.overview
             movieDetailsLength.text = getString(R.string.movie_details_duration, movie.runtime)
-            movieDetailsYear.text = movie.releaseDate
             movieDetailsCountry.text = movie.country
             movieDetailsTags.text = movie.getGenresString()
+
+            movieDetailsDate.text = movie.releaseDate.asFormattedDate(
+                PARSE_DATE_FORMAT_PATTERN,
+                DISPLAY_DATE_FORMAT_PATTERN
+            )
+
             movieDetailsPoster.loadImage(movie.posterPath) {
                 crop(CropOptions.CENTER_CROP)
             }

@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Strings -->
-    <string name="movie_details_year">Year</string>
+    <string name="movie_details_year">Release date</string>
     <string name="movie_details_country">Country</string>
     <string name="movie_details_length">Length</string>
     <string name="movie_details_photos">Photos</string>
