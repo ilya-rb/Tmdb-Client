@@ -23,7 +23,8 @@ interface YoutubePlayerModel {
     data class UiVideo(val video: Video, val isSelected: Boolean)
 
     sealed class UiEvent {
-        class ItemClick(val item: Any) : UiEvent()
+        object VideoEnded : UiEvent()
+        class VideoClick(val video: UiVideo) : UiEvent()
     }
 }
 
@@ -33,7 +34,6 @@ class DefaultYoutubePlayerModel(
 ) : BasePresentationModel(), YoutubePlayerModel {
 
     private val _videos = MutableLiveData<List<UiVideo>>()
-
     private val _selectedVideo = _videos.map { videos ->
         videos.first { it.isSelected }
     }
@@ -60,19 +60,30 @@ class DefaultYoutubePlayerModel(
         get() = _selectedVideo
 
     override fun onUiEvent(event: UiEvent) {
-        if (event is UiEvent.ItemClick) {
-            val item = event.item as UiVideo
+        when (event) {
+            is UiEvent.VideoClick -> selectVideo(event.video)
+            is UiEvent.VideoEnded -> onVideoEnded()
+        }
+    }
 
-            _videos.value?.let {
-                val position = it.indexOf(item)
-                if (position != -1) {
-                    _videos.value = it.mapIndexed { index, uiVideo ->
-                        if (index == position) {
-                            uiVideo.copy(isSelected = true)
-                        } else {
-                            uiVideo.copy(isSelected = false)
-                        }
-                    }
+    private fun onVideoEnded() {
+        // Play next video in the list or if end is reached the first one
+        _videos.value?.let { videos ->
+            videos.indexOfFirst { it.isSelected }
+                .let { if (it < videos.size - 1) it + 1 else 0 }
+                .let { selectVideo(videos[it]) }
+        }
+    }
+
+    private fun selectVideo(video: UiVideo) {
+        _videos.value?.let {
+            val position = it.indexOf(video).takeIf { pos -> pos != -1 } ?: return
+
+            _videos.value = it.mapIndexed { index, item ->
+                if (index == position) {
+                    item.copy(isSelected = true)
+                } else {
+                    item.copy(isSelected = false)
                 }
             }
         }

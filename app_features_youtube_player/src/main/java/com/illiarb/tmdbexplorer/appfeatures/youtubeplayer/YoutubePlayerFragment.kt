@@ -20,7 +20,9 @@ import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowVideos
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerCallback
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -32,7 +34,6 @@ class YoutubePlayerFragment : BaseViewBindingFragment<FragmentYoutubePlayerBindi
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val videosAdapter = DelegatesAdapter({ listOf(videoDelegate(it)) })
-
     private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this, viewModelFactory).get(DefaultYoutubePlayerModel::class.java)
     }
@@ -45,7 +46,9 @@ class YoutubePlayerFragment : BaseViewBindingFragment<FragmentYoutubePlayerBindi
 
         lifecycleScope.launch {
             videosAdapter.clicks().collect {
-                viewModel.onUiEvent(UiEvent.ItemClick(it))
+                if (it is YoutubePlayerModel.UiVideo) {
+                    viewModel.onUiEvent(UiEvent.VideoClick(it))
+                }
             }
         }
 
@@ -67,6 +70,14 @@ class YoutubePlayerFragment : BaseViewBindingFragment<FragmentYoutubePlayerBindi
 
     private fun setupVideoPlayer() {
         viewLifecycleOwner.lifecycle.addObserver(binding.youtubePlayer)
+
+        binding.youtubePlayer.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+            override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
+                if (state == PlayerConstants.PlayerState.ENDED) {
+                    viewModel.onUiEvent(UiEvent.VideoEnded)
+                }
+            }
+        })
 
         binding.youtubePlayer.doOnApplyWindowInsets { view, windowInsets, _ ->
             view.updateMargin(top = windowInsets.systemWindowInsetTop)
