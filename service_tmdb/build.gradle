@@ -35,12 +35,18 @@ android {
 }
 
 dependencies {
+
     kapt deps.daggerCompiler
 
     implementation project(':core')
     implementation project(':core_storage')
-
     implementation deps.dagger
 
     testImplementation project(':core_test')
+    testImplementation androidTestDeps.extJunit
+    testImplementation deps.retrofit
+
+    androidTestImplementation project(':core_test')
+    androidTestImplementation androidTestDeps.extJunit
+    androidTestImplementation androidTestDeps.runner
 }

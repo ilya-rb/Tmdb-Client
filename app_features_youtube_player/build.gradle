@@ -28,11 +28,11 @@ android {
 }
 
 dependencies {
+
     kapt deps.daggerCompiler
 
     implementation project(':core')
     implementation project(':core_ui')
-
     implementation deps.dagger
     implementation deps.youtubePlayer
 }

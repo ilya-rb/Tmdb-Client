@@ -19,7 +19,7 @@ class MovieDetailsScreen : KScreen<MovieDetailsScreen>() {
     val playFab = KButton { withId(R.id.movieDetailsPlay) }
     val title = KTextView { withId(R.id.movieDetailsTitle) }
     val tags = KTextView { withId(R.id.movieDetailsTags) }
-    val movieYear = KTextView { withId(R.id.movieDetailsYear) }
+    val movieReleaseDate = KTextView { withId(R.id.movieDetailsDate) }
     val movieCountry = KTextView { withId(R.id.movieDetailsCountry) }
     val movieLength = KTextView { withId(R.id.movieDetailsLength) }
     val moviePhotos = KRecyclerView({ withId(R.id.movieDetailsPhotos) }, {})

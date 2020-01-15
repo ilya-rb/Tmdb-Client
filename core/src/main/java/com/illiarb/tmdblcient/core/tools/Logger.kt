@@ -5,37 +5,39 @@ package com.illiarb.tmdblcient.core.tools
  */
 object Logger {
 
+    private const val TAG_DEFAULT = "Logger"
+
     private val strategies = mutableSetOf<LoggingStrategy>()
 
     fun addLoggingStrategy(printer: LoggingStrategy) {
         strategies.add(printer)
     }
 
-    fun d(message: String, t: Throwable? = null) {
-        logWithPriority(Priority.DEBUG, message, t)
+    fun d(tag: String = TAG_DEFAULT, message: String, t: Throwable? = null) {
+        logWithPriority(tag, Priority.DEBUG, message, t)
     }
 
-    fun i(message: String, t: Throwable? = null) {
-        logWithPriority(Priority.INFO, message, t)
+    fun i(tag: String = TAG_DEFAULT, message: String, t: Throwable? = null) {
+        logWithPriority(tag, Priority.INFO, message, t)
     }
 
-    fun w(message: String, t: Throwable? = null) {
-        logWithPriority(Priority.WARN, message, t)
+    fun w(tag: String = TAG_DEFAULT, message: String, t: Throwable? = null) {
+        logWithPriority(tag, Priority.WARN, message, t)
     }
 
-    fun e(message: String, t: Throwable? = null) {
-        logWithPriority(Priority.ERROR, message, t)
+    fun e(tag: String = TAG_DEFAULT, message: String, t: Throwable? = null) {
+        logWithPriority(tag, Priority.ERROR, message, t)
     }
 
-    private fun logWithPriority(priority: Priority, message: String, throwable: Throwable? = null) {
+    private fun logWithPriority(tag: String, priority: Priority, message: String, throwable: Throwable? = null) {
         strategies.forEach {
-            it.log(priority, message, throwable)
+            it.log(tag, priority, message, throwable)
         }
     }
 
     interface LoggingStrategy {
 
-        fun log(priority: Priority, message: String, throwable: Throwable?)
+        fun log(tag: String, priority: Priority, message: String, throwable: Throwable?)
     }
 
     enum class Priority {

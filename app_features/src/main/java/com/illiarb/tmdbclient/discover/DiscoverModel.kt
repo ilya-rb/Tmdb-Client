@@ -48,32 +48,32 @@ class DefaultDiscoverModel @Inject constructor(
     private val analyticsService: AnalyticsService
 ) : BasePresentationModel(), DiscoverModel {
 
-    private val _results = MutableLiveData<List<Movie>>()
-    private val _screenTitle = MutableLiveData<Text>()
-    private val _genres = MutableLiveData<List<Genre>>()
-    private val _selectedChip = MutableLiveData<Int>()
-    private val _isLoading = MutableLiveData<Boolean>()
+    private val resultsLiveData = MutableLiveData<List<Movie>>()
+    private val screenTitleLiveData = MutableLiveData<Text>()
+    private val genresLiveData = MutableLiveData<List<Genre>>()
+    private val selectedChipLiveData = MutableLiveData<Int>()
+    private val isLoadingLiveData = MutableLiveData<Boolean>()
 
     override val results: LiveData<List<Movie>>
-        get() = _results
+        get() = resultsLiveData
 
     override val genres: LiveData<List<Genre>>
-        get() = _genres
+        get() = genresLiveData
 
     override val screenTitle: LiveData<Text>
-        get() = _screenTitle
+        get() = screenTitleLiveData
 
     override val selectedChip: LiveData<Int>
-        get() = _selectedChip
+        get() = selectedChipLiveData
 
     override val isLoading: LiveData<Boolean>
-        get() = _isLoading
+        get() = isLoadingLiveData
 
     init {
         viewModelScope.launch {
             val genres = genresInteractor.getAllGenres()
             if (genres is Result.Success) {
-                _genres.value = genres.data
+                genresLiveData.value = genres.data
                 applyFilter(genreId)
             }
         }
@@ -94,28 +94,28 @@ class DefaultDiscoverModel @Inject constructor(
     }
 
     private fun applyFilter(id: Int = Genre.GENRE_ALL) = viewModelScope.launch {
-        if (_selectedChip.value == id) {
+        if (selectedChipLiveData.value == id) {
             // do nothing if this genre are already applied
             return@launch
         }
 
-        val genres = _genres.value
+        val genres = genresLiveData.value
         val selected = genres?.find { it.id == id }
 
         if (selected == null) {
-            _screenTitle.value = Text.AsResource(R.string.discover_genres_title)
+            screenTitleLiveData.value = Text.AsResource(R.string.discover_genres_title)
         } else {
-            _screenTitle.value = Text.AsString(selected.name)
-            _selectedChip.value = selected.id
+            screenTitleLiveData.value = Text.AsString(selected.name)
+            selectedChipLiveData.value = selected.id
         }
 
-        _isLoading.value = true
+        isLoadingLiveData.value = true
 
         val movies = moviesInteractor.discoverMovies(id)
         if (movies is Result.Success) {
-            _results.value = movies.data
+            resultsLiveData.value = movies.data
         }
 
-        _isLoading.value = false
+        isLoadingLiveData.value = false
     }
 }

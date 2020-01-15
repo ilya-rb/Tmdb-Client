@@ -1,4 +1,4 @@
-package com.tmdbclient.servicetmdb
+package com.tmdbclient.servicetmdb.interactor
 
 import com.illiarb.tmdbcliient.coretest.TestDependencyProvider
 import com.illiarb.tmdblcient.core.domain.Genre
@@ -10,7 +10,6 @@ import com.tmdbclient.servicetmdb.api.MovieApi
 import com.tmdbclient.servicetmdb.cache.TmdbCache
 import com.tmdbclient.servicetmdb.configuration.Configuration
 import com.tmdbclient.servicetmdb.configuration.ImageUrlCreator
-import com.tmdbclient.servicetmdb.interactor.DefaultMoviesInteractor
 import com.tmdbclient.servicetmdb.mappers.GenreMapper
 import com.tmdbclient.servicetmdb.mappers.MovieMapper
 import com.tmdbclient.servicetmdb.mappers.PersonMapper

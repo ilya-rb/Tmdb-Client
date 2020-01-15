@@ -1,4 +1,4 @@
-package com.tmdbclient.servicetmdb
+package com.tmdbclient.servicetmdb.interactor
 
 import com.illiarb.tmdbcliient.coretest.TestDependencyProvider
 import com.illiarb.tmdblcient.core.domain.GenresSection
@@ -6,7 +6,6 @@ import com.illiarb.tmdblcient.core.domain.ListSection
 import com.illiarb.tmdblcient.core.domain.NowPlayingSection
 import com.illiarb.tmdblcient.core.domain.TrendingSection
 import com.illiarb.tmdblcient.core.interactor.HomeInteractor
-import com.tmdbclient.servicetmdb.interactor.DefaultHomeInteractor
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertTrue
 import org.junit.Test

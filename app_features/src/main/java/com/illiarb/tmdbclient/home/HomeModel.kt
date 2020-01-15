@@ -41,14 +41,14 @@ class DefaultHomeModel @Inject constructor(
     private val analyticsService: AnalyticsService
 ) : BasePresentationModel(), HomeModel {
 
-    private val _movieSectionsData = flow { emit(homeInteractor.getHomeSections()) }
+    private val movieSectionsLiveData = flow { emit(homeInteractor.getHomeSections()) }
         .map { it.asAsync() }
         .onStart { emit(Loading()) }
         .catch { emit(Fail(it)) }
         .asLiveData()
 
     override val movieSections: LiveData<Async<List<MovieSection>>>
-        get() = _movieSectionsData
+        get() = movieSectionsLiveData
 
     override fun onUiEvent(event: UiEvent) {
         when (event) {

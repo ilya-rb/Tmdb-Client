@@ -34,6 +34,7 @@ android {
 }
 
 dependencies {
+
     kapt deps.daggerCompiler
 
     implementation project(':core')
@@ -47,13 +48,10 @@ dependencies {
     implementation project(':app_features_settings')
     implementation project(':app_features_youtube_player')
     implementation project(':debug')
-
     implementation deps.dagger
     implementation deps.timber
     implementation deps.firebaseCore
-
     implementation deps.navigation
-
     // Play core lib for downloading dynamic features
     implementation deps.playCore
 
@@ -64,7 +62,6 @@ dependencies {
     androidTestImplementation androidTestDeps.kakao
     androidTestImplementation androidTestDeps.extJunit
     androidTestImplementation androidTestDeps.uiAutomator
-
     androidTestImplementation(androidTestDeps.kaspresso) {
         exclude group: 'com.kaspersky.android-components', module: 'adbserver-device'
     }

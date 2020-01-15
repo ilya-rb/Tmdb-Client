@@ -28,12 +28,12 @@ android {
 }
 
 dependencies {
+
     kapt deps.daggerCompiler
 
     implementation project(':core')
     implementation project(':core_ui')
     implementation project(':core_ui_image')
-
     implementation deps.dagger
 
     testImplementation project(':core_test')

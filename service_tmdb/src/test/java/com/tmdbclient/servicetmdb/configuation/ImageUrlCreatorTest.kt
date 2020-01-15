@@ -1,4 +1,4 @@
-package com.tmdbclient.servicetmdb
+package com.tmdbclient.servicetmdb.configuation
 
 import com.tmdbclient.servicetmdb.configuration.ImageConfig
 import com.tmdbclient.servicetmdb.configuration.ImageType

@@ -25,6 +25,7 @@ android {
 }
 
 dependencies {
+
     api deps.kotlin
     api deps.kotlinCoroutines
     api deps.workManager

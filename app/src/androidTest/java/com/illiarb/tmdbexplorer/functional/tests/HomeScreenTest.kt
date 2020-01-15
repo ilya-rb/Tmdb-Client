@@ -11,7 +11,7 @@ import org.junit.Rule
 import org.junit.Test
 import java.util.concurrent.TimeUnit
 
-class HomeScreeTest : TestCase(
+class HomeScreenTest : TestCase(
     Kaspresso.Builder.default().apply {
         flakySafetyParams.timeoutMs = TimeUnit.SECONDS.toMillis(5)
     }
@@ -35,6 +35,12 @@ class HomeScreeTest : TestCase(
             step("Open home screen and check settings icon is visible") {
                 HomeScreen {
                     settingsIcon { isVisible() }
+                }
+            }
+
+            step("Open home screen scroll down and check popular section visible") {
+                HomeScreen {
+                    moviesList.scrollToEnd()
                 }
             }
         }

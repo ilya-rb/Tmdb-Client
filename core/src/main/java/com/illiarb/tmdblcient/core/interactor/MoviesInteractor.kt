@@ -9,6 +9,7 @@ interface MoviesInteractor {
 
     companion object {
         const val KEY_INCLUDE_IMAGES = "images"
+        const val KEY_INCLUDE_VIDEOS = "videos"
     }
 
     suspend fun getAllMovies(): Result<List<MovieBlock>>

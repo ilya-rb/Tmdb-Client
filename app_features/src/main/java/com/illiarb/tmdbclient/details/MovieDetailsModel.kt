@@ -29,7 +29,7 @@ interface MovieDetailsModel {
 
     sealed class UiEvent {
         object PlayClicked : UiEvent()
-        class ItemClick(val item: Any) : UiEvent()
+        class MovieClicked(val movie: Movie) : UiEvent()
     }
 }
 
@@ -40,13 +40,13 @@ class DefaultDetailsViewModel @Inject constructor(
     private val analyticsService: AnalyticsService
 ) : BasePresentationModel(), MovieDetailsModel {
 
-    private val _movie = flow { emit(moviesInteractor.getMovieDetails(movieId)) }
+    private val movieLiveData = flow { emit(moviesInteractor.getMovieDetails(movieId)) }
         .map { it.asAsync() }
         .catch { emit(Async.Fail(it)) }
         .onStart { emit(Async.Loading()) }
         .asLiveData()
 
-    private val _similarMovies = flow { emit(moviesInteractor.getSimilarMovies(movieId)) }
+    private val similarMoviesLiveData = flow { emit(moviesInteractor.getSimilarMovies(movieId)) }
         .map {
             when (it) {
                 is Result.Success -> it.data
@@ -57,19 +57,17 @@ class DefaultDetailsViewModel @Inject constructor(
         .asLiveData()
 
     override val movie: LiveData<Async<Movie>>
-        get() = _movie
+        get() = movieLiveData
 
     override val similarMovies: LiveData<List<Movie>>
-        get() = _similarMovies
+        get() = similarMoviesLiveData
 
     override fun onUiEvent(event: UiEvent) {
         when (event) {
-            is UiEvent.ItemClick -> {
-                if (event.item is Movie) {
-                    val action = ShowMovieDetails(event.item.id)
-                    analyticsService.trackEvent(RouterAction(action))
-                    router.executeAction(action)
-                }
+            is UiEvent.MovieClicked -> {
+                val action = ShowMovieDetails(event.movie.id)
+                analyticsService.trackEvent(RouterAction(action))
+                router.executeAction(action)
             }
             is UiEvent.PlayClicked -> {
                 val action = ShowVideos(movieId)

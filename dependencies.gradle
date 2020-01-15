@@ -82,6 +82,7 @@ deps.leakCanary = "com.squareup.leakcanary:leakcanary-android:$versions.leakCana
 
 def testDeps = [:]
 testDeps.androidX = "androidx.arch.core:core-testing:2.0.1"
+testDeps.androidXRules = "androidx.test:rules:1.2.0"
 testDeps.junit = "junit:junit:$testVersions.junit"
 testDeps.mockito = "org.mockito:mockito-core:$testVersions.mockito"
 testDeps.mockitoInline = "org.mockito:mockito-inline:$testVersions.mockito"

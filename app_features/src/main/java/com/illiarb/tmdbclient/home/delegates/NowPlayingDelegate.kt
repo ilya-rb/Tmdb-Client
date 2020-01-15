@@ -17,6 +17,7 @@ import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieSection
 import com.illiarb.tmdblcient.core.domain.NowPlayingSection
+import com.illiarb.tmdblcient.core.tools.Logger
 
 fun nowPlayingDelegate(clickListener: OnClickListener) =
     adapterDelegate<NowPlayingSection, MovieSection>(R.layout.item_now_playing_section) {

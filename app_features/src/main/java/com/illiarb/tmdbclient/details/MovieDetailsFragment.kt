@@ -81,7 +81,9 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
 
         lifecycleScope.launch {
             moviesAdapter.clicks().collect {
-                viewModel.onUiEvent(UiEvent.ItemClick(it))
+                if (it is Movie) {
+                    viewModel.onUiEvent(UiEvent.MovieClicked(it))
+                }
             }
         }
 
@@ -191,7 +193,7 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
                 crop(CropOptions.CENTER_CROP)
             }
 
-//            movieDetailsPlay.setVisible(movie.video)
+            movieDetailsPlay.setVisible(!movie.videos.isNullOrEmpty())
             movieDetailsPlay.setOnClickListener {
                 viewModel.onUiEvent(UiEvent.PlayClicked)
             }

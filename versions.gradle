@@ -61,7 +61,7 @@ versions.with {
 
 def testVersions = [:]
 testVersions.with {
-    junit = "4.13-rc-2"
+    junit = "4.12"
     mockito = "3.2.4"
     mockitoKotlin = "2.1.0"
     spek = "2.0.9"

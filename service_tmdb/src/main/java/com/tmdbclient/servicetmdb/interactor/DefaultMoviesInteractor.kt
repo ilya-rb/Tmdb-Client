@@ -41,12 +41,17 @@ class DefaultMoviesInteractor @Inject constructor(
     override suspend fun getMovieDetails(movieId: Int): Result<Movie> {
         val configuration = withContext(dispatcherProvider.io) { cache.getConfiguration() }
         val imageKey = configuration.changeKeys.find { it == MoviesInteractor.KEY_INCLUDE_IMAGES }
-
-        return if (imageKey == null) {
-            repository.getMovieDetails(movieId, "")
-        } else {
-            repository.getMovieDetails(movieId, imageKey)
+        val videoKey = configuration.changeKeys.find { it == MoviesInteractor.KEY_INCLUDE_VIDEOS }
+        val keys = buildString {
+            imageKey?.let { append(it) }
+            videoKey?.let {
+                if (isNotEmpty()) {
+                    append(",")
+                }
+                append(it)
+            }
         }
+        return repository.getMovieDetails(movieId, keys)
     }
 
     override suspend fun discoverMovies(genreId: Int): Result<List<Movie>> {

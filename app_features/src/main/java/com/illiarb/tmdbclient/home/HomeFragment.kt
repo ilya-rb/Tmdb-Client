@@ -21,6 +21,7 @@ import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
+import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.RecyclerViewStateSaver
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
@@ -39,9 +40,10 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
         ViewModelProvider(this, viewModelFactory).get(DefaultHomeModel::class.java)
     }
 
+    private val stateSaver = RecyclerViewStateSaver()
     private val adapter = DelegatesAdapter({
         listOf(
-            movieSectionDelegate(it),
+            movieSectionDelegate(it, stateSaver),
             nowPlayingDelegate(it),
             genresSectionDelegate(it),
             trendingSectionDelegate(it)
@@ -79,6 +81,11 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
         }
 
         bind(viewModel)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        stateSaver.saveInstanceState()
     }
 
     private fun setupMoviesList() {

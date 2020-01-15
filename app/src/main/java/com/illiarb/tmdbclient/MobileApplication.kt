@@ -51,12 +51,12 @@ class MobileApplication : Application(), App {
         }
 
         Logger.addLoggingStrategy(object : Logger.LoggingStrategy {
-            override fun log(priority: Logger.Priority, message: String, throwable: Throwable?) {
+            override fun log(tag: String, priority: Logger.Priority, message: String, throwable: Throwable?) {
                 when (priority) {
-                    Logger.Priority.WARN -> Timber.w(message)
-                    Logger.Priority.DEBUG -> Timber.d(message)
-                    Logger.Priority.INFO -> Timber.i(message)
-                    Logger.Priority.ERROR -> Timber.e(throwable)
+                    Logger.Priority.WARN -> Timber.tag(tag).w(throwable, message)
+                    Logger.Priority.DEBUG -> Timber.tag(tag).d(throwable, message)
+                    Logger.Priority.INFO -> Timber.tag(tag).i(throwable, message)
+                    Logger.Priority.ERROR -> Timber.tag(tag).e(throwable, message)
                 }
             }
         })

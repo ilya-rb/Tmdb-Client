@@ -9,12 +9,6 @@ import com.illiarb.tmdbclient.tools.di.ToolsComponent
 import com.illiarb.tmdblcient.core.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
-import com.illiarb.tmdblcient.core.domain.Genre
-import com.illiarb.tmdblcient.core.domain.Movie
-import com.illiarb.tmdblcient.core.domain.MovieBlock
-import com.illiarb.tmdblcient.core.domain.MovieSection
-import com.illiarb.tmdblcient.core.domain.TrendingSection
-import com.illiarb.tmdblcient.core.domain.Video
 import com.illiarb.tmdblcient.core.feature.FeatureFlagStore
 import com.illiarb.tmdblcient.core.interactor.GenresInteractor
 import com.illiarb.tmdblcient.core.interactor.HomeInteractor
@@ -28,8 +22,8 @@ import com.illiarb.tmdblcient.core.storage.WorkRequestCreator
 import com.illiarb.tmdblcient.core.storage.WorkerCreator
 import com.illiarb.tmdblcient.core.tools.ConnectivityStatus
 import com.illiarb.tmdblcient.core.tools.DispatcherProvider
-import com.illiarb.tmdblcient.core.util.Result
 import com.illiarb.tmdclient.analytics.di.AnalyticsComponent
+import com.tmdbclient.servicetmdb.di.TmdbComponent
 
 class TestApplication : Application(), App {
 
@@ -52,6 +46,7 @@ class TestApplication : Application(), App {
         val toolsProvider = ToolsComponent.get(this)
         val storageProvider = StorageComponent.get(this, toolsProvider)
         val analyticsProvider = AnalyticsComponent.get(this)
+        val tmdbProvider = TmdbComponent.get(this, toolsProvider, storageProvider)
 
         return object : AppProvider {
             override fun getApp(): App = this@TestApplication
@@ -75,11 +70,11 @@ class TestApplication : Application(), App {
             override fun provideConfigurationFetchWorker(): WorkManager.Worker =
                 createConfigWorker()
 
-            override fun provideMoviesInteractor(): MoviesInteractor = createMoviesInteractor()
-            override fun provideGenresInteractor(): GenresInteractor = createGenresInteractor()
-            override fun provideHomeInteractor(): HomeInteractor = createHomeInteractor()
+            override fun provideMoviesInteractor(): MoviesInteractor = tmdbProvider.provideMoviesInteractor()
+            override fun provideGenresInteractor(): GenresInteractor = tmdbProvider.provideGenresInteractor()
+            override fun provideHomeInteractor(): HomeInteractor = tmdbProvider.provideHomeInteractor()
             override fun provideTrendingInteractor(): TrendingInteractor =
-                createTrendingInteractor()
+                tmdbProvider.provideTrendingInteractor()
         }
     }
 
@@ -93,49 +88,6 @@ class TestApplication : Application(), App {
                 get() = TODO("not implemented")
 
             override fun isWorkerSuitable(workerClassName: String): Boolean = false
-        }
-    }
-
-    private fun createMoviesInteractor(): MoviesInteractor {
-        return object : MoviesInteractor {
-            override suspend fun getAllMovies(): Result<List<MovieBlock>> =
-                Result.Success(emptyList())
-
-            override suspend fun getMovieDetails(movieId: Int): Result<Movie> =
-                Result.Error(Throwable())
-
-            override suspend fun getSimilarMovies(movieId: Int): Result<List<Movie>> =
-                Result.Success(emptyList())
-
-            override suspend fun discoverMovies(genreId: Int): Result<List<Movie>> =
-                Result.Success(emptyList())
-
-            override suspend fun getMovieVideos(movieId: Int): Result<List<Video>> =
-                Result.Success(emptyList())
-        }
-    }
-
-    private fun createGenresInteractor(): GenresInteractor {
-        return object : GenresInteractor {
-            override suspend fun getAllGenres(): Result<List<Genre>> {
-                return Result.Success(emptyList())
-            }
-        }
-    }
-
-    private fun createHomeInteractor(): HomeInteractor {
-        return object : HomeInteractor {
-            override suspend fun getHomeSections(): Result<List<MovieSection>> {
-                return Result.Success(emptyList())
-            }
-        }
-    }
-
-    private fun createTrendingInteractor(): TrendingInteractor {
-        return object : TrendingInteractor {
-            override suspend fun getTrending(): Result<List<TrendingSection.TrendingItem>> {
-                return Result.Success(emptyList())
-            }
         }
     }
 }

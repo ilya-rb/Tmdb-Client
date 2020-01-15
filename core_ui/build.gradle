@@ -30,9 +30,11 @@ android {
 }
 
 dependencies {
+
     kapt deps.daggerCompiler
 
     implementation project(':core')
+    implementation deps.dagger
 
     api deps.supportDesign
     api deps.swipeRefreshLayout
@@ -43,7 +45,5 @@ dependencies {
     api deps.lifecycleLiveData
     api deps.viewModelExt
     api deps.viewModelKtx
-
-    implementation deps.dagger
 
 }

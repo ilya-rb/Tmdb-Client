@@ -8,7 +8,8 @@ import com.tmdbclient.servicetmdb.model.MovieModel
 import com.tmdbclient.servicetmdb.repository.ConfigurationRepository
 import javax.inject.Inject
 
-class MovieMapper @Inject constructor(
+class
+MovieMapper @Inject constructor(
     private val genreMapper: GenreMapper,
     private val personMapper: PersonMapper,
     private val reviewMapper: ReviewMapper,
@@ -38,7 +39,7 @@ class MovieMapper @Inject constructor(
             from.voteAverage,
             from.productionCountries.firstOrNull()?.name,
             0,
-            from.video
+            from.videos?.results
         )
     }
 }

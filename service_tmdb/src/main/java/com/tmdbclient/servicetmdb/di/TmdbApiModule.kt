@@ -40,7 +40,7 @@ class TmdbApiModule(val app: App) {
 
     @Provides
     @Singleton
-    fun provideTmdbCache(): TmdbCache = TmdbCache(app)
+    fun provideTmdbCache(): TmdbCache = TmdbCache(app.getApplication())
 
     @Provides
     fun provideTmdbOkHttpClient(

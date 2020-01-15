@@ -15,6 +15,11 @@ data class RequestOptions(
     var useCrossFade: Boolean = true
 ) {
 
+    companion object {
+        private const val DEFAULT_RADIUS = 3
+        private const val DEFAULT_DOWN_SAMPLING = 15
+    }
+
     fun thumbnail(@FloatRange(from = 0.1, to = 0.9) fraction: Float) = apply {
         thumbnail = fraction
     }
@@ -27,8 +32,8 @@ data class RequestOptions(
         cornerRadius = radius
     }
 
-    fun blur(params: BlurParams) = apply {
-        blurParams = params
+    fun blur(radius: Int = DEFAULT_RADIUS, sampling: Int = DEFAULT_DOWN_SAMPLING) = apply {
+        blurParams = BlurParams(radius, sampling)
     }
 
     fun crossFade(use: Boolean) = apply {

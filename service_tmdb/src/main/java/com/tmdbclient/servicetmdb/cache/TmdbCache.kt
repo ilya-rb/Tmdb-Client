@@ -1,9 +1,9 @@
 package com.tmdbclient.servicetmdb.cache
 
+import android.content.Context
 import com.illiarb.tmdbclient.storage.local.getValue
 import com.illiarb.tmdbclient.storage.local.putValue
 import com.illiarb.tmdbclient.storage.local.registerPersistables
-import com.illiarb.tmdblcient.core.di.App
 import com.ironz.binaryprefs.BinaryPreferencesBuilder
 import com.ironz.binaryprefs.serialization.serializer.persistable.Persistable
 import com.tmdbclient.servicetmdb.configuration.Configuration
@@ -13,7 +13,7 @@ import com.tmdbclient.servicetmdb.model.MovieListModel
 import com.tmdbclient.servicetmdb.model.MovieModel
 import javax.inject.Inject
 
-class TmdbCache @Inject constructor(app: App) {
+class TmdbCache(context: Context) {
 
     companion object {
         const val STORE_NAME = "tmdb_cache"
@@ -25,7 +25,7 @@ class TmdbCache @Inject constructor(app: App) {
         const val KEY_GENRES = "genres"
     }
 
-    private val tmdbStore = BinaryPreferencesBuilder(app.getApplication())
+    private val tmdbStore = BinaryPreferencesBuilder(context)
         .name(STORE_NAME)
         .externalStorage(false)
         .registerPersistables(getPersistablesMap())
@@ -48,6 +48,12 @@ class TmdbCache @Inject constructor(app: App) {
 
     fun getConfiguration(): Configuration =
         tmdbStore.getPersistable(KEY_CONFIGURATION, Configuration())
+
+    fun clear() {
+        tmdbStore.edit().clear()
+    }
+
+    fun keys(): Set<String> = tmdbStore.keys()
 
     private fun getPersistablesMap(): Map<String, Class<out Persistable>> =
         mapOf(

@@ -29,7 +29,6 @@ fun ImageView.loadImage(
     }
 
     clear()
-
     doOnLayout {
         val selectedSize = selectSize(image.sizes, it.width)
         val request = Glide.with(context).load(image.buildFullUrl(selectedSize))
@@ -45,6 +44,7 @@ fun ImageView.loadImage(
             request.thumbnail(options.thumbnail)
         }
 
+        request.preload(it.width, it.height)
         request.into(this)
     }
 }
@@ -59,11 +59,7 @@ private fun mapOptions(
     options: RequestOptions
 ): com.bumptech.glide.request.RequestOptions {
     val result = com.bumptech.glide.request.RequestOptions()
-    val transformations = mutableListOf<Transformation<Bitmap>>()
-
-    options.blurParams?.let {
-        transformations.add(BlurTransformation(context, it.radius, it.sampling))
-    }
+    val transformations = mutableSetOf<Transformation<Bitmap>>()
 
     options.cropOptions?.let {
         when (it) {
@@ -72,6 +68,10 @@ private fun mapOptions(
             CropOptions.CENTER_INSIDE -> transformations.add(CenterInside())
             CropOptions.CIRCLE -> transformations.add(CircleCrop())
         }
+    }
+
+    options.blurParams?.let {
+        transformations.add(BlurTransformation(context, it.radius, it.sampling))
     }
 
     if (options.cornerRadius > 0) {

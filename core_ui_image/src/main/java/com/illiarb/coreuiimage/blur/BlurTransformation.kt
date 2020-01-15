@@ -16,6 +16,11 @@ class BlurTransformation(
     private val sampling: Int
 ) : BitmapTransformation() {
 
+    companion object {
+        private const val VERSION = 1
+        private const val ID = "jp.wasabeef.glide.transformations.BlurTransformation.$VERSION"
+    }
+
     override fun transform(pool: BitmapPool, toTransform: Bitmap, outWidth: Int, outHeight: Int): Bitmap {
         val width = toTransform.width
         val height = toTransform.height
@@ -46,9 +51,4 @@ class BlurTransformation(
 
     override fun updateDiskCacheKey(@NonNull messageDigest: MessageDigest) =
         messageDigest.update((ID + radius + sampling).toByteArray(Key.CHARSET))
-
-    companion object {
-        private const val VERSION = 1
-        private const val ID = "jp.wasabeef.glide.transformations.BlurTransformation.$VERSION"
-    }
 }

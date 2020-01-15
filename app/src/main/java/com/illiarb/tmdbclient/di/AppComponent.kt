@@ -19,7 +19,11 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Component(
-    modules = [AppModule::class, NavigationModule::class, WorkModule::class],
+    modules = [
+        AppModule::class,
+        NavigationModule::class,
+        WorkModule::class
+    ],
     dependencies = [
         StorageProvider::class,
         ToolsProvider::class,
