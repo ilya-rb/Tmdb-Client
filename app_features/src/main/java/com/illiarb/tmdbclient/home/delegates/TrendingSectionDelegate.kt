@@ -60,7 +60,7 @@ private class TrendingSectionAdapter(clickListener: OnClickListener) :
             bind {
                 name.text = item.name
                 image.loadImage(item.image) {
-                    crop(CropOptions.CIRCLE)
+                    crop(CropOptions.Circle)
                 }
 
                 itemView.setOnClickListener {
