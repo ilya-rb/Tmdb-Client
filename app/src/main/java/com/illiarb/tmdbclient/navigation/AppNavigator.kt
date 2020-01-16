@@ -31,15 +31,9 @@ class AppNavigator @Inject constructor(private val activity: FragmentActivity) :
 
     private fun setDestinationArgs(action: Router.Action): Bundle {
         return when (action) {
-            is ShowMovieDetails -> Bundle().apply {
-                putInt(ShowMovieDetails.EXTRA_MOVIE_DETAILS, action.id)
-            }
-            is ShowDiscover -> Bundle().apply {
-                putInt(ShowDiscover.EXTRA_GENRE_ID, action.id)
-            }
-            is ShowVideos -> Bundle().apply {
-                putInt(ShowVideos.EXTRA_MOVIE_ID, action.movieId)
-            }
+            is ShowMovieDetails -> Bundle().apply { putInt(ShowMovieDetails.EXTRA_MOVIE_DETAILS, action.id) }
+            is ShowDiscover -> Bundle().apply { putInt(ShowDiscover.EXTRA_GENRE_ID, action.id) }
+            is ShowVideos -> Bundle().apply { putInt(ShowVideos.EXTRA_MOVIE_ID, action.movieId) }
             else -> Bundle.EMPTY
         }
     }

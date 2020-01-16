@@ -66,7 +66,7 @@ private class NowPlayingPagerAdapter(private val clickListener: OnClickListener)
                 rating.text = item.voteAverage.toString()
 
                 image.loadImage(item.backdropPath) {
-                    crop(CropOptions.CENTER_CROP)
+                    crop(CropOptions.CenterCrop)
                     cornerRadius(spacing)
                 }
 

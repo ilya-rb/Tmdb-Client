@@ -63,10 +63,10 @@ private fun mapOptions(
 
     options.cropOptions?.let {
         when (it) {
-            CropOptions.CENTER_CROP -> transformations.add(CenterCrop())
-            CropOptions.FIT_CENTER -> transformations.add(FitCenter())
-            CropOptions.CENTER_INSIDE -> transformations.add(CenterInside())
-            CropOptions.CIRCLE -> transformations.add(CircleCrop())
+            CropOptions.CenterCrop -> transformations.add(CenterCrop())
+            CropOptions.FitCenter -> transformations.add(FitCenter())
+            CropOptions.CenterInside -> transformations.add(CenterInside())
+            CropOptions.Circle -> transformations.add(CircleCrop())
         }
     }
 

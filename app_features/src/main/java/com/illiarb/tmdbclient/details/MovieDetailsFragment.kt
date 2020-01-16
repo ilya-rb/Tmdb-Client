@@ -190,7 +190,7 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
             )
 
             movieDetailsPoster.loadImage(movie.posterPath) {
-                crop(CropOptions.CENTER_CROP)
+                crop(CropOptions.CenterCrop)
             }
 
             movieDetailsPlay.setVisible(!movie.videos.isNullOrEmpty())

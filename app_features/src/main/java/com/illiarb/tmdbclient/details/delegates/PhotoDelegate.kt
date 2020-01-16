@@ -21,7 +21,7 @@ fun photoDelegate(clickListener: OnClickListener) =
         bind {
             imageView.loadImage(item) {
                 cornerRadius(radius)
-                crop(CropOptions.CENTER_CROP)
+                crop(CropOptions.CenterCrop)
             }
         }
     }

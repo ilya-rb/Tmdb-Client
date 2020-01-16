@@ -11,7 +11,6 @@ import com.tmdbclient.servicetmdb.model.GenreListModel
 import com.tmdbclient.servicetmdb.model.GenreModel
 import com.tmdbclient.servicetmdb.model.MovieListModel
 import com.tmdbclient.servicetmdb.model.MovieModel
-import javax.inject.Inject
 
 class TmdbCache(context: Context) {
 
