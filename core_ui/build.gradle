@@ -33,7 +33,6 @@ dependencies {
 
     kapt deps.daggerCompiler
 
-    implementation project(':core')
     implementation deps.dagger
 
     api deps.supportDesign

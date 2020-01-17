@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,10 +21,7 @@ import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
 import com.illiarb.tmdbexplorer.coreui.common.SizeSpec
 import com.illiarb.tmdbexplorer.coreui.common.Text
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
-import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.removeAdapterOnDetach
-import com.illiarb.tmdbexplorer.coreui.ext.updateMargin
-import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdblcient.core.di.Injectable
@@ -96,17 +94,9 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
         binding.toolbar.setNavigationOnClickListener {
             activity?.onBackPressed()
         }
-
-        binding.toolbar.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
-            v.updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
-        }
     }
 
     private fun setupFilters() {
-        filtersContainer.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
-            v.updateMargin(bottom = initialPadding.bottom + windowInsets.systemWindowInsetBottom)
-        }
-
         binding.root.findViewById<View>(R.id.discoverApplyFilter).setOnClickListener {
             dismissFiltersPanel()
             viewModel.onUiEvent(UiEvent.ApplyFilter(discoverGenres.checkedChipId))
@@ -117,6 +107,15 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
             dismissFiltersPanel()
             viewModel.onUiEvent(UiEvent.ClearFilter)
         }
+
+        binding.discoverRoot.setTransitionListener(object : MotionLayout.TransitionListener {
+            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) = Unit
+            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) = Unit
+            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) = Unit
+            override fun onTransitionCompleted(root: MotionLayout?, state: Int) {
+                binding.discoverOverlay.isClickable = state == R.id.filtersEnd
+            }
+        })
     }
 
     private fun setupDiscoverList() {

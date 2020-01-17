@@ -24,9 +24,11 @@ android {
 }
 
 dependencies {
+
     kapt deps.daggerCompiler
 
     implementation project(':core')
+
     implementation deps.dagger
     implementation deps.firebaseCore
 }

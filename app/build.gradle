@@ -48,6 +48,7 @@ dependencies {
     implementation project(':app_features_settings')
     implementation project(':app_features_youtube_player')
     implementation project(':debug')
+
     implementation deps.dagger
     implementation deps.timber
     implementation deps.firebaseCore

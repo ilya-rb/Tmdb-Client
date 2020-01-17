@@ -13,8 +13,6 @@ android {
 
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -31,5 +29,4 @@ dependencies {
 
     implementation project(':core')
     implementation deps.dagger
-    implementation deps.lifecycleKtx
 }

@@ -9,6 +9,7 @@ import android.net.NetworkRequest
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.tools.ConnectivityStatus
 import com.illiarb.tmdblcient.core.tools.ConnectivityStatus.ConnectionState
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -17,6 +18,7 @@ import javax.inject.Inject
 /**
  * @author ilya-rb on 26.12.18.
  */
+@ExperimentalCoroutinesApi
 class AndroidConnectivityStatus @Inject constructor(app: App) : ConnectivityStatus {
 
     private val connectivityManager =

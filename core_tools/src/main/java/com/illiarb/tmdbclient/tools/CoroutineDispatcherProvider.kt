@@ -3,7 +3,6 @@ package com.illiarb.tmdbclient.tools
 import com.illiarb.tmdblcient.core.tools.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
 /**
