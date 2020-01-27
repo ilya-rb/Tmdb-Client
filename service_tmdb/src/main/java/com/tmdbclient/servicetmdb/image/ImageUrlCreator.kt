@@ -1,4 +1,4 @@
-package com.tmdbclient.servicetmdb.configuration
+package com.tmdbclient.servicetmdb.image
 
 import com.illiarb.tmdblcient.core.domain.Image
 import javax.inject.Inject

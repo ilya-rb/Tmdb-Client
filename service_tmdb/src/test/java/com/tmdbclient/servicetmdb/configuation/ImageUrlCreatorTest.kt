@@ -1,8 +1,8 @@
 package com.tmdbclient.servicetmdb.configuation
 
-import com.tmdbclient.servicetmdb.configuration.ImageConfig
-import com.tmdbclient.servicetmdb.configuration.ImageType
-import com.tmdbclient.servicetmdb.configuration.ImageUrlCreator
+import com.tmdbclient.servicetmdb.image.ImageConfig
+import com.tmdbclient.servicetmdb.image.ImageType
+import com.tmdbclient.servicetmdb.image.ImageUrlCreator
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -50,7 +50,6 @@ class ImageUrlCreatorTest {
         secureBaseUrl: String = "https://secure_base_url.com/"
     ): ImageConfig {
         return ImageConfig(
-            baseUrl = "http://base.url.com/",
             secureBaseUrl = secureBaseUrl,
             backdropSizes = listOf("backdrop/w500", "backdrop/w300"),
             profileSizes = listOf("profile/w500", "profile/w300"),

@@ -7,6 +7,8 @@ import com.illiarb.tmdbclient.storage.local.registerPersistables
 import com.ironz.binaryprefs.BinaryPreferencesBuilder
 import com.ironz.binaryprefs.serialization.serializer.persistable.Persistable
 import com.tmdbclient.servicetmdb.configuration.Configuration
+import com.tmdbclient.servicetmdb.model.CountryList
+import com.tmdbclient.servicetmdb.model.CountryModel
 import com.tmdbclient.servicetmdb.model.GenreListModel
 import com.tmdbclient.servicetmdb.model.GenreModel
 import com.tmdbclient.servicetmdb.model.MovieListModel
@@ -22,6 +24,7 @@ class TmdbCache(context: Context) {
         const val KEY_UPCOMING = "upcoming"
         const val KEY_CONFIGURATION = "configuration"
         const val KEY_GENRES = "genres"
+        const val KEY_COUNTRIES = "countries"
     }
 
     private val tmdbStore = BinaryPreferencesBuilder(context)
@@ -48,6 +51,12 @@ class TmdbCache(context: Context) {
     fun getConfiguration(): Configuration =
         tmdbStore.getPersistable(KEY_CONFIGURATION, Configuration())
 
+    fun getCountries(): List<CountryModel> =
+        tmdbStore.getPersistable(KEY_COUNTRIES, CountryList()).countries
+
+    fun storeCountries(countries: List<CountryModel>) =
+        tmdbStore.putValue(KEY_COUNTRIES, CountryList(countries))
+
     fun clear() {
         tmdbStore.edit().clear()
     }
@@ -61,6 +70,7 @@ class TmdbCache(context: Context) {
             KEY_UPCOMING to MovieListModel::class.java,
             KEY_NOW_PLAYING to MovieListModel::class.java,
             KEY_CONFIGURATION to Configuration::class.java,
-            KEY_GENRES to GenreListModel::class.java
+            KEY_GENRES to GenreListModel::class.java,
+            KEY_COUNTRIES to CountryList::class.java
         )
 }

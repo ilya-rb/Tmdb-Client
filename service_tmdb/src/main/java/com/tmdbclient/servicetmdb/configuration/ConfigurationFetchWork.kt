@@ -43,7 +43,7 @@ class ConfigurationFetchWork(
     override fun doWork(): Result {
         return try {
             runBlocking {
-                val configuration = configurationService.getConfiguration().await()
+                val configuration = configurationService.getConfigurationAsync().await()
                 persistableStorage.storeConfiguration(configuration)
             }
             Result.success()

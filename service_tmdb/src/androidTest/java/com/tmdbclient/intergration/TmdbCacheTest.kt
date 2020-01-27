@@ -4,7 +4,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.tmdbclient.servicetmdb.cache.TmdbCache
 import com.tmdbclient.servicetmdb.configuration.Configuration
-import com.tmdbclient.servicetmdb.configuration.ImageConfig
+import com.tmdbclient.servicetmdb.image.ImageConfig
 import com.tmdbclient.servicetmdb.model.GenreModel
 import org.junit.After
 import org.junit.Assert.assertEquals

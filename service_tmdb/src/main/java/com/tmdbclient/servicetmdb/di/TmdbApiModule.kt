@@ -5,19 +5,22 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.illiarb.tmdbclient.storage.di.modules.NetworkModule
 import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.storage.ResourceResolver
 import com.illiarb.tmdblcient.core.storage.WorkManager
 import com.illiarb.tmdblcient.core.storage.WorkRequestCreator
 import com.illiarb.tmdblcient.core.storage.WorkerCreator
 import com.tmdbclient.servicetmdb.BuildConfig
-import com.tmdbclient.servicetmdb.api.ApiKeyInterceptor
+import com.tmdbclient.servicetmdb.interceptor.ApiKeyInterceptor
 import com.tmdbclient.servicetmdb.api.ConfigurationApi
 import com.tmdbclient.servicetmdb.api.DiscoverApi
 import com.tmdbclient.servicetmdb.api.GenreApi
 import com.tmdbclient.servicetmdb.api.MovieApi
+import com.tmdbclient.servicetmdb.interceptor.RegionInterceptor
 import com.tmdbclient.servicetmdb.api.TrendingApi
 import com.tmdbclient.servicetmdb.cache.TmdbCache
 import com.tmdbclient.servicetmdb.configuration.ConfigurationFetchWork
 import com.tmdbclient.servicetmdb.model.TrendingModel
+import com.tmdbclient.servicetmdb.repository.ConfigurationRepository
 import com.tmdbclient.servicetmdb.serializer.TrendingItemDeserializer
 import dagger.Module
 import dagger.Provides
@@ -45,6 +48,7 @@ class TmdbApiModule(val app: App) {
     @Provides
     fun provideTmdbOkHttpClient(
         apiKeyInterceptor: ApiKeyInterceptor,
+        regionInterceptor: RegionInterceptor,
         httpLoggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient =
         OkHttpClient.Builder()
@@ -53,8 +57,24 @@ class TmdbApiModule(val app: App) {
             .writeTimeout(NetworkModule.WRITE_TIMEOUT, TimeUnit.SECONDS)
             .addInterceptor(apiKeyInterceptor)
             .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(regionInterceptor)
             .cache(Cache(app.getApplication().filesDir, CACHE_SIZE_BYTES))
             .build()
+
+    @Provides
+    @ConfigurationClient
+    fun provideConfigurationApiOkHttpClient(
+        apiKeyInterceptor: ApiKeyInterceptor,
+        httpLoggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient {
+        return OkHttpClient.Builder()
+            .connectTimeout(NetworkModule.CONNECT_TIMEOUT, TimeUnit.SECONDS)
+            .readTimeout(NetworkModule.READ_TIMEOUT, TimeUnit.SECONDS)
+            .writeTimeout(NetworkModule.WRITE_TIMEOUT, TimeUnit.SECONDS)
+            .addInterceptor(apiKeyInterceptor)
+            .addInterceptor(httpLoggingInterceptor)
+            .build()
+    }
 
     @Module
     object ApiModule {
@@ -81,7 +101,7 @@ class TmdbApiModule(val app: App) {
 
         @Provides
         @JvmStatic
-        fun provideConfigurationApi(retrofit: Retrofit): ConfigurationApi =
+        fun provideConfigurationApi(@ConfigurationClient retrofit: Retrofit): ConfigurationApi =
             retrofit.create(ConfigurationApi::class.java)
     }
 
@@ -90,8 +110,7 @@ class TmdbApiModule(val app: App) {
 
         @Provides
         @JvmStatic
-        fun provideTrendingItemDeserializer(): TrendingItemDeserializer =
-            TrendingItemDeserializer()
+        fun provideTrendingItemDeserializer(): TrendingItemDeserializer = TrendingItemDeserializer()
 
         @Provides
         @JvmStatic
@@ -108,8 +127,31 @@ class TmdbApiModule(val app: App) {
                 .build()
 
         @Provides
+        @ConfigurationClient
+        fun provideConfigurationApiRetrofit(
+            @ConfigurationClient
+            okHttpClient: OkHttpClient,
+            callAdapterFactory: CallAdapter.Factory,
+            converterFactory: Converter.Factory
+        ): Retrofit {
+            return Retrofit.Builder()
+                .baseUrl(BuildConfig.API_URL)
+                .addCallAdapterFactory(callAdapterFactory)
+                .client(okHttpClient)
+                .addConverterFactory(converterFactory)
+                .build()
+        }
+
+        @Provides
         @JvmStatic
         fun provideApiKeyInterceptor(): ApiKeyInterceptor = ApiKeyInterceptor()
+
+        @Provides
+        @JvmStatic
+        fun provideRegionInterceptor(
+            configurationRepository: ConfigurationRepository,
+            resourceResolver: ResourceResolver
+        ): RegionInterceptor = RegionInterceptor(configurationRepository, resourceResolver)
 
         @Provides
         @JvmStatic
@@ -121,8 +163,7 @@ class TmdbApiModule(val app: App) {
 
         @Provides
         @JvmStatic
-        fun provideApiConverterFactory(gson: Gson): Converter.Factory =
-            GsonConverterFactory.create(gson)
+        fun provideApiConverterFactory(gson: Gson): Converter.Factory = GsonConverterFactory.create(gson)
 
         @Provides
         @JvmStatic

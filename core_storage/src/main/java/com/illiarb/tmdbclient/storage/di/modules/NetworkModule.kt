@@ -1,6 +1,9 @@
 package com.illiarb.tmdbclient.storage.di.modules
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.google.gson.Gson
+import com.illiarb.tmdbclient.storage.error.ErrorHandler
+import com.illiarb.tmdbclient.storage.network.ApiCallAdapterFactory
+import com.illiarb.tmdblcient.core.storage.ResourceResolver
 import dagger.Module
 import dagger.Provides
 import okhttp3.logging.HttpLoggingInterceptor
@@ -21,7 +24,8 @@ class NetworkModule {
 
         @Provides
         @JvmStatic
-        fun provideApiCallAdapterFactory(): CallAdapter.Factory = CoroutineCallAdapterFactory()
+        fun provideApiCallAdapterFactory(errorHandler: ErrorHandler): CallAdapter.Factory =
+            ApiCallAdapterFactory(errorHandler)
 
         @Provides
         @JvmStatic
@@ -29,5 +33,10 @@ class NetworkModule {
             HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             }
+
+        @Provides
+        @JvmStatic
+        fun provideErrorHandler(gson: Gson, resolver: ResourceResolver): ErrorHandler =
+            ErrorHandler(gson, resolver)
     }
 }

@@ -1,7 +1,6 @@
 package com.tmdbclient.servicetmdb.repository
 
 import com.illiarb.tmdbcliient.coretest.TestDependencyProvider
-import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
@@ -10,7 +9,8 @@ import com.nhaarman.mockitokotlin2.whenever
 import com.tmdbclient.servicetmdb.api.ConfigurationApi
 import com.tmdbclient.servicetmdb.cache.TmdbCache
 import com.tmdbclient.servicetmdb.configuration.Configuration
-import com.tmdbclient.servicetmdb.configuration.ImageConfig
+import com.tmdbclient.servicetmdb.image.ImageConfig
+import com.tmdbclient.servicetmdb.mappers.CountryMapper
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -24,7 +24,8 @@ class ConfigurationRepositoryTest {
     private val repository = DefaultConfigurationRepository(
         cache,
         api,
-        TestDependencyProvider.provideDispatcherProvider()
+        TestDependencyProvider.provideDispatcherProvider(),
+        CountryMapper()
     )
 
     @Test
@@ -57,7 +58,7 @@ class ConfigurationRepositoryTest {
         verify(cache, times(1)).getConfiguration()
 
         @Suppress("DeferredResultUnused")
-        verify(api).getConfiguration()
+        verify(api).getConfigurationAsync()
     }
 
     @Test
@@ -65,7 +66,7 @@ class ConfigurationRepositoryTest {
         val configToStore = Configuration()
 
         whenever(cache.getConfiguration()).thenReturn(Configuration())
-        whenever(api.getConfiguration()).thenReturn(CompletableDeferred(configToStore))
+        whenever(api.getConfigurationAsync()).thenReturn(CompletableDeferred(configToStore))
 
         repository.getConfiguration()
 

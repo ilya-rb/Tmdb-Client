@@ -2,8 +2,8 @@ package com.tmdbclient.servicetmdb.mappers
 
 import com.illiarb.tmdblcient.core.domain.TrendingSection.TrendingItem
 import com.illiarb.tmdblcient.core.util.SuspendableMapper
-import com.tmdbclient.servicetmdb.configuration.ImageType
-import com.tmdbclient.servicetmdb.configuration.ImageUrlCreator
+import com.tmdbclient.servicetmdb.image.ImageType
+import com.tmdbclient.servicetmdb.image.ImageUrlCreator
 import com.tmdbclient.servicetmdb.model.MovieModel
 import com.tmdbclient.servicetmdb.model.PersonModel
 import com.tmdbclient.servicetmdb.model.TrendingModel

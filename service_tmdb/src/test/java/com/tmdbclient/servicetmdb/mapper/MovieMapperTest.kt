@@ -4,8 +4,8 @@ import com.illiarb.tmdblcient.core.util.Result
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import com.tmdbclient.servicetmdb.configuration.Configuration
-import com.tmdbclient.servicetmdb.configuration.ImageConfig
-import com.tmdbclient.servicetmdb.configuration.ImageUrlCreator
+import com.tmdbclient.servicetmdb.image.ImageConfig
+import com.tmdbclient.servicetmdb.image.ImageUrlCreator
 import com.tmdbclient.servicetmdb.mappers.GenreMapper
 import com.tmdbclient.servicetmdb.mappers.MovieMapper
 import com.tmdbclient.servicetmdb.mappers.PersonMapper

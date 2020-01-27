@@ -1,4 +1,4 @@
-package com.tmdbclient.servicetmdb.configuration
+package com.tmdbclient.servicetmdb.image
 
 enum class ImageType {
 

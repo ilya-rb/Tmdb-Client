@@ -6,6 +6,7 @@ import com.illiarb.tmdbclient.storage.local.writeStringList
 import com.ironz.binaryprefs.serialization.serializer.persistable.Persistable
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataInput
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataOutput
+import com.tmdbclient.servicetmdb.image.ImageConfig
 import java.util.Collections
 
 /**

@@ -1,4 +1,4 @@
-package com.tmdbclient.servicetmdb.api
+package com.tmdbclient.servicetmdb.interceptor
 
 import com.tmdbclient.servicetmdb.BuildConfig
 import okhttp3.Interceptor
@@ -8,7 +8,7 @@ import javax.inject.Inject
 class ApiKeyInterceptor @Inject constructor() : Interceptor {
 
     companion object {
-        const val PARAM_API_KEY = "api_key"
+        const val QUERY_PARAM_API_KEY = "api_key"
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -18,7 +18,7 @@ class ApiKeyInterceptor @Inject constructor() : Interceptor {
                 chain.request()
                     .url
                     .newBuilder()
-                    .addQueryParameter(PARAM_API_KEY, BuildConfig.API_KEY)
+                    .addQueryParameter(QUERY_PARAM_API_KEY, BuildConfig.API_KEY)
                     .build()
             )
             .build()
