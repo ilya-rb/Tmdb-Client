@@ -76,5 +76,5 @@ class DefaultMoviesInteractor @Inject constructor(
     }
 
     private suspend fun getMoviesByType(filter: MovieFilter): Result<List<Movie>> =
-        repository.getMoviesByType(filter.code, true)
+        repository.getMoviesByType(filter.code)
 }

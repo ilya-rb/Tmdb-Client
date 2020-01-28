@@ -4,7 +4,6 @@ import com.tmdbclient.servicetmdb.model.ResultsModel
 import com.tmdbclient.servicetmdb.model.TrendingModel
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.Path
 
 interface TrendingApi {
@@ -15,7 +14,6 @@ interface TrendingApi {
     }
 
     @GET("trending/{media_type}/{time_window}")
-    @Headers(ApiHeaders.HEADER_SUPPORTS_REGION)
     fun getTrendingAsync(
         @Path("media_type") mediaType: String,
         @Path("time_window") timeWindow: String

@@ -72,7 +72,6 @@ class TmdbCacheTest {
         Configuration(
             changeKeys = listOf("movies", "reviews", "images"),
             images = ImageConfig(
-                baseUrl = "base_url",
                 secureBaseUrl = "secure_base_url",
                 backdropSizes = listOf("100", "200", "300"),
                 posterSizes = listOf("100", "200", "300"),

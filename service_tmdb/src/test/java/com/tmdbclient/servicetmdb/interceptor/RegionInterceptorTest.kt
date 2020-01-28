@@ -7,7 +7,6 @@ import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
-import com.tmdbclient.servicetmdb.api.ApiHeaders
 import com.tmdbclient.servicetmdb.repository.ConfigurationRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -28,7 +27,6 @@ class RegionInterceptorTest {
         val chain = mock<Interceptor.Chain>().also {
             whenever(it.request()).thenReturn(
                 Request.Builder()
-                    .addHeader(ApiHeaders.HEADER_SUPPORTS_REGION, "")
                     .url("https://api-url.com/request")
                     .build()
             )
@@ -36,23 +34,6 @@ class RegionInterceptorTest {
 
         val request = interceptor.captureInterceptedRequest(chain)
         assertEquals(region, request.url.queryParameter("region"))
-    }
-
-    @Test
-    fun `it should do nothing when request missing supports region header`() = runBlockingTest {
-        val region = "UA"
-        val interceptor = createInterceptorWithRegion(region)
-
-        val chain = mock<Interceptor.Chain>().also {
-            whenever(it.request()).thenReturn(
-                Request.Builder()
-                    .url("https://api-url.com/request")
-                    .build()
-            )
-        }
-
-        val request = interceptor.captureInterceptedRequest(chain)
-        assertEquals(null, request.url.queryParameter("region"))
     }
 
     private suspend fun createInterceptorWithRegion(region: String): RegionInterceptor {
