@@ -6,4 +6,4 @@
 
 # App modules structure:
 
-![App modules](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/App%20modules.png)
+![App modules](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/arc.png)
