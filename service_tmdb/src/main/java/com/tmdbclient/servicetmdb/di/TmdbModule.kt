@@ -4,14 +4,14 @@ import com.illiarb.tmdblcient.core.interactor.GenresInteractor
 import com.illiarb.tmdblcient.core.interactor.HomeInteractor
 import com.illiarb.tmdblcient.core.interactor.MoviesInteractor
 import com.illiarb.tmdblcient.core.interactor.TrendingInteractor
-import com.tmdbclient.servicetmdb.repository.DefaultGenresRepository
-import com.tmdbclient.servicetmdb.repository.DefaultMoviesRepository
 import com.tmdbclient.servicetmdb.interactor.DefaultGenresInteractor
 import com.tmdbclient.servicetmdb.interactor.DefaultHomeInteractor
 import com.tmdbclient.servicetmdb.interactor.DefaultMoviesInteractor
 import com.tmdbclient.servicetmdb.interactor.DefaultTrendingInteractor
 import com.tmdbclient.servicetmdb.repository.ConfigurationRepository
 import com.tmdbclient.servicetmdb.repository.DefaultConfigurationRepository
+import com.tmdbclient.servicetmdb.repository.DefaultGenresRepository
+import com.tmdbclient.servicetmdb.repository.DefaultMoviesRepository
 import com.tmdbclient.servicetmdb.repository.GenresRepository
 import com.tmdbclient.servicetmdb.repository.MoviesRepository
 import dagger.Binds
@@ -40,4 +40,5 @@ interface TmdbModule {
 
     @Binds
     fun bindConfigurationRepository(impl: DefaultConfigurationRepository): ConfigurationRepository
+
 }

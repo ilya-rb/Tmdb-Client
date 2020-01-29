@@ -1,8 +1,9 @@
 package com.illiarb.tmdblcient.core.di.providers
 
-import com.illiarb.tmdblcient.core.storage.WorkManager
+import com.illiarb.tmdblcient.core.tools.WorkerCreator
 
 interface TmdbProvider {
 
-    fun provideConfigurationFetchWorker(): WorkManager.Worker
+    fun provideConfigurationWorkCreator(): WorkerCreator
+
 }

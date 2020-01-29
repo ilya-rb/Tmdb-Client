@@ -49,7 +49,7 @@ class MovieDetailsModelTest {
     @Test
     fun `should go to movie details on similar movie click`() {
         val movie = FakeEntityFactory.createFakeMovie()
-        viewModel.onUiEvent(UiEvent.ItemClick(movie))
+        viewModel.onUiEvent(UiEvent.MovieClicked(movie))
 
         val action = argumentCaptor<Router.Action>()
         verify(router).executeAction(action.capture())

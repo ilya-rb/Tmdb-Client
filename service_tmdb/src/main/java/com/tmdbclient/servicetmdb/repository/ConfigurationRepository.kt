@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 interface ConfigurationRepository {
 
-    suspend fun getConfiguration(): Result<Configuration>
+    suspend fun getConfiguration(refresh: Boolean = false): Result<Configuration>
 
     suspend fun getCountries(): Result<List<Country>>
 }
@@ -26,9 +26,14 @@ class DefaultConfigurationRepository @Inject constructor(
     private val countryMapper: CountryMapper
 ) : ConfigurationRepository {
 
-    override suspend fun getConfiguration(): Result<Configuration> = Result.create {
-        val cached = withContext(dispatcherProvider.io) { cache.getConfiguration() }
+    override suspend fun getConfiguration(refresh: Boolean): Result<Configuration> = Result.create {
+        if (refresh) {
+            val configuration = api.getConfigurationAsync().await()
+            cache.storeConfiguration(configuration)
+            return@create cache.getConfiguration()
+        }
 
+        val cached = withContext(dispatcherProvider.io) { cache.getConfiguration() }
         if (cached.isNotEmpty()) {
             cached
         } else {

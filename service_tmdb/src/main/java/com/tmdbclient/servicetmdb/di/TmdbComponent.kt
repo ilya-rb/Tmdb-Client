@@ -11,13 +11,15 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-    dependencies = [ToolsProvider::class, StorageProvider::class],
+    dependencies = [
+        ToolsProvider::class,
+        StorageProvider::class
+    ],
     modules = [
         TmdbModule::class,
         TmdbApiModule::class,
-        TmdbApiModule.ApiModule::class,
-        TmdbApiModule.ConfigModule::class,
-        NetworkModule::class
+        NetworkModule::class,
+        ConfigurationModule::class
     ]
 )
 interface TmdbComponent : TmdbProvider, InteractorsProvider {

@@ -7,12 +7,7 @@ import com.illiarb.tmdblcient.core.navigation.Router
 /**
  * @author ilya-rb on 24.12.18.
  */
-interface AppProvider :
-    StorageProvider,
-    ToolsProvider,
-    TmdbProvider,
-    InteractorsProvider,
-    AnalyticsProvider {
+interface AppProvider : StorageProvider, ToolsProvider, TmdbProvider, InteractorsProvider, AnalyticsProvider {
 
     fun getApp(): App
 

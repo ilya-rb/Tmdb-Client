@@ -1,5 +1,10 @@
 package com.illiarb.tmdbcliient.coretest
 
+import android.content.Context
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.Worker
+import androidx.work.WorkerParameters
 import com.illiarb.tmdbcliient.coretest.analytics.TestAnalyticsService
 import com.illiarb.tmdbcliient.coretest.interactor.TestGenresInteractor
 import com.illiarb.tmdbcliient.coretest.interactor.TestHomeInteractor
@@ -19,18 +24,17 @@ import com.illiarb.tmdblcient.core.di.providers.InteractorsProvider
 import com.illiarb.tmdblcient.core.di.providers.StorageProvider
 import com.illiarb.tmdblcient.core.di.providers.TmdbProvider
 import com.illiarb.tmdblcient.core.di.providers.ToolsProvider
-import com.illiarb.tmdblcient.core.feature.FeatureFlagStore
 import com.illiarb.tmdblcient.core.interactor.GenresInteractor
 import com.illiarb.tmdblcient.core.interactor.HomeInteractor
 import com.illiarb.tmdblcient.core.interactor.MoviesInteractor
 import com.illiarb.tmdblcient.core.interactor.TrendingInteractor
 import com.illiarb.tmdblcient.core.navigation.Router
+import com.illiarb.tmdblcient.core.storage.FeatureFlagStore
 import com.illiarb.tmdblcient.core.storage.ResourceResolver
-import com.illiarb.tmdblcient.core.storage.WorkManager
-import com.illiarb.tmdblcient.core.storage.WorkRequestCreator
-import com.illiarb.tmdblcient.core.storage.WorkerCreator
 import com.illiarb.tmdblcient.core.tools.ConnectivityStatus
 import com.illiarb.tmdblcient.core.tools.DispatcherProvider
+import com.illiarb.tmdblcient.core.tools.WorkManager
+import com.illiarb.tmdblcient.core.tools.WorkerCreator
 import com.tmdbclient.servicetmdb.repository.ConfigurationRepository
 import com.tmdbclient.servicetmdb.repository.GenresRepository
 import com.tmdbclient.servicetmdb.repository.MoviesRepository
@@ -71,11 +75,19 @@ object TestDependencyProvider : StorageProvider,
 
     override fun provideAnalyticsService(): AnalyticsService = TestAnalyticsService()
 
-    override fun provideConfigurationFetchWorker(): WorkManager.Worker {
-        return object : WorkManager.Worker {
-            override fun isWorkerSuitable(workerClassName: String): Boolean = false
-            override val workCreator: WorkerCreator get() = { _, _ -> TODO() }
-            override val workRequestCreator: WorkRequestCreator get() = { TODO() }
+    override fun workManager(): WorkManager {
+        return object : WorkManager {
+            override fun enqueuePeriodicWork(
+                uniqueWorkName: String,
+                periodicWorkPolicy: ExistingPeriodicWorkPolicy,
+                workRequest: PeriodicWorkRequest
+            ) = Unit
+        }
+    }
+
+    override fun provideConfigurationWorkCreator(): WorkerCreator {
+        return object : WorkerCreator {
+            override fun createWorkRequest(context: Context, params: WorkerParameters): Worker = null!!
         }
     }
 

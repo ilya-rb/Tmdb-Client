@@ -10,7 +10,12 @@ import javax.inject.Singleton
 /**
  * @author ilya-rb on 24.12.18.
  */
-@Component(modules = [ToolsModule::class, AndroidModule::class])
+@Component(
+    modules = [
+        ToolsModule::class,
+        AndroidModule::class
+    ]
+)
 @Singleton
 interface ToolsComponent : ToolsProvider {
 

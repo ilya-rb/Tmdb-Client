@@ -7,9 +7,7 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.illiarb.tmdblcient.core.storage.WorkManager
-import com.tmdbclient.servicetmdb.api.ConfigurationApi
-import com.tmdbclient.servicetmdb.cache.TmdbCache
+import com.tmdbclient.servicetmdb.repository.ConfigurationRepository
 import kotlinx.coroutines.runBlocking
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -20,8 +18,7 @@ import java.util.concurrent.TimeUnit
 class ConfigurationFetchWork(
     context: Context,
     workerParameters: WorkerParameters,
-    private val configurationService: ConfigurationApi,
-    private val persistableStorage: TmdbCache
+    private val configurationRepository: ConfigurationRepository
 ) : Worker(context, workerParameters) {
 
     companion object {
@@ -31,7 +28,7 @@ class ConfigurationFetchWork(
 
         fun createWorkRequest(): PeriodicWorkRequest =
             PeriodicWorkRequestBuilder<ConfigurationFetchWork>(REPEAT_INTERVAL, TimeUnit.DAYS)
-                .addTag(WorkManager.WorkType.ConfigurationFetch.code)
+                .addTag(ConfigurationFetchWork::class.java.name)
                 .setConstraints(
                     Constraints.Builder()
                         .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -43,8 +40,10 @@ class ConfigurationFetchWork(
     override fun doWork(): Result {
         return try {
             runBlocking {
-                val configuration = configurationService.getConfigurationAsync().await()
-                persistableStorage.storeConfiguration(configuration)
+                when (configurationRepository.getConfiguration(refresh = true)) {
+                    is com.illiarb.tmdblcient.core.util.Result.Success -> Result.success()
+                    is com.illiarb.tmdblcient.core.util.Result.Error -> Result.failure()
+                }
             }
             Result.success()
         } catch (e: IOException) {

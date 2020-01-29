@@ -9,7 +9,7 @@ import com.illiarb.tmdbclient.tools.di.ToolsComponent
 import com.illiarb.tmdblcient.core.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
-import com.illiarb.tmdblcient.core.feature.FeatureFlagStore
+import com.illiarb.tmdblcient.core.storage.FeatureFlagStore
 import com.illiarb.tmdblcient.core.interactor.GenresInteractor
 import com.illiarb.tmdblcient.core.interactor.HomeInteractor
 import com.illiarb.tmdblcient.core.interactor.MoviesInteractor
@@ -17,7 +17,7 @@ import com.illiarb.tmdblcient.core.interactor.TrendingInteractor
 import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.storage.ResourceResolver
-import com.illiarb.tmdblcient.core.storage.WorkManager
+import com.illiarb.tmdblcient.core.tools.WorkManager
 import com.illiarb.tmdblcient.core.storage.WorkRequestCreator
 import com.illiarb.tmdblcient.core.storage.WorkerCreator
 import com.illiarb.tmdblcient.core.tools.ConnectivityStatus

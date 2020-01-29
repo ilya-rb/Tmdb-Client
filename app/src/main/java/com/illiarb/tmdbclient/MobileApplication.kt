@@ -1,12 +1,15 @@
 package com.illiarb.tmdbclient
 
 import android.app.Application
+import android.util.Log
+import androidx.work.Configuration
+import androidx.work.WorkManager
+import androidx.work.WorkerFactory
 import com.google.firebase.FirebaseApp
 import com.illiarb.tmdbclient.di.AppComponent
+import com.illiarb.tmdblcient.core.app.AppInitializer
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
-import com.illiarb.tmdblcient.core.storage.WorkManager
-import com.illiarb.tmdblcient.core.storage.WorkManager.WorkType
 import com.illiarb.tmdblcient.core.tools.Logger
 import timber.log.Timber
 import javax.inject.Inject
@@ -14,7 +17,10 @@ import javax.inject.Inject
 class MobileApplication : Application(), App {
 
     @Inject
-    lateinit var workManager: WorkManager
+    lateinit var appInitializers: Set<@JvmSuppressWildcards AppInitializer>
+
+    @Inject
+    lateinit var workerFactory: WorkerFactory
 
     private val applicationProvider by lazy { AppComponent.get(this) }
 
@@ -26,9 +32,13 @@ class MobileApplication : Application(), App {
 
         configureDi()
         configureLogger()
-        configureWorkers()
+        configureWorkManager()
 
         FirebaseApp.initializeApp(this)
+
+        appInitializers.forEach {
+            it.initialize(this)
+        }
     }
 
     override fun getApplication(): Application = this
@@ -37,8 +47,13 @@ class MobileApplication : Application(), App {
 
     private fun configureDi() = MobileAppInjector(this).registerLifecycleCallbacks()
 
-    private fun configureWorkers() {
-        workManager.scheduleWork(WorkType.ConfigurationFetch)
+    private fun configureWorkManager() {
+        val config = Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .setMinimumLoggingLevel(Log.VERBOSE)
+            .build()
+
+        WorkManager.initialize(this, config)
     }
 
     private fun configureLogger() {

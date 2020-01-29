@@ -7,7 +7,7 @@ import com.tmdbclient.servicetmdb.repository.ConfigurationRepository
 
 class TestConfigurationRepository : ConfigurationRepository {
 
-    override suspend fun getConfiguration(): Result<Configuration> {
+    override suspend fun getConfiguration(refresh: Boolean): Result<Configuration> {
         return Result.Success(Configuration())
     }
 

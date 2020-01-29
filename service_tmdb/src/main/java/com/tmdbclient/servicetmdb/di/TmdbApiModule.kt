@@ -1,24 +1,24 @@
 package com.tmdbclient.servicetmdb.di
 
+import android.content.Context
+import androidx.work.Worker
+import androidx.work.WorkerParameters
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.illiarb.tmdbclient.storage.di.modules.NetworkModule
 import com.illiarb.tmdblcient.core.di.App
 import com.illiarb.tmdblcient.core.storage.ResourceResolver
-import com.illiarb.tmdblcient.core.storage.WorkManager
-import com.illiarb.tmdblcient.core.storage.WorkRequestCreator
-import com.illiarb.tmdblcient.core.storage.WorkerCreator
+import com.illiarb.tmdblcient.core.tools.WorkerCreator
 import com.tmdbclient.servicetmdb.BuildConfig
-import com.tmdbclient.servicetmdb.interceptor.ApiKeyInterceptor
-import com.tmdbclient.servicetmdb.api.ConfigurationApi
 import com.tmdbclient.servicetmdb.api.DiscoverApi
 import com.tmdbclient.servicetmdb.api.GenreApi
 import com.tmdbclient.servicetmdb.api.MovieApi
-import com.tmdbclient.servicetmdb.interceptor.RegionInterceptor
 import com.tmdbclient.servicetmdb.api.TrendingApi
 import com.tmdbclient.servicetmdb.cache.TmdbCache
 import com.tmdbclient.servicetmdb.configuration.ConfigurationFetchWork
+import com.tmdbclient.servicetmdb.interceptor.ApiKeyInterceptor
+import com.tmdbclient.servicetmdb.interceptor.RegionInterceptor
 import com.tmdbclient.servicetmdb.model.TrendingModel
 import com.tmdbclient.servicetmdb.repository.ConfigurationRepository
 import com.tmdbclient.servicetmdb.serializer.TrendingItemDeserializer
@@ -37,47 +37,10 @@ import javax.inject.Singleton
 @Module
 class TmdbApiModule(val app: App) {
 
-    companion object {
-        private const val CACHE_SIZE_BYTES = 20 * 1024L
-    }
-
-    @Provides
-    @Singleton
-    fun provideTmdbCache(): TmdbCache = TmdbCache(app.getApplication())
-
-    @Provides
-    fun provideTmdbOkHttpClient(
-        apiKeyInterceptor: ApiKeyInterceptor,
-        regionInterceptor: RegionInterceptor,
-        httpLoggingInterceptor: HttpLoggingInterceptor
-    ): OkHttpClient =
-        OkHttpClient.Builder()
-            .connectTimeout(NetworkModule.CONNECT_TIMEOUT, TimeUnit.SECONDS)
-            .readTimeout(NetworkModule.READ_TIMEOUT, TimeUnit.SECONDS)
-            .writeTimeout(NetworkModule.WRITE_TIMEOUT, TimeUnit.SECONDS)
-            .addInterceptor(apiKeyInterceptor)
-            .addInterceptor(httpLoggingInterceptor)
-            .addInterceptor(regionInterceptor)
-            .cache(Cache(app.getApplication().filesDir, CACHE_SIZE_BYTES))
-            .build()
-
-    @Provides
-    @ConfigurationClient
-    fun provideConfigurationApiOkHttpClient(
-        apiKeyInterceptor: ApiKeyInterceptor,
-        httpLoggingInterceptor: HttpLoggingInterceptor
-    ): OkHttpClient {
-        return OkHttpClient.Builder()
-            .connectTimeout(NetworkModule.CONNECT_TIMEOUT, TimeUnit.SECONDS)
-            .readTimeout(NetworkModule.READ_TIMEOUT, TimeUnit.SECONDS)
-            .writeTimeout(NetworkModule.WRITE_TIMEOUT, TimeUnit.SECONDS)
-            .addInterceptor(apiKeyInterceptor)
-            .addInterceptor(httpLoggingInterceptor)
-            .build()
-    }
-
     @Module
-    object ApiModule {
+    companion object {
+
+        const val CACHE_SIZE_BYTES = 20 * 1024L
 
         @Provides
         @JvmStatic
@@ -101,15 +64,6 @@ class TmdbApiModule(val app: App) {
 
         @Provides
         @JvmStatic
-        fun provideConfigurationApi(@ConfigurationClient retrofit: Retrofit): ConfigurationApi =
-            retrofit.create(ConfigurationApi::class.java)
-    }
-
-    @Module
-    object ConfigModule {
-
-        @Provides
-        @JvmStatic
         fun provideTrendingItemDeserializer(): TrendingItemDeserializer = TrendingItemDeserializer()
 
         @Provides
@@ -126,21 +80,6 @@ class TmdbApiModule(val app: App) {
                 .addConverterFactory(converterFactory)
                 .build()
 
-        @Provides
-        @ConfigurationClient
-        fun provideConfigurationApiRetrofit(
-            @ConfigurationClient
-            okHttpClient: OkHttpClient,
-            callAdapterFactory: CallAdapter.Factory,
-            converterFactory: Converter.Factory
-        ): Retrofit {
-            return Retrofit.Builder()
-                .baseUrl(BuildConfig.API_URL)
-                .addCallAdapterFactory(callAdapterFactory)
-                .client(okHttpClient)
-                .addConverterFactory(converterFactory)
-                .build()
-        }
 
         @Provides
         @JvmStatic
@@ -167,28 +106,32 @@ class TmdbApiModule(val app: App) {
 
         @Provides
         @JvmStatic
-        fun provideConfigurationFetchWorker(
-            configurationApi: ConfigurationApi,
-            cache: TmdbCache
-        ): WorkManager.Worker {
-            return object : WorkManager.Worker {
-
-                override fun isWorkerSuitable(workerClassName: String): Boolean =
-                    workerClassName == ConfigurationFetchWork::class.java.name
-
-                override val workRequestCreator: WorkRequestCreator
-                    get() = { ConfigurationFetchWork.createWorkRequest() }
-
-                override val workCreator: WorkerCreator
-                    get() = { context, workerParameters ->
-                        ConfigurationFetchWork(
-                            context,
-                            workerParameters,
-                            configurationApi,
-                            cache
-                        )
-                    }
+        fun provideConfigurationWorkerCreator(configurationRepository: ConfigurationRepository): WorkerCreator {
+            return object : WorkerCreator {
+                override fun createWorkRequest(context: Context, params: WorkerParameters): Worker {
+                    return ConfigurationFetchWork(context, params, configurationRepository)
+                }
             }
         }
     }
+
+    @Provides
+    @Singleton
+    fun provideTmdbCache(): TmdbCache = TmdbCache(app.getApplication())
+
+    @Provides
+    fun provideTmdbOkHttpClient(
+        apiKeyInterceptor: ApiKeyInterceptor,
+        regionInterceptor: RegionInterceptor,
+        httpLoggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient =
+        OkHttpClient.Builder()
+            .connectTimeout(NetworkModule.CONNECT_TIMEOUT, TimeUnit.SECONDS)
+            .readTimeout(NetworkModule.READ_TIMEOUT, TimeUnit.SECONDS)
+            .writeTimeout(NetworkModule.WRITE_TIMEOUT, TimeUnit.SECONDS)
+            .addInterceptor(apiKeyInterceptor)
+            .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(regionInterceptor)
+            .cache(Cache(app.getApplication().filesDir, CACHE_SIZE_BYTES))
+            .build()
 }
