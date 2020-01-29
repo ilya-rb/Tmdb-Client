@@ -35,6 +35,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
+@Suppress("TooManyFunctions")
 class TmdbApiModule(val app: App) {
 
     @Module
