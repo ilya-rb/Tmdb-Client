@@ -28,10 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_normal"
-            android:layout_marginTop="@dimen/spacing_normal"
             android:layout_marginEnd="@dimen/spacing_normal"
             android:maxLines="2"
-            android:padding="@dimen/spacing_small"
             android:textAppearance="?attr/textAppearanceHeadline4"
             android:textColor="@color/tmdb_white"
             android:textStyle="bold"
@@ -43,13 +41,22 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginStart="@dimen/spacing_normal"
-            android:layout_marginBottom="@dimen/spacing_normal"
             android:drawableStart="@drawable/ic_star"
             android:drawablePadding="@dimen/spacing_micro"
             android:textAppearance="?attr/textAppearanceHeadline6"
             android:textColor="@color/tmdb_white"
             app:drawableTint="?attr/colorSecondary"
             tools:text="@tools:sample/lorem" />
+
+        <TextView
+            android:id="@+id/itemNowPlayingCaption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:text="@string/now_playing_section_title"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/tmdb_white" />
 
     </LinearLayout>
 
