@@ -1,11 +1,14 @@
 package com.illiarb.tmdbclient.home
 
+import android.animation.ArgbEvaluator
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.tmdbclient.home.HomeModel.UiEvent
 import com.illiarb.tmdbclient.home.delegates.genresSectionDelegate
 import com.illiarb.tmdbclient.home.delegates.movieSectionDelegate
@@ -18,6 +21,7 @@ import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
+import com.illiarb.tmdbexplorer.coreui.ext.getColorAttr
 import com.illiarb.tmdbexplorer.coreui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
@@ -57,8 +61,16 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.moviesSwipeRefresh.isEnabled = false
+        binding.appBar.doOnApplyWindowInsets { v, insets, padding ->
+            v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
+        }
 
+        binding.moviesSwipeRefresh.isEnabled = false
+        binding.settings.setOnClickListener {
+            viewModel.onUiEvent(UiEvent.SettingsClick)
+        }
+
+        setupAppBarScrollListener()
         setupMoviesList()
 
         bind(viewModel)
@@ -91,6 +103,26 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
 
     private fun bind(viewModel: HomeModel) {
         viewModel.movieSections.observe(viewLifecycleOwner, Observer(::showMovieSections))
+    }
+
+    private fun setupAppBarScrollListener() {
+        binding.moviesList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            val colorEvaluator = ArgbEvaluator()
+            val startColor = Color.TRANSPARENT
+            val endColor: Int = requireView().getColorAttr(R.attr.colorPrimary)
+            val endStateHeight: Int = requireView().dimen(R.dimen.app_bar_end_state_height)
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val scrollOffset = recyclerView.computeVerticalScrollOffset()
+                val progress = calculateProgress(scrollOffset.coerceAtMost(endStateHeight), endStateHeight)
+                val appBarColor = colorEvaluator.evaluate(progress.toFloat() / 100, startColor, endColor) as Int
+                binding.appBar.setBackgroundColor(appBarColor)
+            }
+
+            private fun calculateProgress(current: Int, max: Int): Int {
+                return current * 100 / max
+            }
+        })
     }
 
     private fun showMovieSections(state: Async<List<MovieSection>>) {
