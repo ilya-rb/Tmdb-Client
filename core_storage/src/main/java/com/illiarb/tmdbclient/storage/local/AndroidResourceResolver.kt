@@ -13,8 +13,9 @@ class AndroidResourceResolver(app: App) : ResourceResolver {
 
     override fun getString(stringResId: Int): String = resources.getString(stringResId)
 
-    override fun getStringArray(arrayResId: Int): Array<String> =
-        resources.getStringArray(arrayResId)
+    override fun getStringArray(arrayResId: Int): Array<String> = resources.getStringArray(arrayResId)
 
-    override fun getUserLocaleCode(): Locale = resources.configuration.locale
+    override fun getUserLocale(): Locale = resources.configuration.locale
+
+    override fun getUserISOCountry(): String = resources.configuration.locale.isO3Country
 }

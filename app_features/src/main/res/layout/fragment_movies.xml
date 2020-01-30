@@ -1,65 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/moviesSwipeRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/moviesList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="@dimen/spacing_small"
-                android:paddingBottom="@dimen/spacing_small">
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_tmdb"
-                    android:tint="?attr/colorOnPrimary" />
-
-                <ImageView
-                    android:id="@+id/moviesSettings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@null"
-                    android:paddingLeft="@dimen/spacing_normal"
-                    android:paddingTop="@dimen/spacing_micro"
-                    android:paddingRight="@dimen/spacing_normal"
-                    android:paddingBottom="@dimen/spacing_micro"
-                    android:src="@drawable/ic_settings"
-                    android:tint="?attr/colorOnPrimary" />
-
-            </FrameLayout>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/moviesList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:layoutManager="LinearLayoutManager"
-            tools:layout_marginTop="?attr/actionBarSize"
-            tools:listitem="@layout/item_movie_section"
-            tools:orientation="vertical" />
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        android:clipToPadding="false"
+        tools:layoutManager="LinearLayoutManager"
+        tools:listitem="@layout/item_movie_section"
+        tools:orientation="vertical" />
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

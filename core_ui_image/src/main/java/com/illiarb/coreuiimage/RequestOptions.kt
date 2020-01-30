@@ -1,7 +1,6 @@
 package com.illiarb.coreuiimage
 
 import androidx.annotation.FloatRange
-import com.illiarb.coreuiimage.blur.BlurParams
 
 /**
  * @author ilya-rb on 29.12.18.
@@ -10,7 +9,6 @@ import com.illiarb.coreuiimage.blur.BlurParams
 data class RequestOptions(
     var cropOptions: CropOptions? = null,
     var cornerRadius: Int = 0,
-    var blurParams: BlurParams? = null,
     var thumbnail: Float = 0f,
     var useCrossFade: Boolean = true
 ) {
@@ -30,10 +28,6 @@ data class RequestOptions(
 
     fun cornerRadius(radius: Int) = apply {
         cornerRadius = radius
-    }
-
-    fun blur(radius: Int = DEFAULT_RADIUS, sampling: Int = DEFAULT_DOWN_SAMPLING) = apply {
-        blurParams = BlurParams(radius, sampling)
     }
 
     fun crossFade(use: Boolean) = apply {

@@ -45,8 +45,8 @@ class DefaultHomeModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            movieSectionsLiveData.postValue(Async.Loading())
-            movieSectionsLiveData.postValue(homeInteractor.getHomeSections().asAsync())
+            movieSectionsLiveData.value = Async.Loading()
+            movieSectionsLiveData.value = homeInteractor.getHomeSections().asAsync()
 
             val trending = trendingInteractor.getTrending()
             if (trending is Result.Success) {

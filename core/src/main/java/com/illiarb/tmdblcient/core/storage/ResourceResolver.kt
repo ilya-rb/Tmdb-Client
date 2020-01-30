@@ -8,6 +8,8 @@ interface ResourceResolver {
 
     fun getStringArray(arrayResId: Int): Array<String>
 
-    fun getUserLocaleCode(): Locale
+    fun getUserLocale(): Locale
+
+    fun getUserISOCountry(): String
 
 }

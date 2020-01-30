@@ -15,7 +15,7 @@ fun photoDelegate(clickListener: OnClickListener) =
         val imageView = itemView.findViewById<ImageView>(R.id.moviePhoto)
 
         itemView.setOnClickListener {
-            clickListener.onClick(item)
+            clickListener(item)
         }
 
         bind {

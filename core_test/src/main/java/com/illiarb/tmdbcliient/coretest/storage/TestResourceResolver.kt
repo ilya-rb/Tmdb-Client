@@ -9,5 +9,7 @@ class TestResourceResolver : ResourceResolver {
 
     override fun getStringArray(arrayResId: Int): Array<String> = arrayOf()
 
-    override fun getUserLocaleCode(): Locale = Locale.getDefault()
+    override fun getUserLocale(): Locale = Locale.getDefault()
+
+    override fun getUserISOCountry(): String = ""
 }

@@ -8,7 +8,6 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -28,8 +27,6 @@ import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.domain.Genre
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Injectable {
@@ -45,16 +42,14 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
     private lateinit var filtersContainer: ViewGroup
 
     private val adapter = DelegatesAdapter(
-        {
-            listOf(
-                movieDelegate(
-                    it,
-                    SizeSpec.MatchParent,
-                    SizeSpec.Fixed(R.dimen.discover_item_movie_height)
-                )
-            )
-        },
-        { old, new -> old == new }
+        delegates = listOf(
+            movieDelegate(
+                SizeSpec.MatchParent,
+                SizeSpec.Fixed(R.dimen.discover_item_movie_height)
+            ) {
+                viewModel.onUiEvent(UiEvent.ItemClick(it))
+            }
+        )
     )
 
     private val viewModel: DiscoverModel by lazy(LazyThreadSafetyMode.NONE) {
@@ -78,12 +73,6 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
         setupToolbar()
         setupFilters()
         setupDiscoverList()
-
-        lifecycleScope.launch {
-            adapter.clicks().collect {
-                viewModel.onUiEvent(UiEvent.ItemClick(it))
-            }
-        }
 
         ViewCompat.requestApplyInsets(view)
 

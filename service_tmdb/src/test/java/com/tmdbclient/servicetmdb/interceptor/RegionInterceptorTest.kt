@@ -48,7 +48,7 @@ class RegionInterceptorTest {
         }
 
         val resolver = mock<ResourceResolver>().also {
-            whenever(it.getUserLocaleCode()).thenReturn(Locale(region, region))
+            whenever(it.getUserLocale()).thenReturn(Locale(region, region))
         }
 
         return RegionInterceptor(repository, resolver)

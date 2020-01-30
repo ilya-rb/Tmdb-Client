@@ -9,7 +9,7 @@
     <dimen name="item_movie_height">150dp</dimen>
     <dimen name="item_movie_width">100dp</dimen>
     <dimen name="item_trending_image_size">80dp</dimen>
-    <dimen name="item_now_playing_height">200dp</dimen>
+    <dimen name="item_now_playing_height">350dp</dimen>
     <dimen name="item_trending_border_width">1dp</dimen>
 
 </resources>

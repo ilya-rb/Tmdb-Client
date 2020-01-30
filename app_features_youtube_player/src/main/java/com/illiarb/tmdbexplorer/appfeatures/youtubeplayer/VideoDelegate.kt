@@ -17,7 +17,7 @@ fun videoDelegate(clickListener: OnClickListener) = adapterDelegate<UiVideo, UiV
         selectedView.setVisible(item.isSelected)
 
         itemView.setOnClickListener {
-            clickListener.onClick(item)
+            clickListener(item)
         }
     }
 }

@@ -6,7 +6,6 @@ import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.illiarb.tmdbexplorer.appfeatures.youtubeplayer.YoutubePlayerModel.UiEvent
 import com.illiarb.tmdbexplorer.appfeatures.youtubeplayer.databinding.FragmentYoutubePlayerBinding
@@ -24,8 +23,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerCallback
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class YoutubePlayerFragment : BaseViewBindingFragment<FragmentYoutubePlayerBinding>(), Injectable {
@@ -33,11 +30,7 @@ class YoutubePlayerFragment : BaseViewBindingFragment<FragmentYoutubePlayerBindi
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val videosAdapter = DelegatesAdapter(
-        { listOf(videoDelegate(it)) },
-        { old, new -> old.video == new.video }
-    )
-
+    private val videosAdapter = DelegatesAdapter(delegates = listOf(videoDelegate {}))
     private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this, viewModelFactory).get(DefaultYoutubePlayerModel::class.java)
     }
@@ -47,14 +40,6 @@ class YoutubePlayerFragment : BaseViewBindingFragment<FragmentYoutubePlayerBindi
 
         setupVideoPlayer()
         setupVideoList()
-
-        lifecycleScope.launch {
-            videosAdapter.clicks().collect {
-                if (it is YoutubePlayerModel.UiVideo) {
-                    viewModel.onUiEvent(UiEvent.VideoClick(it))
-                }
-            }
-        }
 
         bind()
 

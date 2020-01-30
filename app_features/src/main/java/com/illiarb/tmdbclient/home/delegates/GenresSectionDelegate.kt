@@ -22,7 +22,7 @@ fun genresSectionDelegate(clickListener: OnClickListener) =
 
                 chip.text = genre.name
                 chip.setOnClickListener {
-                    clickListener.onClick(genre)
+                    clickListener(genre)
                 }
 
                 chipGroup.addView(chip)

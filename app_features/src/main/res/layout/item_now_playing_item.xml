@@ -5,63 +5,51 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_now_playing_height"
     android:orientation="vertical"
-    android:stateListAnimator="@xml/sla_scale_down"
-    tools:layout_height="200dp"
     tools:viewBindingIgnore="true">
 
     <ImageView
-        android:id="@+id/itemNowPlayingCover"
+        android:id="@+id/itemNowPlayingPoster"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/bg_now_playing_item_poster"
         android:contentDescription="@null"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         tools:src="@tools:sample/backgrounds/scenic" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bg_now_playing_item_overlay"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/itemNowPlayingTitle"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_normal"
             android:layout_marginTop="@dimen/spacing_normal"
             android:layout_marginEnd="@dimen/spacing_normal"
-            android:layout_weight="5"
             android:maxLines="2"
             android:padding="@dimen/spacing_small"
-            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textAppearance="?attr/textAppearanceHeadline5"
             android:textColor="@color/tmdb_white"
             tools:text="@tools:sample/lorem/random" />
 
-        <ImageView
-            android:id="@+id/itemNowPlayingPoster"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/spacing_normal"
-            android:layout_marginEnd="@dimen/spacing_normal"
+        <TextView
+            android:id="@+id/itemNowPlayingRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="@dimen/spacing_normal"
             android:layout_marginBottom="@dimen/spacing_normal"
-            android:layout_weight="1"
-            android:contentDescription="@null"
-            tools:scaleType="centerCrop"
-            tools:src="@tools:sample/backgrounds/scenic" />
+            android:drawableStart="@drawable/ic_star"
+            android:drawablePadding="@dimen/spacing_micro"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/tmdb_white"
+            app:drawableTint="?attr/colorSecondary"
+            tools:text="@tools:sample/lorem" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/itemNowPlayingRating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="@dimen/spacing_normal"
-        android:layout_marginBottom="@dimen/spacing_normal"
-        android:drawableStart="@drawable/ic_star"
-        android:drawablePadding="@dimen/spacing_micro"
-        android:textAppearance="?attr/textAppearanceCaption"
-        android:textColor="@color/tmdb_white"
-        app:drawableTint="?attr/colorSecondary"
-        tools:text="@tools:sample/lorem" />
 
 </FrameLayout>

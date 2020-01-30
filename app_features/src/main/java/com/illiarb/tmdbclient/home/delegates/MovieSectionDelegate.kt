@@ -20,8 +20,8 @@ import com.illiarb.tmdblcient.core.domain.MovieSection
 
 @Suppress("LongMethod")
 fun movieSectionDelegate(
-    clickListener: OnClickListener,
-    recyclerViewStateSaver: RecyclerViewStateSaver
+    recyclerViewStateSaver: RecyclerViewStateSaver,
+    clickListener: OnClickListener
 ) = adapterDelegate<ListSection, MovieSection>(R.layout.item_movie_section) {
 
     val adapter = MovieSectionAdapter(clickListener)
@@ -51,7 +51,7 @@ fun movieSectionDelegate(
         adapter.notifyDataSetChanged()
 
         seeAllButton.setOnClickListener {
-            clickListener.onClick(item.code)
+            clickListener(item.code)
         }
 
         recyclerViewStateSaver.registerAndRestoreIfNeeded(stateCallback, item.hashCode().toString(), sectionList)
@@ -67,9 +67,9 @@ private class MovieSectionAdapter(clickListener: OnClickListener) : ListDelegati
     init {
         delegatesManager.addDelegate(
             movieDelegate(
-                clickListener,
                 SizeSpec.Fixed(R.dimen.item_movie_width),
-                SizeSpec.Fixed(R.dimen.item_movie_height)
+                SizeSpec.Fixed(R.dimen.item_movie_height),
+                clickListener
             )
         )
     }

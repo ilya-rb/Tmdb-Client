@@ -15,9 +15,9 @@ import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdblcient.core.domain.Movie
 
 fun movieDelegate(
-    clickListener: OnClickListener,
     widthSpec: SizeSpec,
-    heightSpec: SizeSpec
+    heightSpec: SizeSpec,
+    clickListener: OnClickListener
 ) = adapterDelegate<Movie, Movie>(R.layout.item_movie) {
 
     val image = itemView.findViewById<ImageView>(R.id.itemMoviePoster)
@@ -31,7 +31,7 @@ fun movieDelegate(
     card.setSize(heightSpec = heightSpec)
 
     itemView.setOnClickListener {
-        clickListener.onClick(item)
+        clickListener(item)
     }
 
     bind {

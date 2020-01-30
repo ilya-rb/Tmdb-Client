@@ -7,7 +7,6 @@ import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.coreuiimage.CropOptions
@@ -32,8 +31,6 @@ import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.util.Async
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -49,23 +46,15 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val photosAdapter = DelegatesAdapter(
-        { listOf(photoDelegate(it)) },
-        { old, new -> old == new }
-    )
-
-    private val moviesAdapter = DelegatesAdapter(
-        {
-            listOf(
-                movieDelegate(
-                    it,
-                    SizeSpec.Fixed(R.dimen.item_movie_width),
-                    SizeSpec.Fixed(R.dimen.item_movie_height)
-                )
-            )
-        },
-        { old, new -> old == new }
-    )
+    private val photosAdapter = DelegatesAdapter(delegates = listOf(photoDelegate {}))
+    private val moviesAdapter = DelegatesAdapter(delegates = listOf(
+        movieDelegate(
+            SizeSpec.Fixed(R.dimen.item_movie_width),
+            SizeSpec.Fixed(R.dimen.item_movie_height)
+        ) {
+            viewModel.onUiEvent(UiEvent.MovieClicked(it as Movie))
+        }
+    ))
 
     private val viewModel: MovieDetailsModel by lazy(LazyThreadSafetyMode.NONE) {
         viewModelFactory.create(DefaultDetailsViewModel::class.java)
@@ -85,14 +74,6 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
         setupToolbar()
 
         binding.swipeRefresh.isEnabled = false
-
-        lifecycleScope.launch {
-            moviesAdapter.clicks().collect {
-                if (it is Movie) {
-                    viewModel.onUiEvent(UiEvent.MovieClicked(it))
-                }
-            }
-        }
 
         setupMoviesList()
         setupPhotosList()

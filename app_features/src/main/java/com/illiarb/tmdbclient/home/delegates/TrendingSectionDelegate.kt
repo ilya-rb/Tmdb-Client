@@ -64,7 +64,7 @@ private class TrendingSectionAdapter(clickListener: OnClickListener) :
                 }
 
                 itemView.setOnClickListener {
-                    clickListener.onClick(item)
+                    clickListener(item)
                 }
             }
         }

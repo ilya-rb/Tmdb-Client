@@ -5,17 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.illiarb.tmdbclient.home.HomeModel.UiEvent
 import com.illiarb.tmdbclient.home.delegates.genresSectionDelegate
 import com.illiarb.tmdbclient.home.delegates.movieSectionDelegate
-import com.illiarb.tmdbclient.home.delegates.nowPlayingDelegate
+import com.illiarb.tmdbclient.home.delegates.nowPlayingSectionDelegate
 import com.illiarb.tmdbclient.home.delegates.trendingSectionDelegate
 import com.illiarb.tmdbclient.home.di.HomeComponent
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentMoviesBinding
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
+import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.removeAdapterOnDetach
@@ -27,8 +27,6 @@ import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.domain.MovieSection
 import com.illiarb.tmdblcient.core.util.Async
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectable {
@@ -41,16 +39,14 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     }
 
     private val stateSaver = RecyclerViewStateSaver()
+    private val clickListener: OnClickListener = { viewModel.onUiEvent(UiEvent.ItemClick(it)) }
     private val adapter = DelegatesAdapter(
-        {
-            listOf(
-                movieSectionDelegate(it, stateSaver),
-                nowPlayingDelegate(it),
-                genresSectionDelegate(it),
-                trendingSectionDelegate(it)
-            )
-        },
-        { old, new -> old == new }
+        delegates = listOf(
+            movieSectionDelegate(stateSaver, clickListener),
+            nowPlayingSectionDelegate(clickListener),
+            genresSectionDelegate(clickListener),
+            trendingSectionDelegate(clickListener)
+        )
     )
 
     override fun getViewBinding(inflater: LayoutInflater): FragmentMoviesBinding =
@@ -61,27 +57,9 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding.appBar) {
-            liftOnScrollTargetViewId = R.id.moviesList
-            isLiftOnScroll = true
-            doOnApplyWindowInsets { v, windowInsets, initialPadding ->
-                v.updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
-            }
-        }
-
-        binding.moviesSettings.setOnClickListener {
-            viewModel.onUiEvent(UiEvent.SettingsClick)
-        }
-
         binding.moviesSwipeRefresh.isEnabled = false
 
         setupMoviesList()
-
-        lifecycleScope.launch {
-            adapter.clicks().collect {
-                viewModel.onUiEvent(UiEvent.ItemClick(it))
-            }
-        }
 
         bind(viewModel)
     }
@@ -96,9 +74,11 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
             adapter = this@HomeFragment.adapter
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(
-                SpaceDecoration.edgeInnerSpaceVertical(
-                    dimen(R.dimen.spacing_normal),
-                    dimen(R.dimen.spacing_small)
+                SpaceDecoration(
+                    spacingTopFirst = 0,
+                    spacingTop = dimen(R.dimen.spacing_small),
+                    spacingBottom = dimen(R.dimen.spacing_small),
+                    spacingBottomLast = dimen(R.dimen.spacing_normal)
                 )
             )
             isNestedScrollingEnabled = false

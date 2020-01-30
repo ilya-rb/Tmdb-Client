@@ -1,9 +1,9 @@
 package com.illiarb.coreuiimage
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.Transformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CenterInside
@@ -11,7 +11,6 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.illiarb.coreuiimage.blur.BlurTransformation
 import com.illiarb.tmdbexplorer.coreui.ext.doOnLayout
 import com.illiarb.tmdblcient.core.domain.Image
 
@@ -29,20 +28,23 @@ fun ImageView.loadImage(
     }
 
     clear()
+
     doOnLayout {
         val selectedSize = selectSize(image.sizes, it.width)
-        val request = Glide.with(context).load(image.buildFullUrl(selectedSize))
         val options = requestOptions(RequestOptions())
-
-        request.apply(mapOptions(context, options))
-
-        if (options.useCrossFade) {
-            request.transition(DrawableTransitionOptions.withCrossFade())
-        }
-
-        if (options.thumbnail != 0f) {
-            request.thumbnail(options.thumbnail)
-        }
+        val request = Glide.with(context)
+            .load(image.buildFullUrl(selectedSize))
+            .apply(mapOptions(options))
+            .also { request ->
+                if (options.useCrossFade) {
+                    request.transition(DrawableTransitionOptions.withCrossFade())
+                }
+            }
+            .also { request ->
+                if (options.thumbnail != 0f) {
+                    request.thumbnail(options.thumbnail)
+                }
+            }
 
         request.preload(it.width, it.height)
         request.into(this)
@@ -54,10 +56,7 @@ fun ImageView.clear() {
 }
 
 @Suppress("ComplexMethod")
-private fun mapOptions(
-    context: Context,
-    options: RequestOptions
-): com.bumptech.glide.request.RequestOptions {
+private fun mapOptions(options: RequestOptions): com.bumptech.glide.request.RequestOptions {
     val result = com.bumptech.glide.request.RequestOptions()
     val transformations = mutableListOf<Transformation<Bitmap>>()
 
@@ -74,13 +73,13 @@ private fun mapOptions(
         transformations.add(RoundedCorners(options.cornerRadius))
     }
 
-    options.blurParams?.let {
-        transformations.add(BlurTransformation(context, it.radius, it.sampling))
-    }
-
     if (transformations.isNotEmpty()) {
         result.apply {
-            transformations.forEach { transform(it) }
+            if (transformations.size == 1) {
+                transform(transformations.first())
+            } else {
+                transform(MultiTransformation(transformations))
+            }
         }
     }
 
