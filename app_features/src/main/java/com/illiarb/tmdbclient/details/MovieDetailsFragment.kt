@@ -81,6 +81,8 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
         ViewCompat.requestApplyInsets(view)
 
         bind(viewModel)
+
+        postponeEnterTransition()
     }
 
     private fun setupToolbar() {
@@ -186,6 +188,8 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
                 viewModel.onUiEvent(UiEvent.PlayClicked)
             }
         }
+
+        startPostponedEnterTransition()
 
         photosAdapter.submitList(movie.images)
     }

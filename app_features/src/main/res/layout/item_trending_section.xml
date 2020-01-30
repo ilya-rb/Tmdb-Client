@@ -13,7 +13,8 @@
         android:paddingRight="@dimen/spacing_normal"
         android:text="@string/trending_section_title"
         android:textAppearance="?attr/textAppearanceHeadline5"
-        android:textColor="?attr/colorOnBackground" />
+        android:textColor="?attr/colorOnBackground"
+        android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/itemTrendingSectionList"

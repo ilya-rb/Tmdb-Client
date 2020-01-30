@@ -30,7 +30,7 @@ fun ImageView.loadImage(
     clear()
 
     doOnLayout {
-        val selectedSize = selectSize(image.sizes, it.width)
+        val selectedSize = selectSize(image.sizes, it.width) ?: return@doOnLayout
         val options = requestOptions(RequestOptions())
         val request = Glide.with(context)
             .load(image.buildFullUrl(selectedSize))
@@ -91,7 +91,7 @@ private fun mapOptions(options: RequestOptions): com.bumptech.glide.request.Requ
  * https://github.com/chrisbanes/tivi/blob/master/tmdb/src/main/java/app/tivi/tmdb/TmdbImageUrlProvider.kt
  */
 @Suppress("ComplexMethod", "ReturnCount")
-private fun selectSize(sizes: List<String>, imageWidth: Int): String {
+private fun selectSize(sizes: List<String>, imageWidth: Int): String? {
     var previousSize: String? = null
     var previousWidth = 0
 
@@ -116,7 +116,7 @@ private fun selectSize(sizes: List<String>, imageWidth: Int): String {
         previousWidth = sizeWidth
     }
 
-    return previousSize ?: sizes.last()
+    return previousSize ?: if (sizes.isNotEmpty()) sizes.last() else null
 }
 
 private fun extractWidthAsIntFrom(size: String): Int? {
