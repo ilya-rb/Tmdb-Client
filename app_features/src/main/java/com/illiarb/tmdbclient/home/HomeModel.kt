@@ -1,7 +1,8 @@
 package com.illiarb.tmdbclient.home
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.illiarb.tmdbclient.home.HomeModel.UiEvent
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import com.illiarb.tmdblcient.core.analytics.AnalyticEvent.RouterAction
@@ -9,18 +10,16 @@ import com.illiarb.tmdblcient.core.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.domain.Genre
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieSection
+import com.illiarb.tmdblcient.core.domain.TrendingSection
 import com.illiarb.tmdblcient.core.interactor.HomeInteractor
+import com.illiarb.tmdblcient.core.interactor.TrendingInteractor
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowSettings
 import com.illiarb.tmdblcient.core.util.Async
-import com.illiarb.tmdblcient.core.util.Async.Fail
-import com.illiarb.tmdblcient.core.util.Async.Loading
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
+import com.illiarb.tmdblcient.core.util.Result
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 interface HomeModel {
@@ -37,15 +36,33 @@ interface HomeModel {
 
 class DefaultHomeModel @Inject constructor(
     private val homeInteractor: HomeInteractor,
+    private val trendingInteractor: TrendingInteractor,
     private val router: Router,
     private val analyticsService: AnalyticsService
 ) : BasePresentationModel(), HomeModel {
 
-    private val movieSectionsLiveData = flow { emit(homeInteractor.getHomeSections()) }
-        .map { it.asAsync() }
-        .onStart { emit(Loading()) }
-        .catch { emit(Fail(it)) }
-        .asLiveData()
+    private val movieSectionsLiveData = MutableLiveData<Async<List<MovieSection>>>()
+
+    init {
+        viewModelScope.launch {
+            movieSectionsLiveData.postValue(Async.Loading())
+            movieSectionsLiveData.postValue(homeInteractor.getHomeSections().asAsync())
+
+            val trending = trendingInteractor.getTrending()
+            if (trending is Result.Success) {
+                val movieSections = movieSectionsLiveData.value
+                if (movieSections is Async.Success) {
+                    val sectionsList = movieSections().toMutableList()
+                    if (sectionsList.isEmpty()) {
+                        sectionsList.add(TrendingSection(trending.data))
+                    } else {
+                        sectionsList.add(1, TrendingSection(trending.data))
+                    }
+                    movieSectionsLiveData.value = Async.Success(sectionsList)
+                }
+            }
+        }
+    }
 
     override val movieSections: LiveData<Async<List<MovieSection>>>
         get() = movieSectionsLiveData

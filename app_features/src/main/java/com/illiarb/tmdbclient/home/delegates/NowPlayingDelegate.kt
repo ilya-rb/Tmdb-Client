@@ -69,7 +69,7 @@ fun nowPlayingDelegate(clickListener: OnClickListener) =
                     return@fixedRateTimer
                 }
                 currentPosition++
-                updateCurrentPosition(currentPosition)
+                updateCurrentPosition(adapter.getRealPosition(currentPosition))
                 nowPlayingPager.smoothScrollToPosition(currentPosition)
             }
         }

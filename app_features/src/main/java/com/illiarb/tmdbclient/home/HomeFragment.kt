@@ -41,14 +41,17 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     }
 
     private val stateSaver = RecyclerViewStateSaver()
-    private val adapter = DelegatesAdapter({
-        listOf(
-            movieSectionDelegate(it, stateSaver),
-            nowPlayingDelegate(it),
-            genresSectionDelegate(it),
-            trendingSectionDelegate(it)
-        )
-    })
+    private val adapter = DelegatesAdapter(
+        {
+            listOf(
+                movieSectionDelegate(it, stateSaver),
+                nowPlayingDelegate(it),
+                genresSectionDelegate(it),
+                trendingSectionDelegate(it)
+            )
+        },
+        { old, new -> old == new }
+    )
 
     override fun getViewBinding(inflater: LayoutInflater): FragmentMoviesBinding =
         FragmentMoviesBinding.inflate(inflater)

@@ -49,16 +49,23 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val photosAdapter = DelegatesAdapter({ listOf(photoDelegate(it)) })
-    private val moviesAdapter = DelegatesAdapter({
-        listOf(
-            movieDelegate(
-                it,
-                SizeSpec.Fixed(R.dimen.item_movie_width),
-                SizeSpec.Fixed(R.dimen.item_movie_height)
+    private val photosAdapter = DelegatesAdapter(
+        { listOf(photoDelegate(it)) },
+        { old, new -> old == new }
+    )
+
+    private val moviesAdapter = DelegatesAdapter(
+        {
+            listOf(
+                movieDelegate(
+                    it,
+                    SizeSpec.Fixed(R.dimen.item_movie_width),
+                    SizeSpec.Fixed(R.dimen.item_movie_height)
+                )
             )
-        )
-    })
+        },
+        { old, new -> old == new }
+    )
 
     private val viewModel: MovieDetailsModel by lazy(LazyThreadSafetyMode.NONE) {
         viewModelFactory.create(DefaultDetailsViewModel::class.java)

@@ -44,15 +44,18 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
     private lateinit var discoverGenres: ChipGroup
     private lateinit var filtersContainer: ViewGroup
 
-    private val adapter = DelegatesAdapter({
-        listOf(
-            movieDelegate(
-                it,
-                SizeSpec.MatchParent,
-                SizeSpec.Fixed(R.dimen.discover_item_movie_height)
+    private val adapter = DelegatesAdapter(
+        {
+            listOf(
+                movieDelegate(
+                    it,
+                    SizeSpec.MatchParent,
+                    SizeSpec.Fixed(R.dimen.discover_item_movie_height)
+                )
             )
-        )
-    })
+        },
+        { old, new -> old == new }
+    )
 
     private val viewModel: DiscoverModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this, viewModelFactory).get(DefaultDiscoverModel::class.java)

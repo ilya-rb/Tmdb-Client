@@ -4,7 +4,6 @@ import com.illiarb.tmdbcliient.coretest.TestDependencyProvider
 import com.illiarb.tmdblcient.core.domain.GenresSection
 import com.illiarb.tmdblcient.core.domain.ListSection
 import com.illiarb.tmdblcient.core.domain.NowPlayingSection
-import com.illiarb.tmdblcient.core.domain.TrendingSection
 import com.illiarb.tmdblcient.core.interactor.HomeInteractor
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertTrue
@@ -14,15 +13,8 @@ class HomeInteractorTest {
 
     private val interactor = DefaultHomeInteractor(
         TestDependencyProvider.provideMoviesInteractor(),
-        TestDependencyProvider.provideGenresInteractor(),
-        TestDependencyProvider.provideTrendingInteractor()
+        TestDependencyProvider.provideGenresInteractor()
     )
-
-    @Test
-    fun `should contain trending section as first item if not empty`() = runBlockingTest {
-        val sections = interactor.getHomeSections().getOrThrow()
-        assertTrue(sections.first() is TrendingSection)
-    }
 
     @Test
     fun `should contain genres section if not empty`() = runBlockingTest {

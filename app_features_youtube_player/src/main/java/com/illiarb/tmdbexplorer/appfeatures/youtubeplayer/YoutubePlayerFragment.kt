@@ -33,7 +33,11 @@ class YoutubePlayerFragment : BaseViewBindingFragment<FragmentYoutubePlayerBindi
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val videosAdapter = DelegatesAdapter({ listOf(videoDelegate(it)) })
+    private val videosAdapter = DelegatesAdapter(
+        { listOf(videoDelegate(it)) },
+        { old, new -> old.video == new.video }
+    )
+
     private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this, viewModelFactory).get(DefaultYoutubePlayerModel::class.java)
     }
