@@ -7,7 +7,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
-import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.app.App
 import com.illiarb.tmdblcient.core.di.Injectable
 
 /**

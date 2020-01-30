@@ -15,7 +15,6 @@ import retrofit2.CallAdapter
 @Module
 class NetworkModule {
 
-    @Module
     companion object {
 
         const val CONNECT_TIMEOUT = 10L

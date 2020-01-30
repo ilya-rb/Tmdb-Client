@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.storage.di
 
 import com.illiarb.tmdbclient.storage.di.modules.StorageModule
-import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.app.App
 import com.illiarb.tmdblcient.core.di.providers.StorageProvider
 import com.illiarb.tmdblcient.core.di.providers.ToolsProvider
 import dagger.Component

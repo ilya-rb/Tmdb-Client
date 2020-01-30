@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.tools.di.modules
 
 import com.illiarb.tmdbclient.tools.AndroidConnectivityStatus
-import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.app.App
 import com.illiarb.tmdblcient.core.tools.ConnectivityStatus
 import dagger.Module
 import dagger.Provides

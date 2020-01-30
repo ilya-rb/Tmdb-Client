@@ -1,6 +1,6 @@
 package com.illiarb.tmdclient.analytics.di
 
-import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.app.App
 import com.illiarb.tmdblcient.core.di.providers.AnalyticsProvider
 import dagger.Component
 

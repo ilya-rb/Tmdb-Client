@@ -6,7 +6,7 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.app.App
 import com.illiarb.tmdblcient.core.tools.ConnectivityStatus
 import com.illiarb.tmdblcient.core.tools.ConnectivityStatus.ConnectionState
 import kotlinx.coroutines.ExperimentalCoroutinesApi

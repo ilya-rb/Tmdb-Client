@@ -7,7 +7,7 @@ import com.illiarb.tmdbclient.navigation.AppRouter
 import com.illiarb.tmdbclient.storage.di.StorageComponent
 import com.illiarb.tmdbclient.tools.di.ToolsComponent
 import com.illiarb.tmdblcient.core.analytics.AnalyticsService
-import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.app.App
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.storage.FeatureFlagStore
 import com.illiarb.tmdblcient.core.interactor.GenresInteractor

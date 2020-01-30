@@ -2,7 +2,7 @@ package com.illiarb.tmdbclient.storage.di.modules
 
 import com.illiarb.tmdbclient.storage.FirebaseFeatureFlagStore
 import com.illiarb.tmdbclient.storage.local.AndroidResourceResolver
-import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.app.App
 import com.illiarb.tmdblcient.core.storage.FeatureFlagStore
 import com.illiarb.tmdblcient.core.storage.ResourceResolver
 import dagger.Module

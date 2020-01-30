@@ -1,6 +1,6 @@
 package com.illiarb.tmdbclient.storage.local
 
-import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.app.App
 import com.illiarb.tmdblcient.core.storage.ResourceResolver
 import java.util.Locale
 

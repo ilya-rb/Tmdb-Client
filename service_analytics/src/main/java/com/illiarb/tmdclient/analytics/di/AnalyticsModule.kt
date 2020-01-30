@@ -1,7 +1,7 @@
 package com.illiarb.tmdclient.analytics.di
 
 import com.illiarb.tmdblcient.core.analytics.AnalyticsService
-import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.app.App
 import com.illiarb.tmdclient.analytics.BuildConfig
 import com.illiarb.tmdclient.analytics.DefaultAnalyticsService
 import com.illiarb.tmdclient.analytics.trackers.DebugAnalyticsTracker

@@ -1,7 +1,7 @@
 package com.tmdbclient.servicetmdb.di
 
 import com.illiarb.tmdbclient.storage.di.modules.NetworkModule
-import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.app.App
 import com.illiarb.tmdblcient.core.di.providers.InteractorsProvider
 import com.illiarb.tmdblcient.core.di.providers.StorageProvider
 import com.illiarb.tmdblcient.core.di.providers.TmdbProvider
@@ -16,9 +16,11 @@ import javax.inject.Singleton
         StorageProvider::class
     ],
     modules = [
-        TmdbModule::class,
-        TmdbApiModule::class,
+        ApiModule::class,
+        TmdbNetworkModule::class,
         NetworkModule::class,
+        RepositoriesModule::class,
+        InteractorsModule::class,
         ConfigurationModule::class
     ]
 )
@@ -34,7 +36,7 @@ interface TmdbComponent : TmdbProvider, InteractorsProvider {
             DaggerTmdbComponent.builder()
                 .toolsProvider(toolsProvider)
                 .storageProvider(storageProvider)
-                .tmdbApiModule(TmdbApiModule(app))
+                .tmdbNetworkModule(TmdbNetworkModule(app))
                 .build()
     }
 }

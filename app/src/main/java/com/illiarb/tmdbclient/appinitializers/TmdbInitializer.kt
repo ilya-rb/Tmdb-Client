@@ -2,7 +2,7 @@ package com.illiarb.tmdbclient.appinitializers
 
 import androidx.work.ExistingPeriodicWorkPolicy
 import com.illiarb.tmdblcient.core.app.AppInitializer
-import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.app.App
 import com.illiarb.tmdblcient.core.tools.WorkManager
 import com.tmdbclient.servicetmdb.configuration.ConfigurationFetchWork
 import javax.inject.Inject

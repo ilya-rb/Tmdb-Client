@@ -1,13 +1,12 @@
 package com.illiarb.tmdbclient.di
 
 import com.illiarb.tmdbclient.MobileApplication
-import com.illiarb.tmdbclient.di.modules.AppInitializerModule
 import com.illiarb.tmdbclient.di.modules.AppModule
 import com.illiarb.tmdbclient.di.modules.NavigationModule
 import com.illiarb.tmdbclient.di.modules.WorkModule
 import com.illiarb.tmdbclient.storage.di.StorageComponent
 import com.illiarb.tmdbclient.tools.di.ToolsComponent
-import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.app.App
 import com.illiarb.tmdblcient.core.di.providers.AnalyticsProvider
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.di.providers.InteractorsProvider
@@ -30,8 +29,7 @@ import javax.inject.Singleton
     modules = [
         AppModule::class,
         NavigationModule::class,
-        WorkModule::class,
-        AppInitializerModule::class
+        WorkModule::class
     ]
 )
 @Singleton

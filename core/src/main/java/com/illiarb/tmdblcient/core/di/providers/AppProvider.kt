@@ -1,6 +1,6 @@
 package com.illiarb.tmdblcient.core.di.providers
 
-import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.app.App
 import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
 import com.illiarb.tmdblcient.core.navigation.Router
 

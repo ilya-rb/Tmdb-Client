@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.illiarb.tmdblcient.core.analytics.AnalyticEvent
 import com.illiarb.tmdblcient.core.analytics.AnalyticEvent.RouterAction
-import com.illiarb.tmdblcient.core.di.App
+import com.illiarb.tmdblcient.core.app.App
 import com.illiarb.tmdclient.analytics.AnalyticsTracker
 import javax.inject.Inject
 

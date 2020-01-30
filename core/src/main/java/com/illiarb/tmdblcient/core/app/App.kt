@@ -1,4 +1,4 @@
-package com.illiarb.tmdblcient.core.di
+package com.illiarb.tmdblcient.core.app
 
 import android.app.Application
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
