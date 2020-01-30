@@ -10,10 +10,10 @@ import javax.inject.Inject
 class TmdbInitializer @Inject constructor(private val workManager: WorkManager) : AppInitializer {
 
     override fun initialize(app: App) {
-        workManager.enqueuePeriodicWork(
-            ConfigurationFetchWork::class.java.name,
-            ExistingPeriodicWorkPolicy.KEEP,
-            ConfigurationFetchWork.createWorkRequest()
-        )
+//        workManager.enqueuePeriodicWork(
+//            ConfigurationFetchWork::class.java.name,
+//            ExistingPeriodicWorkPolicy.KEEP,
+//            ConfigurationFetchWork.createWorkRequest()
+//        )
     }
 }

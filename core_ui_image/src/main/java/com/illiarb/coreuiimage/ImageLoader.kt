@@ -59,7 +59,7 @@ private fun mapOptions(
     options: RequestOptions
 ): com.bumptech.glide.request.RequestOptions {
     val result = com.bumptech.glide.request.RequestOptions()
-    val transformations = mutableSetOf<Transformation<Bitmap>>()
+    val transformations = mutableListOf<Transformation<Bitmap>>()
 
     options.cropOptions?.let {
         when (it) {
@@ -70,12 +70,12 @@ private fun mapOptions(
         }
     }
 
-    options.blurParams?.let {
-        transformations.add(BlurTransformation(context, it.radius, it.sampling))
-    }
-
     if (options.cornerRadius > 0) {
         transformations.add(RoundedCorners(options.cornerRadius))
+    }
+
+    options.blurParams?.let {
+        transformations.add(BlurTransformation(context, it.radius, it.sampling))
     }
 
     if (transformations.isNotEmpty()) {
