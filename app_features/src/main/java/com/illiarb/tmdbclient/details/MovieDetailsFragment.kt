@@ -73,10 +73,6 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
             override fun isAllowedToScroll(): Boolean {
                 return binding.movieDetailsRoot.progress == 1f
             }
-
-            override fun onOverScrollDetected(overScroll: Int) {
-                binding.movieDetailsRoot.progress = binding.movieDetailsRoot.progress - overScroll / 100
-            }
         }
 
         setupToolbar()
