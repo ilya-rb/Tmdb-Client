@@ -15,6 +15,7 @@ import com.illiarb.tmdbclient.common.delegates.movieDelegate
 import com.illiarb.tmdbclient.details.MovieDetailsModel.UiEvent
 import com.illiarb.tmdbclient.details.delegates.photoDelegate
 import com.illiarb.tmdbclient.details.di.MovieDetailsComponent
+import com.illiarb.tmdbclient.details.widget.MovieDetailsScrollView
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentMovieDetailsBinding
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
@@ -68,8 +69,10 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
         super.onViewCreated(view, savedInstanceState)
 
         binding.swipeRefresh.isEnabled = false
-        binding.movieDetailsScrollView.scrollInterceptor = {
-            binding.movieDetailsRoot.progress == 1f
+        binding.movieDetailsScrollView.scrollInterceptor = object : MovieDetailsScrollView.ScrollInterceptor {
+            override fun isAllowedToScroll(): Boolean {
+                return binding.movieDetailsRoot.progress == 1f
+            }
         }
 
         setupToolbar()

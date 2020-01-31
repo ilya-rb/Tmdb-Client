@@ -5,8 +5,6 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.widget.ScrollView
 
-typealias ScrollInterceptor = () -> Boolean
-
 class MovieDetailsScrollView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -22,5 +20,10 @@ class MovieDetailsScrollView @JvmOverloads constructor(
         }
 
     override fun onTouchEvent(ev: MotionEvent?): Boolean =
-        if (scrollY > 0) false else if (scrollInterceptor?.invoke() == true) super.onTouchEvent(ev) else false
+        if (scrollY > 0 || scrollInterceptor?.isAllowedToScroll() == true) super.onTouchEvent(ev) else false
+
+    interface ScrollInterceptor {
+
+        fun isAllowedToScroll(): Boolean
+    }
 }
