@@ -73,6 +73,10 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
             override fun isAllowedToScroll(): Boolean {
                 return binding.movieDetailsRoot.progress == 1f
             }
+
+            override fun onOverScrollDetected(overScroll: Int) {
+                binding.movieDetailsRoot.progress = binding.movieDetailsRoot.progress - overScroll / 100
+            }
         }
 
         setupToolbar()
@@ -136,17 +140,14 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
     }
 
     private fun bind(viewModel: MovieDetailsModel) {
-        viewModel.movie.observe(
-            viewLifecycleOwner,
-            Observer {
-                binding.swipeRefresh.isRefreshing = it is Async.Loading
-
-                if (it is Async.Success) {
-                    showMovieDetails(it())
-                }
-            }
-        )
         viewModel.similarMovies.observe(viewLifecycleOwner, moviesAdapter)
+        viewModel.movie.observe(viewLifecycleOwner, Observer {
+            binding.swipeRefresh.isRefreshing = it is Async.Loading
+
+            if (it is Async.Success) {
+                showMovieDetails(it())
+            }
+        })
     }
 
     private fun showMovieDetails(movie: Movie) {
