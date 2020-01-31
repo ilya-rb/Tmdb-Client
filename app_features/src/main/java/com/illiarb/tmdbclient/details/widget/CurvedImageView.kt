@@ -18,7 +18,7 @@ class CurvedImageView @JvmOverloads constructor(
 
     private val curvePath = Path()
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private val curveOffset: Float
+    private var curveOffset: Float
 
     init {
         var attributes: TypedArray? = null
@@ -64,5 +64,14 @@ class CurvedImageView @JvmOverloads constructor(
         canvas.drawPath(curvePath, paint)
         canvas.clipPath(curvePath)
         super.onDraw(canvas)
+    }
+
+    /**
+     * Used by MotionLayout as custom attribute
+     */
+    @Suppress("unused")
+    fun setCurveOffset(offset: Int) {
+        curveOffset = offset.toFloat()
+        requestLayout()
     }
 }

@@ -18,10 +18,9 @@ import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
 import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.storage.ResourceResolver
 import com.illiarb.tmdblcient.core.tools.WorkManager
-import com.illiarb.tmdblcient.core.storage.WorkRequestCreator
-import com.illiarb.tmdblcient.core.storage.WorkerCreator
 import com.illiarb.tmdblcient.core.tools.ConnectivityStatus
 import com.illiarb.tmdblcient.core.tools.DispatcherProvider
+import com.illiarb.tmdblcient.core.tools.WorkerCreator
 import com.illiarb.tmdclient.analytics.di.AnalyticsComponent
 import com.tmdbclient.servicetmdb.di.TmdbComponent
 
@@ -67,27 +66,19 @@ class TestApplication : Application(), App {
             override fun provideAnalyticsService(): AnalyticsService =
                 analyticsProvider.provideAnalyticsService()
 
-            override fun provideConfigurationFetchWorker(): WorkManager.Worker =
-                createConfigWorker()
+            override fun workManager(): WorkManager {
+                return null!!
+            }
+
+            override fun provideConfigurationWorkCreator(): WorkerCreator {
+                return null!!
+            }
 
             override fun provideMoviesInteractor(): MoviesInteractor = tmdbProvider.provideMoviesInteractor()
             override fun provideGenresInteractor(): GenresInteractor = tmdbProvider.provideGenresInteractor()
             override fun provideHomeInteractor(): HomeInteractor = tmdbProvider.provideHomeInteractor()
             override fun provideTrendingInteractor(): TrendingInteractor =
                 tmdbProvider.provideTrendingInteractor()
-        }
-    }
-
-    private fun createConfigWorker(): WorkManager.Worker {
-        return object : WorkManager.Worker {
-
-            override val workCreator: WorkerCreator
-                get() = TODO("not implemented")
-
-            override val workRequestCreator: WorkRequestCreator
-                get() = TODO("not implemented")
-
-            override fun isWorkerSuitable(workerClassName: String): Boolean = false
         }
     }
 }

@@ -14,7 +14,7 @@ import com.illiarb.tmdblcient.core.domain.NowPlayingSection
 import java.util.Timer
 import kotlin.concurrent.fixedRateTimer
 
-// 5 seconds
+// 10 seconds
 private const val TIMER_IMAGE_UPDATE = 10000L
 
 fun nowPlayingSectionDelegate(clickListener: OnClickListener) =
@@ -30,8 +30,7 @@ fun nowPlayingSectionDelegate(clickListener: OnClickListener) =
         snapHelper.attachToRecyclerView(nowPlayingPager)
 
         nowPlayingPager.adapter = adapter
-        nowPlayingPager.layoutManager =
-            LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+        nowPlayingPager.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
 
         bind {
             adapter.items = item.movies

@@ -27,7 +27,7 @@ class RegionInterceptor @Inject constructor(
             request.newBuilder()
                 .url(
                     request.url.newBuilder()
-                        .addQueryParameter(QUERY_PARAM_LANGUAGE, userLanguage)
+                        //.addQueryParameter(QUERY_PARAM_LANGUAGE, userLanguage)
                         .addRegionParameter()
                         .build()
                 )

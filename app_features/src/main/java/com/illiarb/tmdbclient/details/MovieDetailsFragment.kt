@@ -31,20 +31,16 @@ import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.util.Async
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.Locale
+import com.illiarb.tmdblcient.core.util.DateFormatter
 import javax.inject.Inject
 
 class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding>(), Injectable {
 
-    companion object {
-        const val DISPLAY_DATE_FORMAT_PATTERN = "dd MMM yyyy"
-        const val PARSE_DATE_FORMAT_PATTERN = "yyyy-mm-dd"
-    }
-
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var dateFormatter: DateFormatter
 
     private val photosAdapter = DelegatesAdapter(delegates = listOf(photoDelegate {}))
     private val moviesAdapter = DelegatesAdapter(delegates = listOf(
@@ -71,18 +67,18 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupToolbar()
-
         binding.swipeRefresh.isEnabled = false
+        binding.movieDetailsScrollView.scrollInterceptor = {
+            binding.movieDetailsRoot.progress == 1f
+        }
 
+        setupToolbar()
         setupMoviesList()
         setupPhotosList()
 
         ViewCompat.requestApplyInsets(view)
 
         bind(viewModel)
-
-        postponeEnterTransition()
     }
 
     private fun setupToolbar() {
@@ -150,22 +146,6 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
         viewModel.similarMovies.observe(viewLifecycleOwner, moviesAdapter)
     }
 
-    private fun String.asFormattedDate(parseFormat: String, displayFormat: String): String {
-        val dateParser = SimpleDateFormat(parseFormat, Locale.getDefault())
-        val dateFormatter = SimpleDateFormat(displayFormat, Locale.getDefault())
-
-        return try {
-            val date = dateParser.parse(this)
-            if (date == null) {
-                this
-            } else {
-                dateFormatter.format(date)
-            }
-        } catch (e: ParseException) {
-            this
-        }
-    }
-
     private fun showMovieDetails(movie: Movie) {
         with(binding) {
             movieDetailsTitle.text = movie.title
@@ -173,23 +153,15 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
             movieDetailsLength.text = getString(R.string.movie_details_duration, movie.runtime)
             movieDetailsCountry.text = movie.country
             movieDetailsTags.text = movie.getGenresString()
-
-            movieDetailsDate.text = movie.releaseDate.asFormattedDate(
-                PARSE_DATE_FORMAT_PATTERN,
-                DISPLAY_DATE_FORMAT_PATTERN
-            )
-
+            movieDetailsDate.text = dateFormatter.formatDate(movie.releaseDate)
             movieDetailsPoster.loadImage(movie.posterPath) {
                 crop(CropOptions.CenterCrop)
             }
-
             movieDetailsPlay.setVisible(!movie.videos.isNullOrEmpty())
             movieDetailsPlay.setOnClickListener {
                 viewModel.onUiEvent(UiEvent.PlayClicked)
             }
         }
-
-        startPostponedEnterTransition()
 
         photosAdapter.submitList(movie.images)
     }

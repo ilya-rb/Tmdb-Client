@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.illiarb.tmdblcient.core.tools.WorkerCreator
+import com.illiarb.tmdblcient.core.util.DateFormatter
 import com.tmdbclient.servicetmdb.BuildConfig
 import com.tmdbclient.servicetmdb.api.DiscoverApi
 import com.tmdbclient.servicetmdb.api.GenreApi
@@ -11,6 +12,7 @@ import com.tmdbclient.servicetmdb.api.MovieApi
 import com.tmdbclient.servicetmdb.api.TrendingApi
 import com.tmdbclient.servicetmdb.configuration.ConfigurationFetchWork
 import com.tmdbclient.servicetmdb.repository.ConfigurationRepository
+import com.tmdbclient.servicetmdb.util.TmdbDateFormatter
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -64,4 +66,8 @@ object ApiModule {
             }
         }
     }
+
+    @Provides
+    @JvmStatic
+    fun provideDateFormatter(): DateFormatter = TmdbDateFormatter()
 }
