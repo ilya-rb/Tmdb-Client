@@ -15,15 +15,6 @@ processors:
   # - 'PackageCountProcessor'
   # - 'KtFileCountProcessor'
 
-console-reports:
-  active: true
-  exclude:
-  #  - 'ProjectStatisticsReport'
-  #  - 'ComplexityReport'
-  #  - 'NotificationReport'
-  #  - 'FindingsReport'
-  #  - 'BuildFailureReport'
-
 comments:
   active: true
   CommentOverPrivateFunction:
@@ -109,7 +100,7 @@ empty-blocks:
     active: true
   EmptyFunctionBlock:
     active: true
-    ignoreOverriddenFunctions: false
+    ignoreOverridden: false
   EmptyIfBlock:
     active: true
   EmptyInitBlock:
@@ -295,12 +286,12 @@ naming:
     active: true
     parameterPattern: '[a-z][A-Za-z0-9]*'
     excludeClassPattern: '$^'
-    ignoreOverriddenFunctions: true
+    ignoreOverridden: true
   MatchingDeclarationName:
     active: true
   MemberNameEqualsClassName:
     active: false
-    ignoreOverriddenFunction: true
+    ignoreOverridden: true
   ObjectPropertyNaming:
     active: true
     constantPattern: '[A-Za-z][_A-Za-z0-9]*'

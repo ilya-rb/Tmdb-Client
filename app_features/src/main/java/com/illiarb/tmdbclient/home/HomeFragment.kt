@@ -105,6 +105,7 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
         viewModel.movieSections.observe(viewLifecycleOwner, Observer(::showMovieSections))
     }
 
+    @Suppress("MagicNumber")
     private fun setupAppBarScrollListener() {
         binding.moviesList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             val colorEvaluator = ArgbEvaluator()

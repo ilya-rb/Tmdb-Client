@@ -35,6 +35,7 @@ import com.illiarb.tmdblcient.core.tools.ConnectivityStatus
 import com.illiarb.tmdblcient.core.tools.DispatcherProvider
 import com.illiarb.tmdblcient.core.tools.WorkManager
 import com.illiarb.tmdblcient.core.tools.WorkerCreator
+import com.illiarb.tmdblcient.core.util.DateFormatter
 import com.tmdbclient.servicetmdb.repository.ConfigurationRepository
 import com.tmdbclient.servicetmdb.repository.GenresRepository
 import com.tmdbclient.servicetmdb.repository.MoviesRepository
@@ -83,6 +84,10 @@ object TestDependencyProvider : StorageProvider,
                 workRequest: PeriodicWorkRequest
             ) = Unit
         }
+    }
+
+    override fun provideDateFormatter(): DateFormatter = object : DateFormatter {
+        override fun formatDate(date: String): String = ""
     }
 
     override fun provideConfigurationWorkCreator(): WorkerCreator {
