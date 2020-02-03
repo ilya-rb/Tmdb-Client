@@ -12,5 +12,6 @@ class NowPlayingSection(val title: String, val movies: List<Movie>) : MovieSecti
 class GenresSection(val genres: List<Genre>) : MovieSection()
 
 class TrendingSection(val items: List<TrendingItem>) : MovieSection() {
-    class TrendingItem(val image: Image, val name: String)
+
+    class TrendingItem(val movie: Movie)
 }

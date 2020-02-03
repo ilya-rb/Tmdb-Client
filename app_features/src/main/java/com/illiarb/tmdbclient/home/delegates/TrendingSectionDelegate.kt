@@ -79,13 +79,13 @@ private class TrendingSectionAdapter(clickListener: OnClickListener) :
             val name = itemView.findViewById<TextView>(R.id.itemTrendingName)
 
             bind {
-                name.text = item.name
-                image.loadImage(item.image) {
+                name.text = item.movie.title
+                image.loadImage(item.movie.posterPath) {
                     crop(CropOptions.Circle)
                 }
 
                 itemView.setOnClickListener {
-                    clickListener(item)
+                    clickListener(item.movie)
                 }
             }
         }

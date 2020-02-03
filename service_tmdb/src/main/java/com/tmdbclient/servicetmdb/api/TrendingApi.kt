@@ -10,7 +10,7 @@ interface TrendingApi {
 
     companion object {
         const val TRENDING_THIS_WEEK = "week"
-        const val TRENDING_TYPE_ALL = "all"
+        const val TRENDING_TYPE_MOVIES = "movie"
     }
 
     @GET("trending/{media_type}/{time_window}")

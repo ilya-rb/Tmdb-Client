@@ -17,6 +17,7 @@ import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowSettings
+import com.illiarb.tmdblcient.core.tools.Logger
 import com.illiarb.tmdblcient.core.util.Async
 import com.illiarb.tmdblcient.core.util.Result
 import kotlinx.coroutines.launch
@@ -60,6 +61,8 @@ class DefaultHomeModel @Inject constructor(
                     }
                     movieSectionsLiveData.value = Async.Success(sectionsList)
                 }
+            } else if (trending is Result.Error) {
+                Logger.e("HomeModel", trending.error.message ?: "", trending.error)
             }
         }
     }

@@ -15,7 +15,7 @@ class DefaultTrendingInteractor @Inject constructor(
     override suspend fun getTrending(): Result<List<TrendingSection.TrendingItem>> {
         return Result.create {
             val results = api.getTrendingAsync(
-                TrendingApi.TRENDING_TYPE_ALL,
+                TrendingApi.TRENDING_TYPE_MOVIES,
                 TrendingApi.TRENDING_THIS_WEEK
             ).await()
 
