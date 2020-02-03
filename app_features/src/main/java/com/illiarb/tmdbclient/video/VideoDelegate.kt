@@ -1,9 +1,10 @@
-package com.illiarb.tmdbexplorer.appfeatures.youtubeplayer
+package com.illiarb.tmdbclient.video
 
 import android.view.View
 import android.widget.TextView
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
-import com.illiarb.tmdbexplorer.appfeatures.youtubeplayer.YoutubePlayerModel.UiVideo
+import com.illiarb.tmdbclient.movies.home.R
+import com.illiarb.tmdbclient.video.VideoListModel.UiVideo
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 

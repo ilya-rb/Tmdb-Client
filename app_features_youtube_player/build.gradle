@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 
 apply from: dependenciesFilePath
 
@@ -15,10 +14,6 @@ android {
         versionName "1.0"
     }
 
-    buildFeatures {
-        viewBinding true
-    }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -28,11 +23,6 @@ android {
 }
 
 dependencies {
-
-    kapt deps.daggerCompiler
-
-    implementation project(':core')
-    implementation project(':core_ui')
-    implementation deps.dagger
+    implementation deps.kotlin
     implementation deps.youtubePlayer
 }

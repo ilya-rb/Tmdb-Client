@@ -15,9 +15,9 @@
         tools:layout="SettingsFragment" />
 
     <fragment
-        android:id="@+id/youtubePlayerFragment"
-        android:name="com.illiarb.tmdbexplorer.appfeatures.youtubeplayer.YoutubePlayerFragment"
-        tools:layout="@layout/fragment_youtube_player" />
+        android:id="@+id/videoListFragment"
+        android:name="com.illiarb.tmdbclient.video.VideoListFragment"
+        tools:layout="@layout/fragment_video_list" />
 
     <fragment
         android:id="@+id/movieDetailsFragment"
@@ -27,7 +27,7 @@
 
         <action
             android:id="@+id/movie_to_player"
-            app:destination="@+id/youtubePlayerFragment" />
+            app:destination="@+id/videoListFragment" />
 
     </fragment>
 

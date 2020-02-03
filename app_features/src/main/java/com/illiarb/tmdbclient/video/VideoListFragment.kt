@@ -1,4 +1,4 @@
-package com.illiarb.tmdbexplorer.appfeatures.youtubeplayer
+package com.illiarb.tmdbclient.video
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,9 +7,10 @@ import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.illiarb.tmdbexplorer.appfeatures.youtubeplayer.YoutubePlayerModel.UiEvent
-import com.illiarb.tmdbexplorer.appfeatures.youtubeplayer.databinding.FragmentYoutubePlayerBinding
-import com.illiarb.tmdbexplorer.appfeatures.youtubeplayer.di.YoutubePlayerComponent
+import com.illiarb.tmdbclient.movies.home.databinding.FragmentVideoListBinding
+import com.illiarb.tmdbclient.video.VideoListModel.UiEvent
+import com.illiarb.tmdbclient.video.di.VideoListComponent
+import com.illiarb.tmdbexplorer.appfeatures.youtubeplayer.YoutubePlayer
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.removeAdapterOnDetach
@@ -18,21 +19,17 @@ import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
-import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowVideos
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerCallback
+import com.illiarb.tmdblcient.core.navigation.Router
 import javax.inject.Inject
 
-class YoutubePlayerFragment : BaseViewBindingFragment<FragmentYoutubePlayerBinding>(), Injectable {
+class VideoListFragment : BaseViewBindingFragment<FragmentVideoListBinding>(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val videosAdapter = DelegatesAdapter(delegates = listOf(videoDelegate {}))
     private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
-        ViewModelProvider(this, viewModelFactory).get(DefaultYoutubePlayerModel::class.java)
+        ViewModelProvider(this, viewModelFactory).get(DefaultVideoListModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,24 +44,21 @@ class YoutubePlayerFragment : BaseViewBindingFragment<FragmentYoutubePlayerBindi
     }
 
     override fun inject(appProvider: AppProvider) {
-        val movieId = requireArguments().getInt(ShowVideos.EXTRA_MOVIE_ID)
+        val movieId = requireArguments().getInt(Router.Action.ShowVideos.EXTRA_MOVIE_ID)
         require(movieId != 0) {
             "Arguments must contain valid movie id"
         }
-        YoutubePlayerComponent.get(appProvider, movieId).inject(this)
+        VideoListComponent.get(appProvider, movieId).inject(this)
     }
 
-    override fun getViewBinding(inflater: LayoutInflater): FragmentYoutubePlayerBinding =
-        FragmentYoutubePlayerBinding.inflate(inflater)
+    override fun getViewBinding(inflater: LayoutInflater): FragmentVideoListBinding =
+        FragmentVideoListBinding.inflate(inflater)
 
     private fun setupVideoPlayer() {
-        viewLifecycleOwner.lifecycle.addObserver(binding.youtubePlayer)
-
-        binding.youtubePlayer.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-            override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
-                if (state == PlayerConstants.PlayerState.ENDED) {
-                    viewModel.onUiEvent(UiEvent.VideoEnded)
-                }
+        binding.youtubePlayer.bindToLifecycle(viewLifecycleOwner)
+        binding.youtubePlayer.setPlayerStateListener(object : YoutubePlayer.StateListener {
+            override fun onVideoEnded() {
+                viewModel.onUiEvent(UiEvent.VideoEnded)
             }
         })
 
@@ -92,10 +86,6 @@ class YoutubePlayerFragment : BaseViewBindingFragment<FragmentYoutubePlayerBindi
     }
 
     private fun playVideo(videoId: String) {
-        binding.youtubePlayer.getYouTubePlayerWhenReady(object : YouTubePlayerCallback {
-            override fun onYouTubePlayer(youTubePlayer: YouTubePlayer) {
-                youTubePlayer.loadVideo(videoId, 0f)
-            }
-        })
+        binding.youtubePlayer.playVideo(videoId)
     }
 }

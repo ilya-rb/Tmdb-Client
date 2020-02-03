@@ -1,18 +1,18 @@
-package com.illiarb.tmdbexplorer.appfeatures.youtubeplayer
+package com.illiarb.tmdbclient.video
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import com.illiarb.tmdbexplorer.appfeatures.youtubeplayer.YoutubePlayerModel.UiEvent
-import com.illiarb.tmdbexplorer.appfeatures.youtubeplayer.YoutubePlayerModel.UiVideo
+import com.illiarb.tmdbclient.video.VideoListModel.UiEvent
+import com.illiarb.tmdbclient.video.VideoListModel.UiVideo
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import com.illiarb.tmdblcient.core.domain.Video
 import com.illiarb.tmdblcient.core.interactor.MoviesInteractor
 import com.illiarb.tmdblcient.core.util.Result
 import kotlinx.coroutines.launch
 
-interface YoutubePlayerModel {
+interface VideoListModel {
 
     val videos: LiveData<List<UiVideo>>
 
@@ -28,10 +28,10 @@ interface YoutubePlayerModel {
     }
 }
 
-class DefaultYoutubePlayerModel(
+class DefaultVideoListModel(
     private val movieId: Int,
     private val moviesInteractor: MoviesInteractor
-) : BasePresentationModel(), YoutubePlayerModel {
+) : BasePresentationModel(), VideoListModel {
 
     private val _videos = MutableLiveData<List<UiVideo>>()
     private val _selectedVideo = _videos.map { videos ->
