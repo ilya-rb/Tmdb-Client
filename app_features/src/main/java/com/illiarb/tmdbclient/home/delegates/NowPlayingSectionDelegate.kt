@@ -36,6 +36,22 @@ fun nowPlayingSectionDelegate(
         putInt(KEY_NOW_PLAYING_POSITION, currentPosition)
     }
 
+    val recyclerScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+
+            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                val snapView = snapHelper.findSnapView(nowPlayingPager.layoutManager)
+                snapView?.let {
+                    val snapPosition = nowPlayingPager.getChildAdapterPosition(it)
+                    if (snapPosition != RecyclerView.NO_POSITION) {
+                        currentPosition = snapPosition
+                    }
+                }
+            }
+        }
+    }
+
     snapHelper.attachToRecyclerView(nowPlayingPager)
 
     nowPlayingPager.adapter = adapter
@@ -50,6 +66,7 @@ fun nowPlayingSectionDelegate(
     }
 
     onViewAttachedToWindow {
+        nowPlayingPager.addOnScrollListener(recyclerScrollListener)
         stateSaver.registerStateSaver(KEY_NOW_PLAYING_POSITION, stateCallback)
 
         imagesTimer = fixedRateTimer(initialDelay = TIMER_IMAGE_UPDATE, period = TIMER_IMAGE_UPDATE) {
@@ -62,8 +79,9 @@ fun nowPlayingSectionDelegate(
     }
 
     onViewDetachedFromWindow {
-        imagesTimer?.cancel()
+        nowPlayingPager.removeOnScrollListener(recyclerScrollListener)
         stateSaver.unregisterStateSaver(KEY_NOW_PLAYING_POSITION)
+        imagesTimer?.cancel()
     }
 }
 
