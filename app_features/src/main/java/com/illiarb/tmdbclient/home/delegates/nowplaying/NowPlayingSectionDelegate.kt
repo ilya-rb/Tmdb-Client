@@ -1,16 +1,13 @@
-package com.illiarb.tmdbclient.home.delegates
+package com.illiarb.tmdbclient.home.delegates.nowplaying
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
-import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.LoopingPagerAdapter
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.RecyclerViewStateSaver
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.StateSaver
-import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieSection
 import com.illiarb.tmdblcient.core.domain.NowPlayingSection
 import java.util.Timer
@@ -26,7 +23,8 @@ fun nowPlayingSectionDelegate(
 ) = adapterDelegate<NowPlayingSection, MovieSection>(R.layout.item_now_playing_section) {
 
     val nowPlayingPager = itemView.findViewById<RecyclerView>(R.id.nowPlayingPager)
-    val adapter = NowPlayingPagerAdapter(clickListener)
+    val adapter =
+        NowPlayingPagerAdapter(clickListener)
     val snapHelper = PagerSnapHelper()
 
     var imagesTimer: Timer? = null
@@ -83,29 +81,4 @@ fun nowPlayingSectionDelegate(
         stateSaver.unregisterStateSaver(KEY_NOW_PLAYING_POSITION)
         imagesTimer?.cancel()
     }
-}
-
-private class NowPlayingPagerAdapter(clickListener: OnClickListener) :
-    ListDelegationAdapter<List<Movie>>(), LoopingPagerAdapter {
-
-    override val realCount: Int
-        get() = items.size
-
-    init {
-        delegatesManager.addDelegate(nowPlayingItemDelegate(clickListener))
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        super.onBindViewHolder(holder, getRealPosition(position))
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(getRealPosition(position))
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any?>) {
-        super.onBindViewHolder(holder, getRealPosition(position), payloads)
-    }
-
-    override fun getItemCount(): Int = if (realCount <= 1) realCount else LoopingPagerAdapter.MAX_COUNT
 }

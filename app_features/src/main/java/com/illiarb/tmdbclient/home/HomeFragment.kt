@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.tmdbclient.home.HomeModel.UiEvent
 import com.illiarb.tmdbclient.home.delegates.genresSectionDelegate
 import com.illiarb.tmdbclient.home.delegates.movieSectionDelegate
-import com.illiarb.tmdbclient.home.delegates.nowPlayingSectionDelegate
+import com.illiarb.tmdbclient.home.delegates.nowplaying.nowPlayingSectionDelegate
 import com.illiarb.tmdbclient.home.delegates.trendingSectionDelegate
 import com.illiarb.tmdbclient.home.di.HomeComponent
 import com.illiarb.tmdbclient.movies.home.R
@@ -48,7 +48,10 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     private val adapter = DelegatesAdapter(
         delegates = listOf(
             movieSectionDelegate(stateSaver, clickListener),
-            nowPlayingSectionDelegate(stateSaver, clickListener),
+            nowPlayingSectionDelegate(
+                stateSaver,
+                clickListener
+            ),
             genresSectionDelegate(clickListener),
             trendingSectionDelegate(stateSaver, clickListener)
         )
