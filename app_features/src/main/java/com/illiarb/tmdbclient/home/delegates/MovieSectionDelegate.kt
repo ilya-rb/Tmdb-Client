@@ -1,5 +1,6 @@
 package com.illiarb.tmdbclient.home.delegates
 
+import android.os.Parcelable
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,8 +13,8 @@ import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.common.SizeSpec
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.RecyclerViewStateSaver
-import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SimpleStateSaver
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
+import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.StateSaver
 import com.illiarb.tmdblcient.core.domain.ListSection
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieSection
@@ -29,12 +30,16 @@ fun movieSectionDelegate(
     val sectionList = itemView.findViewById<RecyclerView>(R.id.itemMovieSectionList)
     val seeAllButton = itemView.findViewById<View>(R.id.itemSectionSeeAll)
 
-    val layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-    val stateCallback = SimpleStateSaver(sectionList)
+    var key: String? = null
+    val stateCallback: StateSaver = {
+        key?.let {
+            putParcelable(it, sectionList.layoutManager?.onSaveInstanceState())
+        }
+    }
 
     sectionList.let {
         it.adapter = adapter
-        it.layoutManager = layoutManager
+        it.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
         it.setHasFixedSize(true)
         it.addItemDecoration(
             SpaceDecoration.edgeInnerSpace(
@@ -54,11 +59,17 @@ fun movieSectionDelegate(
             clickListener(item.code)
         }
 
-        recyclerViewStateSaver.registerAndRestoreIfNeeded(stateCallback, item.hashCode().toString(), sectionList)
+        key = item.hashCode().toString().also {
+            recyclerViewStateSaver.registerStateSaver(it, stateCallback)
+        }
+
+        val state = recyclerViewStateSaver.state(key) as? Parcelable?
+        sectionList.layoutManager?.onRestoreInstanceState(state)
     }
 
     onViewDetachedFromWindow {
-        recyclerViewStateSaver.unregisterCallback(stateCallback)
+        key?.let { recyclerViewStateSaver.unregisterStateSaver(it) }
+        key = null
     }
 }
 

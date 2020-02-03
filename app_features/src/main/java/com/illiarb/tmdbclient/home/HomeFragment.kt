@@ -47,9 +47,9 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     private val adapter = DelegatesAdapter(
         delegates = listOf(
             movieSectionDelegate(stateSaver, clickListener),
-            nowPlayingSectionDelegate(clickListener),
+            nowPlayingSectionDelegate(stateSaver, clickListener),
             genresSectionDelegate(clickListener),
-            trendingSectionDelegate(clickListener)
+            trendingSectionDelegate(stateSaver, clickListener)
         )
     )
 
@@ -93,6 +93,7 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
                     spacingBottomLast = dimen(R.dimen.spacing_normal)
                 )
             )
+
             isNestedScrollingEnabled = false
             removeAdapterOnDetach()
             doOnApplyWindowInsets { v, insets, initialPadding ->

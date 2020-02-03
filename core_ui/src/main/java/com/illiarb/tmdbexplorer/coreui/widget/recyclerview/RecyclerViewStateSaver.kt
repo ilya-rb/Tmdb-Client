@@ -1,42 +1,33 @@
 package com.illiarb.tmdbexplorer.coreui.widget.recyclerview
 
 import android.os.Bundle
-import android.os.Parcelable
-import androidx.lifecycle.LifecycleObserver
-import androidx.recyclerview.widget.RecyclerView
 
-typealias StateSaver = () -> Parcelable?
+typealias StateSaver = Bundle.() -> Unit
 
-class SimpleStateSaver(private val recyclerView: RecyclerView) : StateSaver {
-    override fun invoke(): Parcelable? = recyclerView.layoutManager?.onSaveInstanceState()
-}
-
-class RecyclerViewStateSaver : LifecycleObserver {
+class RecyclerViewStateSaver {
 
     private val stateRegistry = mutableMapOf<String, StateSaver>()
-
-    private var bundle = Bundle()
+    private val bundle = Bundle()
 
     fun saveInstanceState() {
         stateRegistry.forEach {
-            bundle.putParcelable(it.key, it.value())
+            it.value(bundle)
         }
     }
 
-    fun registerAndRestoreIfNeeded(callback: StateSaver, key: String, recyclerView: RecyclerView) {
+    fun registerStateSaver(key: String, callback: StateSaver) {
         stateRegistry[key] = callback
-
-        val savedState = bundle.getParcelable<Parcelable?>(key)
-        savedState?.let {
-            recyclerView.layoutManager?.onRestoreInstanceState(savedState)
-            bundle.remove(key)
-        }
     }
 
-    fun unregisterCallback(callback: StateSaver) {
-        val entry = stateRegistry.entries.firstOrNull { it.value == callback }
-        entry?.let {
-            stateRegistry.remove(it.key)
+    fun unregisterStateSaver(key: String) {
+        stateRegistry.remove(key)
+    }
+
+    fun state(key: String?, defaultValue: Any? = null): Any? {
+        val state = bundle.get(key) ?: defaultValue
+
+        return state.also {
+            bundle.remove(key)
         }
     }
 }

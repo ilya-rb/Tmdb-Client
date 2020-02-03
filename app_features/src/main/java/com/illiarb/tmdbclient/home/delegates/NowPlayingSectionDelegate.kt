@@ -8,6 +8,8 @@ import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.LoopingPagerAdapter
+import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.RecyclerViewStateSaver
+import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.StateSaver
 import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieSection
 import com.illiarb.tmdblcient.core.domain.NowPlayingSection
@@ -16,41 +18,54 @@ import kotlin.concurrent.fixedRateTimer
 
 // 10 seconds
 private const val TIMER_IMAGE_UPDATE = 10000L
+private const val KEY_NOW_PLAYING_POSITION = "now_playing_position"
 
-fun nowPlayingSectionDelegate(clickListener: OnClickListener) =
-    adapterDelegate<NowPlayingSection, MovieSection>(R.layout.item_now_playing_section) {
+fun nowPlayingSectionDelegate(
+    stateSaver: RecyclerViewStateSaver,
+    clickListener: OnClickListener
+) = adapterDelegate<NowPlayingSection, MovieSection>(R.layout.item_now_playing_section) {
 
-        val nowPlayingPager = itemView.findViewById<RecyclerView>(R.id.nowPlayingPager)
-        val adapter = NowPlayingPagerAdapter(clickListener)
-        val snapHelper = PagerSnapHelper()
+    val nowPlayingPager = itemView.findViewById<RecyclerView>(R.id.nowPlayingPager)
+    val adapter = NowPlayingPagerAdapter(clickListener)
+    val snapHelper = PagerSnapHelper()
 
-        var imagesTimer: Timer? = null
-        var currentPosition = 0
+    var imagesTimer: Timer? = null
+    var currentPosition = 0
 
-        snapHelper.attachToRecyclerView(nowPlayingPager)
+    val stateCallback: StateSaver = {
+        putInt(KEY_NOW_PLAYING_POSITION, currentPosition)
+    }
 
-        nowPlayingPager.adapter = adapter
-        nowPlayingPager.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+    snapHelper.attachToRecyclerView(nowPlayingPager)
 
-        bind {
-            adapter.items = item.movies
-            adapter.notifyDataSetChanged()
-        }
+    nowPlayingPager.adapter = adapter
+    nowPlayingPager.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
 
-        onViewAttachedToWindow {
-            imagesTimer = fixedRateTimer(initialDelay = TIMER_IMAGE_UPDATE, period = TIMER_IMAGE_UPDATE) {
-                if (adapter.realCount == 0) {
-                    return@fixedRateTimer
-                }
-                currentPosition++
-                nowPlayingPager.smoothScrollToPosition(currentPosition)
+    bind {
+        adapter.items = item.movies
+        adapter.notifyDataSetChanged()
+
+        currentPosition = stateSaver.state(KEY_NOW_PLAYING_POSITION, 0) as Int
+        nowPlayingPager.scrollToPosition(currentPosition)
+    }
+
+    onViewAttachedToWindow {
+        stateSaver.registerStateSaver(KEY_NOW_PLAYING_POSITION, stateCallback)
+
+        imagesTimer = fixedRateTimer(initialDelay = TIMER_IMAGE_UPDATE, period = TIMER_IMAGE_UPDATE) {
+            if (adapter.realCount == 0) {
+                return@fixedRateTimer
             }
-        }
-
-        onViewDetachedFromWindow {
-            imagesTimer?.cancel()
+            currentPosition++
+            nowPlayingPager.smoothScrollToPosition(currentPosition)
         }
     }
+
+    onViewDetachedFromWindow {
+        imagesTimer?.cancel()
+        stateSaver.unregisterStateSaver(KEY_NOW_PLAYING_POSITION)
+    }
+}
 
 private class NowPlayingPagerAdapter(clickListener: OnClickListener) :
     ListDelegationAdapter<List<Movie>>(), LoopingPagerAdapter {
