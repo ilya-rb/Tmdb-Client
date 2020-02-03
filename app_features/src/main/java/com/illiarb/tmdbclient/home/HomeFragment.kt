@@ -1,6 +1,7 @@
 package com.illiarb.tmdbclient.home
 
 import android.animation.ArgbEvaluator
+import android.animation.FloatEvaluator
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -114,16 +115,23 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
             val endColor: Int = requireView().getColorAttr(R.attr.colorPrimary)
             val endStateHeight: Int = requireView().dimen(R.dimen.app_bar_end_state_height)
 
+            val elevationEvaluator = FloatEvaluator()
+            val endElevation = requireView().dimen(R.dimen.elevation_normal).toFloat()
+
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 val scrollOffset = recyclerView.computeVerticalScrollOffset()
-                val progress = calculateProgress(scrollOffset.coerceAtMost(endStateHeight), endStateHeight)
+                val progress = scrollOffset.coerceAtMost(endStateHeight).toPercentOf(endStateHeight)
                 val appBarColor = colorEvaluator.evaluate(progress.toFloat() / 100, startColor, endColor) as Int
                 binding.appBar.setBackgroundColor(appBarColor)
+
+                val currentElevation = binding.appBar.elevation
+                val elevationProgress =
+                    currentElevation.coerceAtMost(endElevation).toInt().toPercentOf(endElevation.toInt())
+                val elevation = elevationEvaluator.evaluate(elevationProgress.toFloat() / 100, 0, endElevation)
+                binding.appBar.elevation = elevation
             }
 
-            private fun calculateProgress(current: Int, max: Int): Int {
-                return current * 100 / max
-            }
+            private fun Int.toPercentOf(max: Int): Int = this * 100 / max
         })
     }
 

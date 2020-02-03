@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/spacing_normal"
         android:paddingRight="@dimen/spacing_normal"
-        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textAppearance="?attr/textAppearanceHeadline6"
         android:textColor="?attr/colorOnBackground"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/itemSectionSeeAll"

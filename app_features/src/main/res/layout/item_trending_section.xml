@@ -12,7 +12,7 @@
         android:paddingLeft="@dimen/spacing_normal"
         android:paddingRight="@dimen/spacing_normal"
         android:text="@string/trending_section_title"
-        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textAppearance="?attr/textAppearanceHeadline6"
         android:textColor="?attr/colorOnBackground"
         android:textStyle="bold" />
 
