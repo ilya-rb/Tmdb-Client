@@ -8,7 +8,7 @@ import com.illiarb.tmdbclient.video.VideoListModel.UiVideo
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 
-fun videoDelegate(clickListener: OnClickListener) = adapterDelegate<UiVideo, UiVideo>(R.layout.item_video) {
+fun videoDelegate(clickListener: OnClickListener) = adapterDelegate<UiVideo, Any>(R.layout.item_video) {
 
     val title = itemView.findViewById<TextView>(R.id.itemVideoTitle)
     val selectedView = itemView.findViewById<View>(R.id.itemVideoSelected)

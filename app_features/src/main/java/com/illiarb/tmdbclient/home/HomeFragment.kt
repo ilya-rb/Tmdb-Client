@@ -46,15 +46,10 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     private val stateSaver = RecyclerViewStateSaver()
     private val clickListener: OnClickListener = { viewModel.onUiEvent(UiEvent.ItemClick(it)) }
     private val adapter = DelegatesAdapter(
-        delegates = listOf(
-            movieSectionDelegate(stateSaver, clickListener),
-            nowPlayingSectionDelegate(
-                stateSaver,
-                clickListener
-            ),
-            genresSectionDelegate(clickListener),
-            trendingSectionDelegate(stateSaver, clickListener)
-        )
+        movieSectionDelegate(stateSaver, clickListener),
+        nowPlayingSectionDelegate(stateSaver, clickListener),
+        genresSectionDelegate(clickListener),
+        trendingSectionDelegate(stateSaver, clickListener)
     )
 
     override fun getViewBinding(inflater: LayoutInflater): FragmentMoviesBinding =
@@ -113,6 +108,7 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     @Suppress("MagicNumber")
     private fun setupAppBarScrollListener() {
         binding.moviesList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
             val colorEvaluator = ArgbEvaluator()
             val startColor = Color.TRANSPARENT
             val endColor: Int = requireView().getColorAttr(R.attr.colorPrimary)
@@ -122,19 +118,19 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
             val endElevation = requireView().dimen(R.dimen.elevation_normal).toFloat()
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val scrollOffset = recyclerView.computeVerticalScrollOffset()
-                val progress = scrollOffset.coerceAtMost(endStateHeight).toPercentOf(endStateHeight)
-                val appBarColor = colorEvaluator.evaluate(progress.toFloat() / 100, startColor, endColor) as Int
-                binding.appBar.setBackgroundColor(appBarColor)
+                val fraction = calculateFraction(recyclerView.computeVerticalScrollOffset(), endStateHeight)
+                val appBarColor = colorEvaluator.evaluate(fraction, startColor, endColor) as Int
+                val elevation = elevationEvaluator.evaluate(fraction, 0, endElevation)
 
-                val currentElevation = binding.appBar.elevation
-                val elevationProgress =
-                    currentElevation.coerceAtMost(endElevation).toInt().toPercentOf(endElevation.toInt())
-                val elevation = elevationEvaluator.evaluate(elevationProgress.toFloat() / 100, 0, endElevation)
+                binding.appBar.setBackgroundColor(appBarColor)
                 binding.appBar.elevation = elevation
             }
 
             private fun Int.toPercentOf(max: Int): Int = this * 100 / max
+
+            private fun calculateFraction(start: Int, end: Int): Float {
+                return start.coerceAtMost(end).toPercentOf(end) / 100f
+            }
         })
     }
 

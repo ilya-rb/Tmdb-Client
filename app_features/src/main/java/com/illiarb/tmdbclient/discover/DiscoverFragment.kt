@@ -42,14 +42,12 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
     private lateinit var filtersContainer: ViewGroup
 
     private val adapter = DelegatesAdapter(
-        delegates = listOf(
-            movieDelegate(
-                SizeSpec.MatchParent,
-                SizeSpec.Fixed(R.dimen.discover_item_movie_height)
-            ) {
-                viewModel.onUiEvent(UiEvent.ItemClick(it))
-            }
-        )
+        movieDelegate(
+            SizeSpec.MatchParent,
+            SizeSpec.Fixed(R.dimen.discover_item_movie_height)
+        ) {
+            viewModel.onUiEvent(UiEvent.ItemClick(it))
+        }
     )
 
     private val viewModel: DiscoverModel by lazy(LazyThreadSafetyMode.NONE) {

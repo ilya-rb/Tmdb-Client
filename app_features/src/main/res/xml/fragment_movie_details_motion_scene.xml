@@ -9,9 +9,11 @@
 
         <OnSwipe
             app:dragDirection="dragUp"
-            app:touchAnchorId="@id/movieDetailsScrollView"
+            app:moveWhenScrollAtTop="true"
+            app:onTouchUp="stop"
+            app:touchAnchorId="@id/movieDetailsRecycler"
             app:touchAnchorSide="top"
-            app:touchRegionId="@id/movieDetailsScrollView" />
+            app:touchRegionId="@id/movieDetailsRecycler" />
 
         <KeyFrameSet>
 
@@ -32,15 +34,10 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/movie_details_poster_height"
             android:contentDescription="@null"
+            android:translationY="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <CustomAttribute
-                app:attributeName="curveOffset"
-                app:customIntegerValue="120" />
-
-        </Constraint>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Constraint
             android:id="@+id/movieDetailsPlay"
@@ -75,17 +72,12 @@
         <Constraint
             android:id="@+id/movieDetailsPoster"
             android:layout_width="0dp"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="@dimen/movie_details_poster_height"
             android:contentDescription="@null"
+            android:translationY="@dimen/movie_details_poster_height_translation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <CustomAttribute
-                app:attributeName="curveOffset"
-                app:customIntegerValue="0" />
-
-        </Constraint>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Constraint
             android:id="@+id/movieDetailsPlay"

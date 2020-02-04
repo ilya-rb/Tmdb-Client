@@ -61,8 +61,6 @@ class DefaultHomeModel @Inject constructor(
                     }
                     movieSectionsLiveData.value = Async.Success(sectionsList)
                 }
-            } else if (trending is Result.Error) {
-                Logger.e("HomeModel", trending.error.message ?: "", trending.error)
             }
         }
     }

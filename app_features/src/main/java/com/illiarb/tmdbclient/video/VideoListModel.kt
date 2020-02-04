@@ -14,13 +14,14 @@ import kotlinx.coroutines.launch
 
 interface VideoListModel {
 
-    val videos: LiveData<List<UiVideo>>
+    val videos: LiveData<List<Any>>
 
     val selectedVideo: LiveData<UiVideo>
 
     fun onUiEvent(event: UiEvent)
 
     data class UiVideo(val video: Video, val isSelected: Boolean)
+    data class UiVideoSection(val title: String, val count: Int)
 
     sealed class UiEvent {
         object VideoEnded : UiEvent()
@@ -33,19 +34,30 @@ class DefaultVideoListModel(
     private val moviesInteractor: MoviesInteractor
 ) : BasePresentationModel(), VideoListModel {
 
-    private val _videos = MutableLiveData<List<UiVideo>>()
+    private val _videos = MutableLiveData<List<Any>>()
     private val _selectedVideo = _videos.map { videos ->
-        videos.first { it.isSelected }
+        videos.first { it is UiVideo && it.isSelected } as UiVideo
     }
 
     init {
         viewModelScope.launch {
             _videos.value = when (val result = moviesInteractor.getMovieVideos(movieId)) {
-                is Result.Success -> result.data.mapIndexed { index, video ->
-                    if (index == 0) {
-                        UiVideo(video, isSelected = true)
-                    } else {
-                        UiVideo(video, isSelected = false)
+                is Result.Success -> {
+                    val groupedVideos = result.data
+                        .mapIndexed { index, video ->
+                            if (index == 0) {
+                                UiVideo(video, isSelected = true)
+                            } else {
+                                UiVideo(video, isSelected = false)
+                            }
+                        }
+                        .groupBy { it.video.type }
+
+                    mutableListOf<Any>().apply {
+                        groupedVideos.forEach { videoGroup ->
+                            add(VideoListModel.UiVideoSection(videoGroup.key, videoGroup.value.size))
+                            addAll(videoGroup.value)
+                        }
                     }
                 }
                 is Result.Error -> emptyList()
@@ -53,7 +65,7 @@ class DefaultVideoListModel(
         }
     }
 
-    override val videos: LiveData<List<UiVideo>>
+    override val videos: LiveData<List<Any>>
         get() = _videos
 
     override val selectedVideo: LiveData<UiVideo>
@@ -69,9 +81,9 @@ class DefaultVideoListModel(
     private fun onVideoEnded() {
         // Play next video in the list or if end is reached the first one
         _videos.value?.let { videos ->
-            videos.indexOfFirst { it.isSelected }
+            videos.indexOfFirst { it is UiVideo && it.isSelected }
                 .let { if (it < videos.size - 1) it + 1 else 0 }
-                .let { selectVideo(videos[it]) }
+                .let { selectVideo(videos[it] as UiVideo) }
         }
     }
 
@@ -80,10 +92,14 @@ class DefaultVideoListModel(
             val position = it.indexOf(video).takeIf { pos -> pos != -1 } ?: return
 
             _videos.value = it.mapIndexed { index, item ->
-                if (index == position) {
-                    item.copy(isSelected = true)
+                if (item is UiVideo) {
+                    if (index == position) {
+                        item.copy(isSelected = true)
+                    } else {
+                        item.copy(isSelected = false)
+                    }
                 } else {
-                    item.copy(isSelected = false)
+                    item
                 }
             }
         }

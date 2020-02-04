@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,12 +19,13 @@
         android:id="@+id/itemVideoTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_play_circle_filled"
+        android:drawableStart="@drawable/ic_youtube"
         android:drawablePadding="@dimen/spacing_normal"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:padding="@dimen/spacing_normal"
         android:textAppearance="?attr/textAppearanceBody1"
         android:textColor="?attr/colorOnBackground"
-        app:drawableTint="?attr/colorOnBackground"
         tools:text="@tools:sample/lorem" />
 
 </LinearLayout>

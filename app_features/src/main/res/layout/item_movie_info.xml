@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/movieDetailsTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textColor="?attr/colorOnSurface"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:maxLines="2"
+        tools:text="@tools:sample/lorem/random" />
+
+    <TextView
+        android:id="@+id/movieDetailsTags"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:alpha="0.8"
+        android:gravity="center_horizontal"
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:textColor="?attr/colorOnSurface"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsTitle"
+        tools:maxLines="1"
+        tools:text="@tools:sample/lorem" />
+
+    <TextView
+        android:id="@+id/movieDetailsDateTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:gravity="center_horizontal"
+        android:text="@string/movie_details_year"
+        android:textAppearance="?attr/textAppearanceCaption"
+        android:textColor="?attr/colorAccent"
+        app:layout_constraintEnd_toStartOf="@id/movieDetailsCountryTitle"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsTags" />
+
+    <TextView
+        android:id="@+id/movieDetailsCountryTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/movie_details_country"
+        android:textAppearance="?attr/textAppearanceCaption"
+        android:textColor="?attr/colorAccent"
+        app:layout_constraintBottom_toBottomOf="@id/movieDetailsDateTitle"
+        app:layout_constraintEnd_toStartOf="@id/movieDetailsLengthTitle"
+        app:layout_constraintStart_toEndOf="@id/movieDetailsDateTitle"
+        app:layout_constraintTop_toTopOf="@id/movieDetailsDateTitle" />
+
+    <TextView
+        android:id="@+id/movieDetailsLengthTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/movie_details_length"
+        android:textAppearance="?attr/textAppearanceCaption"
+        android:textColor="?attr/colorAccent"
+        app:layout_constraintBottom_toBottomOf="@id/movieDetailsDateTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/movieDetailsCountryTitle"
+        app:layout_constraintTop_toTopOf="@id/movieDetailsDateTitle" />
+
+    <TextView
+        android:id="@+id/movieDetailsDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:gravity="center_horizontal"
+        android:textAppearance="?attr/textAppearanceCaption"
+        android:textColor="?attr/colorOnSurface"
+        app:layout_constraintEnd_toStartOf="@id/movieDetailsCountry"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsDateTitle"
+        tools:text="2019" />
+
+    <TextView
+        android:id="@+id/movieDetailsCountry"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textAppearance="?attr/textAppearanceCaption"
+        android:textColor="?attr/colorOnSurface"
+        app:layout_constraintBottom_toBottomOf="@id/movieDetailsDate"
+        app:layout_constraintEnd_toStartOf="@id/movieDetailsLength"
+        app:layout_constraintStart_toEndOf="@id/movieDetailsDate"
+        app:layout_constraintTop_toTopOf="@id/movieDetailsDate"
+        tools:text="USA" />
+
+    <TextView
+        android:id="@+id/movieDetailsLength"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textAppearance="?attr/textAppearanceCaption"
+        android:textColor="?attr/colorOnSurface"
+        app:layout_constraintBottom_toBottomOf="@id/movieDetailsDate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/movieDetailsCountry"
+        app:layout_constraintTop_toTopOf="@id/movieDetailsDate"
+        tools:text="112 min" />
+
+    <TextView
+        android:id="@+id/movieDetailsOverview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:ellipsize="end"
+        android:maxLines="5"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:textColor="?attr/colorOnSurface"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsDate"
+        tools:text="@tools:sample/lorem/random" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

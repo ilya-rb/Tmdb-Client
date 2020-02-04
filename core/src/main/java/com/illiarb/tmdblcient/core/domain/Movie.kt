@@ -28,6 +28,8 @@ data class Movie(
             return buildString {
                 genres.forEachIndexed { index, genre ->
                     append(genre.name)
+                    append(" ")
+                    append(genre.getEmoji())
 
                     if (index < genres.size - 1) {
                         append(delimiter)

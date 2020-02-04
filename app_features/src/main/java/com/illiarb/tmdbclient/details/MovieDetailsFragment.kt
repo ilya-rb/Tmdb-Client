@@ -8,21 +8,18 @@ import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.coreuiimage.CropOptions
 import com.illiarb.coreuiimage.loadImage
-import com.illiarb.tmdbclient.common.delegates.movieDelegate
 import com.illiarb.tmdbclient.details.MovieDetailsModel.UiEvent
-import com.illiarb.tmdbclient.details.delegates.photoDelegate
+import com.illiarb.tmdbclient.details.delegates.movieInfoDelegate
+import com.illiarb.tmdbclient.details.delegates.movieSimilarDelegate
+import com.illiarb.tmdbclient.details.delegates.photoSectionDelegate
 import com.illiarb.tmdbclient.details.di.MovieDetailsComponent
-import com.illiarb.tmdbclient.details.widget.MovieDetailsScrollView
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentMovieDetailsBinding
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
-import com.illiarb.tmdbexplorer.coreui.common.SizeSpec
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
-import com.illiarb.tmdbexplorer.coreui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
@@ -43,15 +40,13 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
     @Inject
     lateinit var dateFormatter: DateFormatter
 
-    private val photosAdapter = DelegatesAdapter(delegates = listOf(photoDelegate {}))
-    private val moviesAdapter = DelegatesAdapter(delegates = listOf(
-        movieDelegate(
-            SizeSpec.Fixed(R.dimen.item_movie_width),
-            SizeSpec.Fixed(R.dimen.item_movie_height)
-        ) {
-            viewModel.onUiEvent(UiEvent.MovieClicked(it as Movie))
-        }
-    ))
+    private val sectionsAdapter by lazy(LazyThreadSafetyMode.NONE) {
+        DelegatesAdapter(
+            movieInfoDelegate(dateFormatter),
+            movieSimilarDelegate { viewModel.onUiEvent(UiEvent.MovieClicked(it as Movie)) },
+            photoSectionDelegate { }
+        )
+    }
 
     private val viewModel: MovieDetailsModel by lazy(LazyThreadSafetyMode.NONE) {
         viewModelFactory.create(DefaultDetailsViewModel::class.java)
@@ -69,19 +64,29 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
         super.onViewCreated(view, savedInstanceState)
 
         binding.swipeRefresh.isEnabled = false
-        binding.movieDetailsScrollView.scrollInterceptor = object : MovieDetailsScrollView.ScrollInterceptor {
-            override fun isAllowedToScroll(): Boolean {
-                return binding.movieDetailsRoot.progress == 1f
-            }
-        }
 
         setupToolbar()
-        setupMoviesList()
-        setupPhotosList()
+        setupSectionsList()
 
         ViewCompat.requestApplyInsets(view)
 
         bind(viewModel)
+    }
+
+    private fun setupSectionsList() {
+        binding.movieDetailsRecycler.apply {
+            adapter = sectionsAdapter
+            layoutManager = LinearLayoutManager(context)
+            isNestedScrollingEnabled = false
+            addItemDecoration(
+                SpaceDecoration(
+                    spacingLeft = dimen(R.dimen.spacing_normal),
+                    spacingRight = dimen(R.dimen.spacing_normal),
+                    spacingTop = dimen(R.dimen.spacing_small),
+                    spacingBottom = dimen(R.dimen.spacing_small)
+                )
+            )
+        }
     }
 
     private fun setupToolbar() {
@@ -98,45 +103,8 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
         }
     }
 
-    private fun setupMoviesList() {
-        binding.movieDetailsSimilar.apply {
-            adapter = moviesAdapter
-            layoutManager = createHorizontalLayoutManager()
-            removeAdapterOnDetach()
-            isNestedScrollingEnabled = false
-            addItemDecoration(createHorizontalListDecoration())
-            doOnApplyWindowInsets { v, windowInsets, initialPadding ->
-                v.updatePadding(bottom = initialPadding.bottom + windowInsets.systemWindowInsetBottom)
-            }
-        }
-    }
-
-    private fun setupPhotosList() {
-        binding.movieDetailsPhotos.apply {
-            adapter = photosAdapter
-            layoutManager = createHorizontalLayoutManager()
-            setHasFixedSize(true)
-            isNestedScrollingEnabled = false
-            removeAdapterOnDetach()
-            addItemDecoration(createHorizontalListDecoration())
-        }
-    }
-
-    private fun createHorizontalLayoutManager(): RecyclerView.LayoutManager =
-        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-    private fun createHorizontalListDecoration(): RecyclerView.ItemDecoration {
-        return SpaceDecoration(
-            orientation = LinearLayoutManager.HORIZONTAL,
-            spacingLeftFirst = dimen(R.dimen.spacing_normal),
-            spacingLeft = dimen(R.dimen.spacing_small),
-            spacingRight = dimen(R.dimen.spacing_small),
-            spacingRightLast = dimen(R.dimen.spacing_normal)
-        )
-    }
-
     private fun bind(viewModel: MovieDetailsModel) {
-        viewModel.similarMovies.observe(viewLifecycleOwner, moviesAdapter)
+        viewModel.movieSections.observe(viewLifecycleOwner, sectionsAdapter)
         viewModel.movie.observe(viewLifecycleOwner, Observer {
             binding.swipeRefresh.isRefreshing = it is Async.Loading
 
@@ -147,22 +115,13 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
     }
 
     private fun showMovieDetails(movie: Movie) {
-        with(binding) {
-            movieDetailsTitle.text = movie.title
-            movieDetailsOverview.text = movie.overview
-            movieDetailsLength.text = getString(R.string.movie_details_duration, movie.runtime)
-            movieDetailsCountry.text = movie.country
-            movieDetailsTags.text = movie.getGenresString()
-            movieDetailsDate.text = dateFormatter.formatDate(movie.releaseDate)
-            movieDetailsPoster.loadImage(movie.posterPath) {
-                crop(CropOptions.CenterCrop)
-            }
-            movieDetailsPlay.setVisible(!movie.videos.isNullOrEmpty())
-            movieDetailsPlay.setOnClickListener {
-                viewModel.onUiEvent(UiEvent.PlayClicked)
-            }
+        binding.movieDetailsPoster.loadImage(movie.posterPath) {
+            crop(CropOptions.CenterCrop)
         }
 
-        photosAdapter.submitList(movie.images)
+        binding.movieDetailsPlay.setVisible(!movie.videos.isNullOrEmpty())
+        binding.movieDetailsPlay.setOnClickListener {
+            viewModel.onUiEvent(UiEvent.PlayClicked)
+        }
     }
 }

@@ -27,7 +27,13 @@ class VideoListFragment : BaseViewBindingFragment<FragmentVideoListBinding>(), I
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val videosAdapter = DelegatesAdapter(delegates = listOf(videoDelegate {}))
+    private val videosAdapter = DelegatesAdapter(
+        videoTypeDelegate(),
+        videoDelegate {
+            viewModel.onUiEvent(UiEvent.VideoClick(it as VideoListModel.UiVideo))
+        }
+    )
+
     private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this, viewModelFactory).get(DefaultVideoListModel::class.java)
     }

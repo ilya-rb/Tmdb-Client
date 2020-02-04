@@ -16,13 +16,13 @@ class YoutubePlayer @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    private val youtubePlayerView: YouTubePlayerView
     private var stateListener: StateListener? = null
+    private val youtubePlayerView: YouTubePlayerView
 
     init {
         val view = inflate(context, R.layout.widget_youtube_player, this)
 
-        youtubePlayerView = view.findViewById(R.id.youtubePlayer)
+        youtubePlayerView = view.findViewById(R.id.playerView)
         youtubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
             override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
                 if (state == PlayerConstants.PlayerState.ENDED) {
