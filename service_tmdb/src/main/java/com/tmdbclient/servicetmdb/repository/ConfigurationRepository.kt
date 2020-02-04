@@ -39,7 +39,7 @@ class DefaultConfigurationRepository @Inject constructor(
         } else {
             val configuration = api.getConfigurationAsync().await()
             cache.storeConfiguration(configuration)
-            cache.getConfiguration()
+            withContext(dispatcherProvider.io) { cache.getConfiguration() }
         }
     }
 

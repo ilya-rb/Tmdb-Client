@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -40,6 +39,7 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
 
     private lateinit var discoverGenres: ChipGroup
     private lateinit var filtersContainer: ViewGroup
+    private lateinit var discoverSwipeArea: View
 
     private val adapter = DelegatesAdapter(
         movieDelegate(
@@ -64,6 +64,7 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
 
         // filters layout added via <include> tag and not supported by view binding
         discoverGenres = binding.root.findViewById(R.id.discoverGenres)
+        discoverSwipeArea = binding.root.findViewById(R.id.discoverSwipeArea)
         filtersContainer = binding.root.findViewById(R.id.discoverFiltersContainer)
 
         binding.discoverSwipeRefresh.isEnabled = false
@@ -87,6 +88,10 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
     }
 
     private fun setupFilters() {
+        discoverSwipeArea.setOnClickListener {
+            showFiltersPanel()
+        }
+
         binding.root.findViewById<View>(R.id.discoverApplyFilter).setOnClickListener {
             dismissFiltersPanel()
             viewModel.onUiEvent(UiEvent.ApplyFilter(discoverGenres.checkedChipId))
@@ -97,15 +102,6 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
             dismissFiltersPanel()
             viewModel.onUiEvent(UiEvent.ClearFilter)
         }
-
-        binding.discoverRoot.setTransitionListener(object : MotionLayout.TransitionListener {
-            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) = Unit
-            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) = Unit
-            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) = Unit
-            override fun onTransitionCompleted(root: MotionLayout?, state: Int) {
-                binding.discoverOverlay.isClickable = state == R.id.filtersEnd
-            }
-        })
     }
 
     private fun setupDiscoverList() {
@@ -125,6 +121,10 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
         viewModel.selectedChip.observe(viewLifecycleOwner, Observer(::selectChip))
         viewModel.isLoading.observe(viewLifecycleOwner, Observer(::showLoading))
         viewModel.screenTitle.observe(viewLifecycleOwner, Observer(::setScreenTitle))
+    }
+
+    private fun showFiltersPanel() {
+        binding.discoverRoot.transitionToEnd()
     }
 
     private fun dismissFiltersPanel() {

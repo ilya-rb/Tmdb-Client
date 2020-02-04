@@ -20,6 +20,7 @@ import com.illiarb.tmdbclient.movies.home.databinding.FragmentMovieDetailsBindin
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
+import com.illiarb.tmdbexplorer.coreui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
@@ -78,6 +79,7 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
             adapter = sectionsAdapter
             layoutManager = LinearLayoutManager(context)
             isNestedScrollingEnabled = false
+            removeAdapterOnDetach()
             addItemDecoration(
                 SpaceDecoration(
                     spacingLeft = dimen(R.dimen.spacing_normal),

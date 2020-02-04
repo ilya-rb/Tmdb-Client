@@ -14,7 +14,6 @@ import com.tmdbclient.servicetmdb.cache.TmdbCache
 import com.tmdbclient.servicetmdb.mappers.MovieMapper
 import com.tmdbclient.servicetmdb.repository.MoviesRepository
 import kotlinx.coroutines.withContext
-import java.util.Collections
 import javax.inject.Inject
 
 class DefaultMoviesInteractor @Inject constructor(
@@ -31,7 +30,7 @@ class DefaultMoviesInteractor @Inject constructor(
             filters.map { filter ->
                 val moviesByType = when (val result = getMoviesByType(filter)) {
                     is Result.Success -> result.data
-                    is Result.Error -> Collections.emptyList()
+                    is Result.Error -> emptyList()
                 }
                 MovieBlock(filter, moviesByType)
             }

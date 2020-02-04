@@ -22,6 +22,7 @@
             style="?attr/materialTextButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_small"
             android:text="@string/discover_filter_apply" />
 
         <Space
@@ -29,10 +30,20 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <View
-            android:layout_width="40dp"
-            android:layout_height="5dp"
-            android:background="@drawable/bg_discover_swipe_view" />
+        <FrameLayout
+            android:id="@+id/discoverSwipeArea"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/spacing_normal"
+            android:paddingRight="@dimen/spacing_normal">
+
+            <View
+                android:layout_width="40dp"
+                android:layout_height="5dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_discover_swipe_view" />
+
+        </FrameLayout>
 
         <Space
             android:layout_width="0dp"
@@ -44,6 +55,7 @@
             style="?attr/materialTextButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_small"
             android:text="@string/discover_filter_clear" />
 
     </LinearLayout>

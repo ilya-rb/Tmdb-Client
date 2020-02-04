@@ -8,8 +8,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FirebaseFeatureFlagStore @Inject constructor() :
-    FeatureFlagStore {
+class FirebaseFeatureFlagStore @Inject constructor() : FeatureFlagStore {
 
     companion object {
         const val TAG = "FirebaseFeatureFlagStore"
