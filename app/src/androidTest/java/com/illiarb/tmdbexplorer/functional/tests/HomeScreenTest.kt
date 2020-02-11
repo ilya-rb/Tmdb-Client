@@ -5,17 +5,13 @@ import androidx.test.rule.ActivityTestRule
 import androidx.test.rule.GrantPermissionRule
 import com.illiarb.tmdbclient.MainActivity
 import com.illiarb.tmdbexplorer.functional.screens.HomeScreen
+import com.illiarb.tmdbexplorer.functional.screens.MovieDetailsScreen
 import com.kaspersky.kaspresso.kaspresso.Kaspresso
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import org.junit.Rule
 import org.junit.Test
-import java.util.concurrent.TimeUnit
 
-class HomeScreenTest : TestCase(
-    Kaspresso.Builder.default().apply {
-        flakySafetyParams.timeoutMs = TimeUnit.SECONDS.toMillis(5)
-    }
-) {
+class HomeScreenTest : TestCase(Kaspresso.Builder.simple()) {
 
     @get:Rule
     val runtimePermissionRule: GrantPermissionRule = GrantPermissionRule.grant(
@@ -38,9 +34,20 @@ class HomeScreenTest : TestCase(
                 }
             }
 
-            step("Open home screen scroll down and check popular section visible") {
+            step("Open home screen find not playing section and click on the first item") {
                 HomeScreen {
-                    moviesList.scrollToEnd()
+                    moviesList.firstChild<HomeScreen.NowPlayingSectionItem> {
+                        isVisible()
+
+                        items.firstChild<HomeScreen.NowPlayingSectionItem.NowPlayingItem> {
+                            isCompletelyDisplayed()
+                            click()
+                        }
+                    }
+                }
+
+                MovieDetailsScreen {
+                    poster.isVisible()
                 }
             }
         }

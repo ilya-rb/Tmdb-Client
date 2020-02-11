@@ -1,6 +1,8 @@
 package com.illiarb.tmdbexplorer.functional
 
 import android.app.Application
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
 import com.illiarb.tmdbclient.MobileAppInjector
 import com.illiarb.tmdbclient.navigation.ActionsBuffer
 import com.illiarb.tmdbclient.navigation.AppRouter
@@ -21,6 +23,7 @@ import com.illiarb.tmdblcient.core.tools.WorkManager
 import com.illiarb.tmdblcient.core.tools.ConnectivityStatus
 import com.illiarb.tmdblcient.core.tools.DispatcherProvider
 import com.illiarb.tmdblcient.core.tools.WorkerCreator
+import com.illiarb.tmdblcient.core.util.DateFormatter
 import com.illiarb.tmdclient.analytics.di.AnalyticsComponent
 import com.tmdbclient.servicetmdb.di.TmdbComponent
 
@@ -67,12 +70,20 @@ class TestApplication : Application(), App {
                 analyticsProvider.provideAnalyticsService()
 
             override fun workManager(): WorkManager {
-                return null!!
+                return object : WorkManager {
+                    override fun enqueuePeriodicWork(
+                        uniqueWorkName: String,
+                        periodicWorkPolicy: ExistingPeriodicWorkPolicy,
+                        workRequest: PeriodicWorkRequest
+                    ) = Unit
+                }
             }
 
             override fun provideConfigurationWorkCreator(): WorkerCreator {
                 return null!!
             }
+
+            override fun provideDateFormatter(): DateFormatter = tmdbProvider.provideDateFormatter()
 
             override fun provideMoviesInteractor(): MoviesInteractor = tmdbProvider.provideMoviesInteractor()
             override fun provideGenresInteractor(): GenresInteractor = tmdbProvider.provideGenresInteractor()

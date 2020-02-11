@@ -62,9 +62,7 @@ dependencies {
     androidTestImplementation androidTestDeps.kakao
     androidTestImplementation androidTestDeps.extJunit
     androidTestImplementation androidTestDeps.uiAutomator
-    androidTestImplementation(androidTestDeps.kaspresso) {
-        exclude group: 'com.kaspersky.android-components', module: 'adbserver-device'
-    }
+    androidTestImplementation androidTestDeps.kaspresso
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -7,7 +7,7 @@ import com.agoda.kakao.text.KTextView
 import com.illiarb.tmdbclient.details.MovieDetailsFragment
 import com.illiarb.tmdbclient.movies.home.R
 
-class MovieDetailsScreen : KScreen<MovieDetailsScreen>() {
+object MovieDetailsScreen : KScreen<MovieDetailsScreen>() {
 
     override val layoutId: Int?
         get() = R.layout.fragment_movie_details
