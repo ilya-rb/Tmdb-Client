@@ -11,9 +11,10 @@ import com.illiarb.tmdbexplorer.coreui.common.SizeSpec
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
+import com.illiarb.tmdblcient.core.domain.Movie
 
 fun movieSimilarDelegate(
-    clickListener: OnClickListener
+    clickListener: OnClickListener<Movie>
 ) = adapterDelegate<MovieSimilar, Any>(R.layout.item_movie_similar) {
 
     val moviesList = itemView.findViewById<RecyclerView>(R.id.movieDetailsSimilar)

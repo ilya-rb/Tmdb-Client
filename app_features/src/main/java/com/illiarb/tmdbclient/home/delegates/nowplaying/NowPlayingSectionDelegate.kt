@@ -8,6 +8,7 @@ import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.RecyclerViewStateSaver
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.StateSaver
+import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieSection
 import com.illiarb.tmdblcient.core.domain.NowPlayingSection
 import java.util.Timer
@@ -19,7 +20,7 @@ private const val KEY_NOW_PLAYING_POSITION = "now_playing_position"
 
 fun nowPlayingSectionDelegate(
     stateSaver: RecyclerViewStateSaver,
-    clickListener: OnClickListener
+    clickListener: OnClickListener<Movie>
 ) = adapterDelegate<NowPlayingSection, MovieSection>(R.layout.item_now_playing_section) {
 
     val nowPlayingPager = itemView.findViewById<RecyclerView>(R.id.nowPlayingPager)

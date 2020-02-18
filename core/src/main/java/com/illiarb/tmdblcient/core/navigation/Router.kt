@@ -7,7 +7,7 @@ import com.illiarb.tmdblcient.core.domain.Genre
  */
 interface Router {
 
-    fun executeAction(action: Action)
+    fun executeAction(action: Action) : Action
 
     sealed class Action {
 

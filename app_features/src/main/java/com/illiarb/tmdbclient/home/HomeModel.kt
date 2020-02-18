@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.illiarb.tmdbclient.home.HomeModel.UiEvent
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
-import com.illiarb.tmdblcient.core.analytics.AnalyticEvent.RouterAction
 import com.illiarb.tmdblcient.core.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.domain.Genre
 import com.illiarb.tmdblcient.core.domain.Movie
@@ -17,7 +16,6 @@ import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowSettings
-import com.illiarb.tmdblcient.core.tools.Logger
 import com.illiarb.tmdblcient.core.util.Async
 import com.illiarb.tmdblcient.core.util.Result
 import kotlinx.coroutines.launch
@@ -30,7 +28,9 @@ interface HomeModel {
     fun onUiEvent(event: UiEvent)
 
     sealed class UiEvent {
-        data class ItemClick(val item: Any) : UiEvent()
+        data class MovieClick(val movie: Movie) : UiEvent()
+        data class SeeAllClick(val code: String) : UiEvent()
+        data class GenreClick(val genre: Genre) : UiEvent()
         object SettingsClick : UiEvent()
     }
 }
@@ -70,24 +70,19 @@ class DefaultHomeModel @Inject constructor(
 
     override fun onUiEvent(event: UiEvent) {
         when (event) {
-            is UiEvent.ItemClick -> {
-                val action = when (event.item) {
-                    is Movie -> ShowMovieDetails(event.item.id)
-                    is Genre -> ShowDiscover(event.item.id)
-                    is String -> ShowDiscover()
-                    else -> null
-                }
+            is UiEvent.SeeAllClick -> router.executeAction(ShowDiscover())
+                .also(analyticsService::trackRouterAction)
 
-                action?.let {
-                    analyticsService.trackEvent(RouterAction(it))
-                    router.executeAction(it)
-                }
-            }
-            is UiEvent.SettingsClick -> {
-                val action = ShowSettings
-                analyticsService.trackEvent(RouterAction(action))
-                router.executeAction(action)
-            }
+            is UiEvent.SettingsClick -> router.executeAction(ShowSettings)
+                .also(analyticsService::trackRouterAction)
+
+            is UiEvent.MovieClick ->
+                router.executeAction(ShowMovieDetails(event.movie.id))
+                    .also(analyticsService::trackRouterAction)
+
+            is UiEvent.GenreClick ->
+                router.executeAction(ShowDiscover(event.genre.id))
+                    .also(analyticsService::trackRouterAction)
         }
     }
 }

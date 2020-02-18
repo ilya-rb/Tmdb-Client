@@ -85,16 +85,10 @@ class DefaultDetailsViewModel @Inject constructor(
 
     override fun onUiEvent(event: UiEvent) {
         when (event) {
-            is UiEvent.MovieClicked -> {
-                val action = ShowMovieDetails(event.movie.id)
-                analyticsService.trackEvent(RouterAction(action))
-                router.executeAction(action)
-            }
-            is UiEvent.PlayClicked -> {
-                val action = ShowVideos(movieId)
-                analyticsService.trackEvent(RouterAction(action))
-                router.executeAction(action)
-            }
+            is UiEvent.MovieClicked ->
+                router.executeAction(ShowMovieDetails(event.movie.id)).also(analyticsService::trackRouterAction)
+            is UiEvent.PlayClicked ->
+                router.executeAction(ShowVideos(movieId)).also(analyticsService::trackRouterAction)
         }
     }
 }

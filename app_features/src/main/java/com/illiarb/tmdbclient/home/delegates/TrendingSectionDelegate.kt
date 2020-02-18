@@ -15,6 +15,7 @@ import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.RecyclerViewStateSaver
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.StateSaver
+import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieSection
 import com.illiarb.tmdblcient.core.domain.TrendingSection
 import com.illiarb.tmdblcient.core.domain.TrendingSection.TrendingItem
@@ -24,7 +25,7 @@ private const val KEY_TRENDING_STATE = "trending_state"
 @Suppress("LongMethod")
 fun trendingSectionDelegate(
     stateSaver: RecyclerViewStateSaver,
-    clickListener: OnClickListener
+    clickListener: OnClickListener<Movie>
 ) = adapterDelegate<TrendingSection, MovieSection>(R.layout.item_trending_section) {
 
     val adapter = TrendingSectionAdapter(clickListener)
@@ -65,14 +66,14 @@ fun trendingSectionDelegate(
     }
 }
 
-private class TrendingSectionAdapter(clickListener: OnClickListener) :
+private class TrendingSectionAdapter(clickListener: OnClickListener<Movie>) :
     ListDelegationAdapter<List<TrendingItem>>() {
 
     init {
         delegatesManager.addDelegate(trendingDelegate(clickListener))
     }
 
-    private fun trendingDelegate(clickListener: OnClickListener) =
+    private fun trendingDelegate(clickListener: OnClickListener<Movie>) =
         adapterDelegate<TrendingItem, TrendingItem>(R.layout.item_trending) {
 
             val image = itemView.findViewById<ImageView>(R.id.itemTrendingImage)

@@ -9,9 +9,10 @@ import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
+import com.illiarb.tmdblcient.core.domain.Image
 
 fun photoSectionDelegate(
-    clickListener: OnClickListener
+    clickListener: OnClickListener<Image>
 ) = adapterDelegate<MoviePhotos, Any>(R.layout.item_movie_photos) {
 
     val photosAdapter = DelegatesAdapter(photoDelegate(clickListener))

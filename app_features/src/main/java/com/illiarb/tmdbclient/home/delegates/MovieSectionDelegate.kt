@@ -22,10 +22,11 @@ import com.illiarb.tmdblcient.core.domain.MovieSection
 @Suppress("LongMethod")
 fun movieSectionDelegate(
     recyclerViewStateSaver: RecyclerViewStateSaver,
-    clickListener: OnClickListener
+    seeAllClickListener: OnClickListener<String>,
+    movieClickListener: OnClickListener<Movie>
 ) = adapterDelegate<ListSection, MovieSection>(R.layout.item_movie_section) {
 
-    val adapter = MovieSectionAdapter(clickListener)
+    val adapter = MovieSectionAdapter(movieClickListener)
     val sectionTitle = itemView.findViewById<TextView>(R.id.itemSectionTitle)
     val sectionList = itemView.findViewById<RecyclerView>(R.id.itemMovieSectionList)
     val seeAllButton = itemView.findViewById<View>(R.id.itemSectionSeeAll)
@@ -56,7 +57,7 @@ fun movieSectionDelegate(
         adapter.notifyDataSetChanged()
 
         seeAllButton.setOnClickListener {
-            clickListener(item.code)
+            seeAllClickListener(item.code)
         }
 
         key = item.hashCode().toString().also {
@@ -73,7 +74,7 @@ fun movieSectionDelegate(
     }
 }
 
-private class MovieSectionAdapter(clickListener: OnClickListener) : ListDelegationAdapter<List<Movie>>() {
+private class MovieSectionAdapter(clickListener: OnClickListener<Movie>) : ListDelegationAdapter<List<Movie>>() {
 
     init {
         delegatesManager.addDelegate(

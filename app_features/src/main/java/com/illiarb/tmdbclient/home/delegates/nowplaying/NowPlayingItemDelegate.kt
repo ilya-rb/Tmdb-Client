@@ -10,7 +10,7 @@ import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdblcient.core.domain.Movie
 
 fun nowPlayingItemDelegate(
-    clickListener: OnClickListener
+    clickListener:  OnClickListener<Movie>
 ) = adapterDelegate<Movie, Movie>(R.layout.item_now_playing_item) {
 
     val title = itemView.findViewById<TextView>(R.id.itemNowPlayingTitle)

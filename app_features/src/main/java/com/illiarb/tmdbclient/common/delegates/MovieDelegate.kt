@@ -17,7 +17,7 @@ import com.illiarb.tmdblcient.core.domain.Movie
 fun movieDelegate(
     widthSpec: SizeSpec,
     heightSpec: SizeSpec,
-    clickListener: OnClickListener
+    clickListener: OnClickListener<Movie>
 ) = adapterDelegate<Movie, Movie>(R.layout.item_movie) {
 
     val image = itemView.findViewById<ImageView>(R.id.itemMoviePoster)

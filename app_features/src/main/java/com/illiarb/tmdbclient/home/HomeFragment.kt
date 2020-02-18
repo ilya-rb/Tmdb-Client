@@ -19,7 +19,6 @@ import com.illiarb.tmdbclient.home.di.HomeComponent
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentMoviesBinding
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
-import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.getColorAttr
@@ -44,12 +43,15 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     }
 
     private val stateSaver = RecyclerViewStateSaver()
-    private val clickListener: OnClickListener = { viewModel.onUiEvent(UiEvent.ItemClick(it)) }
     private val adapter = DelegatesAdapter(
-        movieSectionDelegate(stateSaver, clickListener),
-        nowPlayingSectionDelegate(stateSaver, clickListener),
-        genresSectionDelegate(clickListener),
-        trendingSectionDelegate(stateSaver, clickListener)
+        movieSectionDelegate(
+            stateSaver,
+            { viewModel.onUiEvent(UiEvent.SeeAllClick(it)) },
+            { viewModel.onUiEvent(UiEvent.MovieClick(it)) }
+        ),
+        nowPlayingSectionDelegate(stateSaver) { viewModel.onUiEvent(UiEvent.MovieClick(it)) },
+        genresSectionDelegate { viewModel.onUiEvent(UiEvent.GenreClick(it)) },
+        trendingSectionDelegate(stateSaver) { viewModel.onUiEvent(UiEvent.MovieClick(it)) }
     )
 
     override fun getViewBinding(inflater: LayoutInflater): FragmentMoviesBinding =

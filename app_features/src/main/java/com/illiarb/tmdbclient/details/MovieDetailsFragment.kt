@@ -44,7 +44,7 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
     private val sectionsAdapter by lazy(LazyThreadSafetyMode.NONE) {
         DelegatesAdapter(
             movieInfoDelegate(dateFormatter),
-            movieSimilarDelegate { viewModel.onUiEvent(UiEvent.MovieClicked(it as Movie)) },
+            movieSimilarDelegate { viewModel.onUiEvent(UiEvent.MovieClicked(it)) },
             photoSectionDelegate { }
         )
     }

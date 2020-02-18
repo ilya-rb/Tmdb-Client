@@ -30,7 +30,7 @@ class VideoListFragment : BaseViewBindingFragment<FragmentVideoListBinding>(), I
     private val videosAdapter = DelegatesAdapter(
         videoTypeDelegate(),
         videoDelegate {
-            viewModel.onUiEvent(UiEvent.VideoClick(it as VideoListModel.UiVideo))
+            viewModel.onUiEvent(UiEvent.VideoClick(it))
         }
     )
 

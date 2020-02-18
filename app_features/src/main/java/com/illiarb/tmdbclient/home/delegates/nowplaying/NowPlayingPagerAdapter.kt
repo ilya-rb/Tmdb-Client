@@ -6,18 +6,14 @@ import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.LoopingPagerAdapter
 import com.illiarb.tmdblcient.core.domain.Movie
 
-class NowPlayingPagerAdapter(clickListener: OnClickListener) : ListDelegationAdapter<List<Movie>>(),
+class NowPlayingPagerAdapter(clickListener: OnClickListener<Movie>) : ListDelegationAdapter<List<Movie>>(),
     LoopingPagerAdapter {
 
     override val realCount: Int
         get() = items.size
 
     init {
-        delegatesManager.addDelegate(
-            nowPlayingItemDelegate(
-                clickListener
-            )
-        )
+        delegatesManager.addDelegate(nowPlayingItemDelegate(clickListener))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

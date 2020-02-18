@@ -7,14 +7,13 @@ import com.illiarb.tmdbclient.discover.DiscoverModel.UiEvent
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.base.BasePresentationModel
 import com.illiarb.tmdbexplorer.coreui.common.Text
+import com.illiarb.tmdblcient.core.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.domain.Genre
 import com.illiarb.tmdblcient.core.domain.Movie
-import com.illiarb.tmdblcient.core.navigation.Router
-import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
-import com.illiarb.tmdblcient.core.analytics.AnalyticEvent.RouterAction
-import com.illiarb.tmdblcient.core.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.interactor.GenresInteractor
 import com.illiarb.tmdblcient.core.interactor.MoviesInteractor
+import com.illiarb.tmdblcient.core.navigation.Router
+import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.util.Result
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,7 +33,7 @@ interface DiscoverModel {
     fun onUiEvent(event: UiEvent)
 
     sealed class UiEvent {
-        class ItemClick(val item: Any) : UiEvent()
+        class ItemClick(val item: Movie) : UiEvent()
         class ApplyFilter(val id: Int) : UiEvent()
         object ClearFilter : UiEvent()
     }
@@ -83,13 +82,8 @@ class DefaultDiscoverModel @Inject constructor(
         when (event) {
             is UiEvent.ClearFilter -> applyFilter()
             is UiEvent.ApplyFilter -> applyFilter(event.id)
-            is UiEvent.ItemClick -> {
-                if (event.item is Movie) {
-                    val action = ShowMovieDetails(event.item.id)
-                    analyticsService.trackEvent(RouterAction(action))
-                    router.executeAction(action)
-                }
-            }
+            is UiEvent.ItemClick ->
+                router.executeAction(ShowMovieDetails(event.item.id)).also(analyticsService::trackRouterAction)
         }
     }
 

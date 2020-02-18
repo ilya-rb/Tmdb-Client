@@ -1,3 +1,3 @@
 package com.illiarb.tmdbexplorer.coreui.common
 
-typealias OnClickListener = (Any) -> Unit
+typealias OnClickListener <T> = (T) -> Unit
