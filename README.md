@@ -9,6 +9,8 @@
 ![App modules](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/arc.png)
 
 # Screenshots:
-![2](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/2.png)
-![3](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/3.png)
-![4](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/4.png)
+![1](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/pic1.png)
+![2](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/pic2.png)
+![3](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/pic3.png)
+![4](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/pic4.png)
+![5](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/pic5.png)
