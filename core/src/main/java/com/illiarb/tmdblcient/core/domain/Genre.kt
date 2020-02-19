@@ -1,6 +1,5 @@
 package com.illiarb.tmdblcient.core.domain
 
-import com.illiarb.tmdblcient.core.util.Option
 import java.util.Locale
 
 data class Genre(val id: Int, val name: String) {
@@ -24,8 +23,9 @@ data class Genre(val id: Int, val name: String) {
      * Source:
      * https://github.com/chrisbanes/tivi/blob/master/data/src/main/java/app/tivi/data/entities/Genre.kt
      */
-    fun getEmoji(): Option<String> {
-        val emoji = when (name.toLowerCase(Locale.getDefault())) {
+    @Suppress("ComplexMethod")
+    fun getEmoji(): String? {
+        return when (name.toLowerCase(Locale.getDefault())) {
             DRAMA -> "\uD83D\uDE28"
             FANTASY -> "\uD83E\uDDD9"
             SCIENCE_FICTION -> "\uD83D\uDE80️"
@@ -36,13 +36,7 @@ data class Genre(val id: Int, val name: String) {
             COMEDY -> "\uD83E\uDD23"
             HORROR -> "\uD83E\uDDDF"
             MYSTERY -> "\uD83D\uDD75️"
-            else -> ""
-        }
-
-        return if (emoji.isNotEmpty()) {
-            Option.Some(emoji)
-        } else {
-            Option.None()
+            else -> null
         }
     }
 }

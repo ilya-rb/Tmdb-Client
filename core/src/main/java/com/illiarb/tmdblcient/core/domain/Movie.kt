@@ -1,7 +1,5 @@
 package com.illiarb.tmdblcient.core.domain
 
-import com.illiarb.tmdblcient.core.util.Option
-
 data class Movie(
     val id: Int,
     val posterPath: Image?,
@@ -25,7 +23,7 @@ data class Movie(
         const val DELIMITER_SLASH_SPACED = " / "
     }
 
-    fun getGenresString(delimiter: String = DELIMITER_SLASH_SPACED): Option<String> {
+    fun getGenresString(delimiter: String = DELIMITER_SLASH_SPACED): String? {
         return if (genres.isNotEmpty()) {
             val result = buildString {
                 genres.forEachIndexed { index, genre ->
@@ -33,7 +31,7 @@ data class Movie(
                     append(" ")
 
                     val emoji = genre.getEmoji()
-                    emoji.invokeIfSome {
+                    emoji?.let {
                         append(it)
                     }
 
@@ -42,9 +40,9 @@ data class Movie(
                     }
                 }
             }
-            Option.Some(result)
+            result
         } else {
-            Option.None()
+            null
         }
     }
 }
