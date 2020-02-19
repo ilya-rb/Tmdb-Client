@@ -117,7 +117,7 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
     }
 
     private fun showMovieDetails(movie: Movie) {
-        binding.movieDetailsPoster.loadImage(movie.posterPath) {
+        binding.movieDetailsPoster.loadImage(movie.backdropPath) {
             crop(CropOptions.CenterCrop)
         }
 
