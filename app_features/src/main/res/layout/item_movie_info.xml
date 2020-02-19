@@ -18,7 +18,7 @@
         tools:maxLines="2"
         tools:text="@tools:sample/lorem/random" />
 
-    <TextView
+    <androidx.emoji.widget.EmojiTextView
         android:id="@+id/movieDetailsTags"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

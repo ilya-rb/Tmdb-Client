@@ -70,7 +70,7 @@ class DefaultDetailsViewModel @Inject constructor(
 
             viewModelScope.launch {
                 val similar = moviesInteractor.getSimilarMovies(movieId)
-                if (similar is Result.Success) {
+                if (similar is Result.Success && similar.data.isNotEmpty()) {
                     value = value!!.toMutableList().plus(MovieSimilar(similar.data))
                 }
             }

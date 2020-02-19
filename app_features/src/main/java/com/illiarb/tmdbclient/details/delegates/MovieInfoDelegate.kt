@@ -1,6 +1,7 @@
 package com.illiarb.tmdbclient.details.delegates
 
 import android.widget.TextView
+import androidx.emoji.text.EmojiCompat
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 import com.illiarb.tmdbclient.details.MovieDetailsModel.MovieInfo
 import com.illiarb.tmdbclient.movies.home.R
@@ -20,7 +21,7 @@ fun movieInfoDelegate(dateFormatter: DateFormatter) = adapterDelegate<MovieInfo,
         overview.text = item.movie.overview
         length.text = getString(R.string.movie_details_duration, item.movie.runtime)
         country.text = item.movie.country
-        tags.text = item.movie.getGenresString()
         date.text = dateFormatter.formatDate(item.movie.releaseDate)
+        tags.text = item.movie.getGenresString().getOrElse { "" }
     }
 }

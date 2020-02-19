@@ -37,6 +37,7 @@ dependencies {
 
     api deps.supportDesign
     api deps.swipeRefreshLayout
+    api deps.emoji
     api deps.constraintLayout
     api deps.adapterDelegates
     api deps.adapterDelegatesDsl

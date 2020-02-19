@@ -19,6 +19,7 @@ deps.supportDesign = "com.google.android.material:material:$versions.supportLibr
 deps.swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:$versions.swipeRefreshLayout"
 deps.pallete = "androidx.palette:palette:$versions.supportLibrary"
 deps.recyclerView = "androidx.recyclerview:recyclerview:$versions.supportLibrary"
+deps.emoji = "androidx.emoji:emoji:$versions.emoji"
 deps.constraintLayout = "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
 
 // Compose
