@@ -8,7 +8,7 @@ import com.illiarb.tmdblcient.core.di.providers.AppProvider
  */
 interface App {
 
-    fun getApplication(): Application
+  fun getApplication(): Application
 
-    fun getAppProvider(): AppProvider
+  fun getAppProvider(): AppProvider
 }

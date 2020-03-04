@@ -10,39 +10,39 @@ import okhttp3.Response
 import javax.inject.Inject
 
 class RegionInterceptor @Inject constructor(
-    private val configurationRepository: ConfigurationRepository,
-    private val resourceResolver: ResourceResolver
+  private val configurationRepository: ConfigurationRepository,
+  private val resourceResolver: ResourceResolver
 ) : Interceptor {
 
-    companion object {
-        const val QUERY_PARAM_REGION = "region"
-        const val QUERY_PARAM_LANGUAGE = "language"
-    }
+  companion object {
+    const val QUERY_PARAM_REGION = "region"
+    const val QUERY_PARAM_LANGUAGE = "language"
+  }
 
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request()
-        val userLanguage = resourceResolver.getUserISOCountry()
+  override fun intercept(chain: Interceptor.Chain): Response {
+    val request = chain.request()
+    val userLanguage = resourceResolver.getUserISOCountry()
 
-        return chain.proceed(
-            request.newBuilder()
-                .url(
-                    request.url.newBuilder()
-                        //.addQueryParameter(QUERY_PARAM_LANGUAGE, userLanguage)
-                        .addRegionParameter()
-                        .build()
-                )
-                .build()
+    return chain.proceed(
+      request.newBuilder()
+        .url(
+          request.url.newBuilder()
+            //.addQueryParameter(QUERY_PARAM_LANGUAGE, userLanguage)
+            .addRegionParameter()
+            .build()
         )
-    }
+        .build()
+    )
+  }
 
-    private fun HttpUrl.Builder.addRegionParameter(): HttpUrl.Builder {
-        val countries = runBlocking { configurationRepository.getCountries() }
-        if (countries is Result.Success) {
-            val region = countries.data.find { it.code == resourceResolver.getUserLocale().country }?.code
-            if (!region.isNullOrBlank()) {
-                addQueryParameter(QUERY_PARAM_REGION, region)
-            }
-        }
-        return this
+  private fun HttpUrl.Builder.addRegionParameter(): HttpUrl.Builder {
+    val countries = runBlocking { configurationRepository.getCountries() }
+    if (countries is Result.Success) {
+      val region = countries.data.find { it.code == resourceResolver.getUserLocale().country }?.code
+      if (!region.isNullOrBlank()) {
+        addQueryParameter(QUERY_PARAM_REGION, region)
+      }
     }
+    return this
+  }
 }

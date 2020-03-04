@@ -8,6 +8,6 @@ import dagger.Module
 @Module
 interface WorkModule {
 
-    @Binds
-    fun bindWorkerFactory(factory: DaggerWorkerFactory): WorkerFactory
+  @Binds
+  fun bindWorkerFactory(factory: DaggerWorkerFactory): WorkerFactory
 }

@@ -6,11 +6,12 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.illiarb.tmdbclient.home.HomeModel.UiEvent
+import com.illiarb.tmdbclient.home.HomeViewModel.Event
+import com.illiarb.tmdbclient.home.HomeViewModel.State
 import com.illiarb.tmdbclient.home.delegates.genresSectionDelegate
 import com.illiarb.tmdbclient.home.delegates.movieSectionDelegate
 import com.illiarb.tmdbclient.home.delegates.nowplaying.nowPlayingSectionDelegate
@@ -29,118 +30,125 @@ import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.RecyclerViewStateSave
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
-import com.illiarb.tmdblcient.core.domain.MovieSection
+import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.util.Async
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectable {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+  @Inject
+  lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val viewModel: HomeModel by lazy(LazyThreadSafetyMode.NONE) {
-        ViewModelProvider(this, viewModelFactory).get(DefaultHomeModel::class.java)
+  @Inject
+  lateinit var router: Router
+
+  private val viewModel: HomeViewModel by lazy(LazyThreadSafetyMode.NONE) {
+    ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
+  }
+
+  private val stateSaver = RecyclerViewStateSaver()
+  private val adapter = DelegatesAdapter(
+    movieSectionDelegate(
+      stateSaver,
+      seeAllClickListener = { viewModel.events.offer(Event.SeeAllClick(it)) },
+      movieClickListener = { viewModel.events.offer(Event.MovieClick(it)) },
+      posterClickListener = { (movie, imageView) ->
+        router.executeAction(
+          Router.Action.ShowMovieDetails(movie.id, imageView)
+        )
+      }
+    ),
+    nowPlayingSectionDelegate(stateSaver) { viewModel.events.offer(Event.MovieClick(it)) },
+    genresSectionDelegate { viewModel.events.offer(Event.GenreClick(it)) },
+    trendingSectionDelegate(stateSaver) { viewModel.events.offer(Event.MovieClick(it)) }
+  )
+
+  override fun getViewBinding(inflater: LayoutInflater): FragmentMoviesBinding =
+    FragmentMoviesBinding.inflate(inflater)
+
+  override fun inject(appProvider: AppProvider) = HomeComponent.get(appProvider).inject(this)
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    binding.appBar.doOnApplyWindowInsets { v, insets, padding ->
+      v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
     }
 
-    private val stateSaver = RecyclerViewStateSaver()
-    private val adapter = DelegatesAdapter(
-        movieSectionDelegate(
-            stateSaver,
-            { viewModel.onUiEvent(UiEvent.SeeAllClick(it)) },
-            { viewModel.onUiEvent(UiEvent.MovieClick(it)) }
-        ),
-        nowPlayingSectionDelegate(stateSaver) { viewModel.onUiEvent(UiEvent.MovieClick(it)) },
-        genresSectionDelegate { viewModel.onUiEvent(UiEvent.GenreClick(it)) },
-        trendingSectionDelegate(stateSaver) { viewModel.onUiEvent(UiEvent.MovieClick(it)) }
-    )
-
-    override fun getViewBinding(inflater: LayoutInflater): FragmentMoviesBinding =
-        FragmentMoviesBinding.inflate(inflater)
-
-    override fun inject(appProvider: AppProvider) = HomeComponent.get(appProvider).inject(this)
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.appBar.doOnApplyWindowInsets { v, insets, padding ->
-            v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
-        }
-
-        binding.moviesSwipeRefresh.isEnabled = false
-        binding.settings.setOnClickListener {
-            viewModel.onUiEvent(UiEvent.SettingsClick)
-        }
-
-        setupAppBarScrollListener()
-        setupMoviesList()
-
-        bind(viewModel)
+    binding.moviesSwipeRefresh.isEnabled = false
+    binding.settings.setOnClickListener {
+      viewModel.events.offer(Event.SettingsClick)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        stateSaver.saveInstanceState()
+    setupAppBarScrollListener()
+    setupMoviesList()
+
+    viewLifecycleOwner.lifecycleScope.launch {
+      viewModel.state.collect {
+        render(it)
+      }
     }
+  }
 
-    private fun setupMoviesList() {
-        binding.moviesList.apply {
-            adapter = this@HomeFragment.adapter
-            layoutManager = LinearLayoutManager(requireContext())
-            addItemDecoration(
-                SpaceDecoration(
-                    spacingTopFirst = 0,
-                    spacingTop = dimen(R.dimen.spacing_small),
-                    spacingBottom = dimen(R.dimen.spacing_small),
-                    spacingBottomLast = dimen(R.dimen.spacing_normal)
-                )
-            )
+  override fun onDestroyView() {
+    super.onDestroyView()
+    stateSaver.saveInstanceState()
+  }
 
-            isNestedScrollingEnabled = false
-            removeAdapterOnDetach()
-            doOnApplyWindowInsets { v, insets, initialPadding ->
-                v.updatePadding(bottom = initialPadding.bottom + insets.systemWindowInsetBottom)
-            }
-        }
+  private fun setupMoviesList() {
+    binding.moviesList.apply {
+      adapter = this@HomeFragment.adapter
+      layoutManager = LinearLayoutManager(requireContext())
+      addItemDecoration(
+        SpaceDecoration(
+          spacingTopFirst = 0,
+          spacingTop = dimen(R.dimen.spacing_small),
+          spacingBottom = dimen(R.dimen.spacing_small),
+          spacingBottomLast = dimen(R.dimen.spacing_normal)
+        )
+      )
+
+      isNestedScrollingEnabled = false
+      removeAdapterOnDetach()
+      doOnApplyWindowInsets { v, insets, initialPadding ->
+        v.updatePadding(bottom = initialPadding.bottom + insets.systemWindowInsetBottom)
+      }
     }
+  }
 
-    private fun bind(viewModel: HomeModel) {
-        viewModel.movieSections.observe(viewLifecycleOwner, Observer(::showMovieSections))
-    }
+  @Suppress("MagicNumber")
+  private fun setupAppBarScrollListener() {
+    binding.moviesList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
-    @Suppress("MagicNumber")
-    private fun setupAppBarScrollListener() {
-        binding.moviesList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+      val colorEvaluator = ArgbEvaluator()
+      val startColor = Color.TRANSPARENT
+      val endColor: Int = requireView().getColorAttr(R.attr.colorPrimary)
+      val endStateHeight: Int = requireView().dimen(R.dimen.app_bar_end_state_height)
 
-            val colorEvaluator = ArgbEvaluator()
-            val startColor = Color.TRANSPARENT
-            val endColor: Int = requireView().getColorAttr(R.attr.colorPrimary)
-            val endStateHeight: Int = requireView().dimen(R.dimen.app_bar_end_state_height)
+      val elevationEvaluator = FloatEvaluator()
+      val endElevation = requireView().dimen(R.dimen.elevation_normal).toFloat()
 
-            val elevationEvaluator = FloatEvaluator()
-            val endElevation = requireView().dimen(R.dimen.elevation_normal).toFloat()
+      override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        val fraction = calculateFraction(recyclerView.computeVerticalScrollOffset(), endStateHeight)
+        val appBarColor = colorEvaluator.evaluate(fraction, startColor, endColor) as Int
+        val elevation = elevationEvaluator.evaluate(fraction, 0, endElevation)
 
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val fraction = calculateFraction(recyclerView.computeVerticalScrollOffset(), endStateHeight)
-                val appBarColor = colorEvaluator.evaluate(fraction, startColor, endColor) as Int
-                val elevation = elevationEvaluator.evaluate(fraction, 0, endElevation)
+        binding.appBar.setBackgroundColor(appBarColor)
+        binding.appBar.elevation = elevation
+      }
 
-                binding.appBar.setBackgroundColor(appBarColor)
-                binding.appBar.elevation = elevation
-            }
+      private fun Int.toPercentOf(max: Int): Int = this * 100 / max
 
-            private fun Int.toPercentOf(max: Int): Int = this * 100 / max
+      private fun calculateFraction(start: Int, end: Int): Float {
+        return start.coerceAtMost(end).toPercentOf(end) / 100f
+      }
+    })
+  }
 
-            private fun calculateFraction(start: Int, end: Int): Float {
-                return start.coerceAtMost(end).toPercentOf(end) / 100f
-            }
-        })
-    }
-
-    private fun showMovieSections(state: Async<List<MovieSection>>) {
-        binding.moviesSwipeRefresh.isRefreshing = state is Async.Loading
-
-        if (state is Async.Success) {
-            adapter.submitList(state())
-        }
-    }
+  private fun render(state: State) {
+    binding.moviesSwipeRefresh.isRefreshing = state.sections is Async.Loading
+    state.sections.doOnSuccess(adapter::submitList)
+  }
 }

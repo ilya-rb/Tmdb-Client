@@ -11,11 +11,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalCoroutinesApi
 class TestDispatcherProvider : DispatcherProvider {
 
-    override val io: CoroutineDispatcher = Dispatchers.Unconfined
+  override val io: CoroutineDispatcher = Dispatchers.Unconfined
 
-    override val main: CoroutineDispatcher = Dispatchers.Unconfined
+  override val main: CoroutineDispatcher = Dispatchers.Unconfined
 
-    override val default: CoroutineDispatcher = Dispatchers.Unconfined
+  override val default: CoroutineDispatcher = Dispatchers.Unconfined
 
-    override val none: CoroutineDispatcher = Dispatchers.Unconfined
+  override val none: CoroutineDispatcher = Dispatchers.Unconfined
 }

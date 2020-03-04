@@ -6,8 +6,8 @@ import com.tmdbclient.servicetmdb.model.GenreListModel
 import javax.inject.Inject
 
 class GenreListMapper @Inject constructor(
-    private val genreMapper: GenreMapper
+  private val genreMapper: GenreMapper
 ) : Mapper<GenreListModel, List<Genre>> {
 
-    override fun map(from: GenreListModel): List<Genre> = genreMapper.mapList(from.genres)
+  override fun map(from: GenreListModel): List<Genre> = genreMapper.mapList(from.genres)
 }

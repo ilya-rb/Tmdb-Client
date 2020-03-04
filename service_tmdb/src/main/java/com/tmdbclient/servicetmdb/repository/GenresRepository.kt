@@ -12,27 +12,27 @@ import javax.inject.Singleton
 
 interface GenresRepository {
 
-    suspend fun getGenres(): Result<List<Genre>>
+  suspend fun getGenres(): Result<List<Genre>>
 }
 
 @Singleton
 class DefaultGenresRepository @Inject constructor(
-    private val genreApi: GenreApi,
-    private val cache: TmdbCache,
-    private val dispatcherProvider: DispatcherProvider,
-    private val genreMapper: GenreMapper
+  private val genreApi: GenreApi,
+  private val cache: TmdbCache,
+  private val dispatcherProvider: DispatcherProvider,
+  private val genreMapper: GenreMapper
 ) : GenresRepository {
 
-    override suspend fun getGenres(): Result<List<Genre>> = Result.create {
-        withContext(dispatcherProvider.io) {
-            val cachedGenres = cache.getGenres()
-            if (cachedGenres.isNotEmpty()) {
-                genreMapper.mapList(cachedGenres)
-            } else {
-                val genres = genreApi.getGenresAsync().await().genres
-                cache.storeGenres(genres)
-                genreMapper.mapList(genres)
-            }
-        }
+  override suspend fun getGenres(): Result<List<Genre>> = Result.create {
+    withContext(dispatcherProvider.io) {
+      val cachedGenres = cache.getGenres()
+      if (cachedGenres.isNotEmpty()) {
+        genreMapper.mapList(cachedGenres)
+      } else {
+        val genres = genreApi.getGenresAsync().await().genres
+        cache.storeGenres(genres)
+        genreMapper.mapList(genres)
+      }
     }
+  }
 }

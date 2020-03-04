@@ -15,22 +15,22 @@ import dagger.Provides
 @Module
 class AnalyticsModule(private val app: App) {
 
-    @Provides
-    fun provideAnalyticsService(
-        firebaseAnalyticTracker: FirebaseAnalyticTracker,
-        debugAnalyticsTracker: DebugAnalyticsTracker
-    ): AnalyticsService {
-        val trackers = if (BuildConfig.DEBUG) {
-            setOf(debugAnalyticsTracker)
-        } else {
-            setOf(firebaseAnalyticTracker)
-        }
-        return DefaultAnalyticsService(trackers)
+  @Provides
+  fun provideAnalyticsService(
+    firebaseAnalyticTracker: FirebaseAnalyticTracker,
+    debugAnalyticsTracker: DebugAnalyticsTracker
+  ): AnalyticsService {
+    val trackers = if (BuildConfig.DEBUG) {
+      setOf(debugAnalyticsTracker)
+    } else {
+      setOf(firebaseAnalyticTracker)
     }
+    return DefaultAnalyticsService(trackers)
+  }
 
-    @Provides
-    fun provideFirebaseTracker(): FirebaseAnalyticTracker = FirebaseAnalyticTracker(app)
+  @Provides
+  fun provideFirebaseTracker(): FirebaseAnalyticTracker = FirebaseAnalyticTracker(app)
 
-    @Provides
-    fun provideDebugAnalyticsTracker(): DebugAnalyticsTracker = DebugAnalyticsTracker()
+  @Provides
+  fun provideDebugAnalyticsTracker(): DebugAnalyticsTracker = DebugAnalyticsTracker()
 }

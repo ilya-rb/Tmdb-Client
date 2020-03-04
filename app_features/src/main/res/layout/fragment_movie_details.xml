@@ -9,7 +9,7 @@
     <androidx.constraintlayout.motion.widget.MotionLayout
         android:id="@+id/movieDetailsRoot"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layoutDescription="@xml/fragment_movie_details_motion_scene">
 
         <com.illiarb.tmdbclient.details.widget.CurvedImageView
@@ -20,7 +20,9 @@
             android:contentDescription="@null"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:scaleType="centerCrop"
+            tools:src="@tools:sample/backgrounds/scenic" />
 
         <View
             android:id="@+id/movieDetailsTopOverlay"
@@ -30,15 +32,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/movieDetailsToolbar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/ic_arrow_back" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/movieDetailsPlay"
@@ -55,12 +48,22 @@
             android:id="@+id/movieDetailsRecycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="?android:attr/colorBackground"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/movieDetailsPlay"
             tools:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/item_movie_info" />
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/movieDetailsToolbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_arrow_back" />
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 

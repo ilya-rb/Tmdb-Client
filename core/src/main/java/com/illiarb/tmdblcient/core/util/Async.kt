@@ -6,18 +6,26 @@ package com.illiarb.tmdblcient.core.util
  */
 sealed class Async<out T> {
 
-    class Loading<out T> : Async<T>()
+  object Uninitialized : Async<Nothing>()
 
-    data class Success<out T>(private val value: T) : Async<T>() {
-        override fun invoke(): T = value
+  class Loading<out T> : Async<T>()
+
+  data class Success<out T>(private val value: T) : Async<T>() {
+    override fun invoke(): T = value
+  }
+
+  data class Fail<out T>(val error: Throwable) : Async<T>()
+
+  /**
+   * Returns the Left value or null.
+   *
+   * Can be invoked as an operator like: `yourProp()`
+   */
+  open operator fun invoke(): T? = null
+
+  fun doOnSuccess(block: (T) -> Unit) {
+    if (this is Success) {
+      block(this())
     }
-
-    data class Fail<out T>(val error: Throwable) : Async<T>()
-
-    /**
-     * Returns the Left value or null.
-     *
-     * Can be invoked as an operator like: `yourProp()`
-     */
-    open operator fun invoke(): T? = null
+  }
 }

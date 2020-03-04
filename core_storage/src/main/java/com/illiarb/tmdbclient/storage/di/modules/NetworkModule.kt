@@ -15,27 +15,27 @@ import retrofit2.CallAdapter
 @Module
 class NetworkModule {
 
-    companion object {
+  companion object {
 
-        const val CONNECT_TIMEOUT = 10L
-        const val READ_TIMEOUT = 10L
-        const val WRITE_TIMEOUT = 10L
+    const val CONNECT_TIMEOUT = 10L
+    const val READ_TIMEOUT = 10L
+    const val WRITE_TIMEOUT = 10L
 
-        @Provides
-        @JvmStatic
-        fun provideApiCallAdapterFactory(errorHandler: ErrorHandler): CallAdapter.Factory =
-            ApiCallAdapterFactory(errorHandler)
+    @Provides
+    @JvmStatic
+    fun provideApiCallAdapterFactory(errorHandler: ErrorHandler): CallAdapter.Factory =
+      ApiCallAdapterFactory(errorHandler)
 
-        @Provides
-        @JvmStatic
-        fun provideLoggerInterceptor(): HttpLoggingInterceptor =
-            HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            }
+    @Provides
+    @JvmStatic
+    fun provideLoggerInterceptor(): HttpLoggingInterceptor =
+      HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+      }
 
-        @Provides
-        @JvmStatic
-        fun provideErrorHandler(gson: Gson, resolver: ResourceResolver): ErrorHandler =
-            ErrorHandler(gson, resolver)
-    }
+    @Provides
+    @JvmStatic
+    fun provideErrorHandler(gson: Gson, resolver: ResourceResolver): ErrorHandler =
+      ErrorHandler(gson, resolver)
+  }
 }

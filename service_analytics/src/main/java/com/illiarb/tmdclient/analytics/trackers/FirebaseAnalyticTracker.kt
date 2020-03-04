@@ -14,18 +14,18 @@ import javax.inject.Inject
  */
 class FirebaseAnalyticTracker @Inject constructor(app: App) : AnalyticsTracker {
 
-    @SuppressLint("MissingPermission")
-    private val analytics = FirebaseAnalytics.getInstance(app.getApplication())
+  @SuppressLint("MissingPermission")
+  private val analytics = FirebaseAnalytics.getInstance(app.getApplication())
 
-    override fun sendEvent(event: AnalyticEvent) {
-        analytics.logEvent(event.eventName, createBundleFromEvent(event))
+  override fun sendEvent(event: AnalyticEvent) {
+    analytics.logEvent(event.eventName, createBundleFromEvent(event))
+  }
+
+  private fun createBundleFromEvent(event: AnalyticEvent): Bundle =
+    Bundle().apply {
+      when (event) {
+        is RouterAction -> putString("screen_name", event.action.toString())
+        else -> Bundle.EMPTY
+      }
     }
-
-    private fun createBundleFromEvent(event: AnalyticEvent): Bundle =
-        Bundle().apply {
-            when (event) {
-                is RouterAction -> putString("screen_name", event.action.toString())
-                else -> Bundle.EMPTY
-            }
-        }
 }

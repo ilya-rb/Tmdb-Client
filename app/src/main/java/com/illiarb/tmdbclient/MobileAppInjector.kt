@@ -15,41 +15,41 @@ import com.illiarb.tmdblcient.core.di.Injectable
  */
 class MobileAppInjector(private val app: App) : Application.ActivityLifecycleCallbacks {
 
-    fun registerLifecycleCallbacks() {
-        app.getApplication().registerActivityLifecycleCallbacks(this)
+  fun registerLifecycleCallbacks() {
+    app.getApplication().registerActivityLifecycleCallbacks(this)
+  }
+
+  override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+    if (activity is Injectable) {
+      activity.inject(app.getAppProvider())
     }
 
-    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-        if (activity is Injectable) {
-            activity.inject(app.getAppProvider())
-        }
-
-        if (activity is FragmentActivity) {
-            activity.supportFragmentManager.registerFragmentLifecycleCallbacks(
-                fragmentLifecycleCallbacks(),
-                true
-            )
-        }
+    if (activity is FragmentActivity) {
+      activity.supportFragmentManager.registerFragmentLifecycleCallbacks(
+        fragmentLifecycleCallbacks(),
+        true
+      )
     }
+  }
 
-    override fun onActivityPaused(activity: Activity?) = Unit
-    override fun onActivityResumed(activity: Activity?) = Unit
-    override fun onActivityStarted(activity: Activity?) = Unit
-    override fun onActivityDestroyed(activity: Activity?) = Unit
-    override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) = Unit
-    override fun onActivityStopped(activity: Activity?) = Unit
+  override fun onActivityPaused(activity: Activity?) = Unit
+  override fun onActivityResumed(activity: Activity?) = Unit
+  override fun onActivityStarted(activity: Activity?) = Unit
+  override fun onActivityDestroyed(activity: Activity?) = Unit
+  override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) = Unit
+  override fun onActivityStopped(activity: Activity?) = Unit
 
-    private fun fragmentLifecycleCallbacks(): FragmentManager.FragmentLifecycleCallbacks {
-        return object : FragmentManager.FragmentLifecycleCallbacks() {
-            override fun onFragmentPreAttached(
-                fm: FragmentManager,
-                fragment: Fragment,
-                context: Context
-            ) {
-                if (fragment is Injectable) {
-                    fragment.inject(app.getAppProvider())
-                }
-            }
+  private fun fragmentLifecycleCallbacks(): FragmentManager.FragmentLifecycleCallbacks {
+    return object : FragmentManager.FragmentLifecycleCallbacks() {
+      override fun onFragmentPreAttached(
+        fm: FragmentManager,
+        fragment: Fragment,
+        context: Context
+      ) {
+        if (fragment is Injectable) {
+          fragment.inject(app.getAppProvider())
         }
+      }
     }
+  }
 }

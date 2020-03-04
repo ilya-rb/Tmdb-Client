@@ -10,17 +10,17 @@ import com.illiarb.tmdblcient.core.domain.Image
 
 fun photoDelegate(clickListener: OnClickListener<Image>) = adapterDelegate<Image, Image>(R.layout.item_photo) {
 
-    val radius = itemView.resources.getDimensionPixelSize(R.dimen.corner_radius_normal)
-    val imageView = itemView.findViewById<ImageView>(R.id.moviePhoto)
+  val radius = itemView.resources.getDimensionPixelSize(R.dimen.corner_radius_normal)
+  val imageView = itemView.findViewById<ImageView>(R.id.moviePhoto)
 
-    itemView.setOnClickListener {
-        clickListener(item)
-    }
+  itemView.setOnClickListener {
+    clickListener(item)
+  }
 
-    bind {
-        imageView.loadImage(item) {
-            cornerRadius(radius)
-            crop(CropOptions.CenterCrop)
-        }
+  bind {
+    imageView.loadImage(item) {
+      cornerRadius(radius)
+      crop(CropOptions.CenterCrop)
     }
+  }
 }

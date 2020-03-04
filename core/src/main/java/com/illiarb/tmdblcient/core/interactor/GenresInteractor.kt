@@ -5,5 +5,5 @@ import com.illiarb.tmdblcient.core.util.Result
 
 interface GenresInteractor {
 
-    suspend fun getAllGenres(): Result<List<Genre>>
+  suspend fun getAllGenres(): Result<List<Genre>>
 }

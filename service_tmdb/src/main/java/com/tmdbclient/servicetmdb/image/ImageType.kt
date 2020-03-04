@@ -2,9 +2,9 @@ package com.tmdbclient.servicetmdb.image
 
 enum class ImageType {
 
-    Backdrop,
+  Backdrop,
 
-    Poster,
+  Poster,
 
-    Profile
+  Profile
 }

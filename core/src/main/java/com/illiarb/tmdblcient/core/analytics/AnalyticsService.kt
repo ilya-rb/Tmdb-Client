@@ -7,7 +7,7 @@ import com.illiarb.tmdblcient.core.navigation.Router
  */
 interface AnalyticsService {
 
-    fun trackEvent(event: AnalyticEvent)
+  fun trackEvent(event: AnalyticEvent)
 
-    fun trackRouterAction(action: Router.Action)
+  fun trackRouterAction(action: Router.Action)
 }

@@ -9,7 +9,7 @@ import com.illiarb.tmdblcient.core.navigation.Router
  */
 class TestAnalyticsService : AnalyticsService {
 
-    override fun trackEvent(event: AnalyticEvent) = Unit
+  override fun trackEvent(event: AnalyticEvent) = Unit
 
-    override fun trackRouterAction(action: Router.Action) = Unit
+  override fun trackRouterAction(action: Router.Action) = Unit
 }

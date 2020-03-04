@@ -9,38 +9,38 @@ import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataOutput
 import java.util.Collections
 
 data class GenreModel(
-    @SerializedName("id") var id: Int,
-    @SerializedName("name") var name: String
+  @SerializedName("id") var id: Int,
+  @SerializedName("name") var name: String
 ) : Persistable {
 
-    constructor() : this(0, "")
+  constructor() : this(0, "")
 
-    override fun readExternal(input: DataInput) {
-        id = input.readInt()
-        name = input.readString()
-    }
+  override fun readExternal(input: DataInput) {
+    id = input.readInt()
+    name = input.readString()
+  }
 
-    override fun deepClone(): Persistable = this
+  override fun deepClone(): Persistable = this
 
-    override fun writeExternal(output: DataOutput) {
-        output.writeInt(id)
-        output.writeString(name)
-    }
+  override fun writeExternal(output: DataOutput) {
+    output.writeInt(id)
+    output.writeString(name)
+  }
 }
 
 data class GenreListModel(@SerializedName("genres") var genres: List<GenreModel>) : Persistable {
 
-    constructor() : this(Collections.emptyList())
+  constructor() : this(Collections.emptyList())
 
-    override fun readExternal(input: DataInput) {
-        genres = mutableListOf<GenreModel>().also {
-            input.readPersistableList(it) { GenreModel() }
-        }
+  override fun readExternal(input: DataInput) {
+    genres = mutableListOf<GenreModel>().also {
+      input.readPersistableList(it) { GenreModel() }
     }
+  }
 
-    override fun deepClone(): Persistable = this
+  override fun deepClone(): Persistable = this
 
-    override fun writeExternal(output: DataOutput) {
-        output.writePersistableList(genres)
-    }
+  override fun writeExternal(output: DataOutput) {
+    output.writePersistableList(genres)
+  }
 }

@@ -16,38 +16,38 @@ import java.util.concurrent.TimeUnit
  * @author ilya-rb on 03.12.18.
  */
 class ConfigurationFetchWork(
-    context: Context,
-    workerParameters: WorkerParameters,
-    private val configurationRepository: ConfigurationRepository
+  context: Context,
+  workerParameters: WorkerParameters,
+  private val configurationRepository: ConfigurationRepository
 ) : Worker(context, workerParameters) {
 
-    companion object {
+  companion object {
 
-        // 2 Days
-        private const val REPEAT_INTERVAL = 2L
+    // 2 Days
+    private const val REPEAT_INTERVAL = 2L
 
-        fun createWorkRequest(): PeriodicWorkRequest =
-            PeriodicWorkRequestBuilder<ConfigurationFetchWork>(REPEAT_INTERVAL, TimeUnit.DAYS)
-                .addTag(ConfigurationFetchWork::class.java.name)
-                .setConstraints(
-                    Constraints.Builder()
-                        .setRequiredNetworkType(NetworkType.CONNECTED)
-                        .build()
-                )
-                .build()
-    }
+    fun createWorkRequest(): PeriodicWorkRequest =
+      PeriodicWorkRequestBuilder<ConfigurationFetchWork>(REPEAT_INTERVAL, TimeUnit.DAYS)
+        .addTag(ConfigurationFetchWork::class.java.name)
+        .setConstraints(
+          Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+        )
+        .build()
+  }
 
-    override fun doWork(): Result {
-        return try {
-            runBlocking {
-                when (configurationRepository.getConfiguration(refresh = true)) {
-                    is com.illiarb.tmdblcient.core.util.Result.Success -> Result.success()
-                    is com.illiarb.tmdblcient.core.util.Result.Error -> Result.failure()
-                }
-            }
-            Result.success()
-        } catch (e: IOException) {
-            Result.retry()
+  override fun doWork(): Result {
+    return try {
+      runBlocking {
+        when (configurationRepository.getConfiguration(refresh = true)) {
+          is com.illiarb.tmdblcient.core.util.Result.Success -> Result.success()
+          is com.illiarb.tmdblcient.core.util.Result.Error -> Result.failure()
         }
+      }
+      Result.success()
+    } catch (e: IOException) {
+      Result.retry()
     }
+  }
 }

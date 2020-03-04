@@ -5,8 +5,8 @@ import com.illiarb.tmdblcient.core.util.DateFormatter
 
 interface TmdbProvider {
 
-    fun provideConfigurationWorkCreator(): WorkerCreator
+  fun provideConfigurationWorkCreator(): WorkerCreator
 
-    fun provideDateFormatter(): DateFormatter
+  fun provideDateFormatter(): DateFormatter
 
 }

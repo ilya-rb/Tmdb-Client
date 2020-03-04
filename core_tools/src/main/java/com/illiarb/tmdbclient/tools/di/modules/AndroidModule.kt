@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @Module
 class AndroidModule(private val app: App) {
 
-    @Provides
-    @Singleton
-    fun provideConnectivityStatus(): ConnectivityStatus = AndroidConnectivityStatus(app)
+  @Provides
+  @Singleton
+  fun provideConnectivityStatus(): ConnectivityStatus = AndroidConnectivityStatus(app)
 }

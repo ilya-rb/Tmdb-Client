@@ -12,23 +12,23 @@ import org.junit.Test
 
 class ApiKeyInterceptorTest {
 
-    @Test
-    fun `it should append build config api key as query parameter to request url`() {
-        val interceptor = ApiKeyInterceptor()
-        val chain = mock<Interceptor.Chain>()
+  @Test
+  fun `it should append build config api key as query parameter to request url`() {
+    val interceptor = ApiKeyInterceptor()
+    val chain = mock<Interceptor.Chain>()
 
-        whenever(chain.request()).thenReturn(
-            Request.Builder()
-                .url("https://api-url.com/endpoint")
-                .build()
-        )
+    whenever(chain.request()).thenReturn(
+      Request.Builder()
+        .url("https://api-url.com/endpoint")
+        .build()
+    )
 
-        interceptor.intercept(chain)
+    interceptor.intercept(chain)
 
-        val requestCaptor = argumentCaptor<Request>()
-        verify(chain).proceed(requestCaptor.capture())
+    val requestCaptor = argumentCaptor<Request>()
+    verify(chain).proceed(requestCaptor.capture())
 
-        val apiKeyParam = requestCaptor.firstValue.url.queryParameter(ApiKeyInterceptor.QUERY_PARAM_API_KEY)
-        assertEquals(apiKeyParam, BuildConfig.API_KEY)
-    }
+    val apiKeyParam = requestCaptor.firstValue.url.queryParameter(ApiKeyInterceptor.QUERY_PARAM_API_KEY)
+    assertEquals(apiKeyParam, BuildConfig.API_KEY)
+  }
 }

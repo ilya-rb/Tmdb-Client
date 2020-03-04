@@ -7,11 +7,11 @@ import kotlinx.coroutines.CoroutineDispatcher
  */
 interface DispatcherProvider {
 
-    val io: CoroutineDispatcher
+  val io: CoroutineDispatcher
 
-    val main: CoroutineDispatcher
+  val main: CoroutineDispatcher
 
-    val default: CoroutineDispatcher
+  val default: CoroutineDispatcher
 
-    val none: CoroutineDispatcher
+  val none: CoroutineDispatcher
 }

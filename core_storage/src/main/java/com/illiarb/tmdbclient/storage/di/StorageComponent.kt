@@ -11,16 +11,16 @@ import javax.inject.Singleton
  * @author ilya-rb on 24.12.18.
  */
 @Component(
-    dependencies = [ToolsProvider::class],
-    modules = [StorageModule::class]
+  dependencies = [ToolsProvider::class],
+  modules = [StorageModule::class]
 )
 @Singleton
 interface StorageComponent : StorageProvider {
-    companion object {
-        fun get(app: App, toolsProvider: ToolsProvider): StorageProvider =
-            DaggerStorageComponent.builder()
-                .storageModule(StorageModule(app))
-                .toolsProvider(toolsProvider)
-                .build()
-    }
+  companion object {
+    fun get(app: App, toolsProvider: ToolsProvider): StorageProvider =
+      DaggerStorageComponent.builder()
+        .storageModule(StorageModule(app))
+        .toolsProvider(toolsProvider)
+        .build()
+  }
 }

@@ -9,15 +9,15 @@ import com.illiarb.tmdblcient.core.app.App
 import javax.inject.Inject
 
 class WorkManagerInitializer @Inject constructor(
-    private val workerFactory: WorkerFactory
+  private val workerFactory: WorkerFactory
 ) : AppInitializer {
 
-    override fun initialize(app: App) {
-        val config = Configuration.Builder()
-            .setWorkerFactory(workerFactory)
-            .setMinimumLoggingLevel(Log.VERBOSE)
-            .build()
+  override fun initialize(app: App) {
+    val config = Configuration.Builder()
+      .setWorkerFactory(workerFactory)
+      .setMinimumLoggingLevel(Log.VERBOSE)
+      .build()
 
-        WorkManager.initialize(app.getApplication(), config)
-    }
+    WorkManager.initialize(app.getApplication(), config)
+  }
 }

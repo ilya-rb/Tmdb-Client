@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
+import androidx.navigation.Navigator.Extras
+import androidx.navigation.fragment.FragmentNavigator
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdblcient.core.navigation.Navigator
 import com.illiarb.tmdblcient.core.navigation.Router
@@ -18,31 +20,37 @@ import javax.inject.Inject
  */
 class AppNavigator @Inject constructor(private val activity: FragmentActivity) : Navigator {
 
-    override fun executeAction(action: Router.Action) {
-        val controller = Navigation.findNavController(activity, R.id.nav_host_fragment)
-        val destination = when (action) {
-            is ShowMovieDetails -> R.id.action_to_movie_details
-            is ShowDiscover -> R.id.action_moviesFragment_to_discoverFragment
-            is ShowSettings -> R.id.action_movies_to_settings
-            is ShowVideos -> R.id.movie_to_player
-        }
-        controller.navigate(destination, setDestinationArgs(action), setNavOptions())
+  override fun executeAction(action: Router.Action) {
+    val controller = Navigation.findNavController(activity, R.id.nav_host_fragment)
+    val destination = when (action) {
+      is ShowMovieDetails -> R.id.action_to_movie_details
+      is ShowDiscover -> R.id.action_moviesFragment_to_discoverFragment
+      is ShowSettings -> R.id.action_movies_to_settings
+      is ShowVideos -> R.id.movie_to_player
     }
+    controller.navigate(destination, setDestinationArgs(action), setNavOptions(), setNavExtras(action))
+  }
 
-    private fun setDestinationArgs(action: Router.Action): Bundle {
-        return when (action) {
-            is ShowMovieDetails -> Bundle().apply { putInt(ShowMovieDetails.EXTRA_MOVIE_DETAILS, action.id) }
-            is ShowDiscover -> Bundle().apply { putInt(ShowDiscover.EXTRA_GENRE_ID, action.id) }
-            is ShowVideos -> Bundle().apply {
-                putInt(ShowVideos.EXTRA_MOVIE_ID, action.movieId)
-            }
-            else -> Bundle.EMPTY
-        }
+  private fun setDestinationArgs(action: Router.Action): Bundle {
+    return when (action) {
+      is ShowMovieDetails -> Bundle().apply { putInt(ShowMovieDetails.EXTRA_MOVIE_DETAILS, action.id) }
+      is ShowDiscover -> Bundle().apply { putInt(ShowDiscover.EXTRA_GENRE_ID, action.id) }
+      is ShowVideos -> Bundle().apply {
+        putInt(ShowVideos.EXTRA_MOVIE_ID, action.movieId)
+      }
+      else -> Bundle.EMPTY
     }
+  }
 
-    private fun setNavOptions(): NavOptions =
-        NavOptions.Builder()
-            .setEnterAnim(R.anim.anim_fade_in)
-            .setExitAnim(R.anim.anim_fade_out)
-            .build()
+  private fun setNavOptions(): NavOptions = NavOptions.Builder().build()
+
+  private fun setNavExtras(action: Router.Action): Extras? {
+    return if (action is ShowMovieDetails && action.sharedPoster != null) {
+      FragmentNavigator.Extras.Builder()
+        .addSharedElement(action.sharedPoster!!, action.sharedPoster!!.transitionName)
+        .build()
+    } else {
+      null
+    }
+  }
 }

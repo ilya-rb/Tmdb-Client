@@ -5,11 +5,11 @@ package com.illiarb.coreuiimage
  */
 enum class CropOptions {
 
-    CenterCrop,
+  CenterCrop,
 
-    FitCenter,
+  FitCenter,
 
-    CenterInside,
+  CenterInside,
 
-    Circle
+  Circle
 }

@@ -7,30 +7,35 @@ import androidx.annotation.FloatRange
  */
 @Suppress("unused")
 data class RequestOptions(
-    var cropOptions: CropOptions? = null,
-    var cornerRadius: Int = 0,
-    var thumbnail: Float = 0f,
-    var useCrossFade: Boolean = true
+  var cropOptions: CropOptions? = null,
+  var cornerRadius: Int = 0,
+  var thumbnail: Float = 0f,
+  var useCrossFade: Boolean = true,
+  var onImageReady: () -> Unit = {}
 ) {
 
-    companion object {
-        private const val DEFAULT_RADIUS = 3
-        private const val DEFAULT_DOWN_SAMPLING = 15
-    }
+  companion object {
+    private const val DEFAULT_RADIUS = 3
+    private const val DEFAULT_DOWN_SAMPLING = 15
+  }
 
-    fun thumbnail(@FloatRange(from = 0.1, to = 0.9) fraction: Float) = apply {
-        thumbnail = fraction
-    }
+  fun thumbnail(@FloatRange(from = 0.1, to = 0.9) fraction: Float) = apply {
+    thumbnail = fraction
+  }
 
-    fun crop(options: CropOptions) = apply {
-        cropOptions = options
-    }
+  fun onImageReady(callback: () -> Unit) = apply {
+    onImageReady = callback
+  }
 
-    fun cornerRadius(radius: Int) = apply {
-        cornerRadius = radius
-    }
+  fun crop(options: CropOptions) = apply {
+    cropOptions = options
+  }
 
-    fun crossFade(use: Boolean) = apply {
-        useCrossFade = use
-    }
+  fun cornerRadius(radius: Int) = apply {
+    cornerRadius = radius
+  }
+
+  fun crossFade(use: Boolean) = apply {
+    useCrossFade = use
+  }
 }

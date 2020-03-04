@@ -19,40 +19,40 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Component(
-    dependencies = [
-        StorageProvider::class,
-        ToolsProvider::class,
-        AnalyticsProvider::class,
-        InteractorsProvider::class,
-        TmdbProvider::class
-    ],
-    modules = [
-        AppModule::class,
-        NavigationModule::class,
-        WorkModule::class
-    ]
+  dependencies = [
+    StorageProvider::class,
+    ToolsProvider::class,
+    AnalyticsProvider::class,
+    InteractorsProvider::class,
+    TmdbProvider::class
+  ],
+  modules = [
+    AppModule::class,
+    NavigationModule::class,
+    WorkModule::class
+  ]
 )
 @Singleton
 interface AppComponent : AppProvider {
 
-    companion object {
+  companion object {
 
-        fun get(app: App): AppProvider {
-            val toolsProvider = ToolsComponent.get(app)
-            val storageProvider = StorageComponent.get(app, toolsProvider)
-            val analyticsProvider = AnalyticsComponent.get(app)
-            val tmdbProvider = TmdbComponent.get(app, toolsProvider, storageProvider)
+    fun get(app: App): AppProvider {
+      val toolsProvider = ToolsComponent.get(app)
+      val storageProvider = StorageComponent.get(app, toolsProvider)
+      val analyticsProvider = AnalyticsComponent.get(app)
+      val tmdbProvider = TmdbComponent.get(app, toolsProvider, storageProvider)
 
-            return DaggerAppComponent.builder()
-                .storageProvider(storageProvider)
-                .toolsProvider(toolsProvider)
-                .analyticsProvider(analyticsProvider)
-                .tmdbProvider(tmdbProvider)
-                .interactorsProvider(tmdbProvider)
-                .appModule(AppModule(app))
-                .build()
-        }
+      return DaggerAppComponent.builder()
+        .storageProvider(storageProvider)
+        .toolsProvider(toolsProvider)
+        .analyticsProvider(analyticsProvider)
+        .tmdbProvider(tmdbProvider)
+        .interactorsProvider(tmdbProvider)
+        .appModule(AppModule(app))
+        .build()
     }
+  }
 
-    fun inject(app: MobileApplication)
+  fun inject(app: MobileApplication)
 }

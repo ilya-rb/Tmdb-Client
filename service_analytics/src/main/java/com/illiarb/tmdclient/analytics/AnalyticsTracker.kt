@@ -7,10 +7,10 @@ import com.illiarb.tmdblcient.core.analytics.AnalyticEvent
  */
 interface AnalyticsTracker {
 
-    companion object {
-        const val TAG = "AnalyticsTracker"
-    }
+  companion object {
+    const val TAG = "AnalyticsTracker"
+  }
 
-    fun sendEvent(event: AnalyticEvent)
+  fun sendEvent(event: AnalyticEvent)
 
 }

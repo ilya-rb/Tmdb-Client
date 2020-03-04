@@ -5,7 +5,7 @@
 
     <stroke
         android:width="@dimen/item_trending_border_width"
-        android:color="?attr/colorSecondary"
+        android:color="?attr/colorPrimary"
         />
 
 </shape>

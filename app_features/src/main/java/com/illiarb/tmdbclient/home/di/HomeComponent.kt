@@ -6,20 +6,20 @@ import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import dagger.Component
 
 @Component(
-    dependencies = [AppProvider::class],
-    modules = [
-        HomeModule::class,
-        ViewModelModule::class
-    ]
+  dependencies = [AppProvider::class],
+  modules = [
+    HomeModule::class,
+    ViewModelModule::class
+  ]
 )
 interface HomeComponent {
 
-    companion object {
-        fun get(appProvider: AppProvider): HomeComponent =
-            DaggerHomeComponent.builder()
-                .appProvider(appProvider)
-                .build()
-    }
+  companion object {
+    fun get(appProvider: AppProvider): HomeComponent =
+      DaggerHomeComponent.builder()
+        .appProvider(appProvider)
+        .build()
+  }
 
-    fun inject(fragment: HomeFragment)
+  fun inject(fragment: HomeFragment)
 }

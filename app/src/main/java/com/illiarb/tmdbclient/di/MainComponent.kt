@@ -11,18 +11,18 @@ import dagger.Component
  * @author ilya-rb on 28.12.18.
  */
 @Component(
-    dependencies = [AppProvider::class],
-    modules = [ActivityModule::class, MainModule::class]
+  dependencies = [AppProvider::class],
+  modules = [ActivityModule::class, MainModule::class]
 )
 interface MainComponent {
 
-    companion object {
-        fun get(appProvider: AppProvider, activity: FragmentActivity): MainComponent =
-            DaggerMainComponent.builder()
-                .appProvider(appProvider)
-                .activityModule(ActivityModule(activity))
-                .build()
-    }
+  companion object {
+    fun get(appProvider: AppProvider, activity: FragmentActivity): MainComponent =
+      DaggerMainComponent.builder()
+        .appProvider(appProvider)
+        .activityModule(ActivityModule(activity))
+        .build()
+  }
 
-    fun inject(activity: MainActivity)
+  fun inject(activity: MainActivity)
 }

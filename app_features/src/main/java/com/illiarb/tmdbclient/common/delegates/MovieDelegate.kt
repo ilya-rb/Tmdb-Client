@@ -15,35 +15,38 @@ import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdblcient.core.domain.Movie
 
 fun movieDelegate(
-    widthSpec: SizeSpec,
-    heightSpec: SizeSpec,
-    clickListener: OnClickListener<Movie>
+  widthSpec: SizeSpec,
+  heightSpec: SizeSpec,
+  clickListener: OnClickListener<Movie>,
+  posterClickListener: OnClickListener<Pair<Movie, ImageView>> = {}
 ) = adapterDelegate<Movie, Movie>(R.layout.item_movie) {
 
-    val image = itemView.findViewById<ImageView>(R.id.itemMoviePoster)
-    val title = itemView.findViewById<TextView>(R.id.itemMovieTitle)
-    val card = itemView.findViewById<View>(R.id.itemMovieCard)
-    val rating = itemView.findViewById<TextView>(R.id.itemMovieRating)
-    val imageCornerRadius = itemView.dimen(R.dimen.corner_radius_normal)
+  val image = itemView.findViewById<ImageView>(R.id.itemMoviePoster)
+  val title = itemView.findViewById<TextView>(R.id.itemMovieTitle)
+  val card = itemView.findViewById<View>(R.id.itemMovieCard)
+  val rating = itemView.findViewById<TextView>(R.id.itemMovieRating)
+  val imageCornerRadius = itemView.dimen(R.dimen.corner_radius_normal)
 
-    itemView.setSize(widthSpec = widthSpec)
+  itemView.setSize(widthSpec = widthSpec)
 
-    card.setSize(heightSpec = heightSpec)
+  card.setSize(heightSpec = heightSpec)
 
-    itemView.setOnClickListener {
-        clickListener(item)
+  bind {
+    title.text = item.title
+
+    rating.setVisible(item.voteAverage != 0f)
+    rating.text = item.voteAverage.toString()
+
+    image.loadImage(item.posterPath) {
+      cornerRadius(imageCornerRadius)
+      crop(CropOptions.CenterCrop)
+      crossFade(false)
     }
 
-    bind {
-        title.text = item.title
+    image.transitionName = "item_${item.id}"
 
-        rating.setVisible(item.voteAverage != 0f)
-        rating.text = item.voteAverage.toString()
-
-        image.loadImage(item.posterPath) {
-            cornerRadius(imageCornerRadius)
-            crop(CropOptions.CenterCrop)
-            crossFade(false)
-        }
+    image.setOnClickListener {
+      posterClickListener(item to image)
     }
+  }
 }

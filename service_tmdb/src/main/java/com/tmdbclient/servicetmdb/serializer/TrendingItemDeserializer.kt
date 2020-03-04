@@ -11,18 +11,18 @@ import java.lang.reflect.Type
 
 class TrendingItemDeserializer : JsonDeserializer<TrendingModel> {
 
-    override fun deserialize(
-        json: JsonElement,
-        typeOfT: Type,
-        context: JsonDeserializationContext
-    ): TrendingModel {
-        val item = json.asJsonObject
+  override fun deserialize(
+    json: JsonElement,
+    typeOfT: Type,
+    context: JsonDeserializationContext
+  ): TrendingModel {
+    val item = json.asJsonObject
 
-        return when (item.get("media_type")?.asString) {
-            "movie" -> context.deserialize(item, MovieModel::class.java)
-            "person" -> context.deserialize(item, PersonModel::class.java)
-            "tv" -> context.deserialize(item, TvShowModel::class.java)
-            else -> context.deserialize(item, TrendingModel.Stub::class.java)
-        }
+    return when (item.get("media_type")?.asString) {
+      "movie" -> context.deserialize(item, MovieModel::class.java)
+      "person" -> context.deserialize(item, PersonModel::class.java)
+      "tv" -> context.deserialize(item, TvShowModel::class.java)
+      else -> context.deserialize(item, TrendingModel.Stub::class.java)
     }
+  }
 }

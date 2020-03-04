@@ -9,9 +9,9 @@ import com.illiarb.tmdblcient.core.tools.DispatcherProvider
  */
 interface ToolsProvider {
 
-    fun provideDispatcherProvider(): DispatcherProvider
+  fun provideDispatcherProvider(): DispatcherProvider
 
-    fun provideConnectivityStatus(): ConnectivityStatus
+  fun provideConnectivityStatus(): ConnectivityStatus
 
-    fun workManager(): WorkManager
+  fun workManager(): WorkManager
 }

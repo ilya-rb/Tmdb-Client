@@ -7,5 +7,5 @@ import javax.inject.Inject
 
 class CountryMapper @Inject constructor() : Mapper<CountryModel, Country> {
 
-    override fun map(from: CountryModel): Country = Country(from.code, from.name)
+  override fun map(from: CountryModel): Country = Country(from.code, from.name)
 }

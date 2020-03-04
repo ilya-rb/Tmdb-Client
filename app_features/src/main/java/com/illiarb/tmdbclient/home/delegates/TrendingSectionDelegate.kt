@@ -24,70 +24,70 @@ private const val KEY_TRENDING_STATE = "trending_state"
 
 @Suppress("LongMethod")
 fun trendingSectionDelegate(
-    stateSaver: RecyclerViewStateSaver,
-    clickListener: OnClickListener<Movie>
+  stateSaver: RecyclerViewStateSaver,
+  clickListener: OnClickListener<Movie>
 ) = adapterDelegate<TrendingSection, MovieSection>(R.layout.item_trending_section) {
 
-    val adapter = TrendingSectionAdapter(clickListener)
-    val trendingList = itemView.findViewById<RecyclerView>(R.id.itemTrendingSectionList)
-    val stateCallback: StateSaver = {
-        putParcelable(KEY_TRENDING_STATE, trendingList.layoutManager?.onSaveInstanceState())
-    }
+  val adapter = TrendingSectionAdapter(clickListener)
+  val trendingList = itemView.findViewById<RecyclerView>(R.id.itemTrendingSectionList)
+  val stateCallback: StateSaver = {
+    putParcelable(KEY_TRENDING_STATE, trendingList.layoutManager?.onSaveInstanceState())
+  }
 
-    trendingList.let {
-        it.adapter = adapter
-        it.layoutManager = LinearLayoutManager(
-            itemView.context,
-            LinearLayoutManager.HORIZONTAL,
-            false
-        )
-        it.addItemDecoration(
-            SpaceDecoration.edgeInnerSpace(
-                it.dimen(R.dimen.spacing_normal),
-                it.dimen(R.dimen.spacing_small)
-            )
-        )
-    }
+  trendingList.let {
+    it.adapter = adapter
+    it.layoutManager = LinearLayoutManager(
+      itemView.context,
+      LinearLayoutManager.HORIZONTAL,
+      false
+    )
+    it.addItemDecoration(
+      SpaceDecoration.edgeInnerSpace(
+        it.dimen(R.dimen.spacing_normal),
+        it.dimen(R.dimen.spacing_small)
+      )
+    )
+  }
 
-    bind {
-        adapter.items = item.items
-        adapter.notifyDataSetChanged()
+  bind {
+    adapter.items = item.items
+    adapter.notifyDataSetChanged()
 
-        val state = stateSaver.state(KEY_TRENDING_STATE) as? Parcelable?
-        trendingList.layoutManager?.onRestoreInstanceState(state)
-    }
+    val state = stateSaver.state(KEY_TRENDING_STATE) as? Parcelable?
+    trendingList.layoutManager?.onRestoreInstanceState(state)
+  }
 
-    onViewAttachedToWindow {
-        stateSaver.registerStateSaver(KEY_TRENDING_STATE, stateCallback)
-    }
+  onViewAttachedToWindow {
+    stateSaver.registerStateSaver(KEY_TRENDING_STATE, stateCallback)
+  }
 
-    onViewDetachedFromWindow {
-        stateSaver.unregisterStateSaver(KEY_TRENDING_STATE)
-    }
+  onViewDetachedFromWindow {
+    stateSaver.unregisterStateSaver(KEY_TRENDING_STATE)
+  }
 }
 
 private class TrendingSectionAdapter(clickListener: OnClickListener<Movie>) :
-    ListDelegationAdapter<List<TrendingItem>>() {
+  ListDelegationAdapter<List<TrendingItem>>() {
 
-    init {
-        delegatesManager.addDelegate(trendingDelegate(clickListener))
-    }
+  init {
+    delegatesManager.addDelegate(trendingDelegate(clickListener))
+  }
 
-    private fun trendingDelegate(clickListener: OnClickListener<Movie>) =
-        adapterDelegate<TrendingItem, TrendingItem>(R.layout.item_trending) {
+  private fun trendingDelegate(clickListener: OnClickListener<Movie>) =
+    adapterDelegate<TrendingItem, TrendingItem>(R.layout.item_trending) {
 
-            val image = itemView.findViewById<ImageView>(R.id.itemTrendingImage)
-            val name = itemView.findViewById<TextView>(R.id.itemTrendingName)
+      val image = itemView.findViewById<ImageView>(R.id.itemTrendingImage)
+      val name = itemView.findViewById<TextView>(R.id.itemTrendingName)
 
-            bind {
-                name.text = item.movie.title
-                image.loadImage(item.movie.posterPath) {
-                    crop(CropOptions.Circle)
-                }
-
-                itemView.setOnClickListener {
-                    clickListener(item.movie)
-                }
-            }
+      bind {
+        name.text = item.movie.title
+        image.loadImage(item.movie.posterPath) {
+          crop(CropOptions.Circle)
         }
+
+        itemView.setOnClickListener {
+          clickListener(item.movie)
+        }
+      }
+    }
 }

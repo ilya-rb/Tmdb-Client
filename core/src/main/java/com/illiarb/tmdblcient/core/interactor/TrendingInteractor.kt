@@ -5,5 +5,5 @@ import com.illiarb.tmdblcient.core.util.Result
 
 interface TrendingInteractor {
 
-    suspend fun getTrending(): Result<List<TrendingItem>>
+  suspend fun getTrending(): Result<List<TrendingItem>>
 }

@@ -9,15 +9,15 @@ import com.illiarb.tmdblcient.core.navigation.Router
  */
 class DefaultAnalyticsService(private val eventTrackers: Set<AnalyticsTracker>) : AnalyticsService {
 
-    override fun trackEvent(event: AnalyticEvent) {
-        eventTrackers.forEach {
-            it.sendEvent(event)
-        }
+  override fun trackEvent(event: AnalyticEvent) {
+    eventTrackers.forEach {
+      it.sendEvent(event)
     }
+  }
 
-    override fun trackRouterAction(action: Router.Action) {
-        eventTrackers.forEach {
-            it.sendEvent(AnalyticEvent.RouterAction(action))
-        }
+  override fun trackRouterAction(action: Router.Action) {
+    eventTrackers.forEach {
+      it.sendEvent(AnalyticEvent.RouterAction(action))
     }
+  }
 }

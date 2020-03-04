@@ -19,67 +19,67 @@ private const val TIMER_IMAGE_UPDATE = 10000L
 private const val KEY_NOW_PLAYING_POSITION = "now_playing_position"
 
 fun nowPlayingSectionDelegate(
-    stateSaver: RecyclerViewStateSaver,
-    clickListener: OnClickListener<Movie>
+  stateSaver: RecyclerViewStateSaver,
+  clickListener: OnClickListener<Movie>
 ) = adapterDelegate<NowPlayingSection, MovieSection>(R.layout.item_now_playing_section) {
 
-    val nowPlayingPager = itemView.findViewById<RecyclerView>(R.id.nowPlayingPager)
-    val adapter =
-        NowPlayingPagerAdapter(clickListener)
-    val snapHelper = PagerSnapHelper()
+  val nowPlayingPager = itemView.findViewById<RecyclerView>(R.id.nowPlayingPager)
+  val adapter =
+    NowPlayingPagerAdapter(clickListener)
+  val snapHelper = PagerSnapHelper()
 
-    var imagesTimer: Timer? = null
-    var currentPosition = 0
+  var imagesTimer: Timer? = null
+  var currentPosition = 0
 
-    val stateCallback: StateSaver = {
-        putInt(KEY_NOW_PLAYING_POSITION, currentPosition)
-    }
+  val stateCallback: StateSaver = {
+    putInt(KEY_NOW_PLAYING_POSITION, currentPosition)
+  }
 
-    val recyclerScrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
+  val recyclerScrollListener = object : RecyclerView.OnScrollListener() {
+    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+      super.onScrollStateChanged(recyclerView, newState)
 
-            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                val snapView = snapHelper.findSnapView(nowPlayingPager.layoutManager)
-                snapView?.let {
-                    val snapPosition = nowPlayingPager.getChildAdapterPosition(it)
-                    if (snapPosition != RecyclerView.NO_POSITION) {
-                        currentPosition = snapPosition
-                    }
-                }
-            }
+      if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+        val snapView = snapHelper.findSnapView(nowPlayingPager.layoutManager)
+        snapView?.let {
+          val snapPosition = nowPlayingPager.getChildAdapterPosition(it)
+          if (snapPosition != RecyclerView.NO_POSITION) {
+            currentPosition = snapPosition
+          }
         }
+      }
     }
+  }
 
-    snapHelper.attachToRecyclerView(nowPlayingPager)
+  snapHelper.attachToRecyclerView(nowPlayingPager)
 
-    nowPlayingPager.adapter = adapter
-    nowPlayingPager.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+  nowPlayingPager.adapter = adapter
+  nowPlayingPager.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
 
-    bind {
-        adapter.items = item.movies
-        adapter.notifyDataSetChanged()
+  bind {
+    adapter.items = item.movies
+    adapter.notifyDataSetChanged()
 
-        currentPosition = stateSaver.state(KEY_NOW_PLAYING_POSITION, 0) as Int
-        nowPlayingPager.scrollToPosition(currentPosition)
+    currentPosition = stateSaver.state(KEY_NOW_PLAYING_POSITION, 0) as Int
+    nowPlayingPager.scrollToPosition(currentPosition)
+  }
+
+  onViewAttachedToWindow {
+    nowPlayingPager.addOnScrollListener(recyclerScrollListener)
+    stateSaver.registerStateSaver(KEY_NOW_PLAYING_POSITION, stateCallback)
+
+    imagesTimer = fixedRateTimer(initialDelay = TIMER_IMAGE_UPDATE, period = TIMER_IMAGE_UPDATE) {
+      if (adapter.realCount == 0) {
+        return@fixedRateTimer
+      }
+      currentPosition++
+      nowPlayingPager.smoothScrollToPosition(currentPosition)
     }
+  }
 
-    onViewAttachedToWindow {
-        nowPlayingPager.addOnScrollListener(recyclerScrollListener)
-        stateSaver.registerStateSaver(KEY_NOW_PLAYING_POSITION, stateCallback)
-
-        imagesTimer = fixedRateTimer(initialDelay = TIMER_IMAGE_UPDATE, period = TIMER_IMAGE_UPDATE) {
-            if (adapter.realCount == 0) {
-                return@fixedRateTimer
-            }
-            currentPosition++
-            nowPlayingPager.smoothScrollToPosition(currentPosition)
-        }
-    }
-
-    onViewDetachedFromWindow {
-        nowPlayingPager.removeOnScrollListener(recyclerScrollListener)
-        stateSaver.unregisterStateSaver(KEY_NOW_PLAYING_POSITION)
-        imagesTimer?.cancel()
-    }
+  onViewDetachedFromWindow {
+    nowPlayingPager.removeOnScrollListener(recyclerScrollListener)
+    stateSaver.unregisterStateSaver(KEY_NOW_PLAYING_POSITION)
+    imagesTimer?.cancel()
+  }
 }

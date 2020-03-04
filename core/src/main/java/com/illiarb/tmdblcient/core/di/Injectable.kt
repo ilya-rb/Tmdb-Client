@@ -7,5 +7,5 @@ import com.illiarb.tmdblcient.core.di.providers.AppProvider
  */
 interface Injectable {
 
-    fun inject(appProvider: AppProvider)
+  fun inject(appProvider: AppProvider)
 }

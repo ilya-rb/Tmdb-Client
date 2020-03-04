@@ -11,18 +11,18 @@ import javax.inject.Singleton
  * @author ilya-rb on 24.12.18.
  */
 @Component(
-    modules = [
-        ToolsModule::class,
-        AndroidModule::class
-    ]
+  modules = [
+    ToolsModule::class,
+    AndroidModule::class
+  ]
 )
 @Singleton
 interface ToolsComponent : ToolsProvider {
 
-    companion object {
-        fun get(app: App): ToolsProvider =
-            DaggerToolsComponent.builder()
-                .androidModule(AndroidModule(app))
-                .build()
-    }
+  companion object {
+    fun get(app: App): ToolsProvider =
+      DaggerToolsComponent.builder()
+        .androidModule(AndroidModule(app))
+        .build()
+  }
 }

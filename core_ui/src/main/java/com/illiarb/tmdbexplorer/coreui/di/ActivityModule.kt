@@ -7,6 +7,6 @@ import dagger.Provides
 @Module
 class ActivityModule(private val activity: FragmentActivity) {
 
-    @Provides
-    fun provideActivity(): FragmentActivity = activity
+  @Provides
+  fun provideActivity(): FragmentActivity = activity
 }

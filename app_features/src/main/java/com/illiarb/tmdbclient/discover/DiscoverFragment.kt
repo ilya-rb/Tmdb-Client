@@ -5,13 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.transition.MaterialFadeThrough
 import com.illiarb.tmdbclient.common.delegates.movieDelegate
-import com.illiarb.tmdbclient.discover.DiscoverModel.UiEvent
+import com.illiarb.tmdbclient.discover.DiscoverViewModel.State
 import com.illiarb.tmdbclient.discover.di.DiscoverComponent
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentDiscoverBinding
@@ -26,142 +27,145 @@ import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.domain.Genre
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Injectable {
 
-    companion object {
-        private const val GRID_SPAN_COUNT = 3
-    }
+  companion object {
+    private const val GRID_SPAN_COUNT = 3
+  }
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+  @Inject
+  lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var discoverGenres: ChipGroup
-    private lateinit var filtersContainer: ViewGroup
-    private lateinit var discoverSwipeArea: View
+  private lateinit var discoverGenres: ChipGroup
+  private lateinit var filtersContainer: ViewGroup
+  private lateinit var discoverSwipeArea: View
 
-    private val adapter = DelegatesAdapter(
-        movieDelegate(
-            SizeSpec.MatchParent,
-            SizeSpec.Fixed(R.dimen.discover_item_movie_height)
-        ) {
-            viewModel.onUiEvent(UiEvent.ItemClick(it))
-        }
+  private val adapter = DelegatesAdapter(
+    movieDelegate(
+      SizeSpec.MatchParent,
+      SizeSpec.Fixed(R.dimen.discover_item_movie_height),
+      clickListener = {
+        viewModel.events.offer(DiscoverViewModel.Event.MovieClick(it))
+      }
     )
+  )
 
-    private val viewModel: DiscoverModel by lazy(LazyThreadSafetyMode.NONE) {
-        ViewModelProvider(this, viewModelFactory).get(DefaultDiscoverModel::class.java)
+  private val viewModel: DiscoverViewModel by lazy(LazyThreadSafetyMode.NONE) {
+    ViewModelProvider(this, viewModelFactory).get(DiscoverViewModel::class.java)
+  }
+
+  override fun inject(appProvider: AppProvider) {
+    val id = arguments?.getInt(ShowDiscover.EXTRA_GENRE_ID, Genre.GENRE_ALL) ?: Genre.GENRE_ALL
+    DiscoverComponent.get(appProvider, id).inject(this)
+  }
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    enterTransition = MaterialFadeThrough.create(requireContext())
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    // filters layout added via <include> tag and not supported by view binding
+    discoverGenres = binding.root.findViewById(R.id.discoverGenres)
+    discoverSwipeArea = binding.root.findViewById(R.id.discoverSwipeArea)
+    filtersContainer = binding.root.findViewById(R.id.discoverFiltersContainer)
+
+    binding.discoverSwipeRefresh.isEnabled = false
+
+    setupToolbar()
+    setupFilters()
+    setupDiscoverList()
+
+    viewLifecycleOwner.lifecycleScope.launch {
+      var oldState: State? = null
+      viewModel.state.collect { newState ->
+        render(oldState, newState)
+        oldState = newState
+      }
     }
 
-    override fun inject(appProvider: AppProvider) {
-        val id = arguments?.getInt(ShowDiscover.EXTRA_GENRE_ID, Genre.GENRE_ALL) ?: Genre.GENRE_ALL
-        DiscoverComponent.get(appProvider, id).inject(this)
+    ViewCompat.requestApplyInsets(view)
+  }
+
+  override fun getViewBinding(inflater: LayoutInflater): FragmentDiscoverBinding =
+    FragmentDiscoverBinding.inflate(inflater)
+
+  private fun setupToolbar() {
+    binding.toolbar.setNavigationOnClickListener {
+      activity?.onBackPressed()
+    }
+  }
+
+  private fun setupFilters() {
+    discoverSwipeArea.setOnClickListener {
+      showFiltersPanel()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // filters layout added via <include> tag and not supported by view binding
-        discoverGenres = binding.root.findViewById(R.id.discoverGenres)
-        discoverSwipeArea = binding.root.findViewById(R.id.discoverSwipeArea)
-        filtersContainer = binding.root.findViewById(R.id.discoverFiltersContainer)
-
-        binding.discoverSwipeRefresh.isEnabled = false
-
-        setupToolbar()
-        setupFilters()
-        setupDiscoverList()
-
-        ViewCompat.requestApplyInsets(view)
-
-        bind(viewModel)
+    binding.root.findViewById<View>(R.id.discoverApplyFilter).setOnClickListener {
+      dismissFiltersPanel()
+      viewModel.events.offer(DiscoverViewModel.Event.ApplyFilter(discoverGenres.checkedChipId))
     }
 
-    override fun getViewBinding(inflater: LayoutInflater): FragmentDiscoverBinding =
-        FragmentDiscoverBinding.inflate(inflater)
+    binding.root.findViewById<View>(R.id.discoverClearFilter).setOnClickListener {
+      discoverGenres.clearCheck()
+      dismissFiltersPanel()
+      viewModel.events.offer(DiscoverViewModel.Event.ClearFilter)
+    }
+  }
 
-    private fun setupToolbar() {
-        binding.toolbar.setNavigationOnClickListener {
-            activity?.onBackPressed()
-        }
+  private fun setupDiscoverList() {
+    binding.discoverList.apply {
+      adapter = this@DiscoverFragment.adapter
+      layoutManager = GridLayoutManager(requireContext(), GRID_SPAN_COUNT)
+      removeAdapterOnDetach()
+
+      val spacing = dimen(R.dimen.spacing_small)
+      addItemDecoration(SpaceDecoration(spacing, spacing, spacing, spacing))
+    }
+  }
+
+  private fun render(oldState: State?, newState: State) {
+    binding.discoverSwipeRefresh.isRefreshing = newState.isLoading
+    binding.toolbar.title = when (newState.screenTitle) {
+      is Text.AsString -> newState.screenTitle.text
+      is Text.AsResource -> getString(newState.screenTitle.id)
     }
 
-    private fun setupFilters() {
-        discoverSwipeArea.setOnClickListener {
-            showFiltersPanel()
-        }
-
-        binding.root.findViewById<View>(R.id.discoverApplyFilter).setOnClickListener {
-            dismissFiltersPanel()
-            viewModel.onUiEvent(UiEvent.ApplyFilter(discoverGenres.checkedChipId))
-        }
-
-        binding.root.findViewById<View>(R.id.discoverClearFilter).setOnClickListener {
-            discoverGenres.clearCheck()
-            dismissFiltersPanel()
-            viewModel.onUiEvent(UiEvent.ClearFilter)
-        }
+    if (oldState?.selectedGenreId != newState.selectedGenreId) {
+      discoverGenres.check(newState.selectedGenreId)
     }
 
-    private fun setupDiscoverList() {
-        binding.discoverList.apply {
-            adapter = this@DiscoverFragment.adapter
-            layoutManager = GridLayoutManager(requireContext(), GRID_SPAN_COUNT)
-            removeAdapterOnDetach()
+    if (oldState?.genres != newState.genres) {
+      newState.genres.forEach { genre ->
+        val chip = Chip(
+          context,
+          null,
+          com.illiarb.tmdbexplorer.coreui.R.attr.materialChipChoice
+        )
 
-            val spacing = dimen(R.dimen.spacing_small)
-            addItemDecoration(SpaceDecoration(spacing, spacing, spacing, spacing))
-        }
+        chip.text = genre.name
+        chip.id = genre.id
+
+        discoverGenres.addView(chip)
+      }
     }
 
-    private fun bind(viewModel: DiscoverModel) {
-        viewModel.results.observe(viewLifecycleOwner, adapter)
-        viewModel.genres.observe(viewLifecycleOwner, discoverGenres.genres())
-        viewModel.selectedChip.observe(viewLifecycleOwner, Observer(::selectChip))
-        viewModel.isLoading.observe(viewLifecycleOwner, Observer(::showLoading))
-        viewModel.screenTitle.observe(viewLifecycleOwner, Observer(::setScreenTitle))
+    if (oldState?.results != newState.results) {
+      adapter.submitList(newState.results)
     }
+  }
 
-    private fun showFiltersPanel() {
-        binding.discoverRoot.transitionToEnd()
-    }
+  private fun showFiltersPanel() {
+    binding.discoverRoot.transitionToEnd()
+  }
 
-    private fun dismissFiltersPanel() {
-        binding.discoverRoot.transitionToStart()
-    }
-
-    private fun selectChip(id: Int) {
-        if (discoverGenres.checkedChipId != id) {
-            discoverGenres.check(id)
-        }
-    }
-
-    private fun setScreenTitle(title: Text) {
-        binding.toolbar.title = when (title) {
-            is Text.AsString -> title.text
-            is Text.AsResource -> getString(title.id)
-        }
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.discoverSwipeRefresh.isRefreshing = isLoading
-    }
-
-    private fun ChipGroup.genres(): Observer<List<Genre>> = Observer { genres ->
-        if (discoverGenres.childCount == 0) {
-            genres.forEach { genre ->
-                val chip = Chip(
-                    context,
-                    null,
-                    com.illiarb.tmdbexplorer.coreui.R.attr.materialChipChoice
-                )
-
-                chip.text = genre.name
-                chip.id = genre.id
-
-                addView(chip)
-            }
-        }
-    }
+  private fun dismissFiltersPanel() {
+    binding.discoverRoot.transitionToStart()
+  }
 }

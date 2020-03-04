@@ -9,9 +9,9 @@ import com.illiarb.tmdblcient.core.navigation.Router
  */
 interface AppProvider : StorageProvider, ToolsProvider, TmdbProvider, InteractorsProvider, AnalyticsProvider {
 
-    fun getApp(): App
+  fun getApp(): App
 
-    fun router(): Router
+  fun router(): Router
 
-    fun navigatorHolder(): NavigatorHolder
+  fun navigatorHolder(): NavigatorHolder
 }

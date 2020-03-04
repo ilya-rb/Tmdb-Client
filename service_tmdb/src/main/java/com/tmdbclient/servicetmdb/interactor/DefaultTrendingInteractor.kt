@@ -8,18 +8,18 @@ import com.tmdbclient.servicetmdb.mappers.TrendingMapper
 import javax.inject.Inject
 
 class DefaultTrendingInteractor @Inject constructor(
-    private val api: TrendingApi,
-    private val mapper: TrendingMapper
+  private val api: TrendingApi,
+  private val mapper: TrendingMapper
 ) : TrendingInteractor {
 
-    override suspend fun getTrending(): Result<List<TrendingSection.TrendingItem>> {
-        return Result.create {
-            val results = api.getTrendingAsync(
-                TrendingApi.TRENDING_TYPE_MOVIES,
-                TrendingApi.TRENDING_THIS_WEEK
-            ).await()
+  override suspend fun getTrending(): Result<List<TrendingSection.TrendingItem>> {
+    return Result.create {
+      val results = api.getTrendingAsync(
+        TrendingApi.TRENDING_TYPE_MOVIES,
+        TrendingApi.TRENDING_THIS_WEEK
+      ).await()
 
-            mapper.mapList(results.results)
-        }
+      mapper.mapList(results.results)
     }
+  }
 }

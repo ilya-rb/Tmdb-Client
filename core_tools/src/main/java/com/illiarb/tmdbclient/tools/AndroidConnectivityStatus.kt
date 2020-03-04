@@ -21,32 +21,32 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 class AndroidConnectivityStatus @Inject constructor(app: App) : ConnectivityStatus {
 
-    private val connectivityManager =
-        app.getApplication().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+  private val connectivityManager =
+    app.getApplication().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-    @SuppressLint("MissingPermission")
-    override fun connectionState(): Flow<ConnectionState> = callbackFlow {
-        val networkCallback = object : ConnectivityManager.NetworkCallback() {
-            override fun onAvailable(network: Network) {
-                super.onAvailable(network)
-                offer(ConnectionState.CONNECTED)
-            }
+  @SuppressLint("MissingPermission")
+  override fun connectionState(): Flow<ConnectionState> = callbackFlow {
+    val networkCallback = object : ConnectivityManager.NetworkCallback() {
+      override fun onAvailable(network: Network) {
+        super.onAvailable(network)
+        offer(ConnectionState.CONNECTED)
+      }
 
-            override fun onLost(network: Network) {
-                super.onLost(network)
-                offer(ConnectionState.NOT_CONNECTED)
-            }
-        }
-
-        connectivityManager.registerNetworkCallback(
-            NetworkRequest.Builder()
-                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-                .build(),
-            networkCallback
-        )
-
-        awaitClose {
-            connectivityManager.unregisterNetworkCallback(networkCallback)
-        }
+      override fun onLost(network: Network) {
+        super.onLost(network)
+        offer(ConnectionState.NOT_CONNECTED)
+      }
     }
+
+    connectivityManager.registerNetworkCallback(
+      NetworkRequest.Builder()
+        .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        .build(),
+      networkCallback
+    )
+
+    awaitClose {
+      connectivityManager.unregisterNetworkCallback(networkCallback)
+    }
+  }
 }

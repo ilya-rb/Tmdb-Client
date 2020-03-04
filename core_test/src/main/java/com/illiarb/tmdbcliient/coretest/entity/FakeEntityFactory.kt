@@ -11,37 +11,37 @@ import com.illiarb.tmdblcient.core.domain.Movie
 @Suppress("MagicNumber")
 object FakeEntityFactory {
 
-    fun createGenre(id: Int = 1, title: String = "Drama"): Genre = Genre(id, title)
+  fun createGenre(id: Int = 1, title: String = "Drama"): Genre = Genre(id, title)
 
-    fun createFakeMovie(init: () -> Movie = defaultMovieCreator()): Movie = init()
+  fun createFakeMovie(init: () -> Movie = defaultMovieCreator()): Movie = init()
 
-    fun createFakeMovieList(
-        size: Int,
-        creator: () -> Movie = defaultMovieCreator()
-    ): List<Movie> = mutableListOf<Movie>().apply {
-        for (i in 0..size) {
-            add(creator.invoke())
-        }
+  fun createFakeMovieList(
+    size: Int,
+    creator: () -> Movie = defaultMovieCreator()
+  ): List<Movie> = mutableListOf<Movie>().apply {
+    for (i in 0..size) {
+      add(creator.invoke())
     }
+  }
 
-    private fun defaultMovieCreator(): () -> Movie = {
-        Movie(
-            123123,
-            null,
-            null,
-            emptyList(),
-            "http://google.com",
-            emptyList(),
-            "2018-01-12",
-            "overview",
-            emptyList(),
-            120,
-            "Movie title",
-            emptyList(),
-            7.4f,
-            "",
-            9,
-            emptyList()
-        )
-    }
+  private fun defaultMovieCreator(): () -> Movie = {
+    Movie(
+      123123,
+      null,
+      null,
+      emptyList(),
+      "http://google.com",
+      emptyList(),
+      "2018-01-12",
+      "overview",
+      emptyList(),
+      120,
+      "Movie title",
+      emptyList(),
+      7.4f,
+      "",
+      9,
+      emptyList()
+    )
+  }
 }

@@ -7,9 +7,9 @@ import retrofit2.http.GET
 
 interface ConfigurationApi {
 
-    @GET("configuration")
-    fun getConfigurationAsync(): Deferred<Configuration>
+  @GET("configuration")
+  fun getConfigurationAsync(): Deferred<Configuration>
 
-    @GET("configuration/countries")
-    fun getCountriesAsync(): Deferred<List<CountryModel>>
+  @GET("configuration/countries")
+  fun getCountriesAsync(): Deferred<List<CountryModel>>
 }

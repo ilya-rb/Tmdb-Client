@@ -11,24 +11,24 @@ import javax.inject.Singleton
 @Singleton
 class ActionsBuffer @Inject constructor() : NavigatorHolder {
 
-    private val actionsBuffer: Queue<Router.Action> = LinkedList()
-    private var navigator: Navigator? = null
+  private val actionsBuffer: Queue<Router.Action> = LinkedList()
+  private var navigator: Navigator? = null
 
-    override fun setNavigator(navigator: Navigator) {
-        this.navigator = navigator.also {
-            while (actionsBuffer.isNotEmpty()) {
-                actionsBuffer.poll()?.let {
-                    executeAction(it)
-                }
-            }
+  override fun setNavigator(navigator: Navigator) {
+    this.navigator = navigator.also {
+      while (actionsBuffer.isNotEmpty()) {
+        actionsBuffer.poll()?.let {
+          executeAction(it)
         }
+      }
     }
+  }
 
-    override fun removeNavigator() {
-        navigator = null
-    }
+  override fun removeNavigator() {
+    navigator = null
+  }
 
-    override fun executeAction(action: Router.Action) {
-        navigator?.executeAction(action) ?: actionsBuffer.add(action)
-    }
+  override fun executeAction(action: Router.Action) {
+    navigator?.executeAction(action) ?: actionsBuffer.add(action)
+  }
 }

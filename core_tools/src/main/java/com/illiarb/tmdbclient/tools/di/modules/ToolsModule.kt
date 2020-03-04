@@ -13,9 +13,9 @@ import dagger.Module
 @Module
 interface ToolsModule {
 
-    @Binds
-    fun bindDispatcherProvider(impl: CoroutineDispatcherProvider): DispatcherProvider
+  @Binds
+  fun bindDispatcherProvider(impl: CoroutineDispatcherProvider): DispatcherProvider
 
-    @Binds
-    fun bindWorkManager(appWorkManager: AppWorkManager): WorkManager
+  @Binds
+  fun bindWorkManager(appWorkManager: AppWorkManager): WorkManager
 }

@@ -7,11 +7,11 @@ import com.illiarb.tmdblcient.core.interactor.TrendingInteractor
 
 interface InteractorsProvider {
 
-    fun provideMoviesInteractor(): MoviesInteractor
+  fun provideMoviesInteractor(): MoviesInteractor
 
-    fun provideGenresInteractor(): GenresInteractor
+  fun provideGenresInteractor(): GenresInteractor
 
-    fun provideHomeInteractor(): HomeInteractor
+  fun provideHomeInteractor(): HomeInteractor
 
-    fun provideTrendingInteractor(): TrendingInteractor
+  fun provideTrendingInteractor(): TrendingInteractor
 }

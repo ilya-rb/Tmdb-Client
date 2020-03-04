@@ -8,11 +8,11 @@ import androidx.work.WorkManager as AndroidWorkManager
 
 class AppWorkManager @Inject constructor() : WorkManager {
 
-    override fun enqueuePeriodicWork(
-        uniqueWorkName: String,
-        periodicWorkPolicy: ExistingPeriodicWorkPolicy,
-        workRequest: PeriodicWorkRequest
-    ) {
-        AndroidWorkManager.getInstance().enqueueUniquePeriodicWork(uniqueWorkName, periodicWorkPolicy, workRequest)
-    }
+  override fun enqueuePeriodicWork(
+    uniqueWorkName: String,
+    periodicWorkPolicy: ExistingPeriodicWorkPolicy,
+    workRequest: PeriodicWorkRequest
+  ) {
+    AndroidWorkManager.getInstance().enqueueUniquePeriodicWork(uniqueWorkName, periodicWorkPolicy, workRequest)
+  }
 }

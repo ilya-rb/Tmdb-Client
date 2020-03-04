@@ -10,10 +10,10 @@ import dagger.Component
 @Component(modules = [AnalyticsModule::class])
 interface AnalyticsComponent : AnalyticsProvider {
 
-    companion object {
-        fun get(app: App): AnalyticsComponent =
-            DaggerAnalyticsComponent.builder()
-                .analyticsModule(AnalyticsModule(app))
-                .build()
-    }
+  companion object {
+    fun get(app: App): AnalyticsComponent =
+      DaggerAnalyticsComponent.builder()
+        .analyticsModule(AnalyticsModule(app))
+        .build()
+  }
 }

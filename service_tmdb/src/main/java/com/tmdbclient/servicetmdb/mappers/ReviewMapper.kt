@@ -7,5 +7,5 @@ import javax.inject.Inject
 
 class ReviewMapper @Inject constructor() : Mapper<ReviewModel, Review> {
 
-    override fun map(from: ReviewModel): Review = Review(from.author, from.content, from.url)
+  override fun map(from: ReviewModel): Review = Review(from.author, from.content, from.url)
 }

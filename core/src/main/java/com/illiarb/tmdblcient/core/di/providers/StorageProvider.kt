@@ -8,7 +8,7 @@ import com.illiarb.tmdblcient.core.storage.ResourceResolver
  */
 interface StorageProvider {
 
-    fun provideResourceResolver(): ResourceResolver
+  fun provideResourceResolver(): ResourceResolver
 
-    fun provideFeatureFlagStore(): FeatureFlagStore
+  fun provideFeatureFlagStore(): FeatureFlagStore
 }

@@ -14,34 +14,34 @@ import kotlin.reflect.KClass
 
 @RunWith(Parameterized::class)
 class TrendingItemDeserializerTest(
-    private val itemJson: String,
-    private val expectedType: KClass<*>
+  private val itemJson: String,
+  private val expectedType: KClass<*>
 ) {
 
-    companion object {
+  companion object {
 
-        @JvmStatic
-        @Parameterized.Parameters(name = "{index}: itemJson={0}, expectedType={1}")
-        fun data(): Iterable<Array<Any>> {
-            @Language("JSON") val movieJson = "{ \"media_type\": \"movie\" }"
-            @Language("JSON") val tvJson = "{ \"media_type\": \"tv\" }"
-            @Language("JSON") val personJson = "{ \"media_type\": \"person\" }"
+    @JvmStatic
+    @Parameterized.Parameters(name = "{index}: itemJson={0}, expectedType={1}")
+    fun data(): Iterable<Array<Any>> {
+      @Language("JSON") val movieJson = "{ \"media_type\": \"movie\" }"
+      @Language("JSON") val tvJson = "{ \"media_type\": \"tv\" }"
+      @Language("JSON") val personJson = "{ \"media_type\": \"person\" }"
 
-            return listOf(
-                arrayOf(movieJson, MovieModel::class),
-                arrayOf(tvJson, TvShowModel::class),
-                arrayOf(personJson, PersonModel::class)
-            )
-        }
+      return listOf(
+        arrayOf(movieJson, MovieModel::class),
+        arrayOf(tvJson, TvShowModel::class),
+        arrayOf(personJson, PersonModel::class)
+      )
     }
+  }
 
-    private val gson = GsonBuilder()
-        .registerTypeAdapter(TrendingModel::class.java, TrendingItemDeserializer())
-        .create()
+  private val gson = GsonBuilder()
+    .registerTypeAdapter(TrendingModel::class.java, TrendingItemDeserializer())
+    .create()
 
-    @Test
-    fun `should convert json to correct type`() {
-        val result = gson.fromJson(itemJson, TrendingModel::class.java)
-        assertEquals(result::class, expectedType)
-    }
+  @Test
+  fun `should convert json to correct type`() {
+    val result = gson.fromJson(itemJson, TrendingModel::class.java)
+    assertEquals(result::class, expectedType)
+  }
 }

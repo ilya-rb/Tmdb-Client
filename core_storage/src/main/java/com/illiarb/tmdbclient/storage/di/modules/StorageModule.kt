@@ -15,11 +15,11 @@ import javax.inject.Singleton
 @Module
 class StorageModule(val app: App) {
 
-    @Provides
-    @Singleton
-    fun provideResourceResolver(): ResourceResolver = AndroidResourceResolver(app)
+  @Provides
+  @Singleton
+  fun provideResourceResolver(): ResourceResolver = AndroidResourceResolver(app)
 
-    @Provides
-    @Singleton
-    fun provideFeatureFlagStore(): FeatureFlagStore = FirebaseFeatureFlagStore()
+  @Provides
+  @Singleton
+  fun provideFeatureFlagStore(): FeatureFlagStore = FirebaseFeatureFlagStore()
 }

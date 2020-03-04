@@ -11,21 +11,21 @@ import retrofit2.http.Query
 
 interface MovieApi {
 
-    @GET("movie/{type}")
-    fun getMoviesByTypeAsync(@Path("type") type: String): Deferred<ResultsModel<MovieModel>>
+  @GET("movie/{type}")
+  fun getMoviesByTypeAsync(@Path("type") type: String): Deferred<ResultsModel<MovieModel>>
 
-    @GET("movie/{id}")
-    fun getMovieDetailsAsync(
-        @Path("id") id: Int,
-        @Query("append_to_response") appendToResponse: String
-    ): Deferred<MovieModel>
+  @GET("movie/{id}")
+  fun getMovieDetailsAsync(
+    @Path("id") id: Int,
+    @Query("append_to_response") appendToResponse: String
+  ): Deferred<MovieModel>
 
-    @GET("movie/{id}/similar")
-    fun getSimilarMoviesAsync(@Path("id") id: Int): Deferred<ResultsModel<MovieModel>>
+  @GET("movie/{id}/similar")
+  fun getSimilarMoviesAsync(@Path("id") id: Int): Deferred<ResultsModel<MovieModel>>
 
-    @GET("movie/{id}/reviews")
-    fun getMovieReviewsAsync(@Path("id") id: Int): Deferred<ResultsModel<ReviewModel>>
+  @GET("movie/{id}/reviews")
+  fun getMovieReviewsAsync(@Path("id") id: Int): Deferred<ResultsModel<ReviewModel>>
 
-    @GET("movie/{id}/videos")
-    fun getMovieVideosAsync(@Path("id") id: Int): Deferred<ResultsModel<Video>>
+  @GET("movie/{id}/videos")
+  fun getMovieVideosAsync(@Path("id") id: Int): Deferred<ResultsModel<Video>>
 }

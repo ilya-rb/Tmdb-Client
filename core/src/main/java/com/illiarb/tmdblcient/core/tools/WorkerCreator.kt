@@ -6,5 +6,5 @@ import androidx.work.WorkerParameters
 
 interface WorkerCreator {
 
-    fun createWorkRequest(context: Context, params: WorkerParameters): Worker
+  fun createWorkRequest(context: Context, params: WorkerParameters): Worker
 }

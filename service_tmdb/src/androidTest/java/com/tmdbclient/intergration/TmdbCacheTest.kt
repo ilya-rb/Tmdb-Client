@@ -16,66 +16,66 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class TmdbCacheTest {
 
-    private lateinit var cache: TmdbCache
+  private lateinit var cache: TmdbCache
 
-    @Before
-    fun before() {
-        val context = InstrumentationRegistry.getInstrumentation().context
-        cache = TmdbCache(context)
-    }
+  @Before
+  fun before() {
+    val context = InstrumentationRegistry.getInstrumentation().context
+    cache = TmdbCache(context)
+  }
 
-    @After
-    fun after() {
-        cache.clear()
-    }
+  @After
+  fun after() {
+    cache.clear()
+  }
 
-    @Test
-    fun shouldStoreAndReadConfiguration() {
-        val writeConfig = createConfiguration()
-        assertTrue(cache.storeConfiguration(writeConfig))
+  @Test
+  fun shouldStoreAndReadConfiguration() {
+    val writeConfig = createConfiguration()
+    assertTrue(cache.storeConfiguration(writeConfig))
 
-        val readConfig = cache.getConfiguration()
-        assertEquals(writeConfig, readConfig)
-    }
+    val readConfig = cache.getConfiguration()
+    assertEquals(writeConfig, readConfig)
+  }
 
-    @Test
-    fun shouldClearStorage() {
-        val config = createConfiguration()
-        val genres = listOf(GenreModel(), GenreModel())
+  @Test
+  fun shouldClearStorage() {
+    val config = createConfiguration()
+    val genres = listOf(GenreModel(), GenreModel())
 
-        cache.storeConfiguration(config)
-        cache.storeGenres(genres)
-        cache.clear()
+    cache.storeConfiguration(config)
+    cache.storeGenres(genres)
+    cache.clear()
 
-        // Should remove every key from store
-        val keys = cache.keys()
-        assertTrue(keys.none { keys.contains(it) })
-    }
+    // Should remove every key from store
+    val keys = cache.keys()
+    assertTrue(keys.none { keys.contains(it) })
+  }
 
-    @Test
-    fun shouldReturnAllKeys() {
-        val config = createConfiguration()
-        val genres = listOf(GenreModel(), GenreModel())
+  @Test
+  fun shouldReturnAllKeys() {
+    val config = createConfiguration()
+    val genres = listOf(GenreModel(), GenreModel())
 
-        cache.storeConfiguration(config)
-        cache.storeGenres(genres)
+    cache.storeConfiguration(config)
+    cache.storeGenres(genres)
 
-        val keys = cache.keys()
+    val keys = cache.keys()
 
-        assertEquals(keys.size, 2)
+    assertEquals(keys.size, 2)
 
-        assertTrue(keys.contains(TmdbCache.KEY_CONFIGURATION))
-        assertTrue(keys.contains(TmdbCache.KEY_GENRES))
-    }
+    assertTrue(keys.contains(TmdbCache.KEY_CONFIGURATION))
+    assertTrue(keys.contains(TmdbCache.KEY_GENRES))
+  }
 
-    private fun createConfiguration() =
-        Configuration(
-            changeKeys = listOf("movies", "reviews", "images"),
-            images = ImageConfig(
-                secureBaseUrl = "secure_base_url",
-                backdropSizes = listOf("100", "200", "300"),
-                posterSizes = listOf("100", "200", "300"),
-                profileSizes = listOf("100", "200", "300")
-            )
-        )
+  private fun createConfiguration() =
+    Configuration(
+      changeKeys = listOf("movies", "reviews", "images"),
+      images = ImageConfig(
+        secureBaseUrl = "secure_base_url",
+        backdropSizes = listOf("100", "200", "300"),
+        posterSizes = listOf("100", "200", "300"),
+        profileSizes = listOf("100", "200", "300")
+      )
+    )
 }

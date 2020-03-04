@@ -7,5 +7,5 @@ import com.illiarb.tmdblcient.core.navigation.Router
  */
 sealed class AnalyticEvent(val eventName: String) {
 
-    class RouterAction(val action: Router.Action) : AnalyticEvent("screen_opened")
+  class RouterAction(val action: Router.Action) : AnalyticEvent("screen_opened")
 }

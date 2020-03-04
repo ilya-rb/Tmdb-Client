@@ -7,5 +7,5 @@ import javax.inject.Inject
 
 class GenreMapper @Inject constructor() : Mapper<GenreModel, Genre> {
 
-    override fun map(from: GenreModel): Genre = Genre(from.id, from.name)
+  override fun map(from: GenreModel): Genre = Genre(from.id, from.name)
 }

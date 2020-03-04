@@ -8,12 +8,12 @@ import com.illiarb.tmdblcient.core.tools.WorkerCreator
 import javax.inject.Inject
 
 class DaggerWorkerFactory @Inject constructor(
-    private val configurationFetchWorker: WorkerCreator
+  private val configurationFetchWorker: WorkerCreator
 ) : WorkerFactory() {
 
-    override fun createWorker(
-        appContext: Context,
-        workerClassName: String,
-        workerParameters: WorkerParameters
-    ): ListenableWorker? = configurationFetchWorker.createWorkRequest(appContext, workerParameters)
+  override fun createWorker(
+    appContext: Context,
+    workerClassName: String,
+    workerParameters: WorkerParameters
+  ): ListenableWorker? = configurationFetchWorker.createWorkRequest(appContext, workerParameters)
 }

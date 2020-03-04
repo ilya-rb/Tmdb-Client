@@ -8,6 +8,6 @@ import retrofit2.http.Query
 
 interface DiscoverApi {
 
-    @GET("discover/movie")
-    fun discoverMoviesAsync(@Query("with_genres") genres: String? = null): Deferred<ResultsModel<MovieModel>>
+  @GET("discover/movie")
+  fun discoverMoviesAsync(@Query("with_genres") genres: String? = null): Deferred<ResultsModel<MovieModel>>
 }

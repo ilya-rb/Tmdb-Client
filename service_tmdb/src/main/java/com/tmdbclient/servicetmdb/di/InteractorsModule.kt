@@ -14,15 +14,15 @@ import dagger.Module
 @Module
 internal interface InteractorsModule {
 
-    @Binds
-    fun bindMoviesInteractor(impl: DefaultMoviesInteractor): MoviesInteractor
+  @Binds
+  fun bindMoviesInteractor(impl: DefaultMoviesInteractor): MoviesInteractor
 
-    @Binds
-    fun bindHomeInteractor(impl: DefaultHomeInteractor): HomeInteractor
+  @Binds
+  fun bindHomeInteractor(impl: DefaultHomeInteractor): HomeInteractor
 
-    @Binds
-    fun bindTrendingInteractor(impl: DefaultTrendingInteractor): TrendingInteractor
+  @Binds
+  fun bindTrendingInteractor(impl: DefaultTrendingInteractor): TrendingInteractor
 
-    @Binds
-    fun bindGenresInteractor(impl: DefaultGenresInteractor): GenresInteractor
+  @Binds
+  fun bindGenresInteractor(impl: DefaultGenresInteractor): GenresInteractor
 }

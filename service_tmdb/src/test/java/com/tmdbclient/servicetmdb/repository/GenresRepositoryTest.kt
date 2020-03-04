@@ -22,53 +22,53 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class GenresRepositoryTest {
 
-    private val genresApi = mock<GenreApi>()
-    private val cache = mock<TmdbCache>()
-    private val repository = DefaultGenresRepository(
-        genresApi,
-        cache,
-        TestDependencyProvider.provideDispatcherProvider(),
-        GenreMapper()
+  private val genresApi = mock<GenreApi>()
+  private val cache = mock<TmdbCache>()
+  private val repository = DefaultGenresRepository(
+    genresApi,
+    cache,
+    TestDependencyProvider.provideDispatcherProvider(),
+    GenreMapper()
+  )
+
+  @Test
+  fun `should check cache first and return cached data if not empty`() = runBlockingTest {
+    whenever(cache.getGenres()).thenReturn(
+      listOf(
+        GenreModel(),
+        GenreModel()
+      )
     )
 
-    @Test
-    fun `should check cache first and return cached data if not empty`() = runBlockingTest {
-        whenever(cache.getGenres()).thenReturn(
-            listOf(
-                GenreModel(),
-                GenreModel()
-            )
-        )
+    val result = repository.getGenres()
 
-        val result = repository.getGenres()
+    verify(cache, times(1)).getGenres()
+    verifyZeroInteractions(genresApi)
 
-        verify(cache, times(1)).getGenres()
-        verifyZeroInteractions(genresApi)
+    assertTrue(result is Result.Success && result.data.isNotEmpty())
+  }
 
-        assertTrue(result is Result.Success && result.data.isNotEmpty())
-    }
+  @Test
+  fun `should fetch data from api if cache is empty`() = runBlockingTest {
+    whenever(cache.getGenres()).thenReturn(emptyList())
 
-    @Test
-    fun `should fetch data from api if cache is empty`() = runBlockingTest {
-        whenever(cache.getGenres()).thenReturn(emptyList())
+    repository.getGenres()
 
-        repository.getGenres()
+    verify(cache, times(1)).getGenres()
 
-        verify(cache, times(1)).getGenres()
+    @Suppress("DeferredResultUnused")
+    verify(genresApi).getGenresAsync()
+  }
 
-        @Suppress("DeferredResultUnused")
-        verify(genresApi).getGenresAsync()
-    }
+  @Test
+  fun `should store genres in cache after successful fetch from api`() = runBlockingTest {
+    val apiGenres = GenreListModel()
 
-    @Test
-    fun `should store genres in cache after successful fetch from api`() = runBlockingTest {
-        val apiGenres = GenreListModel()
+    whenever(cache.getGenres()).thenReturn(emptyList())
+    whenever(genresApi.getGenresAsync()).thenReturn(CompletableDeferred(apiGenres))
 
-        whenever(cache.getGenres()).thenReturn(emptyList())
-        whenever(genresApi.getGenresAsync()).thenReturn(CompletableDeferred(apiGenres))
+    repository.getGenres()
 
-        repository.getGenres()
-
-        verify(cache, times(1)).storeGenres(any())
-    }
+    verify(cache, times(1)).storeGenres(any())
+  }
 }

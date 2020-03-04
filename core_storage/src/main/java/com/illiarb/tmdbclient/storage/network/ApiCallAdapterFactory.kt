@@ -13,54 +13,54 @@ import java.lang.reflect.Type
 import javax.inject.Inject
 
 class ApiCallAdapterFactory @Inject constructor(
-    private val errorHandler: ErrorHandler
+  private val errorHandler: ErrorHandler
 ) : CallAdapter.Factory() {
 
-    override fun get(returnType: Type, annotations: Array<Annotation>, retrofit: Retrofit): CallAdapter<*, *>? {
-        if (returnType !is ParameterizedType) {
-            throw IllegalStateException(
-                "Deferred return type must be parameterized as Deferred<Foo> or Deferred<out Foo>"
-            )
-        }
-
-        return BodyCallAdapter<Any>(
-            getParameterUpperBound(0, returnType),
-            errorHandler
-        )
+  override fun get(returnType: Type, annotations: Array<Annotation>, retrofit: Retrofit): CallAdapter<*, *>? {
+    if (returnType !is ParameterizedType) {
+      throw IllegalStateException(
+        "Deferred return type must be parameterized as Deferred<Foo> or Deferred<out Foo>"
+      )
     }
 
-    private class BodyCallAdapter<T>(
-        private val responseType: Type,
-        private val errorHandler: ErrorHandler
-    ) : CallAdapter<T, Deferred<T>> {
+    return BodyCallAdapter<Any>(
+      getParameterUpperBound(0, returnType),
+      errorHandler
+    )
+  }
 
-        override fun responseType() = responseType
+  private class BodyCallAdapter<T>(
+    private val responseType: Type,
+    private val errorHandler: ErrorHandler
+  ) : CallAdapter<T, Deferred<T>> {
 
-        @Suppress("DeferredIsResult")
-        override fun adapt(call: Call<T>): Deferred<T> {
-            val deferred = CompletableDeferred<T>()
+    override fun responseType() = responseType
 
-            deferred.invokeOnCompletion {
-                if (deferred.isCancelled) {
-                    call.cancel()
-                }
-            }
+    @Suppress("DeferredIsResult")
+    override fun adapt(call: Call<T>): Deferred<T> {
+      val deferred = CompletableDeferred<T>()
 
-            call.enqueue(object : Callback<T> {
-                override fun onFailure(call: Call<T>, t: Throwable) {
-                    deferred.completeExceptionally(errorHandler.createFromThrowable(t))
-                }
-
-                override fun onResponse(call: Call<T>, response: Response<T>) {
-                    if (response.isSuccessful) {
-                        deferred.complete(response.body()!!)
-                    } else {
-                        deferred.completeExceptionally(errorHandler.createFromErrorBody(response.errorBody()))
-                    }
-                }
-            })
-
-            return deferred
+      deferred.invokeOnCompletion {
+        if (!deferred.isCancelled) {
+          call.cancel()
         }
+      }
+
+      call.enqueue(object : Callback<T> {
+        override fun onFailure(call: Call<T>, t: Throwable) {
+          deferred.completeExceptionally(errorHandler.createFromThrowable(t))
+        }
+
+        override fun onResponse(call: Call<T>, response: Response<T>) {
+          if (response.isSuccessful) {
+            deferred.complete(response.body()!!)
+          } else {
+            deferred.completeExceptionally(errorHandler.createFromErrorBody(response.errorBody()))
+          }
+        }
+      })
+
+      return deferred
     }
+  }
 }

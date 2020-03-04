@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.details.di
 
 import androidx.lifecycle.ViewModel
-import com.illiarb.tmdbclient.details.DefaultDetailsViewModel
+import com.illiarb.tmdbclient.details.MovieDetailsViewModel
 import com.illiarb.tmdbexplorer.coreui.di.ViewModelKey
 import com.illiarb.tmdblcient.core.analytics.AnalyticsService
 import com.illiarb.tmdblcient.core.interactor.MoviesInteractor
@@ -16,12 +16,12 @@ import dagger.multibindings.IntoMap
 @Module
 class MovieDetailsModule(val id: Int) {
 
-    @Provides
-    @IntoMap
-    @ViewModelKey(DefaultDetailsViewModel::class)
-    fun provideMovieDetailsModel(
-        interactor: MoviesInteractor,
-        router: Router,
-        analyticsService: AnalyticsService
-    ): ViewModel = DefaultDetailsViewModel(id, interactor, router, analyticsService)
+  @Provides
+  @IntoMap
+  @ViewModelKey(MovieDetailsViewModel::class)
+  fun provideMovieDetailsModel(
+    interactor: MoviesInteractor,
+    router: Router,
+    analyticsService: AnalyticsService
+  ): ViewModel = MovieDetailsViewModel(id, interactor, router, analyticsService)
 }

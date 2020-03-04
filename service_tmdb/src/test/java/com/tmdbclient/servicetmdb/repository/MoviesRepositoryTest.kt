@@ -25,58 +25,58 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class MoviesRepositoryTest {
 
-    private val moviesApi = mock<MovieApi>()
-    private val cache = mock<TmdbCache>()
-    private val dispatcherProvider = mock<DispatcherProvider>()
+  private val moviesApi = mock<MovieApi>()
+  private val cache = mock<TmdbCache>()
+  private val dispatcherProvider = mock<DispatcherProvider>()
 
-    private val repository = DefaultMoviesRepository(
-        moviesApi,
-        dispatcherProvider,
-        cache,
-        MovieMapper(
-            GenreMapper(),
-            PersonMapper(),
-            ReviewMapper(),
-            TestDependencyProvider.provideConfigurationRepository(),
-            mock()
-        ),
-        ReviewMapper(),
-        TestDependencyProvider.provideResourceResolver()
+  private val repository = DefaultMoviesRepository(
+    moviesApi,
+    dispatcherProvider,
+    cache,
+    MovieMapper(
+      GenreMapper(),
+      PersonMapper(),
+      ReviewMapper(),
+      TestDependencyProvider.provideConfigurationRepository(),
+      mock()
+    ),
+    ReviewMapper(),
+    TestDependencyProvider.provideResourceResolver()
+  )
+
+  @Before
+  fun before() {
+    whenever(dispatcherProvider.io).thenReturn(Dispatchers.Unconfined)
+  }
+
+  @Test
+  fun `should fetch movie details on io dispatcher from api`() = runBlockingTest {
+    val id = 0
+    val append = "append_to_response"
+
+    repository.getMovieDetails(id, append)
+
+    verify(dispatcherProvider).io
+    verifyNoMoreInteractions(dispatcherProvider)
+    verifyZeroInteractions(cache)
+
+    @Suppress("DeferredResultUnused")
+    verify(moviesApi, times(1)).getMovieDetailsAsync(id, append)
+  }
+
+  @Test
+  fun `should return cached data if it is not empty`() = runBlockingTest {
+    whenever(cache.getMoviesByType(any())).thenReturn(
+      listOf(
+        MovieModel()
+      )
     )
 
-    @Before
-    fun before() {
-        whenever(dispatcherProvider.io).thenReturn(Dispatchers.Unconfined)
-    }
+    val type = "upcoming"
 
-    @Test
-    fun `should fetch movie details on io dispatcher from api`() = runBlockingTest {
-        val id = 0
-        val append = "append_to_response"
+    repository.getMoviesByType(type)
 
-        repository.getMovieDetails(id, append)
-
-        verify(dispatcherProvider).io
-        verifyNoMoreInteractions(dispatcherProvider)
-        verifyZeroInteractions(cache)
-
-        @Suppress("DeferredResultUnused")
-        verify(moviesApi, times(1)).getMovieDetailsAsync(id, append)
-    }
-
-    @Test
-    fun `should return cached data if it is not empty`() = runBlockingTest {
-        whenever(cache.getMoviesByType(any())).thenReturn(
-            listOf(
-                MovieModel()
-            )
-        )
-
-        val type = "upcoming"
-
-        repository.getMoviesByType(type)
-
-        verify(cache, times(1)).getMoviesByType(type)
-        verifyZeroInteractions(moviesApi)
-    }
+    verify(cache, times(1)).getMoviesByType(type)
+    verifyZeroInteractions(moviesApi)
+  }
 }

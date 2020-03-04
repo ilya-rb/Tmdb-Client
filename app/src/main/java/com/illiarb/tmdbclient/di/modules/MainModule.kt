@@ -8,6 +8,6 @@ import dagger.Module
 @Module
 interface MainModule {
 
-    @Binds
-    fun bindNavigator(navigator: AppNavigator): Navigator
+  @Binds
+  fun bindNavigator(navigator: AppNavigator): Navigator
 }

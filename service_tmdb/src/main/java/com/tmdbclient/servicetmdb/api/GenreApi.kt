@@ -6,6 +6,6 @@ import retrofit2.http.GET
 
 interface GenreApi {
 
-    @GET("genre/movie/list")
-    fun getGenresAsync(): Deferred<GenreListModel>
+  @GET("genre/movie/list")
+  fun getGenresAsync(): Deferred<GenreListModel>
 }

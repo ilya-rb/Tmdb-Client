@@ -8,14 +8,14 @@ import retrofit2.http.Path
 
 interface TrendingApi {
 
-    companion object {
-        const val TRENDING_THIS_WEEK = "week"
-        const val TRENDING_TYPE_MOVIES = "movie"
-    }
+  companion object {
+    const val TRENDING_THIS_WEEK = "week"
+    const val TRENDING_TYPE_MOVIES = "movie"
+  }
 
-    @GET("trending/{media_type}/{time_window}")
-    fun getTrendingAsync(
-        @Path("media_type") mediaType: String,
-        @Path("time_window") timeWindow: String
-    ): Deferred<ResultsModel<TrendingModel>>
+  @GET("trending/{media_type}/{time_window}")
+  fun getTrendingAsync(
+    @Path("media_type") mediaType: String,
+    @Path("time_window") timeWindow: String
+  ): Deferred<ResultsModel<TrendingModel>>
 }

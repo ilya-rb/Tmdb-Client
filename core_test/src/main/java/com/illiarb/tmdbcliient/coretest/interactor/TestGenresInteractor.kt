@@ -7,7 +7,7 @@ import com.tmdbclient.servicetmdb.repository.GenresRepository
 
 class TestGenresInteractor(private val genresRepository: GenresRepository) : GenresInteractor {
 
-    override suspend fun getAllGenres(): Result<List<Genre>> {
-        return genresRepository.getGenres()
-    }
+  override suspend fun getAllGenres(): Result<List<Genre>> {
+    return genresRepository.getGenres()
+  }
 }

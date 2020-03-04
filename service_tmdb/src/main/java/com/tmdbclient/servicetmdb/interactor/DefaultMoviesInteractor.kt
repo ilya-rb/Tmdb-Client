@@ -17,63 +17,63 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class DefaultMoviesInteractor @Inject constructor(
-    private val repository: MoviesRepository,
-    private val discoverApi: DiscoverApi,
-    private val movieApi: MovieApi,
-    private val movieMapper: MovieMapper,
-    private val cache: TmdbCache,
-    private val dispatcherProvider: DispatcherProvider
+  private val repository: MoviesRepository,
+  private val discoverApi: DiscoverApi,
+  private val movieApi: MovieApi,
+  private val movieMapper: MovieMapper,
+  private val cache: TmdbCache,
+  private val dispatcherProvider: DispatcherProvider
 ) : MoviesInteractor {
 
-    override suspend fun getAllMovies(): Result<List<MovieBlock>> {
-        return repository.getMovieFilters().mapOnSuccess { filters ->
-            filters.map { filter ->
-                val moviesByType = when (val result = getMoviesByType(filter)) {
-                    is Result.Success -> result.data
-                    is Result.Error -> emptyList()
-                }
-                MovieBlock(filter, moviesByType)
-            }
+  override suspend fun getAllMovies(): Result<List<MovieBlock>> {
+    return repository.getMovieFilters().mapOnSuccess { filters ->
+      filters.map { filter ->
+        val moviesByType = when (val result = getMoviesByType(filter)) {
+          is Result.Success -> result.data
+          is Result.Error -> emptyList()
         }
+        MovieBlock(filter, moviesByType)
+      }
     }
+  }
 
-    override suspend fun getMovieDetails(movieId: Int): Result<Movie> {
-        val configuration = withContext(dispatcherProvider.io) { cache.getConfiguration() }
-        val imageKey = configuration.changeKeys.find { it == MoviesInteractor.KEY_INCLUDE_IMAGES }
-        val videoKey = configuration.changeKeys.find { it == MoviesInteractor.KEY_INCLUDE_VIDEOS }
-        val keys = buildString {
-            imageKey?.let { append(it) }
-            videoKey?.let {
-                if (isNotEmpty()) {
-                    append(",")
-                }
-                append(it)
-            }
+  override suspend fun getMovieDetails(movieId: Int): Result<Movie> {
+    val configuration = withContext(dispatcherProvider.io) { cache.getConfiguration() }
+    val imageKey = configuration.changeKeys.find { it == MoviesInteractor.KEY_INCLUDE_IMAGES }
+    val videoKey = configuration.changeKeys.find { it == MoviesInteractor.KEY_INCLUDE_VIDEOS }
+    val keys = buildString {
+      imageKey?.let { append(it) }
+      videoKey?.let {
+        if (isNotEmpty()) {
+          append(",")
         }
-        return repository.getMovieDetails(movieId, keys)
+        append(it)
+      }
     }
+    return repository.getMovieDetails(movieId, keys)
+  }
 
-    override suspend fun discoverMovies(genreId: Int): Result<List<Movie>> {
-        return Result.create {
-            val id = if (genreId == Genre.GENRE_ALL) null else genreId.toString()
-            val movies = discoverApi.discoverMoviesAsync(id).await().results
-            movieMapper.mapList(movies)
-        }
+  override suspend fun discoverMovies(genreId: Int): Result<List<Movie>> {
+    return Result.create {
+      val id = if (genreId == Genre.GENRE_ALL) null else genreId.toString()
+      val movies = discoverApi.discoverMoviesAsync(id).await().results
+      movieMapper.mapList(movies)
     }
+  }
 
-    override suspend fun getSimilarMovies(movieId: Int): Result<List<Movie>> {
-        return Result.create {
-            val results = movieApi.getSimilarMoviesAsync(movieId).await()
-            movieMapper.mapList(results.results)
-        }
+  override suspend fun getSimilarMovies(movieId: Int): Result<List<Movie>> {
+    return Result.create {
+      val results = movieApi.getSimilarMoviesAsync(movieId).await()
+      movieMapper.mapList(results.results)
     }
+  }
 
-    override suspend fun getMovieVideos(movieId: Int): Result<List<Video>> {
-        return Result.create {
-            movieApi.getMovieVideosAsync(movieId).await().results
-        }
+  override suspend fun getMovieVideos(movieId: Int): Result<List<Video>> {
+    return Result.create {
+      movieApi.getMovieVideosAsync(movieId).await().results
     }
+  }
 
-    private suspend fun getMoviesByType(filter: MovieFilter): Result<List<Movie>> =
-        repository.getMoviesByType(filter.code)
+  private suspend fun getMoviesByType(filter: MovieFilter): Result<List<Movie>> =
+    repository.getMoviesByType(filter.code)
 }

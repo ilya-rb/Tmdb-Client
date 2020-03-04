@@ -36,6 +36,7 @@ dependencies {
     implementation deps.dagger
 
     api deps.supportDesign
+    api deps.fragment
     api deps.swipeRefreshLayout
     api deps.emoji
     api deps.constraintLayout

@@ -19,57 +19,57 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class ConfigurationRepositoryTest {
 
-    private val cache = mock<TmdbCache>()
-    private val api = mock<ConfigurationApi>()
-    private val repository = DefaultConfigurationRepository(
-        cache,
-        api,
-        TestDependencyProvider.provideDispatcherProvider(),
-        CountryMapper()
-    )
+  private val cache = mock<TmdbCache>()
+  private val api = mock<ConfigurationApi>()
+  private val repository = DefaultConfigurationRepository(
+    cache,
+    api,
+    TestDependencyProvider.provideDispatcherProvider(),
+    CountryMapper()
+  )
 
-    @Test
-    fun `should check cache first and return from cached data if not empty`() = runBlockingTest {
-        whenever(cache.getConfiguration())
-            .thenReturn(
-                Configuration(
-                    images = ImageConfig(
-                        secureBaseUrl = "some_url",
-                        backdropSizes = listOf("size"),
-                        posterSizes = listOf("size"),
-                        profileSizes = listOf("size")
-                    ),
-                    changeKeys = listOf("key_1", "key_2")
-                )
-            )
+  @Test
+  fun `should check cache first and return from cached data if not empty`() = runBlockingTest {
+    whenever(cache.getConfiguration())
+      .thenReturn(
+        Configuration(
+          images = ImageConfig(
+            secureBaseUrl = "some_url",
+            backdropSizes = listOf("size"),
+            posterSizes = listOf("size"),
+            profileSizes = listOf("size")
+          ),
+          changeKeys = listOf("key_1", "key_2")
+        )
+      )
 
-        repository.getConfiguration()
+    repository.getConfiguration()
 
-        verify(cache, times(1)).getConfiguration()
-        verifyZeroInteractions(api)
-    }
+    verify(cache, times(1)).getConfiguration()
+    verifyZeroInteractions(api)
+  }
 
-    @Test
-    fun `should check cache and if it is empty fetch from api`() = runBlockingTest {
-        whenever(cache.getConfiguration()).thenReturn(Configuration())
+  @Test
+  fun `should check cache and if it is empty fetch from api`() = runBlockingTest {
+    whenever(cache.getConfiguration()).thenReturn(Configuration())
 
-        repository.getConfiguration()
+    repository.getConfiguration()
 
-        verify(cache, times(1)).getConfiguration()
+    verify(cache, times(1)).getConfiguration()
 
-        @Suppress("DeferredResultUnused")
-        verify(api).getConfigurationAsync()
-    }
+    @Suppress("DeferredResultUnused")
+    verify(api).getConfigurationAsync()
+  }
 
-    @Test
-    fun `should store configuration in cache after successful fetch`() = runBlockingTest {
-        val configToStore = Configuration()
+  @Test
+  fun `should store configuration in cache after successful fetch`() = runBlockingTest {
+    val configToStore = Configuration()
 
-        whenever(cache.getConfiguration()).thenReturn(Configuration())
-        whenever(api.getConfigurationAsync()).thenReturn(CompletableDeferred(configToStore))
+    whenever(cache.getConfiguration()).thenReturn(Configuration())
+    whenever(api.getConfigurationAsync()).thenReturn(CompletableDeferred(configToStore))
 
-        repository.getConfiguration()
+    repository.getConfiguration()
 
-        verify(cache, times(1)).storeConfiguration(configToStore)
-    }
+    verify(cache, times(1)).storeConfiguration(configToStore)
+  }
 }

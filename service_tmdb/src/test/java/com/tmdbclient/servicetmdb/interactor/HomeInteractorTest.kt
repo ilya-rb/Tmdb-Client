@@ -11,40 +11,40 @@ import org.junit.Test
 
 class HomeInteractorTest {
 
-    private val interactor = DefaultHomeInteractor(
-        TestDependencyProvider.provideMoviesInteractor(),
-        TestDependencyProvider.provideGenresInteractor()
-    )
+  private val interactor = DefaultHomeInteractor(
+    TestDependencyProvider.provideMoviesInteractor(),
+    TestDependencyProvider.provideGenresInteractor()
+  )
 
-    @Test
-    fun `should contain genres section if not empty`() = runBlockingTest {
-        val sections = interactor.getHomeSections().getOrThrow()
-        assertTrue(sections.any { it is GenresSection })
-    }
+  @Test
+  fun `should contain genres section if not empty`() = runBlockingTest {
+    val sections = interactor.getHomeSections().getOrThrow()
+    assertTrue(sections.any { it is GenresSection })
+  }
 
-    @Test
-    fun `should contain now playing section on top of other movie sections`() = runBlockingTest {
-        val sections = interactor.getHomeSections().getOrThrow()
+  @Test
+  fun `should contain now playing section on top of other movie sections`() = runBlockingTest {
+    val sections = interactor.getHomeSections().getOrThrow()
 
-        // Check that now playing section is present
-        assertTrue(sections.any { it is NowPlayingSection })
+    // Check that now playing section is present
+    assertTrue(sections.any { it is NowPlayingSection })
 
-        val nowPlayingSectionPosition = sections.indexOfFirst { it is NowPlayingSection }
-        val sectionsList = sections.subList(0, nowPlayingSectionPosition)
+    val nowPlayingSectionPosition = sections.indexOfFirst { it is NowPlayingSection }
+    val sectionsList = sections.subList(0, nowPlayingSectionPosition)
 
-        // Check that there is no list section
-        // on top of now playing section
-        assertTrue(sectionsList.none { it is ListSection })
-    }
+    // Check that there is no list section
+    // on top of now playing section
+    assertTrue(sectionsList.none { it is ListSection })
+  }
 
-    @Test
-    fun `should contain genres only limited to max size`() = runBlockingTest {
-        val sections = interactor.getHomeSections().getOrThrow()
+  @Test
+  fun `should contain genres only limited to max size`() = runBlockingTest {
+    val sections = interactor.getHomeSections().getOrThrow()
 
-        // Check that genres section is present
-        assertTrue(sections.any { it is GenresSection })
+    // Check that genres section is present
+    assertTrue(sections.any { it is GenresSection })
 
-        val genresSection = sections.first { it is GenresSection } as GenresSection
-        assertTrue(genresSection.genres.size <= HomeInteractor.GENRES_MAX_SIZE)
-    }
+    val genresSection = sections.first { it is GenresSection } as GenresSection
+    assertTrue(genresSection.genres.size <= HomeInteractor.GENRES_MAX_SIZE)
+  }
 }

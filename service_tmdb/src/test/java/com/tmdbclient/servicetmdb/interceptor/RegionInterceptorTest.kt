@@ -19,47 +19,47 @@ import java.util.Locale
 @ExperimentalCoroutinesApi
 class RegionInterceptorTest {
 
-    @Test
-    fun `it should append user region as query parameter`() = runBlockingTest {
-        val region = "UA"
-        val interceptor = createInterceptorWithRegion(region)
+  @Test
+  fun `it should append user region as query parameter`() = runBlockingTest {
+    val region = "UA"
+    val interceptor = createInterceptorWithRegion(region)
 
-        val chain = mock<Interceptor.Chain>().also {
-            whenever(it.request()).thenReturn(
-                Request.Builder()
-                    .url("https://api-url.com/request")
-                    .build()
-            )
-        }
-
-        val request = interceptor.captureInterceptedRequest(chain)
-        assertEquals(region, request.url.queryParameter("region"))
+    val chain = mock<Interceptor.Chain>().also {
+      whenever(it.request()).thenReturn(
+        Request.Builder()
+          .url("https://api-url.com/request")
+          .build()
+      )
     }
 
-    private suspend fun createInterceptorWithRegion(region: String): RegionInterceptor {
-        val repository = mock<ConfigurationRepository>().also {
-            whenever(it.getCountries()).thenReturn(
-                Result.Success(
-                    listOf(
-                        Country(region, region)
-                    )
-                )
-            )
-        }
+    val request = interceptor.captureInterceptedRequest(chain)
+    assertEquals(region, request.url.queryParameter("region"))
+  }
 
-        val resolver = mock<ResourceResolver>().also {
-            whenever(it.getUserLocale()).thenReturn(Locale(region, region))
-        }
-
-        return RegionInterceptor(repository, resolver)
+  private suspend fun createInterceptorWithRegion(region: String): RegionInterceptor {
+    val repository = mock<ConfigurationRepository>().also {
+      whenever(it.getCountries()).thenReturn(
+        Result.Success(
+          listOf(
+            Country(region, region)
+          )
+        )
+      )
     }
 
-    private fun Interceptor.captureInterceptedRequest(chain: Interceptor.Chain): Request {
-        intercept(chain)
-
-        val requestCaptor = argumentCaptor<Request>()
-        verify(chain).proceed(requestCaptor.capture())
-
-        return requestCaptor.firstValue
+    val resolver = mock<ResourceResolver>().also {
+      whenever(it.getUserLocale()).thenReturn(Locale(region, region))
     }
+
+    return RegionInterceptor(repository, resolver)
+  }
+
+  private fun Interceptor.captureInterceptedRequest(chain: Interceptor.Chain): Request {
+    intercept(chain)
+
+    val requestCaptor = argumentCaptor<Request>()
+    verify(chain).proceed(requestCaptor.capture())
+
+    return requestCaptor.firstValue
+  }
 }

@@ -12,17 +12,17 @@ import java.util.*
  */
 data class MovieListModel(var movies: List<MovieModel>) : Persistable {
 
-    constructor() : this(Collections.emptyList())
+  constructor() : this(Collections.emptyList())
 
-    override fun readExternal(input: DataInput) {
-        movies = mutableListOf<MovieModel>().also {
-            input.readPersistableList(it) { MovieModel() }
-        }
+  override fun readExternal(input: DataInput) {
+    movies = mutableListOf<MovieModel>().also {
+      input.readPersistableList(it) { MovieModel() }
     }
+  }
 
-    override fun writeExternal(output: DataOutput) {
-        output.writePersistableList(movies)
-    }
+  override fun writeExternal(output: DataOutput) {
+    output.writePersistableList(movies)
+  }
 
-    override fun deepClone(): Persistable = this
+  override fun deepClone(): Persistable = this
 }

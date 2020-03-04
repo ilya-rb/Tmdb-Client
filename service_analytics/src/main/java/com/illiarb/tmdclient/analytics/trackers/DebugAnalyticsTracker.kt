@@ -10,7 +10,7 @@ import javax.inject.Inject
  */
 class DebugAnalyticsTracker @Inject constructor() : AnalyticsTracker {
 
-    override fun sendEvent(event: AnalyticEvent) {
-        Logger.i(AnalyticsTracker.TAG, "Analytics event occurred: $event")
-    }
+  override fun sendEvent(event: AnalyticEvent) {
+    Logger.i(AnalyticsTracker.TAG, "Analytics event occurred: $event")
+  }
 }

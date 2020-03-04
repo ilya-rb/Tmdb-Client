@@ -8,9 +8,9 @@ import androidx.work.PeriodicWorkRequest
  */
 interface WorkManager {
 
-    fun enqueuePeriodicWork(
-        uniqueWorkName: String,
-        periodicWorkPolicy: ExistingPeriodicWorkPolicy,
-        workRequest: PeriodicWorkRequest
-    )
+  fun enqueuePeriodicWork(
+    uniqueWorkName: String,
+    periodicWorkPolicy: ExistingPeriodicWorkPolicy,
+    workRequest: PeriodicWorkRequest
+  )
 }

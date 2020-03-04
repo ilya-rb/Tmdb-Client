@@ -13,9 +13,9 @@ import dagger.Module
 @Module
 interface NavigationModule {
 
-    @Binds
-    fun bindRouter(router: AppRouter): Router
+  @Binds
+  fun bindRouter(router: AppRouter): Router
 
-    @Binds
-    fun bindNavigatorHolder(holder: ActionsBuffer): NavigatorHolder
+  @Binds
+  fun bindNavigatorHolder(holder: ActionsBuffer): NavigatorHolder
 }

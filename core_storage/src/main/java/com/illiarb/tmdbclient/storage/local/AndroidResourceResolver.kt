@@ -9,13 +9,13 @@ import java.util.Locale
  */
 class AndroidResourceResolver(app: App) : ResourceResolver {
 
-    private val resources = app.getApplication().resources
+  private val resources = app.getApplication().resources
 
-    override fun getString(stringResId: Int): String = resources.getString(stringResId)
+  override fun getString(stringResId: Int): String = resources.getString(stringResId)
 
-    override fun getStringArray(arrayResId: Int): Array<String> = resources.getStringArray(arrayResId)
+  override fun getStringArray(arrayResId: Int): Array<String> = resources.getStringArray(arrayResId)
 
-    override fun getUserLocale(): Locale = resources.configuration.locale
+  override fun getUserLocale(): Locale = resources.configuration.locale
 
-    override fun getUserISOCountry(): String = resources.configuration.locale.isO3Country
+  override fun getUserISOCountry(): String = resources.configuration.locale.isO3Country
 }

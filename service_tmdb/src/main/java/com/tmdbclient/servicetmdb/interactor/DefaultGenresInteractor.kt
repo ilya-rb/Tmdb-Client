@@ -7,8 +7,8 @@ import com.tmdbclient.servicetmdb.repository.GenresRepository
 import javax.inject.Inject
 
 class DefaultGenresInteractor @Inject constructor(
-    private val genresRepository: GenresRepository
+  private val genresRepository: GenresRepository
 ) : GenresInteractor {
 
-    override suspend fun getAllGenres(): Result<List<Genre>> = genresRepository.getGenres()
+  override suspend fun getAllGenres(): Result<List<Genre>> = genresRepository.getGenres()
 }

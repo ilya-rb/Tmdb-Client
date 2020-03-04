@@ -5,10 +5,10 @@ package com.illiarb.tmdblcient.core.storage
  */
 interface FeatureFlagStore {
 
-    fun isFeatureEnabled(featureName: FeatureFlag): Boolean
+  fun isFeatureEnabled(featureName: FeatureFlag): Boolean
 
-    enum class FeatureFlag(val code: String) {
+  enum class FeatureFlag(val code: String) {
 
-        AUTH("auth_enabled")
-    }
+    AUTH("auth_enabled")
+  }
 }

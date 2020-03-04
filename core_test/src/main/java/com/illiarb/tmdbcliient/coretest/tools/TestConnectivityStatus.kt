@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.flow
 
 class TestConnectivityStatus : ConnectivityStatus {
 
-    override fun connectionState(): Flow<ConnectivityStatus.ConnectionState> = flow {
-        emit(ConnectivityStatus.ConnectionState.CONNECTED)
-    }
+  override fun connectionState(): Flow<ConnectivityStatus.ConnectionState> = flow {
+    emit(ConnectivityStatus.ConnectionState.CONNECTED)
+  }
 }

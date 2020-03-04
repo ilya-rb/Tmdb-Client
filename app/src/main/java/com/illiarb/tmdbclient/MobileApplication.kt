@@ -14,46 +14,46 @@ import javax.inject.Inject
 
 class MobileApplication : Application(), App {
 
-    @Inject
-    lateinit var appInitializers: Set<@JvmSuppressWildcards AppInitializer>
+  @Inject
+  lateinit var appInitializers: Set<@JvmSuppressWildcards AppInitializer>
 
-    private val applicationProvider by lazy {
-        AppComponent.get(this)
+  private val applicationProvider by lazy {
+    AppComponent.get(this)
+  }
+
+  override fun onCreate() {
+    super.onCreate()
+
+    val appComponent = applicationProvider as AppComponent
+    appComponent.inject(this)
+
+    MobileAppInjector(this).registerLifecycleCallbacks()
+
+    FirebaseApp.initializeApp(this)
+
+    appInitializers.forEach {
+      it.initialize(this)
     }
 
-    override fun onCreate() {
-        super.onCreate()
+    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
-        val appComponent = applicationProvider as AppComponent
-        appComponent.inject(this)
+    initEmojiFont()
+  }
 
-        MobileAppInjector(this).registerLifecycleCallbacks()
+  override fun getApplication(): Application = this
 
-        FirebaseApp.initializeApp(this)
+  override fun getAppProvider(): AppProvider = applicationProvider
 
-        appInitializers.forEach {
-            it.initialize(this)
-        }
-
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-
-        initEmojiFont()
-    }
-
-    override fun getApplication(): Application = this
-
-    override fun getAppProvider(): AppProvider = applicationProvider
-
-    private fun initEmojiFont() {
-        val config = FontRequestEmojiCompatConfig(
-            this,
-            FontRequest(
-                "com.google.android.gms.fonts",
-                "com.google.android.gms",
-                "Noto Color Emoji Compat",
-                R.array.com_google_android_gms_fonts_certs
-            )
-        )
-        EmojiCompat.init(config)
-    }
+  private fun initEmojiFont() {
+    val config = FontRequestEmojiCompatConfig(
+      this,
+      FontRequest(
+        "com.google.android.gms.fonts",
+        "com.google.android.gms",
+        "Noto Color Emoji Compat",
+        R.array.com_google_android_gms_fonts_certs
+      )
+    )
+    EmojiCompat.init(config)
+  }
 }

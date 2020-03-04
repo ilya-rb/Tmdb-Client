@@ -12,46 +12,46 @@ import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 
 class UiComponentsFragment : Fragment() {
 
-    companion object {
+  companion object {
 
-        const val TABS_COUNT = 3
+    const val TABS_COUNT = 3
 
-        fun newInstance() = UiComponentsFragment()
+    fun newInstance() = UiComponentsFragment()
+  }
+
+  private lateinit var binding: FragmentUiComponentsBinding
+
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
+    binding = FragmentUiComponentsBinding.inflate(inflater)
+    return binding.root
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    binding.toolbar.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
+      v.updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
     }
 
-    private lateinit var binding: FragmentUiComponentsBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentUiComponentsBinding.inflate(inflater)
-        return binding.root
+    for (i in 0 until TABS_COUNT) {
+      binding.tabs.addTab(binding.tabs.newTab().setText("Tab $i"))
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    binding.nightMode.isChecked =
+      AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
 
-        binding.toolbar.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
-            v.updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
+    binding.nightMode.setOnCheckedChangeListener { _, isChecked ->
+      AppCompatDelegate.setDefaultNightMode(
+        if (isChecked) {
+          AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+          AppCompatDelegate.MODE_NIGHT_NO
         }
-
-        for (i in 0 until TABS_COUNT) {
-            binding.tabs.addTab(binding.tabs.newTab().setText("Tab $i"))
-        }
-
-        binding.nightMode.isChecked =
-            AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
-
-        binding.nightMode.setOnCheckedChangeListener { _, isChecked ->
-            AppCompatDelegate.setDefaultNightMode(
-                if (isChecked) {
-                    AppCompatDelegate.MODE_NIGHT_YES
-                } else {
-                    AppCompatDelegate.MODE_NIGHT_NO
-                }
-            )
-        }
+      )
     }
+  }
 }

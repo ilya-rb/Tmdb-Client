@@ -8,25 +8,25 @@ import androidx.viewbinding.ViewBinding
 
 abstract class BaseViewBindingFragment<B : ViewBinding> : BaseFragment() {
 
-    private var viewBinding: B? = null
+  private var viewBinding: B? = null
 
-    protected val binding: B
-        get() = viewBinding!!
+  protected val binding: B
+    get() = viewBinding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        viewBinding = getViewBinding(inflater)
-        return viewBinding!!.root
-    }
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
+    viewBinding = getViewBinding(inflater)
+    return viewBinding!!.root
+  }
 
-    override fun onDestroyView() {
-        viewBinding = null
-        super.onDestroyView()
-    }
+  override fun onDestroyView() {
+    viewBinding = null
+    super.onDestroyView()
+  }
 
-    abstract fun getViewBinding(inflater: LayoutInflater): B
+  abstract fun getViewBinding(inflater: LayoutInflater): B
 
 }

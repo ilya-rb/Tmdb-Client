@@ -15,16 +15,16 @@ import dagger.multibindings.ElementsIntoSet
 @Module
 class AppModule(val app: App) {
 
-    @Provides
-    fun provideApp(): App = app
+  @Provides
+  fun provideApp(): App = app
 
-    @Provides
-    @ElementsIntoSet
-    fun provideAppInitializers(
-        workManagerInitializer: WorkManagerInitializer,
-        tmdbInitializer: TmdbInitializer,
-        loggerInitializer: LoggerInitializer
-    ): Set<AppInitializer> {
-        return setOf(loggerInitializer, workManagerInitializer, tmdbInitializer)
-    }
+  @Provides
+  @ElementsIntoSet
+  fun provideAppInitializers(
+    workManagerInitializer: WorkManagerInitializer,
+    tmdbInitializer: TmdbInitializer,
+    loggerInitializer: LoggerInitializer
+  ): Set<AppInitializer> {
+    return setOf(loggerInitializer, workManagerInitializer, tmdbInitializer)
+  }
 }

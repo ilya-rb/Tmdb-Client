@@ -12,12 +12,12 @@ import dagger.Module
 @Module
 internal interface RepositoriesModule {
 
-    @Binds
-    fun bindMoviesRepository(impl: DefaultMoviesRepository): MoviesRepository
+  @Binds
+  fun bindMoviesRepository(impl: DefaultMoviesRepository): MoviesRepository
 
-    @Binds
-    fun bindGenresRepository(impl: DefaultGenresRepository): GenresRepository
+  @Binds
+  fun bindGenresRepository(impl: DefaultGenresRepository): GenresRepository
 
-    @Binds
-    fun bindConfigurationRepository(impl: DefaultConfigurationRepository): ConfigurationRepository
+  @Binds
+  fun bindConfigurationRepository(impl: DefaultConfigurationRepository): ConfigurationRepository
 }

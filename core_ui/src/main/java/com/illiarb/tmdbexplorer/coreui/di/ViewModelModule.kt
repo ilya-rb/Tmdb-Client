@@ -13,8 +13,8 @@ import kotlin.reflect.KClass
 @Module
 interface ViewModelModule {
 
-    @Binds
-    fun bindViewModelFactory(factory: DaggerViewModelFactory): ViewModelProvider.Factory
+  @Binds
+  fun bindViewModelFactory(factory: DaggerViewModelFactory): ViewModelProvider.Factory
 }
 
 @MapKey

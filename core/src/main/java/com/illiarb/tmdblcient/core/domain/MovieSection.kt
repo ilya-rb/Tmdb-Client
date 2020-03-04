@@ -13,5 +13,5 @@ class GenresSection(val genres: List<Genre>) : MovieSection()
 
 class TrendingSection(val items: List<TrendingItem>) : MovieSection() {
 
-    class TrendingItem(val movie: Movie)
+  class TrendingItem(val movie: Movie)
 }

@@ -13,43 +13,43 @@ import java.util.Collections
 @Suppress("MagicNumber")
 class TestMovieRepository : MoviesRepository {
 
-    private val movieFilters = listOf(
-        MovieFilter("Now playing", MovieFilter.TYPE_NOW_PLAYING),
-        MovieFilter("Popular", MovieFilter.TYPE_POPULAR),
-        MovieFilter("Upcoming", MovieFilter.TYPE_UPCOMING),
-        MovieFilter("Top rated", MovieFilter.TYPE_TOP_RATED)
-    )
+  private val movieFilters = listOf(
+    MovieFilter("Now playing", MovieFilter.TYPE_NOW_PLAYING),
+    MovieFilter("Popular", MovieFilter.TYPE_POPULAR),
+    MovieFilter("Upcoming", MovieFilter.TYPE_UPCOMING),
+    MovieFilter("Top rated", MovieFilter.TYPE_TOP_RATED)
+  )
 
-    override suspend fun getMoviesByType(
-        type: String,
-        refresh: Boolean
-    ): Result<List<Movie>> {
-        val size = 10
+  override suspend fun getMoviesByType(
+    type: String,
+    refresh: Boolean
+  ): Result<List<Movie>> {
+    val size = 10
 
-        return Result.Success(
-            mutableListOf<Movie>().apply {
-                for (i in 0..size) {
-                    add(FakeEntityFactory.createFakeMovie())
-                }
-            }
-        )
-    }
-
-    override suspend fun getMovieDetails(id: Int, appendToResponse: String): Result<Movie> {
-        var movie = FakeEntityFactory.createFakeMovie()
-        if (appendToResponse.contains(MoviesInteractor.KEY_INCLUDE_IMAGES)) {
-            movie = movie.copy(
-                images = listOf(
-                    Image("image1", "image", emptyList()),
-                    Image("image1", "image", emptyList())
-                )
-            )
+    return Result.Success(
+      mutableListOf<Movie>().apply {
+        for (i in 0..size) {
+          add(FakeEntityFactory.createFakeMovie())
         }
-        return Result.Success(movie)
+      }
+    )
+  }
+
+  override suspend fun getMovieDetails(id: Int, appendToResponse: String): Result<Movie> {
+    var movie = FakeEntityFactory.createFakeMovie()
+    if (appendToResponse.contains(MoviesInteractor.KEY_INCLUDE_IMAGES)) {
+      movie = movie.copy(
+        images = listOf(
+          Image("image1", "image", emptyList()),
+          Image("image1", "image", emptyList())
+        )
+      )
     }
+    return Result.Success(movie)
+  }
 
-    override suspend fun getMovieReviews(id: Int): Result<List<Review>> =
-        Result.Success(Collections.emptyList())
+  override suspend fun getMovieReviews(id: Int): Result<List<Review>> =
+    Result.Success(Collections.emptyList())
 
-    override suspend fun getMovieFilters(): Result<List<MovieFilter>> = Result.Success(movieFilters)
+  override suspend fun getMovieFilters(): Result<List<MovieFilter>> = Result.Success(movieFilters)
 }

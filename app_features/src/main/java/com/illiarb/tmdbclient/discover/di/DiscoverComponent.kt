@@ -6,21 +6,21 @@ import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import dagger.Component
 
 @Component(
-    dependencies = [AppProvider::class],
-    modules = [
-        DiscoverModule::class,
-        ViewModelModule::class
-    ]
+  dependencies = [AppProvider::class],
+  modules = [
+    DiscoverModule::class,
+    ViewModelModule::class
+  ]
 )
 interface DiscoverComponent {
 
-    companion object {
-        fun get(appProvider: AppProvider, genreId: Int): DiscoverComponent =
-            DaggerDiscoverComponent.builder()
-                .appProvider(appProvider)
-                .discoverModule(DiscoverModule(genreId))
-                .build()
-    }
+  companion object {
+    fun get(appProvider: AppProvider, genreId: Int): DiscoverComponent =
+      DaggerDiscoverComponent.builder()
+        .appProvider(appProvider)
+        .discoverModule(DiscoverModule(genreId))
+        .build()
+  }
 
-    fun inject(fragment: DiscoverFragment)
+  fun inject(fragment: DiscoverFragment)
 }

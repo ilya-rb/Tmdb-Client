@@ -42,59 +42,59 @@ import com.tmdbclient.servicetmdb.repository.MoviesRepository
 
 @Suppress("TooManyFunctions")
 object TestDependencyProvider : StorageProvider,
-    ToolsProvider,
-    AnalyticsProvider,
-    TmdbProvider,
-    InteractorsProvider {
+  ToolsProvider,
+  AnalyticsProvider,
+  TmdbProvider,
+  InteractorsProvider {
 
-    fun provideMovieRepository(): MoviesRepository = TestMovieRepository()
+  fun provideMovieRepository(): MoviesRepository = TestMovieRepository()
 
-    fun provideConfigurationRepository(): ConfigurationRepository = TestConfigurationRepository()
+  fun provideConfigurationRepository(): ConfigurationRepository = TestConfigurationRepository()
 
-    val router: Router
-        get() = TestRouter()
+  val router: Router
+    get() = TestRouter()
 
-    override fun provideMoviesInteractor(): MoviesInteractor =
-        TestMoviesInteractor(provideMovieRepository())
+  override fun provideMoviesInteractor(): MoviesInteractor =
+    TestMoviesInteractor(provideMovieRepository())
 
-    override fun provideGenresInteractor(): GenresInteractor =
-        TestGenresInteractor(provideGenresRepository())
+  override fun provideGenresInteractor(): GenresInteractor =
+    TestGenresInteractor(provideGenresRepository())
 
-    override fun provideHomeInteractor(): HomeInteractor =
-        TestHomeInteractor()
+  override fun provideHomeInteractor(): HomeInteractor =
+    TestHomeInteractor()
 
-    override fun provideTrendingInteractor(): TrendingInteractor =
-        TestTrendingInteractor()
+  override fun provideTrendingInteractor(): TrendingInteractor =
+    TestTrendingInteractor()
 
-    override fun provideResourceResolver(): ResourceResolver = TestResourceResolver()
+  override fun provideResourceResolver(): ResourceResolver = TestResourceResolver()
 
-    override fun provideFeatureFlagStore(): FeatureFlagStore = TestFeatureFlagStore()
+  override fun provideFeatureFlagStore(): FeatureFlagStore = TestFeatureFlagStore()
 
-    override fun provideDispatcherProvider(): DispatcherProvider = TestDispatcherProvider()
+  override fun provideDispatcherProvider(): DispatcherProvider = TestDispatcherProvider()
 
-    override fun provideConnectivityStatus(): ConnectivityStatus = TestConnectivityStatus()
+  override fun provideConnectivityStatus(): ConnectivityStatus = TestConnectivityStatus()
 
-    override fun provideAnalyticsService(): AnalyticsService = TestAnalyticsService()
+  override fun provideAnalyticsService(): AnalyticsService = TestAnalyticsService()
 
-    override fun workManager(): WorkManager {
-        return object : WorkManager {
-            override fun enqueuePeriodicWork(
-                uniqueWorkName: String,
-                periodicWorkPolicy: ExistingPeriodicWorkPolicy,
-                workRequest: PeriodicWorkRequest
-            ) = Unit
-        }
+  override fun workManager(): WorkManager {
+    return object : WorkManager {
+      override fun enqueuePeriodicWork(
+        uniqueWorkName: String,
+        periodicWorkPolicy: ExistingPeriodicWorkPolicy,
+        workRequest: PeriodicWorkRequest
+      ) = Unit
     }
+  }
 
-    override fun provideDateFormatter(): DateFormatter = object : DateFormatter {
-        override fun formatDate(date: String): String = ""
+  override fun provideDateFormatter(): DateFormatter = object : DateFormatter {
+    override fun formatDate(date: String): String = ""
+  }
+
+  override fun provideConfigurationWorkCreator(): WorkerCreator {
+    return object : WorkerCreator {
+      override fun createWorkRequest(context: Context, params: WorkerParameters): Worker = null!!
     }
+  }
 
-    override fun provideConfigurationWorkCreator(): WorkerCreator {
-        return object : WorkerCreator {
-            override fun createWorkRequest(context: Context, params: WorkerParameters): Worker = null!!
-        }
-    }
-
-    private fun provideGenresRepository(): GenresRepository = TestGenresRepository()
+  private fun provideGenresRepository(): GenresRepository = TestGenresRepository()
 }

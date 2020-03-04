@@ -6,28 +6,28 @@ typealias StateSaver = Bundle.() -> Unit
 
 class RecyclerViewStateSaver {
 
-    private val stateRegistry = mutableMapOf<String, StateSaver>()
-    private val bundle = Bundle()
+  private val stateRegistry = mutableMapOf<String, StateSaver>()
+  private val bundle = Bundle()
 
-    fun saveInstanceState() {
-        stateRegistry.forEach {
-            it.value(bundle)
-        }
+  fun saveInstanceState() {
+    stateRegistry.forEach {
+      it.value(bundle)
     }
+  }
 
-    fun registerStateSaver(key: String, callback: StateSaver) {
-        stateRegistry[key] = callback
+  fun registerStateSaver(key: String, callback: StateSaver) {
+    stateRegistry[key] = callback
+  }
+
+  fun unregisterStateSaver(key: String) {
+    stateRegistry.remove(key)
+  }
+
+  fun state(key: String?, defaultValue: Any? = null): Any? {
+    val state = bundle.get(key) ?: defaultValue
+
+    return state.also {
+      bundle.remove(key)
     }
-
-    fun unregisterStateSaver(key: String) {
-        stateRegistry.remove(key)
-    }
-
-    fun state(key: String?, defaultValue: Any? = null): Any? {
-        val state = bundle.get(key) ?: defaultValue
-
-        return state.also {
-            bundle.remove(key)
-        }
-    }
+  }
 }

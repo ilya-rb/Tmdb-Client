@@ -4,12 +4,12 @@ import java.util.Locale
 
 interface ResourceResolver {
 
-    fun getString(stringResId: Int): String
+  fun getString(stringResId: Int): String
 
-    fun getStringArray(arrayResId: Int): Array<String>
+  fun getStringArray(arrayResId: Int): Array<String>
 
-    fun getUserLocale(): Locale
+  fun getUserLocale(): Locale
 
-    fun getUserISOCountry(): String
+  fun getUserISOCountry(): String
 
 }

@@ -10,23 +10,23 @@ import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdblcient.core.domain.Movie
 
 fun nowPlayingItemDelegate(
-    clickListener:  OnClickListener<Movie>
+  clickListener: OnClickListener<Movie>
 ) = adapterDelegate<Movie, Movie>(R.layout.item_now_playing_item) {
 
-    val title = itemView.findViewById<TextView>(R.id.itemNowPlayingTitle)
-    val poster = itemView.findViewById<ImageView>(R.id.itemNowPlayingPoster)
-    val rating = itemView.findViewById<TextView>(R.id.itemNowPlayingRating)
+  val title = itemView.findViewById<TextView>(R.id.itemNowPlayingTitle)
+  val poster = itemView.findViewById<ImageView>(R.id.itemNowPlayingPoster)
+  val rating = itemView.findViewById<TextView>(R.id.itemNowPlayingRating)
 
-    bind {
-        title.text = item.title
+  bind {
+    title.text = item.title
 
-        rating.setVisible(item.voteAverage > 0)
-        rating.text = item.voteAverage.toString()
+    rating.setVisible(item.voteAverage > 0)
+    rating.text = item.voteAverage.toString()
 
-        poster.loadImage(item.backdropPath)
+    poster.loadImage(item.backdropPath)
 
-        itemView.setOnClickListener {
-            clickListener(item)
-        }
+    itemView.setOnClickListener {
+      clickListener(item)
     }
+  }
 }

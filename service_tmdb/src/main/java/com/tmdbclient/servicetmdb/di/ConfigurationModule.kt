@@ -17,44 +17,44 @@ import javax.inject.Qualifier
 @Module
 object ConfigurationModule {
 
-    @Provides
-    @JvmStatic
-    fun provideConfigurationApi(@ConfigurationClient retrofit: Retrofit): ConfigurationApi =
-        retrofit.create(ConfigurationApi::class.java)
+  @Provides
+  @JvmStatic
+  fun provideConfigurationApi(@ConfigurationClient retrofit: Retrofit): ConfigurationApi =
+    retrofit.create(ConfigurationApi::class.java)
 
-    @Provides
+  @Provides
+  @ConfigurationClient
+  fun provideConfigurationApiRetrofit(
     @ConfigurationClient
-    fun provideConfigurationApiRetrofit(
-        @ConfigurationClient
-        okHttpClient: OkHttpClient,
-        callAdapterFactory: CallAdapter.Factory,
-        converterFactory: Converter.Factory
-    ): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(BuildConfig.API_URL)
-            .addCallAdapterFactory(callAdapterFactory)
-            .client(okHttpClient)
-            .addConverterFactory(converterFactory)
-            .build()
-    }
+    okHttpClient: OkHttpClient,
+    callAdapterFactory: CallAdapter.Factory,
+    converterFactory: Converter.Factory
+  ): Retrofit {
+    return Retrofit.Builder()
+      .baseUrl(BuildConfig.API_URL)
+      .addCallAdapterFactory(callAdapterFactory)
+      .client(okHttpClient)
+      .addConverterFactory(converterFactory)
+      .build()
+  }
 
-    @Provides
-    @ConfigurationClient
-    @JvmStatic
-    fun provideConfigurationApiOkHttpClient(
-        apiKeyInterceptor: ApiKeyInterceptor,
-        httpLoggingInterceptor: HttpLoggingInterceptor
-    ): OkHttpClient {
-        return OkHttpClient.Builder()
-            .connectTimeout(NetworkModule.CONNECT_TIMEOUT, TimeUnit.SECONDS)
-            .readTimeout(NetworkModule.READ_TIMEOUT, TimeUnit.SECONDS)
-            .writeTimeout(NetworkModule.WRITE_TIMEOUT, TimeUnit.SECONDS)
-            .addInterceptor(apiKeyInterceptor)
-            .addInterceptor(httpLoggingInterceptor)
-            .build()
-    }
+  @Provides
+  @ConfigurationClient
+  @JvmStatic
+  fun provideConfigurationApiOkHttpClient(
+    apiKeyInterceptor: ApiKeyInterceptor,
+    httpLoggingInterceptor: HttpLoggingInterceptor
+  ): OkHttpClient {
+    return OkHttpClient.Builder()
+      .connectTimeout(NetworkModule.CONNECT_TIMEOUT, TimeUnit.SECONDS)
+      .readTimeout(NetworkModule.READ_TIMEOUT, TimeUnit.SECONDS)
+      .writeTimeout(NetworkModule.WRITE_TIMEOUT, TimeUnit.SECONDS)
+      .addInterceptor(apiKeyInterceptor)
+      .addInterceptor(httpLoggingInterceptor)
+      .build()
+  }
 
-    @Qualifier
-    @Retention(AnnotationRetention.RUNTIME)
-    private annotation class ConfigurationClient
+  @Qualifier
+  @Retention(AnnotationRetention.RUNTIME)
+  private annotation class ConfigurationClient
 }

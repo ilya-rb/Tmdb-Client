@@ -7,12 +7,12 @@ import kotlinx.coroutines.flow.Flow
  */
 interface ConnectivityStatus {
 
-    fun connectionState(): Flow<ConnectionState>
+  fun connectionState(): Flow<ConnectionState>
 
-    enum class ConnectionState {
+  enum class ConnectionState {
 
-        CONNECTED,
+    CONNECTED,
 
-        NOT_CONNECTED
-    }
+    NOT_CONNECTED
+  }
 }
