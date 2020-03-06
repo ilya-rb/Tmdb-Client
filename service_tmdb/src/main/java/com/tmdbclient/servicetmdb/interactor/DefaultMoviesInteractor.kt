@@ -59,7 +59,7 @@ class DefaultMoviesInteractor @Inject constructor(
     val filters = repository.getMovieFilters().getOrThrow()
     val movie = filters
       .map { cache.getMoviesByType(it.code).firstOrNull { item -> item.id == movieId } }
-      .first { it != null }
+      .firstOrNull { it != null }
 
     if (movie != null) {
       emit(Result.Success(movieMapper.map(movie)))
