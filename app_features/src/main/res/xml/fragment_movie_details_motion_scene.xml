@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Transition
-        app:constraintSetEnd="@id/end"
-        app:constraintSetStart="@id/start">
+        app:constraintSetEnd="@id/movieDetailsEnd"
+        app:constraintSetStart="@id/movieDetailsStart">
 
         <OnSwipe
             app:dragDirection="dragUp"
@@ -25,7 +25,7 @@
 
     </Transition>
 
-    <ConstraintSet android:id="@+id/start">
+    <ConstraintSet android:id="@+id/movieDetailsStart">
 
         <Constraint
             android:id="@+id/movieDetailsPoster"
@@ -57,7 +57,9 @@
             android:id="@+id/movieDetailsTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
             android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_normal"
             android:layout_marginBottom="0dp"
             android:scaleX="1"
             android:scaleY="1"
@@ -83,7 +85,7 @@
 
     </ConstraintSet>
 
-    <ConstraintSet android:id="@+id/end">
+    <ConstraintSet android:id="@+id/movieDetailsEnd">
 
         <Constraint
             android:id="@+id/movieDetailsPoster"
@@ -115,7 +117,9 @@
             android:id="@+id/movieDetailsTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
             android:layout_marginTop="0dp"
+            android:layout_marginEnd="@dimen/spacing_normal"
             android:layout_marginBottom="@dimen/spacing_small"
             android:maxLines="1"
             android:scaleX="0.7"

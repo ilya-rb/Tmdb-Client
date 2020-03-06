@@ -72,7 +72,6 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
     binding.swipeRefresh.isEnabled = false
     binding.movieDetailsRoot.setTransitionListener(object : TransitionAdapter() {
       override fun onTransitionChange(motionLayout: MotionLayout?, startId: Int, endId: Int, progress: Float) {
-        super.onTransitionChange(motionLayout, startId, endId, progress)
         if (progress == 0f) {
           binding.movieDetailsPlay.show()
         } else {
