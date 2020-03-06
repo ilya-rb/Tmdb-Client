@@ -4,6 +4,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -68,6 +70,16 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
     super.onViewCreated(view, savedInstanceState)
 
     binding.swipeRefresh.isEnabled = false
+    binding.movieDetailsRoot.setTransitionListener(object : TransitionAdapter() {
+      override fun onTransitionChange(motionLayout: MotionLayout?, startId: Int, endId: Int, progress: Float) {
+        super.onTransitionChange(motionLayout, startId, endId, progress)
+        if (progress == 0f) {
+          binding.movieDetailsPlay.show()
+        } else {
+          binding.movieDetailsPlay.hide()
+        }
+      }
+    })
 
     setupToolbar()
     setupSectionsList()
@@ -122,8 +134,8 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
   }
 
   private fun showMovieDetails(movie: Movie) {
-    binding.movieDetailsPoster.transitionName = "item_${movie.id}"
-    binding.movieDetailsPoster.loadImage(movie.posterPath) {
+    binding.movieDetailsTitle.text = movie.title
+    binding.movieDetailsPoster.loadImage(movie.backdropPath) {
       crop(CropOptions.CenterCrop)
     }
 

@@ -37,6 +37,7 @@
             android:id="@+id/movieDetailsPlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@null"
             android:src="@drawable/ic_play_arrow"
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="@id/movieDetailsPoster"
@@ -52,7 +53,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/movieDetailsPlay"
+            app:layout_constraintTop_toBottomOf="@id/movieDetailsTitle"
             tools:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/item_movie_info" />
 
@@ -64,6 +65,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIcon="@drawable/ic_arrow_back" />
+
+        <TextView
+            android:id="@+id/movieDetailsTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:gravity="center_horizontal"
+            android:textAppearance="?attr/textAppearanceHeadline5"
+            android:textColor="?attr/colorOnSurface"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/movieDetailsPlay"
+            tools:maxLines="2"
+            tools:text="@tools:sample/lorem/random" />
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 

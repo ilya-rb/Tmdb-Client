@@ -5,19 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/movieDetailsTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textAppearance="?attr/textAppearanceHeadline5"
-        android:textColor="?attr/colorOnSurface"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:maxLines="2"
-        tools:text="@tools:sample/lorem/random" />
-
     <androidx.emoji.widget.EmojiTextView
         android:id="@+id/movieDetailsTags"
         android:layout_width="0dp"
@@ -29,7 +16,7 @@
         android:textColor="?attr/colorOnSurface"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsTitle"
+        app:layout_constraintTop_toTopOf="parent"
         tools:maxLines="1"
         tools:text="@tools:sample/lorem" />
 
