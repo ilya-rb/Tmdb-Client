@@ -3,6 +3,7 @@ package com.illiarb.tmdbclient.storage.network
 import com.illiarb.tmdbclient.storage.error.ErrorHandler
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.completeWith
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Callback
@@ -48,14 +49,14 @@ class ApiCallAdapterFactory @Inject constructor(
 
       call.enqueue(object : Callback<T> {
         override fun onFailure(call: Call<T>, t: Throwable) {
-          deferred.completeExceptionally(errorHandler.createFromThrowable(t))
+          deferred.completeWith(Result.failure(errorHandler.createFromThrowable(t)))
         }
 
         override fun onResponse(call: Call<T>, response: Response<T>) {
           if (response.isSuccessful) {
-            deferred.complete(response.body()!!)
+            deferred.completeWith(Result.success(response.body()!!))
           } else {
-            deferred.completeExceptionally(errorHandler.createFromErrorBody(response.errorBody()))
+            deferred.completeWith(Result.failure(errorHandler.createFromErrorBody(response.errorBody())))
           }
         }
       })

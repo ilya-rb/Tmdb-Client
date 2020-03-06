@@ -2,7 +2,6 @@ package com.illiarb.tmdbclient.home.delegates
 
 import android.os.Parcelable
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,11 +23,10 @@ import com.illiarb.tmdblcient.core.domain.MovieSection
 fun movieSectionDelegate(
   recyclerViewStateSaver: RecyclerViewStateSaver,
   seeAllClickListener: OnClickListener<String>,
-  movieClickListener: OnClickListener<Movie>,
-  posterClickListener: OnClickListener<Pair<Movie, ImageView>> = {}
+  movieClickListener: OnClickListener<Movie>
 ) = adapterDelegate<ListSection, MovieSection>(R.layout.item_movie_section) {
 
-  val adapter = MovieSectionAdapter(movieClickListener, posterClickListener)
+  val adapter = MovieSectionAdapter(movieClickListener)
   val sectionTitle = itemView.findViewById<TextView>(R.id.itemSectionTitle)
   val sectionList = itemView.findViewById<RecyclerView>(R.id.itemMovieSectionList)
   val seeAllButton = itemView.findViewById<View>(R.id.itemSectionSeeAll)
@@ -76,18 +74,14 @@ fun movieSectionDelegate(
   }
 }
 
-private class MovieSectionAdapter(
-  clickListener: OnClickListener<Movie>,
-  posterClickListener: OnClickListener<Pair<Movie, ImageView>>
-) : ListDelegationAdapter<List<Movie>>() {
+private class MovieSectionAdapter(clickListener: OnClickListener<Movie>) : ListDelegationAdapter<List<Movie>>() {
 
   init {
     delegatesManager.addDelegate(
       movieDelegate(
         SizeSpec.Fixed(R.dimen.item_movie_width),
         SizeSpec.Fixed(R.dimen.item_movie_height),
-        clickListener,
-        posterClickListener
+        clickListener
       )
     )
   }

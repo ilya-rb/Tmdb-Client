@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         app:layoutDescription="@xml/fragment_movie_details_motion_scene">
 
-        <com.illiarb.tmdbclient.details.widget.CurvedImageView
+        <ImageView
             android:id="@+id/movieDetailsPoster"
             android:layout_width="0dp"
             android:layout_height="@dimen/movie_details_poster_height"

@@ -29,7 +29,7 @@ class DiscoverViewModel @Inject constructor(
       State(
         results = emptyList(),
         genres = emptyList(),
-        screenTitle = Text.AsResource(R.string.discover_genres_title),
+        screenTitle = Text.AsResource(R.string.discover_genres_all),
         selectedGenreId = Genre.GENRE_ALL,
         isLoading = false
       )
@@ -64,11 +64,15 @@ class DiscoverViewModel @Inject constructor(
         return@launch
       }
 
-      setState { copy(isLoading = true) }
+      setState {
+        copy(isLoading = true)
+      }
 
       val results = moviesInteractor.discoverMovies(genreId)
 
-      setState { copy(isLoading = false) }
+      setState {
+        copy(isLoading = false)
+      }
 
       when (results) {
         is Result.Success -> {
@@ -77,11 +81,11 @@ class DiscoverViewModel @Inject constructor(
               results = results.data,
               selectedGenreId = genreId,
               screenTitle = if (genreId == Genre.GENRE_ALL) {
-                Text.AsResource(R.string.discover_genres_title)
+                Text.AsResource(R.string.discover_genres_all)
               } else {
                 val selected = currentState.genres.find { it.id == genreId }
                 if (selected == null) {
-                  Text.AsResource(R.string.discover_genres_title)
+                  Text.AsResource(R.string.discover_genres_all)
                 } else {
                   Text.AsString(selected.name)
                 }

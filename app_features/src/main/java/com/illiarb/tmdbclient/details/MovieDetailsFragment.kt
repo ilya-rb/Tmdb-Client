@@ -8,7 +8,6 @@ import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.transition.MaterialFadeThrough
 import com.illiarb.coreuiimage.CropOptions
 import com.illiarb.coreuiimage.loadImage
 import com.illiarb.tmdbclient.details.MovieDetailsViewModel.Event
@@ -64,11 +63,6 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
 
   override fun getViewBinding(inflater: LayoutInflater): FragmentMovieDetailsBinding =
     FragmentMovieDetailsBinding.inflate(inflater)
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    enterTransition = MaterialFadeThrough.create(requireContext())
-  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

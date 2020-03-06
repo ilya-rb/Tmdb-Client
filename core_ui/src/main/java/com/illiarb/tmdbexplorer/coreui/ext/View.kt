@@ -61,6 +61,14 @@ fun View.setVisible(visible: Boolean) {
   }
 }
 
+fun View.setInvisible(invisible: Boolean) {
+  visibility = if (invisible) {
+    View.INVISIBLE
+  } else {
+    View.VISIBLE
+  }
+}
+
 fun View.getColorAttr(@AttrRes id: Int): Int {
   val outValue = TypedValue()
   context.theme.resolveAttribute(id, outValue, true)

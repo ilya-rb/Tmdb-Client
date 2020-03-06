@@ -28,4 +28,10 @@ sealed class Async<out T> {
       block(this())
     }
   }
+
+  fun doOnError(block: (Throwable) -> Unit) = this.also {
+    if (this is Fail) {
+      block(error)
+    }
+  }
 }

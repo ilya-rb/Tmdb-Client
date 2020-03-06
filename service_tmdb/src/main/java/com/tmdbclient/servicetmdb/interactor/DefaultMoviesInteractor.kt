@@ -38,6 +38,15 @@ class DefaultMoviesInteractor @Inject constructor(
   }
 
   override suspend fun getMovieDetails(movieId: Int): Result<Movie> {
+    val filters = repository.getMovieFilters().getOrThrow()
+    val movie = filters
+      .map { cache.getMoviesByType(it.code).firstOrNull { item -> item.id == movieId } }
+      .first { it != null }
+
+    if (movie != null) {
+      return Result.Success(movieMapper.map(movie))
+    }
+
     val configuration = withContext(dispatcherProvider.io) { cache.getConfiguration() }
     val imageKey = configuration.changeKeys.find { it == MoviesInteractor.KEY_INCLUDE_IMAGES }
     val videoKey = configuration.changeKeys.find { it == MoviesInteractor.KEY_INCLUDE_VIDEOS }

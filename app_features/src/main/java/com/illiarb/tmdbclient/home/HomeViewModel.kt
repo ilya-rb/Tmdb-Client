@@ -36,6 +36,8 @@ class HomeViewModel @Inject constructor(
       setState { copy(sections = Async.Loading()) }
 
       val sections = homeInteractor.getHomeSections().asAsync()
+        .doOnError { showMessage(it.message) }
+
       setState {
         copy(sections = sections)
       }
@@ -53,6 +55,8 @@ class HomeViewModel @Inject constructor(
             copy(sections = Async.Success(sectionsList))
           }
         }
+      } else {
+        showMessage(trending.error().message)
       }
     }
   }

@@ -10,6 +10,7 @@ import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
 import com.illiarb.tmdbexplorer.coreui.common.SizeSpec
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
+import com.illiarb.tmdbexplorer.coreui.ext.setInvisible
 import com.illiarb.tmdbexplorer.coreui.ext.setSize
 import com.illiarb.tmdbexplorer.coreui.ext.setVisible
 import com.illiarb.tmdblcient.core.domain.Movie
@@ -17,8 +18,7 @@ import com.illiarb.tmdblcient.core.domain.Movie
 fun movieDelegate(
   widthSpec: SizeSpec,
   heightSpec: SizeSpec,
-  clickListener: OnClickListener<Movie>,
-  posterClickListener: OnClickListener<Pair<Movie, ImageView>> = {}
+  clickListener: OnClickListener<Movie>
 ) = adapterDelegate<Movie, Movie>(R.layout.item_movie) {
 
   val image = itemView.findViewById<ImageView>(R.id.itemMoviePoster)
@@ -34,7 +34,7 @@ fun movieDelegate(
   bind {
     title.text = item.title
 
-    rating.setVisible(item.voteAverage != 0f)
+    rating.setInvisible(item.voteAverage == 0f)
     rating.text = item.voteAverage.toString()
 
     image.loadImage(item.posterPath) {
@@ -43,10 +43,8 @@ fun movieDelegate(
       crossFade(false)
     }
 
-    image.transitionName = "item_${item.id}"
-
     image.setOnClickListener {
-      posterClickListener(item to image)
+      clickListener(item)
     }
   }
 }

@@ -35,8 +35,6 @@ class MobileApplication : Application(), App {
       it.initialize(this)
     }
 
-    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-
     initEmojiFont()
   }
 

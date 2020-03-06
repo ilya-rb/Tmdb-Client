@@ -33,7 +33,6 @@ fun ImageView.loadImage(
   }
 
   clear()
-
   doOnLayout {
     val selectedSize = selectSize(image.sizes, it.width) ?: return@doOnLayout
     val options = requestOptions(RequestOptions())

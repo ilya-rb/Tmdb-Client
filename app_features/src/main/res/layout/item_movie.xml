@@ -35,6 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_small"
         android:ellipsize="end"
+        android:lines="2"
         android:maxLines="2"
         android:textAppearance="?attr/textAppearanceCaption"
         android:textColor="?attr/colorOnBackground"

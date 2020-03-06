@@ -2,6 +2,7 @@
 <resources>
 
     <string name="discover_genres_title">Discover</string>
+    <string name="discover_genres_all">All</string>
     <string name="discover_selected_count">%1$d Selected</string>
     <string name="discover_filter_apply">Apply</string>
     <string name="discover_filter_clear">Clear</string>

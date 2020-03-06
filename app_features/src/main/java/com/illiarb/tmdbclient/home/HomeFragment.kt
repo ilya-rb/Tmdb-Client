@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.illiarb.tmdbclient.home.HomeViewModel.Event
 import com.illiarb.tmdbclient.home.HomeViewModel.State
 import com.illiarb.tmdbclient.home.delegates.genresSectionDelegate
@@ -20,6 +21,7 @@ import com.illiarb.tmdbclient.home.di.HomeComponent
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentMoviesBinding
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
+import com.illiarb.tmdbexplorer.coreui.common.Message
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.getColorAttr
@@ -30,7 +32,6 @@ import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.RecyclerViewStateSave
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
-import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.util.Async
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -41,9 +42,6 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
   @Inject
   lateinit var viewModelFactory: ViewModelProvider.Factory
 
-  @Inject
-  lateinit var router: Router
-
   private val viewModel: HomeViewModel by lazy(LazyThreadSafetyMode.NONE) {
     ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
   }
@@ -53,12 +51,7 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     movieSectionDelegate(
       stateSaver,
       seeAllClickListener = { viewModel.events.offer(Event.SeeAllClick(it)) },
-      movieClickListener = { viewModel.events.offer(Event.MovieClick(it)) },
-      posterClickListener = { (movie, imageView) ->
-        router.executeAction(
-          Router.Action.ShowMovieDetails(movie.id, imageView)
-        )
-      }
+      movieClickListener = { viewModel.events.offer(Event.MovieClick(it)) }
     ),
     nowPlayingSectionDelegate(stateSaver) { viewModel.events.offer(Event.MovieClick(it)) },
     genresSectionDelegate { viewModel.events.offer(Event.GenreClick(it)) },
@@ -88,6 +81,14 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     viewLifecycleOwner.lifecycleScope.launch {
       viewModel.state.collect {
         render(it)
+      }
+    }
+
+    viewLifecycleOwner.lifecycleScope.launch {
+      viewModel.outEvents.collect {
+        if (it is Message) {
+          Snackbar.make(binding.root, it.message, Snackbar.LENGTH_LONG).show()
+        }
       }
     }
   }

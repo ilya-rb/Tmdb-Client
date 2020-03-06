@@ -9,6 +9,7 @@
      -->
     <string-array name="movie_filters">
         <item>Now Playing</item>
+        <item>Upcoming</item>
         <item>Popular</item>
         <item>Top Rated</item>
     </string-array>

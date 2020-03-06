@@ -3,7 +3,6 @@ package com.illiarb.tmdbclient.discover
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.core.view.ViewCompat
@@ -11,8 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import com.illiarb.tmdbclient.common.delegates.movieDelegate
+import com.illiarb.tmdbclient.discover.DiscoverViewModel.Event
 import com.illiarb.tmdbclient.discover.DiscoverViewModel.State
 import com.illiarb.tmdbclient.discover.di.DiscoverComponent
 import com.illiarb.tmdbclient.movies.home.R
@@ -22,8 +21,9 @@ import com.illiarb.tmdbexplorer.coreui.common.SizeSpec
 import com.illiarb.tmdbexplorer.coreui.common.Text
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.removeAdapterOnDetach
+import com.illiarb.tmdbexplorer.coreui.ext.setText
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
-import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
+import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.GridDecoration
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.domain.Genre
@@ -41,16 +41,12 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
   @Inject
   lateinit var viewModelFactory: ViewModelProvider.Factory
 
-  private lateinit var discoverGenres: ChipGroup
-  private lateinit var filtersContainer: ViewGroup
-  private lateinit var discoverSwipeArea: View
-
   private val adapter = DelegatesAdapter(
     movieDelegate(
       SizeSpec.MatchParent,
       SizeSpec.Fixed(R.dimen.discover_item_movie_height)
     ) {
-      viewModel.events.offer(DiscoverViewModel.Event.MovieClick(it))
+      viewModel.events.offer(Event.MovieClick(it))
     }
   )
 
@@ -66,14 +62,8 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    // filters layout added via <include> tag and not supported by view binding
-    discoverGenres = binding.root.findViewById(R.id.discoverGenres)
-    discoverSwipeArea = binding.root.findViewById(R.id.discoverSwipeArea)
-    filtersContainer = binding.root.findViewById(R.id.discoverFiltersContainer)
-
     binding.discoverSwipeRefresh.isEnabled = false
-
-    binding.discoverRoot.setTransitionListener(object: TransitionAdapter() {
+    binding.discoverRoot.setTransitionListener(object : TransitionAdapter() {
       override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
         binding.discoverOverlay.isClickable = currentId == R.id.filtersEnd
       }
@@ -107,19 +97,15 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
   }
 
   private fun setupFilters() {
-    discoverSwipeArea.setOnClickListener {
-      showFiltersPanel()
-    }
-
     binding.root.findViewById<View>(R.id.discoverApplyFilter).setOnClickListener {
       dismissFiltersPanel()
-      viewModel.events.offer(DiscoverViewModel.Event.ApplyFilter(discoverGenres.checkedChipId))
+      viewModel.events.offer(Event.ApplyFilter(binding.discoverFiltersContainer.discoverGenres.checkedChipId))
     }
 
     binding.root.findViewById<View>(R.id.discoverClearFilter).setOnClickListener {
-      discoverGenres.clearCheck()
+      binding.discoverFiltersContainer.discoverGenres.clearCheck()
       dismissFiltersPanel()
-      viewModel.events.offer(DiscoverViewModel.Event.ClearFilter)
+      viewModel.events.offer(Event.ClearFilter)
     }
   }
 
@@ -128,22 +114,13 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
       adapter = this@DiscoverFragment.adapter
       layoutManager = GridLayoutManager(requireContext(), GRID_SPAN_COUNT)
       removeAdapterOnDetach()
-
-      val spacing = dimen(R.dimen.spacing_small)
-      addItemDecoration(SpaceDecoration(spacing, spacing, spacing, spacing))
+      addItemDecoration(GridDecoration(dimen(R.dimen.spacing_normal), GRID_SPAN_COUNT))
     }
   }
 
   private fun render(oldState: State?, newState: State) {
     binding.discoverSwipeRefresh.isRefreshing = newState.isLoading
-    binding.toolbar.title = when (newState.screenTitle) {
-      is Text.AsString -> newState.screenTitle.text
-      is Text.AsResource -> getString(newState.screenTitle.id)
-    }
-
-    if (oldState?.selectedGenreId != newState.selectedGenreId) {
-      discoverGenres.check(newState.selectedGenreId)
-    }
+    binding.toolbarTitle.setText(newState.screenTitle)
 
     if (oldState?.genres != newState.genres) {
       newState.genres.forEach { genre ->
@@ -156,17 +133,15 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
         chip.text = genre.name
         chip.id = genre.id
 
-        discoverGenres.addView(chip)
+        binding.discoverFiltersContainer.discoverGenres.addView(chip)
       }
     }
+
+    binding.discoverFiltersContainer.discoverGenres.check(newState.selectedGenreId)
 
     if (oldState?.results != newState.results) {
       adapter.submitList(newState.results)
     }
-  }
-
-  private fun showFiltersPanel() {
-    binding.discoverRoot.transitionToEnd()
   }
 
   private fun dismissFiltersPanel() {
