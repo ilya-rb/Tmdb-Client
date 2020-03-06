@@ -36,11 +36,16 @@ class MovieDetailsViewModel @Inject constructor(
           setState {
             if (it is Async.Success) {
               val movie = it()
-              val movieInfo = MovieInfo(movie)
-              val moviePhotos = MoviePhotos(movie)
+              val sections = mutableListOf<Any>().apply {
+                add(MovieInfo(movie))
+
+                if (movie.images.isNotEmpty()) {
+                  add(MoviePhotos(movie))
+                }
+              }
               copy(
                 movie = it,
-                movieSections = listOf(movieInfo, moviePhotos)
+                movieSections = sections
               )
             } else {
               copy(movie = it)
