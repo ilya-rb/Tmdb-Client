@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.google.android.material.transition.MaterialFadeThrough
 import com.illiarb.tmdbclient.common.delegates.movieDelegate
 import com.illiarb.tmdbclient.discover.DiscoverViewModel.State
 import com.illiarb.tmdbclient.discover.di.DiscoverComponent
@@ -47,11 +48,10 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
   private val adapter = DelegatesAdapter(
     movieDelegate(
       SizeSpec.MatchParent,
-      SizeSpec.Fixed(R.dimen.discover_item_movie_height),
-      clickListener = {
-        viewModel.events.offer(DiscoverViewModel.Event.MovieClick(it))
-      }
-    )
+      SizeSpec.Fixed(R.dimen.discover_item_movie_height)
+    ) {
+      viewModel.events.offer(DiscoverViewModel.Event.MovieClick(it))
+    }
   )
 
   private val viewModel: DiscoverViewModel by lazy(LazyThreadSafetyMode.NONE) {
@@ -63,11 +63,6 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
     DiscoverComponent.get(appProvider, id).inject(this)
   }
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    enterTransition = MaterialFadeThrough.create(requireContext())
-  }
-
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
@@ -77,6 +72,15 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
     filtersContainer = binding.root.findViewById(R.id.discoverFiltersContainer)
 
     binding.discoverSwipeRefresh.isEnabled = false
+
+    binding.discoverRoot.setTransitionListener(object: TransitionAdapter() {
+      override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
+        binding.discoverOverlay.isClickable = currentId == R.id.filtersEnd
+      }
+    })
+
+    binding.discoverOverlay.setOnClickListener { binding.discoverRoot.transitionToStart() }
+    binding.discoverOverlay.isClickable = false
 
     setupToolbar()
     setupFilters()

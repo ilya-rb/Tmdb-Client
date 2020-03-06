@@ -47,7 +47,7 @@ class DiscoverViewModel @Inject constructor(
     viewModelScope.launch {
       when (val genres = genresInteractor.getAllGenres()) {
         is Result.Success -> setState { copy(genres = genres.data) }
-          .also { applyFilter(initialGenreId) }
+          .also { applyFilter(initialGenreId, isInitialLaunch = true) }
         is Result.Error -> TODO()
       }
     }
@@ -57,10 +57,10 @@ class DiscoverViewModel @Inject constructor(
     router.executeAction(ShowMovieDetails(movie.id)).also(analyticsService::trackRouterAction)
   }
 
-  private fun applyFilter(genreId: Int = Genre.GENRE_ALL) {
+  private fun applyFilter(genreId: Int = Genre.GENRE_ALL, isInitialLaunch: Boolean = false) {
     viewModelScope.launch {
       // do nothing if this genre are already applied
-      if (currentState.selectedGenreId == genreId) {
+      if (currentState.selectedGenreId == genreId && !isInitialLaunch) {
         return@launch
       }
 
