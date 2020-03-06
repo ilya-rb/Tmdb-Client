@@ -26,7 +26,7 @@ data class Movie(
   fun getGenresString(delimiter: String = DELIMITER_SLASH_SPACED): String? {
     return if (genres.isNotEmpty()) {
       val result = buildString {
-        genres.forEachIndexed { index, genre ->
+        genres.distinctBy { it.id }.forEachIndexed { index, genre ->
           append(genre.name)
           append(" ")
 
