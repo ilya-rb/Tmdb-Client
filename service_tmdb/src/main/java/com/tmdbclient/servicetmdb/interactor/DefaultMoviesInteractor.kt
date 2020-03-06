@@ -13,6 +13,8 @@ import com.tmdbclient.servicetmdb.api.MovieApi
 import com.tmdbclient.servicetmdb.cache.TmdbCache
 import com.tmdbclient.servicetmdb.mappers.MovieMapper
 import com.tmdbclient.servicetmdb.repository.MoviesRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -38,15 +40,6 @@ class DefaultMoviesInteractor @Inject constructor(
   }
 
   override suspend fun getMovieDetails(movieId: Int): Result<Movie> {
-    val filters = repository.getMovieFilters().getOrThrow()
-    val movie = filters
-      .map { cache.getMoviesByType(it.code).firstOrNull { item -> item.id == movieId } }
-      .first { it != null }
-
-    if (movie != null) {
-      return Result.Success(movieMapper.map(movie))
-    }
-
     val configuration = withContext(dispatcherProvider.io) { cache.getConfiguration() }
     val imageKey = configuration.changeKeys.find { it == MoviesInteractor.KEY_INCLUDE_IMAGES }
     val videoKey = configuration.changeKeys.find { it == MoviesInteractor.KEY_INCLUDE_VIDEOS }
@@ -60,6 +53,19 @@ class DefaultMoviesInteractor @Inject constructor(
       }
     }
     return repository.getMovieDetails(movieId, keys)
+  }
+
+  override suspend fun getMovieDetailsFlow(movieId: Int): Flow<Result<Movie>> = flow {
+    val filters = repository.getMovieFilters().getOrThrow()
+    val movie = filters
+      .map { cache.getMoviesByType(it.code).firstOrNull { item -> item.id == movieId } }
+      .first { it != null }
+
+    if (movie != null) {
+      emit(Result.Success(movieMapper.map(movie)))
+    }
+
+    emit(getMovieDetails(movieId))
   }
 
   override suspend fun discoverMovies(genreId: Int): Result<List<Movie>> {

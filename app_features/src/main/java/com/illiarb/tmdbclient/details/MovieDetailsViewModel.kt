@@ -12,6 +12,8 @@ import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowVideos
 import com.illiarb.tmdblcient.core.util.Async
 import com.illiarb.tmdblcient.core.util.Result
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,22 +30,23 @@ class MovieDetailsViewModel @Inject constructor(
 
   init {
     viewModelScope.launch {
-      setState { copy(movie = Async.Loading()) }
-
-      when (val result = moviesInteractor.getMovieDetails(movieId)) {
-        is Result.Success -> {
-          val movieInfo = MovieInfo(result.data)
-          val moviePhotos = MoviePhotos(result.data)
-
+      moviesInteractor.getMovieDetailsFlow(movieId)
+        .map { it.asAsync() }
+        .collect {
           setState {
-            copy(
-              movie = Async.Success(result.data),
-              movieSections = listOf(movieInfo, moviePhotos)
-            )
+            if (it is Async.Success) {
+              val movie = it()
+              val movieInfo = MovieInfo(movie)
+              val moviePhotos = MoviePhotos(movie)
+              copy(
+                movie = it,
+                movieSections = listOf(movieInfo, moviePhotos)
+              )
+            } else {
+              copy(movie = it)
+            }
           }
         }
-        is Result.Error -> TODO()
-      }
     }
 
     viewModelScope.launch {
