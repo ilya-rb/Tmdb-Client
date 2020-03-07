@@ -8,7 +8,14 @@ defaults: &defaults
 
   environment:
     JVM_OPTS: -Xmx3200m
-    GRADLE_OPTS: -Xmx1536m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.caching=true -Dorg.gradle.configureondemand=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dkotlin.incremental=false"
+
+cache_key: &cache_key
+  key: jars-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+
+grab_configuration_files: &grab_configuration_files
+  name: Download configuration files
+  command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
 
 jobs:
 
@@ -19,11 +26,10 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+          <<: *cache_key
 
       - run:
-          name: Download configuration files
-          command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
+          <<: *grab_configuration_files
 
       - run:
           name: Download Dependencies
@@ -49,11 +55,10 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+          <<: *cache_key
 
       - run:
-          name: Download configuration files
-          command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
+          <<: *grab_configuration_files
 
       - run:
           name: Run Unit Tests
@@ -73,11 +78,10 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+          <<: *cache_key
 
       - run:
-          name: Download configuration files
-          command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
+          <<: *grab_configuration_files
 
       - run:
           name: Run detekt
