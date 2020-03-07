@@ -1,5 +1,6 @@
 package com.illiarb.tmdbcliient.coretest.rules
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.resetMain
@@ -54,6 +55,6 @@ class MainCoroutineRule(
 }
 
 @ExperimentalCoroutinesApi
-fun MainCoroutineRule.runBlocking(block: suspend () -> Unit) = this.testDispatcher.runBlockingTest {
+fun MainCoroutineRule.runBlocking(block: suspend CoroutineScope.() -> Unit) = this.testDispatcher.runBlockingTest {
   block()
 }

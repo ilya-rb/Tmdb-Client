@@ -7,6 +7,8 @@ import com.illiarb.tmdblcient.core.domain.Video
 import com.illiarb.tmdblcient.core.interactor.MoviesInteractor
 import com.illiarb.tmdblcient.core.util.Result
 import com.tmdbclient.servicetmdb.repository.MoviesRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class TestMoviesInteractor(
   private val moviesRepository: MoviesRepository
@@ -34,6 +36,10 @@ class TestMoviesInteractor(
 
   override suspend fun getMovieVideos(movieId: Int): Result<List<Video>> {
     return Result.Success(emptyList())
+  }
+
+  override suspend fun getMovieDetailsFlow(movieId: Int): Flow<Result<Movie>> {
+    return flow { emit(getMovieDetails(movieId)) }
   }
 
   @Suppress("MagicNumber")

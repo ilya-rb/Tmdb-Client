@@ -14,6 +14,7 @@ import com.illiarb.tmdblcient.core.util.Async
 import com.illiarb.tmdblcient.core.util.Result
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,6 +33,7 @@ class MovieDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       moviesInteractor.getMovieDetailsFlow(movieId)
         .map { it.asAsync() }
+        .onStart { emit(Async.Loading()) }
         .collect {
           setState {
             if (it is Async.Success) {
