@@ -23,6 +23,7 @@ import com.illiarb.tmdblcient.core.domain.Image
  * @author ilya-rb on 29.12.18.
  */
 private val imageSizePattern = "w(\\d+)$".toRegex()
+private val imageSizeHeightPattern = "h(\\d+)$".toRegex()
 
 fun ImageView.loadImage(
   image: Image?,
@@ -33,8 +34,9 @@ fun ImageView.loadImage(
   }
 
   clear()
+
   doOnLayout {
-    val selectedSize = selectSize(image.sizes, it.width) ?: return@doOnLayout
+    val selectedSize = selectSize(image.sizes, it.width, it.height) ?: return@doOnLayout
     val options = requestOptions(RequestOptions())
     val request = Glide.with(context)
       .load(image.buildFullUrl(selectedSize))
@@ -43,14 +45,12 @@ fun ImageView.loadImage(
         if (options.useCrossFade) {
           request.transition(DrawableTransitionOptions.withCrossFade())
         }
-      }
-      .also { request ->
+
         if (options.thumbnail != 0f) {
           request.thumbnail(options.thumbnail)
         }
       }
 
-    request.preload(it.width, it.height)
     request.listener(object : RequestListener<Drawable> {
       override fun onLoadFailed(
         e: GlideException?,
@@ -115,32 +115,55 @@ private fun mapOptions(options: RequestOptions): com.bumptech.glide.request.Requ
  * https://github.com/chrisbanes/tivi/blob/master/tmdb/src/main/java/app/tivi/tmdb/TmdbImageUrlProvider.kt
  */
 @Suppress("ComplexMethod", "ReturnCount")
-private fun selectSize(sizes: List<String>, imageWidth: Int): String? {
+private fun selectSize(sizes: List<String>, imageWidth: Int, imageHeight: Int): String? {
   var previousSize: String? = null
+
   var previousWidth = 0
+  var previousHeight = 0
 
   for (i in sizes.indices) {
     val size = sizes[i]
-    val sizeWidth = extractWidthAsIntFrom(size) ?: continue
 
-    if (sizeWidth > imageWidth) {
-      if (previousSize != null && imageWidth > (previousWidth + sizeWidth) / 2) {
-        return size
-      } else if (previousSize != null) {
-        return previousSize
+    val sizeWidth = extractWidthAsIntFrom(size)
+    val sizeHeight = extractHeightAsIntFrom(size)
+
+    if (sizeWidth != null) {
+      if (sizeWidth > imageWidth) {
+        if (previousSize != null && imageWidth > (previousWidth + sizeWidth) / 2) {
+          return size
+        } else if (previousSize != null) {
+          return previousSize
+        }
+      } else if (i == sizes.size - 1) {
+        // If we get here then we're larger than the last bucket
+        if (imageWidth < sizeWidth * 2) {
+          return size
+        }
       }
-    } else if (i == sizes.size - 1) {
-      // If we get here then we're larger than the last bucket
-      if (imageWidth < sizeWidth * 2) {
-        return size
+      previousWidth = sizeWidth
+    } else if (sizeHeight != null) {
+      if (sizeHeight > imageHeight) {
+        if (previousSize != null && imageHeight > (previousHeight + sizeHeight) / 2) {
+          return size
+        } else if (previousSize != null) {
+          return previousSize
+        }
+      } else if (i == sizes.size - 1) {
+        // If we get here then we're larger than the last bucket
+        if (imageHeight < sizeHeight * 2) {
+          return size
+        }
       }
+      previousHeight = sizeHeight
     }
-
     previousSize = size
-    previousWidth = sizeWidth
   }
 
   return previousSize ?: if (sizes.isNotEmpty()) sizes.last() else null
+}
+
+private fun extractHeightAsIntFrom(size: String): Int? {
+  return imageSizeHeightPattern.matchEntire(size)?.groups?.get(1)?.value?.toInt()
 }
 
 private fun extractWidthAsIntFrom(size: String): Int? {

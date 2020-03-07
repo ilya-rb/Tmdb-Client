@@ -23,7 +23,7 @@ fun nowPlayingItemDelegate(
     rating.setVisible(item.voteAverage > 0)
     rating.text = item.voteAverage.toString()
 
-    poster.loadImage(item.backdropPath)
+    poster.loadImage(item.posterPath)
 
     itemView.setOnClickListener {
       clickListener(item)
