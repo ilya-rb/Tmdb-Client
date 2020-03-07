@@ -114,7 +114,7 @@ private fun mapOptions(options: RequestOptions): com.bumptech.glide.request.Requ
  * Source:
  * https://github.com/chrisbanes/tivi/blob/master/tmdb/src/main/java/app/tivi/tmdb/TmdbImageUrlProvider.kt
  */
-@Suppress("ComplexMethod", "ReturnCount")
+@Suppress("ComplexMethod", "ReturnCount", "NestedBlockDepth")
 private fun selectSize(sizes: List<String>, imageWidth: Int, imageHeight: Int): String? {
   var previousSize: String? = null
 
