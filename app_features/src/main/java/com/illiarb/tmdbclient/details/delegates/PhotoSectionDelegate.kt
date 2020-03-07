@@ -23,7 +23,12 @@ fun photoSectionDelegate(
     layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
     setHasFixedSize(true)
     isNestedScrollingEnabled = false
-    addItemDecoration(SpaceDecoration.edgeInnerSpace(0, itemView.dimen(R.dimen.spacing_small)))
+    addItemDecoration(
+      SpaceDecoration.edgeInnerSpace(
+        itemView.dimen(R.dimen.spacing_normal),
+        itemView.dimen(R.dimen.spacing_small)
+      )
+    )
   }
 
   bind {

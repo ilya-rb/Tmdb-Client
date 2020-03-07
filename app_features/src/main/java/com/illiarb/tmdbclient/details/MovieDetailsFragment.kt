@@ -99,8 +99,6 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
       removeAdapterOnDetach()
       addItemDecoration(
         SpaceDecoration(
-          spacingLeft = dimen(R.dimen.spacing_normal),
-          spacingRight = dimen(R.dimen.spacing_normal),
           spacingTop = dimen(R.dimen.spacing_small),
           spacingBottom = dimen(R.dimen.spacing_small)
         )

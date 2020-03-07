@@ -9,6 +9,8 @@
         android:id="@+id/movieDetailsSimilarTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginEnd="@dimen/spacing_normal"
         android:text="@string/movie_details_similar"
         android:textAppearance="?attr/textAppearanceBody1"
         android:textColor="?attr/colorOnSurface" />

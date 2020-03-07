@@ -30,7 +30,12 @@ fun movieSimilarDelegate(
     adapter = moviesAdapter
     layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
     isNestedScrollingEnabled = false
-    addItemDecoration(SpaceDecoration.edgeInnerSpace(0, itemView.dimen(R.dimen.spacing_small)))
+    addItemDecoration(
+      SpaceDecoration.edgeInnerSpace(
+        itemView.dimen(R.dimen.spacing_normal),
+        itemView.dimen(R.dimen.spacing_small)
+      )
+    )
   }
 
   bind {
