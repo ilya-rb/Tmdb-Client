@@ -39,7 +39,6 @@ fun movieDelegate(
     image.loadImage(item.posterPath) {
       cornerRadius(imageCornerRadius)
       crop(CropOptions.CenterCrop)
-      crossFade(false)
     }
 
     image.setOnClickListener {
