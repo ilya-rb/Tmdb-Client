@@ -15,7 +15,7 @@
         android:background="@drawable/bg_item_trending"
         android:contentDescription="@null"
         android:elevation="@dimen/spacing_normal"
-        android:padding="@dimen/item_trending_border_width"
+        android:padding="@dimen/item_trending_image_padding"
         tools:src="@tools:sample/backgrounds/scenic" />
 
     <TextView

@@ -41,7 +41,8 @@
                 android:contentDescription="@null"
                 android:padding="@dimen/spacing_normal"
                 android:src="@drawable/ic_settings"
-                android:tint="@color/tmdb_white" />
+                android:tint="@color/tmdb_white"
+                android:visibility="gone" />
 
         </androidx.appcompat.widget.Toolbar>
 
