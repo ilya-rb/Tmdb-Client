@@ -4,7 +4,12 @@ import android.Manifest
 import androidx.test.rule.ActivityTestRule
 import androidx.test.rule.GrantPermissionRule
 import com.illiarb.tmdbclient.MainActivity
+import com.illiarb.tmdbexplorer.functional.screens.DiscoverScreen
 import com.illiarb.tmdbexplorer.functional.screens.HomeScreen
+import com.illiarb.tmdbexplorer.functional.screens.HomeScreen.GenreSectionItem
+import com.illiarb.tmdbexplorer.functional.screens.HomeScreen.NowPlayingSectionItem
+import com.illiarb.tmdbexplorer.functional.screens.HomeScreen.NowPlayingSectionItem.NowPlayingItem
+import com.illiarb.tmdbexplorer.functional.screens.HomeScreen.TrendingSectionItem
 import com.illiarb.tmdbexplorer.functional.screens.MovieDetailsScreen
 import com.kaspersky.kaspresso.kaspresso.Kaspresso
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
@@ -13,43 +18,77 @@ import org.junit.Test
 
 class HomeScreenTest : TestCase(Kaspresso.Builder.simple()) {
 
-    @get:Rule
-    val runtimePermissionRule: GrantPermissionRule = GrantPermissionRule.grant(
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.READ_EXTERNAL_STORAGE
-    )
+  @get:Rule
+  val runtimePermissionRule: GrantPermissionRule = GrantPermissionRule.grant(
+    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    Manifest.permission.READ_EXTERNAL_STORAGE
+  )
 
-    @get:Rule
-    val activityTestRule = ActivityTestRule(MainActivity::class.java, true, false)
+  @get:Rule
+  val activityTestRule = ActivityTestRule(MainActivity::class.java, true, false)
 
-    @Test
-    fun test() = run {
-        before {
-            activityTestRule.launchActivity(null)
-        }.after {
-        }.run {
-            step("Open home screen and check settings icon is visible") {
-                HomeScreen {
-                    settingsIcon { isVisible() }
-                }
-            }
-
-            step("Open home screen find not playing section and click on the first item") {
-                HomeScreen {
-                    moviesList.firstChild<HomeScreen.NowPlayingSectionItem> {
-                        isVisible()
-
-                        items.firstChild<HomeScreen.NowPlayingSectionItem.NowPlayingItem> {
-                            isCompletelyDisplayed()
-                            click()
-                        }
-                    }
-                }
-
-                MovieDetailsScreen {
-                    poster.isVisible()
-                }
-            }
+  @Test
+  fun testHomeSectionsAreDisplayed() = run {
+    before {
+      activityTestRule.launchActivity(null)
+    }.after {
+    }.run {
+      step("Check home screen is visible") {
+        HomeScreen {
+          checkIsVisible()
         }
+      }
+
+      step("Check home sections is displayed") {
+        HomeScreen {
+          moviesList.firstChild<NowPlayingSectionItem> { isVisible() }
+          moviesList.firstChild<GenreSectionItem> { isVisible() }
+          moviesList.firstChild<TrendingSectionItem> { isVisible() }
+        }
+      }
     }
+  }
+
+  @Test
+  fun testNowPlayingSectionMovieClickOpensMovieDetailsScreen() = run {
+    before {
+      activityTestRule.launchActivity(null)
+    }.after {
+    }.run {
+      step("click now playing section first item and check movie details screen is visible") {
+        HomeScreen {
+          moviesList.firstChild<NowPlayingSectionItem> {
+            items.firstChild<NowPlayingItem> {
+              isCompletelyDisplayed()
+              click()
+
+              MovieDetailsScreen {
+                poster.isVisible()
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @Test
+  fun testGenreClickOpensDiscoverScreen() = run {
+    before {
+      activityTestRule.launchActivity(null)
+    }.after {
+    }.run {
+      step("Open home screen click first genre chip and check discover screen is displayed") {
+        HomeScreen {
+          moviesList.firstChild<GenreSectionItem> {
+            genres.selectChipAt(0)
+
+            DiscoverScreen {
+              root.isVisible()
+            }
+          }
+        }
+      }
+    }
+  }
 }

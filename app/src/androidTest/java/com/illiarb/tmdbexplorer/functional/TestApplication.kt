@@ -1,9 +1,13 @@
 package com.illiarb.tmdbexplorer.functional
 
 import android.app.Application
+import androidx.core.provider.FontRequest
+import androidx.emoji.text.EmojiCompat
+import androidx.emoji.text.FontRequestEmojiCompatConfig
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import com.illiarb.tmdbclient.MobileAppInjector
+import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.navigation.ActionsBuffer
 import com.illiarb.tmdbclient.navigation.AppRouter
 import com.illiarb.tmdbclient.storage.di.StorageComponent
@@ -29,67 +33,78 @@ import com.tmdbclient.servicetmdb.di.TmdbComponent
 
 class TestApplication : Application(), App {
 
-    private val navigatorHolder = ActionsBuffer()
-    private val router = AppRouter(navigatorHolder)
-    private val provider by lazy {
-        createAppProvider()
-    }
+  private val navigatorHolder = ActionsBuffer()
+  private val router = AppRouter(navigatorHolder)
+  private val provider by lazy {
+    createAppProvider()
+  }
 
-    override fun onCreate() {
-        super.onCreate()
-        MobileAppInjector(this).registerLifecycleCallbacks()
-    }
+  override fun onCreate() {
+    super.onCreate()
+    MobileAppInjector(this).registerLifecycleCallbacks()
 
-    override fun getApplication(): Application = this
+    val config = FontRequestEmojiCompatConfig(
+      this,
+      FontRequest(
+        "com.google.android.gms.fonts",
+        "com.google.android.gms",
+        "Noto Color Emoji Compat",
+        R.array.com_google_android_gms_fonts_certs
+      )
+    )
+    EmojiCompat.init(config)
+  }
 
-    override fun getAppProvider(): AppProvider = provider
+  override fun getApplication(): Application = this
 
-    private fun createAppProvider(): AppProvider {
-        val toolsProvider = ToolsComponent.get(this)
-        val storageProvider = StorageComponent.get(this, toolsProvider)
-        val analyticsProvider = AnalyticsComponent.get(this)
-        val tmdbProvider = TmdbComponent.get(this, toolsProvider, storageProvider)
+  override fun getAppProvider(): AppProvider = provider
 
-        return object : AppProvider {
-            override fun getApp(): App = this@TestApplication
-            override fun router(): Router = router
-            override fun navigatorHolder(): NavigatorHolder = navigatorHolder
-            override fun provideResourceResolver(): ResourceResolver =
-                storageProvider.provideResourceResolver()
+  private fun createAppProvider(): AppProvider {
+    val toolsProvider = ToolsComponent.get(this)
+    val storageProvider = StorageComponent.get(this, toolsProvider)
+    val analyticsProvider = AnalyticsComponent.get(this)
+    val tmdbProvider = TmdbComponent.get(this, toolsProvider, storageProvider)
 
-            override fun provideFeatureFlagStore(): FeatureFlagStore =
-                storageProvider.provideFeatureFlagStore()
+    return object : AppProvider {
+      override fun getApp(): App = this@TestApplication
+      override fun router(): Router = router
+      override fun navigatorHolder(): NavigatorHolder = navigatorHolder
+      override fun provideResourceResolver(): ResourceResolver =
+        storageProvider.provideResourceResolver()
 
-            override fun provideDispatcherProvider(): DispatcherProvider =
-                toolsProvider.provideDispatcherProvider()
+      override fun provideFeatureFlagStore(): FeatureFlagStore =
+        storageProvider.provideFeatureFlagStore()
 
-            override fun provideConnectivityStatus(): ConnectivityStatus =
-                toolsProvider.provideConnectivityStatus()
+      override fun provideDispatcherProvider(): DispatcherProvider =
+        toolsProvider.provideDispatcherProvider()
 
-            override fun provideAnalyticsService(): AnalyticsService =
-                analyticsProvider.provideAnalyticsService()
+      override fun provideConnectivityStatus(): ConnectivityStatus =
+        toolsProvider.provideConnectivityStatus()
 
-            override fun workManager(): WorkManager {
-                return object : WorkManager {
-                    override fun enqueuePeriodicWork(
-                        uniqueWorkName: String,
-                        periodicWorkPolicy: ExistingPeriodicWorkPolicy,
-                        workRequest: PeriodicWorkRequest
-                    ) = Unit
-                }
-            }
+      override fun provideAnalyticsService(): AnalyticsService =
+        analyticsProvider.provideAnalyticsService()
 
-            override fun provideConfigurationWorkCreator(): WorkerCreator {
-                return null!!
-            }
-
-            override fun provideDateFormatter(): DateFormatter = tmdbProvider.provideDateFormatter()
-
-            override fun provideMoviesInteractor(): MoviesInteractor = tmdbProvider.provideMoviesInteractor()
-            override fun provideGenresInteractor(): GenresInteractor = tmdbProvider.provideGenresInteractor()
-            override fun provideHomeInteractor(): HomeInteractor = tmdbProvider.provideHomeInteractor()
-            override fun provideTrendingInteractor(): TrendingInteractor =
-                tmdbProvider.provideTrendingInteractor()
+      override fun workManager(): WorkManager {
+        return object : WorkManager {
+          override fun enqueuePeriodicWork(
+            uniqueWorkName: String,
+            periodicWorkPolicy: ExistingPeriodicWorkPolicy,
+            workRequest: PeriodicWorkRequest
+          ) = Unit
         }
+      }
+
+      override fun provideConfigurationWorkCreator(): WorkerCreator {
+        return null!!
+      }
+
+      override fun provideDateFormatter(): DateFormatter = tmdbProvider.provideDateFormatter()
+
+      override fun provideMoviesInteractor(): MoviesInteractor = tmdbProvider.provideMoviesInteractor()
+      override fun provideGenresInteractor(): GenresInteractor = tmdbProvider.provideGenresInteractor()
+      override fun provideHomeInteractor(): HomeInteractor = tmdbProvider.provideHomeInteractor()
+      override fun provideTrendingInteractor(): TrendingInteractor =
+        tmdbProvider.provideTrendingInteractor()
     }
+  }
 }
