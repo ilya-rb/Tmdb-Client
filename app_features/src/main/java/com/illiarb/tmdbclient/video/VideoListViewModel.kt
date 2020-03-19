@@ -51,17 +51,6 @@ class VideoListViewModel @Inject constructor(
 
   override fun onUiEvent(event: Event) {
     when (event) {
-      is Event.VideoEnded -> {
-        // Play next video in the list or if end is reached the first one
-        val nextPosition = currentState.videos
-          .indexOfFirst { item -> item is UiVideo && item.isSelected }
-          .let { index -> if (index < currentState.videos.size - 1) index + 1 else 0 }
-        val next = currentState.videos[nextPosition] as UiVideo
-
-        setState {
-          copy(videos = selectVideo(currentState.videos, next))
-        }
-      }
       is Event.VideoClicked -> {
         setState {
           copy(videos = selectVideo(currentState.videos, event.video), selected = event.video)
@@ -93,7 +82,6 @@ class VideoListViewModel @Inject constructor(
   data class UiVideoSection(val title: String, val count: Int)
 
   sealed class Event {
-    object VideoEnded : Event()
     data class VideoClicked(val video: UiVideo) : Event()
   }
 }

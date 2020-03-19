@@ -7,15 +7,14 @@ import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentVideoListBinding
 import com.illiarb.tmdbclient.video.VideoListViewModel.Event
 import com.illiarb.tmdbclient.video.VideoListViewModel.State
 import com.illiarb.tmdbclient.video.di.VideoListComponent
-import com.illiarb.tmdbexplorer.appfeatures.youtubeplayer.YoutubePlayer
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.removeAdapterOnDetach
-import com.illiarb.tmdbexplorer.coreui.ext.updateMargin
 import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdblcient.core.di.Injectable
@@ -47,6 +46,10 @@ class VideoListFragment : BaseViewBindingFragment<FragmentVideoListBinding>(), I
     setupVideoPlayer()
     setupVideoList()
 
+    binding.toolbar.setNavigationOnClickListener {
+      requireActivity().onBackPressed()
+    }
+
     bind()
 
     ViewCompat.requestApplyInsets(view)
@@ -64,15 +67,8 @@ class VideoListFragment : BaseViewBindingFragment<FragmentVideoListBinding>(), I
     FragmentVideoListBinding.inflate(inflater)
 
   private fun setupVideoPlayer() {
-    binding.youtubePlayer.bindToLifecycle(viewLifecycleOwner)
-    binding.youtubePlayer.setPlayerStateListener(object : YoutubePlayer.StateListener {
-      override fun onVideoEnded() {
-        viewModel.events.offer(Event.VideoEnded)
-      }
-    })
-
     binding.youtubePlayer.doOnApplyWindowInsets { view, windowInsets, _ ->
-      view.updateMargin(top = windowInsets.systemWindowInsetTop)
+      view.updatePadding(top = windowInsets.systemWindowInsetTop)
     }
   }
 
@@ -84,6 +80,11 @@ class VideoListFragment : BaseViewBindingFragment<FragmentVideoListBinding>(), I
       doOnApplyWindowInsets { view, windowInsets, padding ->
         view.updatePadding(bottom = padding.bottom + windowInsets.systemWindowInsetBottom)
       }
+      addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+          binding.appBar.setLifted(dy > 0)
+        }
+      })
     }
   }
 

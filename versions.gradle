@@ -57,7 +57,6 @@ versions.with {
     timber = "4.7.1"
     lottie = "3.0.7"
     leakCanary = "2.2"
-    youtubePlayer = "10.0.5"
 }
 
 def testVersions = [:]

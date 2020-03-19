@@ -4,4 +4,6 @@
     <dimen name="youtube_player_height">250dp</dimen>
     <dimen name="selected_view_width">4dp</dimen>
 
+    <string name="videos_list_title">Videos</string>
+
 </resources>

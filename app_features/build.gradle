@@ -34,7 +34,6 @@ dependencies {
     implementation project(':core')
     implementation project(':core_ui')
     implementation project(':core_ui_image')
-    implementation project(':core_ui_youtube_player')
     implementation deps.dagger
 
     testImplementation project(':core_test')
