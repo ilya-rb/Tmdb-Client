@@ -23,7 +23,7 @@ Simple playground for testing various Android stuff(libraries, frameworks, archi
 - Detekt for code analysis
 - Jacoco for tests coverage
 
-# Some screenshots:
+## Some screenshots:
 ![1](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/1.jpeg)
 ![2](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/2.jpeg)
 ![3](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/3.jpeg)
