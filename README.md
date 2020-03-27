@@ -1,4 +1,4 @@
-# [🚧 WIP 👷🔧 🚧 ] TMDB client
+# WIP [🚧 👷🔧 🚧 ] TMDB client
 ### Simple application to browse some movies using [TMDB](https://www.themoviedb.org/)
 
 [![CircleCI](https://circleci.com/gh/ilya-rb/Tmdb-Client/tree/master.svg?style=svg)](https://circleci.com/gh/ilya-rb/Tmdb-Client/tree/master)
