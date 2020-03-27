@@ -5,6 +5,7 @@
     android:layout_width="@dimen/item_movie_width"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:stateListAnimator="@xml/sla_scale_down"
     tools:viewBindingIgnore="true">
 
     <FrameLayout
