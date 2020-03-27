@@ -19,6 +19,7 @@ import com.illiarb.tmdbclient.details.di.MovieDetailsComponent
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentMovieDetailsBinding
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
+import com.illiarb.tmdbexplorer.coreui.common.SnackbarController
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.removeAdapterOnDetach
@@ -33,6 +34,7 @@ import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.util.Async
 import com.illiarb.tmdblcient.core.util.DateFormatter
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -78,6 +80,10 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
       viewModel.state.collect {
         render(it)
       }
+    }
+
+    viewLifecycleOwner.lifecycleScope.launch {
+      SnackbarController().bind(binding.root, viewModel.errorState.map { it.message })
     }
   }
 

@@ -46,9 +46,9 @@ class DiscoverViewModel @Inject constructor(
   init {
     viewModelScope.launch {
       when (val genres = genresInteractor.getAllGenres()) {
-        is Result.Success -> setState { copy(genres = genres.data) }
+        is Result.Ok -> setState { copy(genres = genres.data) }
           .also { applyFilter(initialGenreId, isInitialLaunch = true) }
-        is Result.Error -> TODO()
+        is Result.Err -> showMessage(genres.error.message)
       }
     }
   }
@@ -75,7 +75,7 @@ class DiscoverViewModel @Inject constructor(
       }
 
       when (results) {
-        is Result.Success -> {
+        is Result.Ok -> {
           setState {
             copy(
               results = results.data,
@@ -93,7 +93,7 @@ class DiscoverViewModel @Inject constructor(
             )
           }
         }
-        is Result.Error -> TODO()
+        is Result.Err -> showMessage(results.error.message)
       }
     }
   }

@@ -41,8 +41,8 @@ class ConfigurationFetchWork(
     return try {
       runBlocking {
         when (configurationRepository.getConfiguration(refresh = true)) {
-          is com.illiarb.tmdblcient.core.util.Result.Success -> Result.success()
-          is com.illiarb.tmdblcient.core.util.Result.Error -> Result.failure()
+          is com.illiarb.tmdblcient.core.util.Result.Ok -> Result.success()
+          is com.illiarb.tmdblcient.core.util.Result.Err -> Result.failure()
         }
       }
       Result.success()

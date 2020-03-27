@@ -18,13 +18,13 @@ class HomeInteractorTest {
 
   @Test
   fun `should contain genres section if not empty`() = runBlockingTest {
-    val sections = interactor.getHomeSections().getOrThrow()
+    val sections = interactor.getHomeSections().unwrap()
     assertTrue(sections.any { it is GenresSection })
   }
 
   @Test
   fun `should contain now playing section on top of other movie sections`() = runBlockingTest {
-    val sections = interactor.getHomeSections().getOrThrow()
+    val sections = interactor.getHomeSections().unwrap()
 
     // Check that now playing section is present
     assertTrue(sections.any { it is NowPlayingSection })
@@ -39,7 +39,7 @@ class HomeInteractorTest {
 
   @Test
   fun `should contain genres only limited to max size`() = runBlockingTest {
-    val sections = interactor.getHomeSections().getOrThrow()
+    val sections = interactor.getHomeSections().unwrap()
 
     // Check that genres section is present
     assertTrue(sections.any { it is GenresSection })

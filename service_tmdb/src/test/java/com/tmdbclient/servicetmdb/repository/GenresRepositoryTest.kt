@@ -45,7 +45,7 @@ class GenresRepositoryTest {
     verify(cache, times(1)).getGenres()
     verifyZeroInteractions(genresApi)
 
-    assertTrue(result is Result.Success && result.data.isNotEmpty())
+    assertTrue(result is Result.Ok && result.data.isNotEmpty())
   }
 
   @Test
@@ -57,7 +57,7 @@ class GenresRepositoryTest {
     verify(cache, times(1)).getGenres()
 
     @Suppress("DeferredResultUnused")
-    verify(genresApi).getGenresAsync()
+    verify(genresApi).getGenres()
   }
 
   @Test
@@ -65,7 +65,7 @@ class GenresRepositoryTest {
     val apiGenres = GenreListModel()
 
     whenever(cache.getGenres()).thenReturn(emptyList())
-    whenever(genresApi.getGenresAsync()).thenReturn(CompletableDeferred(apiGenres))
+    whenever(genresApi.getGenres()).thenReturn(Result.Ok(apiGenres))
 
     repository.getGenres()
 

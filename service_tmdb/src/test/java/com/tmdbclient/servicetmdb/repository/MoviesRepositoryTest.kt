@@ -37,7 +37,6 @@ class MoviesRepositoryTest {
       GenreMapper(),
       PersonMapper(),
       ReviewMapper(),
-      TestDependencyProvider.provideConfigurationRepository(),
       mock()
     ),
     ReviewMapper(),
@@ -61,7 +60,7 @@ class MoviesRepositoryTest {
     verifyZeroInteractions(cache)
 
     @Suppress("DeferredResultUnused")
-    verify(moviesApi, times(1)).getMovieDetailsAsync(id, append)
+    verify(moviesApi, times(1)).getMovieDetails(id, append)
   }
 
   @Test

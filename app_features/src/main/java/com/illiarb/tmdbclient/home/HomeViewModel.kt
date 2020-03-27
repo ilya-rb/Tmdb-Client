@@ -16,7 +16,6 @@ import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowSettings
 import com.illiarb.tmdblcient.core.util.Async
-import com.illiarb.tmdblcient.core.util.Result
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,12 +27,14 @@ class HomeViewModel @Inject constructor(
 ) : BaseViewModel<State, Event>(initialState()) {
 
   companion object {
-    private fun initialState() = State(sections = Async.Uninitialized)
+    private fun initialState() = State(sections = Async.Uninitialized, error = null)
   }
 
   init {
     viewModelScope.launch {
-      setState { copy(sections = Async.Loading()) }
+      setState {
+        copy(sections = Async.Loading())
+      }
 
       val sections = homeInteractor.getHomeSections().asAsync()
         .doOnError { showMessage(it.message) }
@@ -43,20 +44,20 @@ class HomeViewModel @Inject constructor(
       }
 
       val trending = trendingInteractor.getTrending()
-      if (trending is Result.Success) {
-        currentState.sections.doOnSuccess {
-          val sectionsList = it.toMutableList()
+
+      @Suppress("NAME_SHADOWING")
+      trending.doIfOk { trending ->
+        currentState.sections.doOnSuccess { sections ->
+          val sectionsList = sections.toMutableList()
           if (sectionsList.isEmpty()) {
-            sectionsList.add(TrendingSection(trending.data))
+            sectionsList.add(TrendingSection(trending))
           } else {
-            sectionsList.add(1, TrendingSection(trending.data))
+            sectionsList.add(1, TrendingSection(trending))
           }
           setState {
             copy(sections = Async.Success(sectionsList))
           }
         }
-      } else {
-        showMessage(trending.error().message)
       }
     }
   }
@@ -79,7 +80,7 @@ class HomeViewModel @Inject constructor(
     }
   }
 
-  data class State(val sections: Async<List<MovieSection>>)
+  data class State(val sections: Async<List<MovieSection>>, val error: String?)
 
   sealed class Event {
     data class MovieClick(val movie: Movie) : Event()

@@ -20,6 +20,6 @@ class TestGenresRepository : GenresRepository {
   )
 
   override suspend fun getGenres(): Result<List<Genre>> {
-    return Result.Success(testGenres)
+    return Result.Ok(testGenres)
   }
 }

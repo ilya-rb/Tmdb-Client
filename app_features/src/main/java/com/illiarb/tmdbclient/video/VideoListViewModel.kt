@@ -20,7 +20,7 @@ class VideoListViewModel @Inject constructor(
   init {
     viewModelScope.launch {
       when (val result = moviesInteractor.getMovieVideos(movieId)) {
-        is Result.Success -> {
+        is Result.Ok -> {
           val groupedVideos = result.data
             .mapIndexed { index, video ->
               if (index == 0) {
@@ -44,7 +44,9 @@ class VideoListViewModel @Inject constructor(
             copy(videos = videos, selected = selected)
           }
         }
-        is Result.Error -> setState { copy(videos = emptyList()) }
+        is Result.Err -> setState {
+          copy(videos = emptyList())
+        }
       }
     }
   }

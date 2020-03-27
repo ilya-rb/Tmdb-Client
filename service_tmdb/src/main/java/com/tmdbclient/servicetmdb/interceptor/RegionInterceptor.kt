@@ -37,7 +37,7 @@ class RegionInterceptor @Inject constructor(
 
   private fun HttpUrl.Builder.addRegionParameter(): HttpUrl.Builder {
     val countries = runBlocking { configurationRepository.getCountries() }
-    if (countries is Result.Success) {
+    if (countries is Result.Ok) {
       val region = countries.data.find { it.code == resourceResolver.getUserLocale().country }?.code
       if (!region.isNullOrBlank()) {
         addQueryParameter(QUERY_PARAM_REGION, region)

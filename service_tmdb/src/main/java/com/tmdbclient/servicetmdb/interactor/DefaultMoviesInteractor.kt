@@ -13,8 +13,6 @@ import com.tmdbclient.servicetmdb.api.MovieApi
 import com.tmdbclient.servicetmdb.cache.TmdbCache
 import com.tmdbclient.servicetmdb.mappers.MovieMapper
 import com.tmdbclient.servicetmdb.repository.MoviesRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -31,8 +29,8 @@ class DefaultMoviesInteractor @Inject constructor(
     return repository.getMovieFilters().mapOnSuccess { filters ->
       filters.map { filter ->
         val moviesByType = when (val result = getMoviesByType(filter)) {
-          is Result.Success -> result.data
-          is Result.Error -> emptyList()
+          is Result.Ok -> result.data
+          is Result.Err -> emptyList()
         }
         MovieBlock(filter, moviesByType)
       }
@@ -55,38 +53,29 @@ class DefaultMoviesInteractor @Inject constructor(
     return repository.getMovieDetails(movieId, keys)
   }
 
-  override suspend fun getMovieDetailsFlow(movieId: Int): Flow<Result<Movie>> = flow {
-    val filters = repository.getMovieFilters().getOrThrow()
-    val movie = filters
-      .map { cache.getMoviesByType(it.code).firstOrNull { item -> item.id == movieId } }
-      .firstOrNull { it != null }
-
-    if (movie != null) {
-      emit(Result.Success(movieMapper.map(movie)))
+  override suspend fun discoverMovies(genreId: Int): Result<List<Movie>> {
+    val id = if (genreId == Genre.GENRE_ALL) null else genreId.toString()
+    val config = withContext(dispatcherProvider.io) {
+      cache.getConfiguration()
     }
 
-    emit(getMovieDetails(movieId))
-  }
-
-  override suspend fun discoverMovies(genreId: Int): Result<List<Movie>> {
-    return Result.create {
-      val id = if (genreId == Genre.GENRE_ALL) null else genreId.toString()
-      val movies = discoverApi.discoverMoviesAsync(id).await().results
-      movieMapper.mapList(movies)
+    return discoverApi.discoverMovies(id).mapOnSuccess {
+      movieMapper.mapList(config, it.results)
     }
   }
 
   override suspend fun getSimilarMovies(movieId: Int): Result<List<Movie>> {
-    return Result.create {
-      val results = movieApi.getSimilarMoviesAsync(movieId).await()
-      movieMapper.mapList(results.results)
+    val config = withContext(dispatcherProvider.io) {
+      cache.getConfiguration()
+    }
+
+    return movieApi.getSimilarMovies(movieId).mapOnSuccess {
+      movieMapper.mapList(config, it.results)
     }
   }
 
   override suspend fun getMovieVideos(movieId: Int): Result<List<Video>> {
-    return Result.create {
-      movieApi.getMovieVideosAsync(movieId).await().results
-    }
+    return movieApi.getMovieVideos(movieId).mapOnSuccess { it.results }
   }
 
   private suspend fun getMoviesByType(filter: MovieFilter): Result<List<Movie>> =

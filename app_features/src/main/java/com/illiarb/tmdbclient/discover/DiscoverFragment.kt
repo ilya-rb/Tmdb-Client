@@ -18,7 +18,7 @@ import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentDiscoverBinding
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
 import com.illiarb.tmdbexplorer.coreui.common.SizeSpec
-import com.illiarb.tmdbexplorer.coreui.common.Text
+import com.illiarb.tmdbexplorer.coreui.common.SnackbarController
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbexplorer.coreui.ext.setText
@@ -29,6 +29,7 @@ import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.domain.Genre
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -82,6 +83,10 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
         render(oldState, newState)
         oldState = newState
       }
+    }
+
+    viewLifecycleOwner.lifecycleScope.launch {
+      SnackbarController().bind(binding.root, viewModel.errorState.map { it.message })
     }
 
     ViewCompat.requestApplyInsets(view)

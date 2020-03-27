@@ -12,7 +12,7 @@ class CoroutineDispatcherProvider @Inject constructor() : DispatcherProvider {
 
   override val io: CoroutineDispatcher = Dispatchers.IO
 
-  override val main: CoroutineDispatcher = Dispatchers.Main
+  override val main: CoroutineDispatcher = Dispatchers.Main.immediate
 
   override val default: CoroutineDispatcher = Dispatchers.Default
 

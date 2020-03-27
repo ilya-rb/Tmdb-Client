@@ -18,7 +18,7 @@ import kotlin.concurrent.fixedRateTimer
 private const val TIMER_IMAGE_UPDATE = 10000L
 private const val KEY_NOW_PLAYING_POSITION = "now_playing_position"
 
-fun nowPlayingSectionDelegate(
+fun nowPlayingSection(
   stateSaver: RecyclerViewStateSaver,
   clickListener: OnClickListener<Movie>
 ) = adapterDelegate<NowPlayingSection, MovieSection>(R.layout.item_now_playing_section) {

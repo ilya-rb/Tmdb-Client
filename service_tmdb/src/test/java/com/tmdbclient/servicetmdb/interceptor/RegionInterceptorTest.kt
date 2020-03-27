@@ -39,7 +39,7 @@ class RegionInterceptorTest {
   private suspend fun createInterceptorWithRegion(region: String): RegionInterceptor {
     val repository = mock<ConfigurationRepository>().also {
       whenever(it.getCountries()).thenReturn(
-        Result.Success(
+        Result.Ok(
           listOf(
             Country(region, region)
           )

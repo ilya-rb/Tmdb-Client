@@ -42,15 +42,17 @@ class DefaultMoviesRepository @Inject constructor(
   override suspend fun getMoviesByType(type: String, refresh: Boolean): Result<List<Movie>> =
     Result.create {
       withContext(dispatcherProvider.io) {
+        val configuration = persistableStorage.getConfiguration()
+
         if (refresh) {
-          return@withContext movieMapper.mapList(fetchFromNetworkAndStore(type))
+          return@withContext movieMapper.mapList(configuration, fetchFromNetworkAndStore(type))
         }
 
         val cached = persistableStorage.getMoviesByType(type)
         if (cached.isEmpty()) {
-          movieMapper.mapList(fetchFromNetworkAndStore(type))
+          movieMapper.mapList(configuration, fetchFromNetworkAndStore(type))
         } else {
-          movieMapper.mapList(cached)
+          movieMapper.mapList(configuration, cached)
         }
       }
     }
@@ -58,15 +60,16 @@ class DefaultMoviesRepository @Inject constructor(
   override suspend fun getMovieDetails(id: Int, appendToResponse: String): Result<Movie> =
     Result.create {
       withContext(dispatcherProvider.io) {
-        val details = moviesService.getMovieDetailsAsync(id, appendToResponse).await()
-        movieMapper.map(details)
+        val details = moviesService.getMovieDetails(id, appendToResponse).unwrap()
+        val configuration = persistableStorage.getConfiguration()
+        movieMapper.map(configuration, details)
       }
     }
 
   override suspend fun getMovieReviews(id: Int): Result<List<Review>> =
     Result.create {
       withContext(dispatcherProvider.io) {
-        val reviews = moviesService.getMovieReviewsAsync(id).await()
+        val reviews = moviesService.getMovieReviews(id).unwrap()
         reviewMapper.mapList(reviews.results)
       }
     }
@@ -80,7 +83,7 @@ class DefaultMoviesRepository @Inject constructor(
   }
 
   private suspend fun fetchFromNetworkAndStore(type: String): List<MovieModel> {
-    val result = moviesService.getMoviesByTypeAsync(type).await().results
+    val result = moviesService.getMoviesByType(type).unwrap().results
     persistableStorage.storeMovies(type, result)
     return result
   }

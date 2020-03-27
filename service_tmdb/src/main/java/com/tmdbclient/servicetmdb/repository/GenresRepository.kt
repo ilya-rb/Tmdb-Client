@@ -29,7 +29,7 @@ class DefaultGenresRepository @Inject constructor(
       if (cachedGenres.isNotEmpty()) {
         genreMapper.mapList(cachedGenres)
       } else {
-        val genres = genreApi.getGenresAsync().await().genres
+        val genres = genreApi.getGenres().unwrap().genres
         cache.storeGenres(genres)
         genreMapper.mapList(genres)
       }

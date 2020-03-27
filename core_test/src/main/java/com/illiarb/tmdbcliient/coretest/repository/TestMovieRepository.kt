@@ -26,7 +26,7 @@ class TestMovieRepository : MoviesRepository {
   ): Result<List<Movie>> {
     val size = 10
 
-    return Result.Success(
+    return Result.Ok(
       mutableListOf<Movie>().apply {
         for (i in 0..size) {
           add(FakeEntityFactory.createFakeMovie())
@@ -45,11 +45,11 @@ class TestMovieRepository : MoviesRepository {
         )
       )
     }
-    return Result.Success(movie)
+    return Result.Ok(movie)
   }
 
   override suspend fun getMovieReviews(id: Int): Result<List<Review>> =
-    Result.Success(Collections.emptyList())
+    Result.Ok(Collections.emptyList())
 
-  override suspend fun getMovieFilters(): Result<List<MovieFilter>> = Result.Success(movieFilters)
+  override suspend fun getMovieFilters(): Result<List<MovieFilter>> = Result.Ok(movieFilters)
 }

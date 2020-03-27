@@ -20,7 +20,7 @@ import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieSection
 
 @Suppress("LongMethod")
-fun movieSectionDelegate(
+fun movieSection(
   recyclerViewStateSaver: RecyclerViewStateSaver,
   seeAllClickListener: OnClickListener<String>,
   movieClickListener: OnClickListener<Movie>

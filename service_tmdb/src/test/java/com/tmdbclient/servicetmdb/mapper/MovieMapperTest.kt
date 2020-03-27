@@ -27,7 +27,6 @@ class MovieMapperTest {
     GenreMapper(),
     PersonMapper(),
     ReviewMapper(),
-    configurationRepository,
     imageUrlCreator
   )
 
@@ -35,8 +34,9 @@ class MovieMapperTest {
   fun `should contain valid image url for backdrop path`() = runBlockingTest {
     mockConfiguration()
 
+    val configuration = configurationRepository.getConfiguration().unwrap()
     val input = MovieModel(backdropPath = "backdrop_path")
-    val result = movieMapper.map(input)
+    val result = movieMapper.map(configuration, input)
     assertTrue(result.backdropPath!!.baseUrl.startsWith(secureBaseUrl))
   }
 
@@ -45,7 +45,8 @@ class MovieMapperTest {
     mockConfiguration()
 
     val input = MovieModel(posterPath = "poster_path")
-    val result = movieMapper.map(input)
+    val configuration = configurationRepository.getConfiguration().unwrap()
+    val result = movieMapper.map(configuration, input)
     assertTrue(result.posterPath!!.baseUrl.startsWith(secureBaseUrl))
   }
 
@@ -54,7 +55,8 @@ class MovieMapperTest {
     mockConfiguration()
 
     val input = MovieModel(images = BackdropListModel(createBackdropList()))
-    val result = movieMapper.map(input)
+    val configuration = configurationRepository.getConfiguration().unwrap()
+    val result = movieMapper.map(configuration, input)
 
     result.images.forEach {
       assertTrue(it.baseUrl.startsWith(secureBaseUrl))
@@ -71,7 +73,7 @@ class MovieMapperTest {
 
   private suspend fun mockConfiguration() {
     whenever(configurationRepository.getConfiguration()).thenReturn(
-      Result.Success(
+      Result.Ok(
         Configuration(images = ImageConfig(secureBaseUrl = secureBaseUrl))
       )
     )

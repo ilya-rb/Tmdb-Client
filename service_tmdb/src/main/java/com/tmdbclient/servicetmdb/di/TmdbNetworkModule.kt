@@ -74,6 +74,7 @@ class TmdbNetworkModule(private val app: App) {
       .addInterceptor(apiKeyInterceptor)
       .addInterceptor(httpLoggingInterceptor)
       .addInterceptor(regionInterceptor)
+      .retryOnConnectionFailure(true)
       .cache(Cache(app.getApplication().filesDir, CACHE_SIZE_BYTES))
       .build()
 }

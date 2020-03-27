@@ -7,8 +7,6 @@ import com.illiarb.tmdblcient.core.domain.Video
 import com.illiarb.tmdblcient.core.interactor.MoviesInteractor
 import com.illiarb.tmdblcient.core.util.Result
 import com.tmdbclient.servicetmdb.repository.MoviesRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 class TestMoviesInteractor(
   private val moviesRepository: MoviesRepository
@@ -18,12 +16,12 @@ class TestMoviesInteractor(
     val filters = moviesRepository.getMovieFilters()
     val result = mutableListOf<MovieBlock>()
 
-    filters.getOrThrow().forEach {
-      val movies = moviesRepository.getMoviesByType(it.code).getOrThrow()
+    filters.unwrap().forEach {
+      val movies = moviesRepository.getMoviesByType(it.code).unwrap()
       result.add(MovieBlock(it, movies))
     }
 
-    return Result.Success(result)
+    return Result.Ok(result)
   }
 
   override suspend fun getMovieDetails(movieId: Int): Result<Movie> {
@@ -31,15 +29,11 @@ class TestMoviesInteractor(
   }
 
   override suspend fun getSimilarMovies(movieId: Int): Result<List<Movie>> {
-    return Result.Success(emptyList())
+    return Result.Ok(emptyList())
   }
 
   override suspend fun getMovieVideos(movieId: Int): Result<List<Video>> {
-    return Result.Success(emptyList())
-  }
-
-  override suspend fun getMovieDetailsFlow(movieId: Int): Flow<Result<Movie>> {
-    return flow { emit(getMovieDetails(movieId)) }
+    return Result.Ok(emptyList())
   }
 
   @Suppress("MagicNumber")
@@ -49,6 +43,6 @@ class TestMoviesInteractor(
         genres = listOf(FakeEntityFactory.createGenre(genreId))
       )
     }
-    return Result.Success(movieList)
+    return Result.Ok(movieList)
   }
 }

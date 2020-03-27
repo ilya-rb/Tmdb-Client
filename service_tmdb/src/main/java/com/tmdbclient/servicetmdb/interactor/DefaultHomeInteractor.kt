@@ -21,10 +21,10 @@ class DefaultHomeInteractor @Inject constructor(
 
   override suspend fun getHomeSections(): Result<List<MovieSection>> = coroutineScope {
     Result.create {
-      val movies = async { moviesInteractor.getAllMovies().getOrThrow() }
+      val movies = async { moviesInteractor.getAllMovies().unwrap() }
       val genres = async {
         genresInteractor.getAllGenres()
-          .getOrThrow()
+          .unwrap()
           .map { it.copy(name = it.getNameWithEmoji()) }
       }
       createMovieSections(movies.await(), genres.await())

@@ -1,9 +1,7 @@
 package com.illiarb.tmdbclient.storage.network
 
 import com.illiarb.tmdbclient.storage.error.ErrorHandler
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.completeWith
+import com.illiarb.tmdblcient.core.util.Result
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Callback
@@ -13,55 +11,58 @@ import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import javax.inject.Inject
 
-class ApiCallAdapterFactory @Inject constructor(
+class CallAdapterFactory @Inject constructor(
   private val errorHandler: ErrorHandler
 ) : CallAdapter.Factory() {
 
-  override fun get(returnType: Type, annotations: Array<Annotation>, retrofit: Retrofit): CallAdapter<*, *>? {
-    if (returnType !is ParameterizedType) {
-      throw IllegalStateException(
-        "Deferred return type must be parameterized as Deferred<Foo> or Deferred<out Foo>"
-      )
-    }
-
-    return BodyCallAdapter<Any>(
-      getParameterUpperBound(0, returnType),
-      errorHandler
-    )
-  }
-
-  private class BodyCallAdapter<T>(
-    private val responseType: Type,
-    private val errorHandler: ErrorHandler
-  ) : CallAdapter<T, Deferred<T>> {
-
-    override fun responseType() = responseType
-
-    @Suppress("DeferredIsResult")
-    override fun adapt(call: Call<T>): Deferred<T> {
-      val deferred = CompletableDeferred<T>()
-
-      deferred.invokeOnCompletion {
-        if (!deferred.isCancelled) {
-          call.cancel()
+  override fun get(
+    returnType: Type,
+    annotations: Array<Annotation>,
+    retrofit: Retrofit
+  ): CallAdapter<*, *>? =
+    when (getRawType(returnType)) {
+      Call::class.java -> {
+        val callType = getParameterUpperBound(0, returnType as ParameterizedType)
+        when (getRawType(callType)) {
+          Result::class.java -> {
+            val resultType = getParameterUpperBound(0, callType as ParameterizedType)
+            ResultAdapter(resultType, errorHandler)
+          }
+          else -> null
         }
       }
-
-      call.enqueue(object : Callback<T> {
-        override fun onFailure(call: Call<T>, t: Throwable) {
-          deferred.completeWith(Result.failure(errorHandler.createFromThrowable(t)))
-        }
-
-        override fun onResponse(call: Call<T>, response: Response<T>) {
-          if (response.isSuccessful) {
-            deferred.completeWith(Result.success(response.body()!!))
-          } else {
-            deferred.completeWith(Result.failure(errorHandler.createFromErrorBody(response.errorBody())))
-          }
-        }
-      })
-
-      return deferred
+      else -> null
     }
-  }
+}
+
+class ResultAdapter(
+  private val type: Type,
+  private val errorHandler: ErrorHandler
+) : CallAdapter<Type, Call<Result<Type>>> {
+  override fun responseType() = type
+  override fun adapt(call: Call<Type>): Call<Result<Type>> = ResultCall(call, errorHandler)
+}
+
+class ResultCall<T>(
+  proxy: Call<T>,
+  private val errorHandler: ErrorHandler
+) : CallDelegate<T, Result<T>>(proxy) {
+
+  override fun cloneImpl() = ResultCall(proxy.clone(), errorHandler)
+
+  override fun enqueueImpl(callback: Callback<Result<T>>) = proxy.enqueue(object : Callback<T> {
+
+    override fun onResponse(call: Call<T>, response: Response<T>) {
+      val result: Result<T> = if (response.isSuccessful) {
+        Result.Ok(response.body()!!) as Result<T>
+      } else {
+        Result.Err(errorHandler.createFromErrorBody(response.errorBody()))
+      }
+      callback.onResponse(this@ResultCall, Response.success(result))
+    }
+
+    override fun onFailure(call: Call<T>, t: Throwable) {
+      callback.onResponse(this@ResultCall, Response.success(Result.Err(errorHandler.createFromThrowable(t))))
+    }
+  })
 }

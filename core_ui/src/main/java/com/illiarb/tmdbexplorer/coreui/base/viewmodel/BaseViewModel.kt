@@ -1,23 +1,21 @@
 package com.illiarb.tmdbexplorer.coreui.base.viewmodel
 
-import androidx.lifecycle.ViewModel as AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.illiarb.tmdbexplorer.coreui.common.Message
-import com.illiarb.tmdbexplorer.coreui.common.UiEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
+import androidx.lifecycle.ViewModel as AndroidViewModel
 
 abstract class BaseViewModel<State, Event>(initialState: State) : AndroidViewModel(), ViewModel<State, Event> {
 
   private val _events = Channel<Event>(Channel.RENDEZVOUS)
   private val _state = ConflatedBroadcastChannel(initialState)
-  private val _outEvents = Channel<UiEvent>(Channel.RENDEZVOUS)
+  private val _errorState = ConflatedBroadcastChannel(ErrorState(message = null))
 
   override val events: SendChannel<Event>
     get() = _events
@@ -25,14 +23,18 @@ abstract class BaseViewModel<State, Event>(initialState: State) : AndroidViewMod
   override val state: Flow<State>
     get() = _state.asFlow()
 
-  override val outEvents: Flow<UiEvent>
-    get() = _outEvents.consumeAsFlow()
+  override val errorState: Flow<ErrorState>
+    get() = _errorState.asFlow()
 
   protected val currentState: State
     get() = _state.value
 
   protected fun setState(block: State.() -> State) {
     _state.offer(block(_state.value))
+  }
+
+  protected fun setErrorState(block: ErrorState.() -> ErrorState) {
+    _errorState.offer(block(_errorState.value))
   }
 
   init {
@@ -43,11 +45,13 @@ abstract class BaseViewModel<State, Event>(initialState: State) : AndroidViewMod
 
   protected open fun onUiEvent(event: Event) = Unit
 
-  protected fun showMessage(message: String?) {
+  protected suspend fun showMessage(message: String?, duration: Long = 2000L) {
     message?.let {
-      _outEvents.offer(Message(message))
+      setErrorState { copy(message = it) }
+      delay(duration)
+      setErrorState { copy(message = null) }
     }
   }
 
-  protected fun postUiEvent(event: UiEvent) = _outEvents.offer(event)
+  data class ErrorState(val message: String?)
 }

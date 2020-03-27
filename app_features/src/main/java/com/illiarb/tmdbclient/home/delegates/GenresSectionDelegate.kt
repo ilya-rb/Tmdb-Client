@@ -9,7 +9,7 @@ import com.illiarb.tmdblcient.core.domain.Genre
 import com.illiarb.tmdblcient.core.domain.GenresSection
 import com.illiarb.tmdblcient.core.domain.MovieSection
 
-fun genresSectionDelegate(clickListener: OnClickListener<Genre>) =
+fun genresSection(clickListener: OnClickListener<Genre>) =
   adapterDelegate<GenresSection, MovieSection>(R.layout.item_genres_section) {
     val chipGroup = itemView.findViewById<ChipGroup>(R.id.genresChipGroup)
 

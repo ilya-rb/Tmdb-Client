@@ -8,6 +8,6 @@ import java.util.Collections
 class TestHomeInteractor : HomeInteractor {
 
   override suspend fun getHomeSections(): Result<List<MovieSection>> {
-    return Result.Success(Collections.emptyList())
+    return Result.Ok(Collections.emptyList())
   }
 }

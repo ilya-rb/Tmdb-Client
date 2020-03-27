@@ -11,10 +11,6 @@ import com.illiarb.tmdblcient.core.navigation.Router
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowVideos
 import com.illiarb.tmdblcient.core.util.Async
-import com.illiarb.tmdblcient.core.util.Result
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,41 +27,39 @@ class MovieDetailsViewModel @Inject constructor(
 
   init {
     viewModelScope.launch {
-      moviesInteractor.getMovieDetailsFlow(movieId)
-        .map { it.asAsync() }
-        .onStart { emit(Async.Loading()) }
-        .collect {
-          setState {
-            if (it is Async.Success) {
-              val movie = it()
-              val sections = mutableListOf<Any>().apply {
-                add(MovieInfo(movie))
+      setState {
+        copy(movie = Async.Loading())
+      }
 
-                if (movie.images.isNotEmpty()) {
-                  add(MoviePhotos(movie))
-                }
-              }
-              copy(
-                movie = it,
-                movieSections = sections
-              )
-            } else {
-              copy(movie = it)
-            }
+      val movieDetails = moviesInteractor.getMovieDetails(movieId).asAsync()
+
+      movieDetails.doOnSuccess { movie ->
+        val sections = mutableListOf<Any>().apply {
+          add(MovieInfo(movie))
+
+          if (movie.images.isNotEmpty()) {
+            add(MoviePhotos(movie))
+          }
+
+          val similar = moviesInteractor.getSimilarMovies(movieId)
+          similar.doIfOk {
+            add(MovieSimilar(it))
           }
         }
-    }
 
-    viewModelScope.launch {
-      when (val similar = moviesInteractor.getSimilarMovies(movieId)) {
-        is Result.Success -> {
-          if (similar.data.isNotEmpty()) {
-            setState {
-              copy(movieSections = currentState.movieSections.plus(MovieSimilar(similar.data)))
-            }
-          }
+        setState {
+          copy(
+            movie = movieDetails,
+            movieSections = sections
+          )
         }
-        is Result.Error -> Unit
+      }
+
+      movieDetails.doOnError { error ->
+        setState {
+          copy(movie = movieDetails)
+        }
+        showMessage(error.message)
       }
     }
   }

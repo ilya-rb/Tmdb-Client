@@ -4,7 +4,6 @@ import com.illiarb.tmdblcient.core.domain.Movie
 import com.illiarb.tmdblcient.core.domain.MovieBlock
 import com.illiarb.tmdblcient.core.domain.Video
 import com.illiarb.tmdblcient.core.util.Result
-import kotlinx.coroutines.flow.Flow
 
 interface MoviesInteractor {
 
@@ -16,8 +15,6 @@ interface MoviesInteractor {
   suspend fun getAllMovies(): Result<List<MovieBlock>>
 
   suspend fun getMovieDetails(movieId: Int): Result<Movie>
-
-  suspend fun getMovieDetailsFlow(movieId: Int): Flow<Result<Movie>>
 
   suspend fun getMovieVideos(movieId: Int): Result<List<Video>>
 

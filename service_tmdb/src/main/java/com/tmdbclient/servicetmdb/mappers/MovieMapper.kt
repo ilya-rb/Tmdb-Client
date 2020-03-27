@@ -1,24 +1,27 @@
 package com.tmdbclient.servicetmdb.mappers
 
 import com.illiarb.tmdblcient.core.domain.Movie
-import com.illiarb.tmdblcient.core.util.SuspendableMapper
+import com.tmdbclient.servicetmdb.configuration.Configuration
 import com.tmdbclient.servicetmdb.image.ImageType
 import com.tmdbclient.servicetmdb.image.ImageUrlCreator
 import com.tmdbclient.servicetmdb.model.MovieModel
-import com.tmdbclient.servicetmdb.repository.ConfigurationRepository
 import javax.inject.Inject
 
 class MovieMapper @Inject constructor(
   private val genreMapper: GenreMapper,
   private val personMapper: PersonMapper,
   private val reviewMapper: ReviewMapper,
-  private val configurationRepository: ConfigurationRepository,
   private val imageUrlCreator: ImageUrlCreator
-) : SuspendableMapper<MovieModel, Movie> {
+) {
 
-  override suspend fun map(from: MovieModel): Movie {
-    val result = configurationRepository.getConfiguration().getOrThrow()
-    val config = result.images
+  fun mapList(configuration: Configuration, from: List<MovieModel>): List<Movie> {
+    return from.map {
+      map(configuration, it)
+    }
+  }
+
+  fun map(configuration: Configuration, from: MovieModel): Movie {
+    val config = configuration.images
 
     return Movie(
       from.id,

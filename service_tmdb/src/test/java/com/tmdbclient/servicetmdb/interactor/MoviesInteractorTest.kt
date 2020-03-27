@@ -2,6 +2,8 @@ package com.tmdbclient.servicetmdb.interactor
 
 import com.illiarb.tmdbcliient.coretest.TestDependencyProvider
 import com.illiarb.tmdblcient.core.domain.Genre
+import com.illiarb.tmdblcient.core.util.Result
+import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
@@ -14,6 +16,7 @@ import com.tmdbclient.servicetmdb.mappers.GenreMapper
 import com.tmdbclient.servicetmdb.mappers.MovieMapper
 import com.tmdbclient.servicetmdb.mappers.PersonMapper
 import com.tmdbclient.servicetmdb.mappers.ReviewMapper
+import com.tmdbclient.servicetmdb.model.ResultsModel
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -33,7 +36,6 @@ class MoviesInteractorTest {
       GenreMapper(),
       PersonMapper(),
       ReviewMapper(),
-      TestDependencyProvider.provideConfigurationRepository(),
       ImageUrlCreator()
     ),
     cache,
@@ -42,10 +44,13 @@ class MoviesInteractorTest {
 
   @Test
   fun `should not pass genre id if all genres are selected`() = runBlockingTest {
-    interactor.discoverMovies(Genre.GENRE_ALL)
+    val configuration = Configuration(changeKeys = listOf("images"))
 
-    @Suppress("DeferredResultUnused")
-    verify(discoverApi).discoverMoviesAsync(null)
+    whenever(cache.getConfiguration()).thenReturn(configuration)
+    whenever(discoverApi.discoverMovies(anyOrNull())).thenReturn(Result.Ok(ResultsModel(emptyList())))
+
+    interactor.discoverMovies(Genre.GENRE_ALL)
+    verify(discoverApi).discoverMovies(null)
   }
 
   @Test
@@ -55,7 +60,7 @@ class MoviesInteractorTest {
 
     whenever(cache.getConfiguration()).thenReturn(configuration)
 
-    val details = interactor.getMovieDetails(id).getOrThrow()
+    val details = interactor.getMovieDetails(id).unwrap()
     assertTrue(details.images.isNotEmpty())
   }
 }

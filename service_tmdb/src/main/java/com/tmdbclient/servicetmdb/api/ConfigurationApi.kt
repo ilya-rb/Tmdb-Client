@@ -1,15 +1,15 @@
 package com.tmdbclient.servicetmdb.api
 
+import com.illiarb.tmdblcient.core.util.Result
 import com.tmdbclient.servicetmdb.configuration.Configuration
 import com.tmdbclient.servicetmdb.model.CountryModel
-import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 
 interface ConfigurationApi {
 
   @GET("configuration")
-  fun getConfigurationAsync(): Deferred<Configuration>
+  suspend fun getConfiguration(): Result<Configuration>
 
   @GET("configuration/countries")
-  fun getCountriesAsync(): Deferred<List<CountryModel>>
+  suspend fun getCountries(): Result<List<CountryModel>>
 }

@@ -2,7 +2,7 @@ package com.illiarb.tmdbclient.storage.di.modules
 
 import com.google.gson.Gson
 import com.illiarb.tmdbclient.storage.error.ErrorHandler
-import com.illiarb.tmdbclient.storage.network.ApiCallAdapterFactory
+import com.illiarb.tmdbclient.storage.network.CallAdapterFactory
 import com.illiarb.tmdblcient.core.storage.ResourceResolver
 import dagger.Module
 import dagger.Provides
@@ -24,7 +24,7 @@ class NetworkModule {
     @Provides
     @JvmStatic
     fun provideApiCallAdapterFactory(errorHandler: ErrorHandler): CallAdapter.Factory =
-      ApiCallAdapterFactory(errorHandler)
+      CallAdapterFactory(errorHandler)
 
     @Provides
     @JvmStatic

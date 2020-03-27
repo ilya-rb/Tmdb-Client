@@ -10,18 +10,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.illiarb.tmdbclient.home.HomeViewModel.Event
 import com.illiarb.tmdbclient.home.HomeViewModel.State
-import com.illiarb.tmdbclient.home.delegates.genresSectionDelegate
-import com.illiarb.tmdbclient.home.delegates.movieSectionDelegate
-import com.illiarb.tmdbclient.home.delegates.nowplaying.nowPlayingSectionDelegate
-import com.illiarb.tmdbclient.home.delegates.trendingSectionDelegate
+import com.illiarb.tmdbclient.home.delegates.genresSection
+import com.illiarb.tmdbclient.home.delegates.movieSection
+import com.illiarb.tmdbclient.home.delegates.nowplaying.nowPlayingSection
+import com.illiarb.tmdbclient.home.delegates.trendingSection
 import com.illiarb.tmdbclient.home.di.HomeComponent
 import com.illiarb.tmdbclient.movies.home.R
 import com.illiarb.tmdbclient.movies.home.databinding.FragmentMoviesBinding
 import com.illiarb.tmdbexplorer.coreui.base.BaseViewBindingFragment
-import com.illiarb.tmdbexplorer.coreui.common.Message
+import com.illiarb.tmdbexplorer.coreui.common.SnackbarController
 import com.illiarb.tmdbexplorer.coreui.ext.dimen
 import com.illiarb.tmdbexplorer.coreui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbexplorer.coreui.ext.getColorAttr
@@ -34,6 +33,7 @@ import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
 import com.illiarb.tmdblcient.core.util.Async
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -48,14 +48,24 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
 
   private val stateSaver = RecyclerViewStateSaver()
   private val adapter = DelegatesAdapter(
-    movieSectionDelegate(
+    movieSection(
       stateSaver,
-      seeAllClickListener = { viewModel.events.offer(Event.SeeAllClick(it)) },
-      movieClickListener = { viewModel.events.offer(Event.MovieClick(it)) }
+      seeAllClickListener = {
+        viewModel.events.offer(Event.SeeAllClick(it))
+      },
+      movieClickListener = {
+        viewModel.events.offer(Event.MovieClick(it))
+      }
     ),
-    nowPlayingSectionDelegate(stateSaver) { viewModel.events.offer(Event.MovieClick(it)) },
-    genresSectionDelegate { viewModel.events.offer(Event.GenreClick(it)) },
-    trendingSectionDelegate(stateSaver) { viewModel.events.offer(Event.MovieClick(it)) }
+    nowPlayingSection(stateSaver) {
+      viewModel.events.offer(Event.MovieClick(it))
+    },
+    genresSection {
+      viewModel.events.offer(Event.GenreClick(it))
+    },
+    trendingSection(stateSaver) {
+      viewModel.events.offer(Event.MovieClick(it))
+    }
   )
 
   override fun getViewBinding(inflater: LayoutInflater): FragmentMoviesBinding =
@@ -85,11 +95,7 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     }
 
     viewLifecycleOwner.lifecycleScope.launch {
-      viewModel.outEvents.collect {
-        if (it is Message) {
-          Snackbar.make(binding.root, it.message, Snackbar.LENGTH_LONG).show()
-        }
-      }
+      SnackbarController().bind(binding.root, viewModel.errorState.map { it.message })
     }
   }
 
@@ -110,7 +116,6 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
           spacingBottomLast = dimen(R.dimen.spacing_normal)
         )
       )
-
       isNestedScrollingEnabled = false
       removeAdapterOnDetach()
       doOnApplyWindowInsets { v, insets, initialPadding ->

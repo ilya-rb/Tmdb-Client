@@ -23,7 +23,7 @@ import com.illiarb.tmdblcient.core.domain.TrendingSection.TrendingItem
 private const val KEY_TRENDING_STATE = "trending_state"
 
 @Suppress("LongMethod")
-fun trendingSectionDelegate(
+fun trendingSection(
   stateSaver: RecyclerViewStateSaver,
   clickListener: OnClickListener<Movie>
 ) = adapterDelegate<TrendingSection, MovieSection>(R.layout.item_trending_section) {
