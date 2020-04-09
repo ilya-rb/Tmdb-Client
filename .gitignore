@@ -11,3 +11,6 @@ keystore.properties
 app/google-services.json
 ci_config/upload_config.sh
 /reports
+buildSrc/.gradle
+buildSrc/.
+buildSrc/build
