@@ -27,7 +27,7 @@ buildscript {
 }
 
 plugins {
-  id("io.gitlab.arturbosch.detekt") version "1.7.0-beta1" apply false
+  id("io.gitlab.arturbosch.detekt") version "1.7.4" apply false
 }
 
 allprojects {
