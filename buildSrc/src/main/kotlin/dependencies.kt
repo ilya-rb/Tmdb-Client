@@ -9,6 +9,27 @@ object Build {
   )
 }
 
+object Modules {
+
+  object Core {
+    const val core = ":core"
+    const val ui = ":core_ui"
+    const val uiImage = ":core_ui_image"
+    const val test = ":core_test"
+    const val storage = ":core_storage"
+    const val tools = ":core_tools"
+  }
+
+  object Services {
+    const val tmdb = ":service_tmdb"
+    const val analytics = ":service_analytics"
+  }
+
+  const val appFeatures = ":app_features"
+  const val featureSettings = ":app_features_settings"
+  const val debug = ":debug"
+}
+
 object Deps {
 
   object GradlePlugins {
@@ -46,8 +67,8 @@ object Deps {
       }
 
       object Lifecycle {
-        const val lifecycleKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$archComponentsVersion"
-        const val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata-ktx:$archComponentsVersion"
+        const val ktx = "androidx.lifecycle:lifecycle-runtime-ktx:$archComponentsVersion"
+        const val liveData = "androidx.lifecycle:lifecycle-livedata-ktx:$archComponentsVersion"
       }
 
       const val navigation = "android.arch.navigation:navigation-fragment:2.3.0-alpha02"
@@ -55,8 +76,8 @@ object Deps {
       const val material = "com.google.android.material:material:$supportLibraryVersion"
       const val recyclerView = "androidx.recyclerview:recyclerview:$supportLibraryVersion"
       const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
-      const val emoji = "1.1.0-alpha01"
-      const val constraintLayout = "2.0.0-beta4"
+      const val emoji = "androidx.emoji:emoji:1.1.0-alpha01"
+      const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta4"
     }
 
     object Compose {
@@ -119,6 +140,7 @@ object Deps {
     const val timber = "com.jakewharton.timber:timber:4.7.1"
     const val lottie = "com.airbnb.android:lottie:3.0.7"
     const val binaryPrefs = "com.github.yandextaxitech:binaryprefs:1.0.1"
+    const val javax = "javax.inject:javax.inject:1"
   }
 
   object Test {
@@ -130,6 +152,8 @@ object Deps {
     object AndroidX {
       private const val espressoVersion = "3.3.0-alpha04"
 
+      const val core = "androidx.arch.core:core-testing:2.0.1"
+      const val rules = "androidx.test:rules:1.2.0"
       const val runner = "androidx.test:runner:1.3.0-alpha04"
       const val espresso = "androidx.test.espresso:espresso-core:$espressoVersion"
       const val espressoIntents = "androidx.test.espresso:espresso-intents:$espressoVersion"
