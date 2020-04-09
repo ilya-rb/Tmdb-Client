@@ -1,5 +1,8 @@
-apply from: versionsFilePath
-apply plugin: 'io.gitlab.arturbosch.detekt'
+import io.gitlab.arturbosch.detekt.detekt
+
+apply {
+    plugin("io.gitlab.arturbosch.detekt")
+}
 
 detekt {
     failFast = false

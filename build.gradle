@@ -32,9 +32,34 @@ plugins {
     id "io.gitlab.arturbosch.detekt" version '1.7.0-beta1'
 }
 
+detekt {
+    failFast = false
+    buildUponDefaultConfig = true
+    autoCorrect = true
+    config = files("$rootDir/code_quality_tools/detekt_config.yml")
+    reports {
+        html {
+            enabled = true
+            destination = file("$rootDir/reports/detekt/${project.name}_report.html")
+        }
+    }
+    idea {
+        path = "$rootDir/.idea"
+        codeStyleScheme = "$rootDir/.idea/idea-code-style.xml"
+        inspectionsProfile = "$rootDir/.idea/inspect.xml"
+        report = "project.projectDir/reports"
+        mask = "*.kt"
+    }
+}
+
+buildScan {
+    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+    termsOfServiceAgree = 'yes'
+}
+
 allprojects {
 
-    apply from: "$rootDir/code_quality_tools/detekt.gradle"
+//    apply from: "$rootDir/code_quality_tools/detekt.gradle.kts"
     apply plugin: "com.github.ben-manes.versions"
 
     repositories {
