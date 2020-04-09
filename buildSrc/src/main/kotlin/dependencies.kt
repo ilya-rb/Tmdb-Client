@@ -7,6 +7,11 @@ object Build {
     "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
     "-Xuse-experimental=kotlin.RequiresOptIn"
   )
+
+  val daggerJavaCompilerArgs = listOf(
+    "-Adagger.formatGeneratedSource=disabled",
+    "-Adagger.gradle.incremental=enabled"
+  )
 }
 
 object Modules {
@@ -53,7 +58,7 @@ object Deps {
       const val compileSdkVersion = 29
       const val targetSdkVersion = 29
       const val minSdkVersion = 21
-      const val gradlePlugin = "com.android.tools.build:gradle:4.0.0-beta03"
+      const val gradlePlugin = "com.android.tools.build:gradle:4.0.0-beta04"
     }
 
     object AndroidX {
@@ -71,8 +76,8 @@ object Deps {
         const val liveData = "androidx.lifecycle:lifecycle-livedata-ktx:$archComponentsVersion"
       }
 
-      const val navigation = "android.arch.navigation:navigation-fragment:2.3.0-alpha02"
-      const val workManager = "android.arch.work:work-runtime-ktx:1.0.1"
+      const val navigation = "androidx.navigation:navigation-fragment:2.3.0-alpha04"
+      const val workManager = "androidx.work:work-runtime-ktx:2.3.4"
       const val material = "com.google.android.material:material:$supportLibraryVersion"
       const val recyclerView = "androidx.recyclerview:recyclerview:$supportLibraryVersion"
       const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
@@ -108,7 +113,8 @@ object Deps {
 
     const val core = "com.squareup.retrofit2:retrofit:$retrofitVersion"
     const val converterGson = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    const val coroutinesAdapter = "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
+    const val coroutinesAdapter =
+      "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
     const val okHttpLogger = "com.squareup.okhttp3:logging-interceptor:4.4.0"
   }
 
@@ -132,7 +138,8 @@ object Deps {
       private const val leakCanaryVersion = "2.2"
 
       const val android = "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
-      const val objectWatcher = "com.squareup.leakcanary:leakcanary-object-watcher-android:$leakCanaryVersion"
+      const val objectWatcher =
+        "com.squareup.leakcanary:leakcanary-object-watcher-android:$leakCanaryVersion"
     }
   }
 
