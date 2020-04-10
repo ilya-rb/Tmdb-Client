@@ -75,7 +75,7 @@ subprojects {
 
   afterEvaluate {
 
-    // Base extension for com.android.library and com.android.application plugins
+    // Base extension for com.android.library and com.android.application
     configure<com.android.build.gradle.BaseExtension> {
       testOptions.unitTests.all(closureOf<Test> {
         // This allows to see tests execution progress

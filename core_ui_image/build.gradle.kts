@@ -23,15 +23,8 @@ android {
 }
 
 dependencies {
-
   implementation(project(Modules.Core.core))
   implementation(project(Modules.Core.ui))
-
   implementation(Deps.Glide.core)
   implementation(Deps.Kotlin.std)
-
-  testImplementation(Deps.Test.junit)
-
-  androidTestImplementation(Deps.Test.AndroidX.runner)
-  androidTestImplementation(Deps.Test.AndroidX.espresso)
 }
