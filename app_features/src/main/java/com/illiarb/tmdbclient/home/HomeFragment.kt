@@ -27,7 +27,7 @@ import com.illiarb.tmdbexplorer.coreui.ext.getColorAttr
 import com.illiarb.tmdbexplorer.coreui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbexplorer.coreui.ext.updatePadding
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.DelegatesAdapter
-import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.RecyclerViewStateSaver
+import com.illiarb.tmdbexplorer.coreui.common.SimpleBundleStore
 import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdblcient.core.di.Injectable
 import com.illiarb.tmdblcient.core.di.providers.AppProvider
@@ -46,26 +46,16 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
   }
 
-  private val stateSaver = RecyclerViewStateSaver()
+  private val bundleStore = SimpleBundleStore()
   private val adapter = DelegatesAdapter(
+    nowPlayingSection(bundleStore) { viewModel.events.offer(Event.MovieClick(it)) },
+    genresSection { viewModel.events.offer(Event.GenreClick(it)) },
+    trendingSection(bundleStore) { viewModel.events.offer(Event.MovieClick(it)) },
     movieSection(
-      stateSaver,
-      seeAllClickListener = {
-        viewModel.events.offer(Event.SeeAllClick(it))
-      },
-      movieClickListener = {
-        viewModel.events.offer(Event.MovieClick(it))
-      }
-    ),
-    nowPlayingSection(stateSaver) {
-      viewModel.events.offer(Event.MovieClick(it))
-    },
-    genresSection {
-      viewModel.events.offer(Event.GenreClick(it))
-    },
-    trendingSection(stateSaver) {
-      viewModel.events.offer(Event.MovieClick(it))
-    }
+      bundleStore,
+      seeAllClickListener = { viewModel.events.offer(Event.SeeAllClick(it)) },
+      movieClickListener = { viewModel.events.offer(Event.MovieClick(it)) }
+    )
   )
 
   override fun getViewBinding(inflater: LayoutInflater): FragmentMoviesBinding =
@@ -97,11 +87,6 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     viewLifecycleOwner.lifecycleScope.launch {
       SnackbarController().bind(binding.root, viewModel.errorState.map { it.message })
     }
-  }
-
-  override fun onDestroyView() {
-    super.onDestroyView()
-    stateSaver.saveInstanceState()
   }
 
   private fun setupMoviesList() {
