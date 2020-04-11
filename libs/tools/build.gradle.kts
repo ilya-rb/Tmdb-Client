@@ -4,6 +4,10 @@ plugins {
   kotlin("kapt")
 }
 
+apply {
+  from(rootProject.file("gradle/configure-kotlin-sources.gradle"))
+}
+
 android {
   compileSdkVersion(Deps.Android.Build.compileSdkVersion)
 
