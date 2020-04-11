@@ -15,7 +15,7 @@ cache_key: &cache_key
 
 grab_configuration_files: &grab_configuration_files
   name: Download configuration files
-  command: sudo chmod +x ./ci_config/fetch_config.sh && ./ci_config/fetch_config.sh
+  command: sudo chmod +x ./ci-config/fetch-config.sh && ./ci-config/fetch-config.sh
 
 jobs:
 
