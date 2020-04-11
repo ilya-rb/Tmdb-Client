@@ -1,6 +1,6 @@
 package com.illiarb.tmdbcliient.coretest.tools
 
-import com.illiarb.tmdblcient.core.tools.DispatcherProvider
+import com.illiarb.tmdbclient.tools.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

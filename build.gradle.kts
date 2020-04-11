@@ -5,6 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
 
+  val kotlin_version by extra("1.3.71")
   repositories {
     google()
     maven("https://plugins.gradle.org/m2/")
@@ -23,6 +24,7 @@ buildscript {
     classpath(Deps.Kotlin.gradlePlugin)
     classpath(Deps.GradlePlugins.versionsCheck)
     classpath(Deps.GradlePlugins.jacoco)
+    "classpath"("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
   }
 }
 
@@ -70,13 +72,13 @@ allprojects {
 subprojects {
 
   apply {
-    from(file("$rootDir/code_quality_tools/jacoco.gradle"))
+    //from(file("$rootDir/code_quality_tools/jacoco.gradle"))
   }
 
   afterEvaluate {
 
     // Base extension for com.android.library and com.android.application
-    configure<com.android.build.gradle.BaseExtension> {
+    extensions.findByType<com.android.build.gradle.BaseExtension>()?.apply {
       testOptions.unitTests.all(closureOf<Test> {
         // This allows to see tests execution progress
         // in the output on the CI.

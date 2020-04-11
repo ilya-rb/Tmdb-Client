@@ -1,30 +1,27 @@
 package com.illiarb.tmdbclient.di
 
+import android.app.Application
 import com.illiarb.tmdbclient.MobileApplication
 import com.illiarb.tmdbclient.di.modules.AppModule
 import com.illiarb.tmdbclient.di.modules.NavigationModule
 import com.illiarb.tmdbclient.di.modules.WorkModule
-import com.illiarb.tmdbclient.storage.di.StorageComponent
-import com.illiarb.tmdbclient.tools.di.ToolsComponent
-import com.illiarb.tmdblcient.core.app.App
-import com.illiarb.tmdblcient.core.di.providers.AnalyticsProvider
-import com.illiarb.tmdblcient.core.di.providers.AppProvider
-import com.illiarb.tmdblcient.core.di.providers.InteractorsProvider
-import com.illiarb.tmdblcient.core.di.providers.StorageProvider
-import com.illiarb.tmdblcient.core.di.providers.TmdbProvider
-import com.illiarb.tmdblcient.core.di.providers.ToolsProvider
-import com.illiarb.tmdclient.analytics.di.AnalyticsComponent
-import com.tmdbclient.servicetmdb.di.TmdbComponent
+import com.illiarb.tmdbclient.tools.di.ToolsProvider
+import com.illiarb.tmdbclient.ui.details.di.MovieDetailsComponent
+import com.illiarb.tmdbclient.ui.discover.di.DiscoverComponent
+import com.illiarb.tmdbclient.ui.home.di.HomeComponent
+import com.illiarb.tmdbclient.ui.main.MainComponent
+import com.illiarb.tmdbclient.ui.video.di.VideoListComponent
+import com.illiarb.tmdclient.analytics.di.AnalyticsProvider
+import com.tmdbclient.servicetmdb.di.TmdbProvider
+import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
 @Component(
   dependencies = [
-    StorageProvider::class,
     ToolsProvider::class,
-    AnalyticsProvider::class,
-    InteractorsProvider::class,
-    TmdbProvider::class
+    TmdbProvider::class,
+    AnalyticsProvider::class
   ],
   modules = [
     AppModule::class,
@@ -33,25 +30,22 @@ import javax.inject.Singleton
   ]
 )
 @Singleton
-interface AppComponent : AppProvider {
+interface AppComponent :
+  MainComponent.Dependencies,
+  HomeComponent.Dependencies,
+  VideoListComponent.Dependencies,
+  MovieDetailsComponent.Dependencies,
+  DiscoverComponent.Dependencies {
 
-  companion object {
-
-    fun get(app: App): AppProvider {
-      val toolsProvider = ToolsComponent.get(app)
-      val storageProvider = StorageComponent.get(app, toolsProvider)
-      val analyticsProvider = AnalyticsComponent.get(app)
-      val tmdbProvider = TmdbComponent.get(app, toolsProvider, storageProvider)
-
-      return DaggerAppComponent.builder()
-        .storageProvider(storageProvider)
-        .toolsProvider(toolsProvider)
-        .analyticsProvider(analyticsProvider)
-        .tmdbProvider(tmdbProvider)
-        .interactorsProvider(tmdbProvider)
-        .appModule(AppModule(app))
-        .build()
-    }
+  @Component.Builder
+  interface Builder {
+    @BindsInstance
+    fun application(app: Application): Builder
+    fun toolsProvider(provider: ToolsProvider): Builder
+    fun tmdbProvider(provider: TmdbProvider): Builder
+    fun analyticsProvider(provider: AnalyticsProvider): Builder
+    fun appModule(module: AppModule): Builder
+    fun build(): AppComponent
   }
 
   fun inject(app: MobileApplication)

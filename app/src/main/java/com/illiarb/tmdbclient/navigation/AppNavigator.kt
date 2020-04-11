@@ -7,12 +7,10 @@ import androidx.navigation.Navigation
 import androidx.navigation.Navigator.Extras
 import androidx.navigation.fragment.FragmentNavigator
 import com.illiarb.tmdbclient.R
-import com.illiarb.tmdblcient.core.navigation.Navigator
-import com.illiarb.tmdblcient.core.navigation.Router
-import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowDiscover
-import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowMovieDetails
-import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowSettings
-import com.illiarb.tmdblcient.core.navigation.Router.Action.ShowVideos
+import com.illiarb.tmdbclient.navigation.Router.Action.ShowDiscover
+import com.illiarb.tmdbclient.navigation.Router.Action.ShowMovieDetails
+import com.illiarb.tmdbclient.navigation.Router.Action.ShowSettings
+import com.illiarb.tmdbclient.navigation.Router.Action.ShowVideos
 import javax.inject.Inject
 
 /**
@@ -28,12 +26,19 @@ class AppNavigator @Inject constructor(private val activity: FragmentActivity) :
       is ShowSettings -> R.id.action_movies_to_settings
       is ShowVideos -> R.id.movie_to_player
     }
-    controller.navigate(destination, setDestinationArgs(action), setNavOptions(), setNavExtras(action))
+    controller.navigate(
+      destination,
+      setDestinationArgs(action),
+      setNavOptions(),
+      setNavExtras(action)
+    )
   }
 
   private fun setDestinationArgs(action: Router.Action): Bundle {
     return when (action) {
-      is ShowMovieDetails -> Bundle().apply { putInt(ShowMovieDetails.EXTRA_MOVIE_DETAILS, action.id) }
+      is ShowMovieDetails -> Bundle().apply {
+        putInt(ShowMovieDetails.EXTRA_MOVIE_DETAILS, action.id)
+      }
       is ShowDiscover -> Bundle().apply { putInt(ShowDiscover.EXTRA_GENRE_ID, action.id) }
       is ShowVideos -> Bundle().apply {
         putInt(ShowVideos.EXTRA_MOVIE_ID, action.movieId)
@@ -47,7 +52,7 @@ class AppNavigator @Inject constructor(private val activity: FragmentActivity) :
   private fun setNavExtras(action: Router.Action): Extras? {
     return if (action is ShowMovieDetails && action.sharedPoster != null) {
       FragmentNavigator.Extras.Builder()
-        .addSharedElement(action.sharedPoster!!, action.sharedPoster!!.transitionName)
+        .addSharedElement(action.sharedPoster, action.sharedPoster.transitionName)
         .build()
     } else {
       null

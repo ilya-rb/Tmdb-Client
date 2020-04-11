@@ -1,0 +1,93 @@
+package com.illiarb.tmdbclient.ui.home.delegates
+
+import android.os.Parcelable
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
+import com.illiarb.coreuiimage.CropOptions
+import com.illiarb.coreuiimage.loadImage
+import com.illiarb.tmdbclient.R
+import com.illiarb.tmdbexplorer.coreui.common.OnClickListener
+import com.illiarb.tmdbexplorer.coreui.ext.dimen
+import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.RecyclerViewStateSaver
+import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.SpaceDecoration
+import com.illiarb.tmdbexplorer.coreui.widget.recyclerview.StateSaver
+import com.tmdbclient.servicetmdb.domain.Movie
+import com.tmdbclient.servicetmdb.domain.MovieSection
+import com.tmdbclient.servicetmdb.domain.TrendingSection
+import com.tmdbclient.servicetmdb.domain.TrendingSection.TrendingItem
+
+private const val KEY_TRENDING_STATE = "trending_state"
+
+@Suppress("LongMethod")
+fun trendingSection(
+  stateSaver: RecyclerViewStateSaver,
+  clickListener: OnClickListener<Movie>
+) = adapterDelegate<TrendingSection, MovieSection>(R.layout.item_trending_section) {
+
+  val adapter = TrendingSectionAdapter(clickListener)
+  val trendingList = itemView.findViewById<RecyclerView>(R.id.itemTrendingSectionList)
+  val stateCallback: StateSaver = {
+    putParcelable(KEY_TRENDING_STATE, trendingList.layoutManager?.onSaveInstanceState())
+  }
+
+  trendingList.let {
+    it.adapter = adapter
+    it.layoutManager = LinearLayoutManager(
+      itemView.context,
+      LinearLayoutManager.HORIZONTAL,
+      false
+    )
+    it.addItemDecoration(
+      SpaceDecoration.edgeInnerSpace(
+        it.dimen(R.dimen.spacing_normal),
+        it.dimen(R.dimen.spacing_small)
+      )
+    )
+  }
+
+  bind {
+    adapter.items = item.items
+    adapter.notifyDataSetChanged()
+
+    val state = stateSaver.state(KEY_TRENDING_STATE) as? Parcelable?
+    trendingList.layoutManager?.onRestoreInstanceState(state)
+  }
+
+  onViewAttachedToWindow {
+    stateSaver.registerStateSaver(KEY_TRENDING_STATE, stateCallback)
+  }
+
+  onViewDetachedFromWindow {
+    stateSaver.unregisterStateSaver(KEY_TRENDING_STATE)
+  }
+}
+
+private class TrendingSectionAdapter(clickListener: OnClickListener<Movie>) :
+  ListDelegationAdapter<List<TrendingItem>>() {
+
+  init {
+    delegatesManager.addDelegate(trendingDelegate(clickListener))
+  }
+
+  private fun trendingDelegate(clickListener: OnClickListener<Movie>) =
+    adapterDelegate<TrendingItem, TrendingItem>(R.layout.item_trending) {
+
+      val image = itemView.findViewById<ImageView>(R.id.itemTrendingImage)
+      val name = itemView.findViewById<TextView>(R.id.itemTrendingName)
+
+      bind {
+        name.text = item.movie.title
+        image.loadImage(item.movie.posterPath) {
+          crop(CropOptions.Circle)
+        }
+
+        itemView.setOnClickListener {
+          clickListener(item.movie)
+        }
+      }
+    }
+}

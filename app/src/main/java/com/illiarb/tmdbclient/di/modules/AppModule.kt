@@ -3,8 +3,7 @@ package com.illiarb.tmdbclient.di.modules
 import com.illiarb.tmdbclient.appinitializers.EmojiInitializer
 import com.illiarb.tmdbclient.appinitializers.LoggerInitializer
 import com.illiarb.tmdbclient.appinitializers.WorkManagerInitializer
-import com.illiarb.tmdblcient.core.app.AppInitializer
-import com.illiarb.tmdblcient.core.app.App
+import com.illiarb.tmdbclient.tools.AppInitializer
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.ElementsIntoSet
@@ -13,13 +12,11 @@ import dagger.multibindings.ElementsIntoSet
  * @author ilya-rb on 03.11.18.
  */
 @Module
-class AppModule(val app: App) {
-
-  @Provides
-  fun provideApp(): App = app
+object AppModule {
 
   @Provides
   @ElementsIntoSet
+  @JvmStatic
   fun provideAppInitializers(
     workManagerInitializer: WorkManagerInitializer,
     loggerInitializer: LoggerInitializer,

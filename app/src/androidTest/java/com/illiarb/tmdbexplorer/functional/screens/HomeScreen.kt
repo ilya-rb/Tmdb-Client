@@ -5,8 +5,8 @@ import com.agoda.kakao.chipgroup.KChipGroup
 import com.agoda.kakao.recycler.KRecyclerItem
 import com.agoda.kakao.recycler.KRecyclerView
 import com.agoda.kakao.text.KTextView
-import com.illiarb.tmdbclient.home.HomeFragment
-import com.illiarb.tmdbclient.movies.home.R
+import com.illiarb.tmdbclient.R
+import com.illiarb.tmdbclient.ui.home.HomeFragment
 import com.illiarb.tmdbexplorer.functional.recyclerview.MovieItem
 import org.hamcrest.Matcher
 

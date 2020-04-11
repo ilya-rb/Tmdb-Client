@@ -9,7 +9,7 @@
 
         <!--<intent-->
             <!--android:action="search"-->
-            <!--android:targetClass="com.illiarb.tmdbclient.MainActivity"-->
+            <!--android:targetClass="com.illiarb.tmdbclient.ui.main.MainActivity"-->
             <!--android:targetPackage="com.illiarb.tmdbclient" />-->
 
     <!--</shortcut>-->

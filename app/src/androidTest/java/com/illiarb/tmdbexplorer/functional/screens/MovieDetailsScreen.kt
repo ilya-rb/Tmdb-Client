@@ -4,8 +4,8 @@ import com.agoda.kakao.image.KImageView
 import com.agoda.kakao.recycler.KRecyclerView
 import com.agoda.kakao.text.KButton
 import com.agoda.kakao.text.KTextView
-import com.illiarb.tmdbclient.details.MovieDetailsFragment
-import com.illiarb.tmdbclient.movies.home.R
+import com.illiarb.tmdbclient.R
+import com.illiarb.tmdbclient.ui.details.MovieDetailsFragment
 
 object MovieDetailsScreen : KScreen<MovieDetailsScreen>() {
 
