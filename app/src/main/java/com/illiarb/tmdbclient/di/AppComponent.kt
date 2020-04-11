@@ -6,11 +6,11 @@ import com.illiarb.tmdbclient.di.modules.AppModule
 import com.illiarb.tmdbclient.di.modules.NavigationModule
 import com.illiarb.tmdbclient.di.modules.WorkModule
 import com.illiarb.tmdbclient.libs.tools.di.ToolsProvider
-import com.illiarb.tmdbclient.libs.ui.details.di.MovieDetailsComponent
-import com.illiarb.tmdbclient.libs.ui.discover.di.DiscoverComponent
-import com.illiarb.tmdbclient.libs.ui.home.di.HomeComponent
-import com.illiarb.tmdbclient.libs.ui.main.MainComponent
-import com.illiarb.tmdbclient.libs.ui.video.di.VideoListComponent
+import com.illiarb.tmdbclient.ui.details.di.MovieDetailsComponent
+import com.illiarb.tmdbclient.ui.discover.di.DiscoverComponent
+import com.illiarb.tmdbclient.ui.home.di.HomeComponent
+import com.illiarb.tmdbclient.ui.main.MainComponent
+import com.illiarb.tmdbclient.ui.video.di.VideoListComponent
 import com.illiarb.tmdbclient.services.analytics.di.AnalyticsProvider
 import com.illiarb.tmdbclient.services.tmdb.di.TmdbProvider
 import dagger.BindsInstance
