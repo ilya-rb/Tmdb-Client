@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.illiarb.tmdbclient.libs.ui.details.widget.CurvedImageView
+            <com.illiarb.tmdbclient.ui.details.widget.CurvedImageView
                 android:id="@+id/movieDetailsPoster"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/movie_details_poster_height"
