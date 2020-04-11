@@ -33,17 +33,6 @@
                 android:src="@drawable/ic_tmdb"
                 android:tint="@color/tmdb_white" />
 
-            <ImageView
-                android:id="@+id/settings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:contentDescription="@null"
-                android:padding="@dimen/spacing_normal"
-                android:src="@drawable/ic_settings"
-                android:tint="@color/tmdb_white"
-                android:visibility="gone" />
-
         </androidx.appcompat.widget.Toolbar>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

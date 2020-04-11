@@ -9,7 +9,6 @@ import androidx.navigation.fragment.FragmentNavigator
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.navigation.Router.Action.ShowDiscover
 import com.illiarb.tmdbclient.navigation.Router.Action.ShowMovieDetails
-import com.illiarb.tmdbclient.navigation.Router.Action.ShowSettings
 import com.illiarb.tmdbclient.navigation.Router.Action.ShowVideos
 import javax.inject.Inject
 
@@ -23,7 +22,6 @@ class AppNavigator @Inject constructor(private val activity: FragmentActivity) :
     val destination = when (action) {
       is ShowMovieDetails -> R.id.action_to_movie_details
       is ShowDiscover -> R.id.action_moviesFragment_to_discoverFragment
-      is ShowSettings -> R.id.action_movies_to_settings
       is ShowVideos -> R.id.movie_to_player
     }
     controller.navigate(
@@ -43,7 +41,6 @@ class AppNavigator @Inject constructor(private val activity: FragmentActivity) :
       is ShowVideos -> Bundle().apply {
         putInt(ShowVideos.EXTRA_MOVIE_ID, action.movieId)
       }
-      else -> Bundle.EMPTY
     }
   }
 

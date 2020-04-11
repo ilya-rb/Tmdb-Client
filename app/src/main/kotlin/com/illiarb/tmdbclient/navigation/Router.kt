@@ -29,7 +29,5 @@ interface Router {
         const val EXTRA_MOVIE_ID = "id"
       }
     }
-
-    object ShowSettings : Action()
   }
 }
