@@ -14,14 +14,6 @@ import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.databinding.FragmentMoviesBinding
 import com.illiarb.tmdbclient.di.AppComponent
 import com.illiarb.tmdbclient.di.Injectable
-import com.illiarb.tmdbclient.ui.home.HomeViewModel.Event
-import com.illiarb.tmdbclient.ui.home.HomeViewModel.State
-import com.illiarb.tmdbclient.ui.home.delegates.genresSection
-import com.illiarb.tmdbclient.ui.home.delegates.movieSection
-import com.illiarb.tmdbclient.ui.home.delegates.nowplaying.nowPlayingSection
-import com.illiarb.tmdbclient.ui.home.delegates.trendingSection
-import com.illiarb.tmdbclient.ui.home.di.DaggerHomeComponent
-import com.illiarb.tmdbclient.libs.util.Async
 import com.illiarb.tmdbclient.libs.ui.base.BaseViewBindingFragment
 import com.illiarb.tmdbclient.libs.ui.common.SnackbarController
 import com.illiarb.tmdbclient.libs.ui.ext.dimen
@@ -32,6 +24,14 @@ import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.RecyclerViewStateSaver
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
+import com.illiarb.tmdbclient.libs.util.Async
+import com.illiarb.tmdbclient.ui.home.HomeViewModel.Event
+import com.illiarb.tmdbclient.ui.home.HomeViewModel.State
+import com.illiarb.tmdbclient.ui.home.delegates.genresSection
+import com.illiarb.tmdbclient.ui.home.delegates.movieSection
+import com.illiarb.tmdbclient.ui.home.delegates.nowplaying.nowPlayingSection
+import com.illiarb.tmdbclient.ui.home.delegates.trendingSection
+import com.illiarb.tmdbclient.ui.home.di.DaggerHomeComponent
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -86,9 +86,6 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     }
 
     binding.moviesSwipeRefresh.isEnabled = false
-    binding.settings.setOnClickListener {
-      viewModel.events.offer(Event.SettingsClick)
-    }
 
     setupAppBarScrollListener()
     setupMoviesList()

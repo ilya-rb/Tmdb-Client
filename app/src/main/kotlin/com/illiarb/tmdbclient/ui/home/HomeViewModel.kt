@@ -1,21 +1,20 @@
 package com.illiarb.tmdbclient.ui.home
 
 import androidx.lifecycle.viewModelScope
-import com.illiarb.tmdbclient.ui.home.HomeViewModel.Event
-import com.illiarb.tmdbclient.ui.home.HomeViewModel.State
 import com.illiarb.tmdbclient.libs.ui.base.viewmodel.BaseViewModel
+import com.illiarb.tmdbclient.libs.util.Async
+import com.illiarb.tmdbclient.navigation.Router
+import com.illiarb.tmdbclient.navigation.Router.Action.ShowDiscover
+import com.illiarb.tmdbclient.navigation.Router.Action.ShowMovieDetails
+import com.illiarb.tmdbclient.services.analytics.AnalyticsService
 import com.illiarb.tmdbclient.services.tmdb.domain.Genre
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.services.tmdb.domain.MovieSection
 import com.illiarb.tmdbclient.services.tmdb.domain.TrendingSection
-import com.illiarb.tmdbclient.navigation.Router
-import com.illiarb.tmdbclient.navigation.Router.Action.ShowDiscover
-import com.illiarb.tmdbclient.navigation.Router.Action.ShowMovieDetails
-import com.illiarb.tmdbclient.navigation.Router.Action.ShowSettings
-import com.illiarb.tmdbclient.libs.util.Async
-import com.illiarb.tmdbclient.services.analytics.AnalyticsService
 import com.illiarb.tmdbclient.services.tmdb.interactor.HomeInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.TrendingInteractor
+import com.illiarb.tmdbclient.ui.home.HomeViewModel.Event
+import com.illiarb.tmdbclient.ui.home.HomeViewModel.State
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -67,9 +66,6 @@ class HomeViewModel @Inject constructor(
       is Event.SeeAllClick -> router.executeAction(ShowDiscover())
         //.also(analyticsService::trackRouterAction)
 
-      is Event.SettingsClick -> router.executeAction(ShowSettings)
-        //.also(analyticsService::trackRouterAction)
-
       is Event.MovieClick ->
         router.executeAction(ShowMovieDetails(event.movie.id))
           //.also(analyticsService::trackRouterAction)
@@ -86,6 +82,5 @@ class HomeViewModel @Inject constructor(
     data class MovieClick(val movie: Movie) : Event()
     data class SeeAllClick(val code: String) : Event()
     data class GenreClick(val genre: Genre) : Event()
-    object SettingsClick : Event()
   }
 }

@@ -5,23 +5,18 @@
 
     <fragment
         android:id="@+id/discoverFragment"
-        android:name="com.illiarb.tmdbclient.libs.ui.discover.DiscoverFragment"
+        android:name="com.illiarb.tmdbclient.ui.discover.DiscoverFragment"
         android:label="DiscoverFragment"
         tools:layout="@layout/fragment_discover" />
 
     <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.illiarb.tmdbclient.appfeatures.settings.SettingsFragment"
-        tools:layout="SettingsFragment" />
-
-    <fragment
         android:id="@+id/videoListFragment"
-        android:name="com.illiarb.tmdbclient.libs.ui.video.VideoListFragment"
+        android:name="com.illiarb.tmdbclient.ui.video.VideoListFragment"
         tools:layout="@layout/fragment_video_list" />
 
     <fragment
         android:id="@+id/movieDetailsFragment"
-        android:name="com.illiarb.tmdbclient.libs.ui.details.MovieDetailsFragment"
+        android:name="com.illiarb.tmdbclient.ui.details.MovieDetailsFragment"
         android:label="MovieDetailsFragment"
         tools:layout="@layout/fragment_movie_details">
 
@@ -33,13 +28,9 @@
 
     <fragment
         android:id="@+id/moviesFragment"
-        android:name="com.illiarb.tmdbclient.libs.ui.home.HomeFragment"
+        android:name="com.illiarb.tmdbclient.ui.home.HomeFragment"
         android:label="MoviesFragment"
         tools:layout="@layout/fragment_movies">
-
-        <action
-            android:id="@+id/action_movies_to_settings"
-            app:destination="@id/settingsFragment" />
 
         <action
             android:id="@+id/action_moviesFragment_to_discoverFragment"
