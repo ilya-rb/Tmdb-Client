@@ -2,10 +2,10 @@ package com.illiarb.tmdbclient.appinitializers
 
 import android.app.Application
 import com.illiarb.tmdbclient.BuildConfig
-import com.illiarb.tmdbclient.tools.AppInitializer
-import com.illiarb.tmdbclient.logger.Logger
-import com.illiarb.tmdbclient.logger.LoggerPriority
-import com.illiarb.tmdbclient.logger.LoggingStrategy
+import com.illiarb.tmdbclient.libs.tools.AppInitializer
+import com.illiarb.tmdbclient.libs.logger.Logger
+import com.illiarb.tmdbclient.libs.logger.LoggerPriority
+import com.illiarb.tmdbclient.libs.logger.LoggingStrategy
 import timber.log.Timber
 import javax.inject.Inject
 

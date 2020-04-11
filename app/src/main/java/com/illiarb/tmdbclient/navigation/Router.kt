@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.navigation
 
 import android.widget.ImageView
-import com.tmdbclient.servicetmdb.domain.Genre
+import com.illiarb.tmdbclient.services.tmdb.domain.Genre
 
 /**
  * @author ilya-rb on 18.11.18.

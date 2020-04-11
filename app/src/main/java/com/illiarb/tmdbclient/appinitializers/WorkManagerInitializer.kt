@@ -3,9 +3,8 @@ package com.illiarb.tmdbclient.appinitializers
 import android.app.Application
 import android.util.Log
 import androidx.work.Configuration
-import androidx.work.WorkManager as AndroidWorkManager
 import androidx.work.WorkerFactory
-import com.illiarb.tmdbclient.tools.AppInitializer
+import com.illiarb.tmdbclient.libs.tools.AppInitializer
 import javax.inject.Inject
 
 class WorkManagerInitializer @Inject constructor(

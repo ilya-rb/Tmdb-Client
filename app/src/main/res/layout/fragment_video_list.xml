@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <!-- Use hardcoded color because it's a video and it always should be black -->
-    <com.illiarb.tmdbclient.ui.video.widget.YoutubePlayer
+    <com.illiarb.tmdbclient.libs.ui.video.widget.YoutubePlayer
         android:id="@+id/youtubePlayer"
         android:layout_width="match_parent"
         android:layout_height="@dimen/youtube_player_height"

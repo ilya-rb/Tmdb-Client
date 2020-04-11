@@ -5,7 +5,7 @@ import androidx.core.provider.FontRequest
 import androidx.emoji.text.EmojiCompat
 import androidx.emoji.text.FontRequestEmojiCompatConfig
 import com.illiarb.tmdbclient.R
-import com.illiarb.tmdbclient.tools.AppInitializer
+import com.illiarb.tmdbclient.libs.tools.AppInitializer
 import javax.inject.Inject
 
 class EmojiInitializer @Inject constructor() : AppInitializer {

@@ -3,7 +3,7 @@ package com.illiarb.tmdbclient.di.modules
 import com.illiarb.tmdbclient.appinitializers.EmojiInitializer
 import com.illiarb.tmdbclient.appinitializers.LoggerInitializer
 import com.illiarb.tmdbclient.appinitializers.WorkManagerInitializer
-import com.illiarb.tmdbclient.tools.AppInitializer
+import com.illiarb.tmdbclient.libs.tools.AppInitializer
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.ElementsIntoSet
