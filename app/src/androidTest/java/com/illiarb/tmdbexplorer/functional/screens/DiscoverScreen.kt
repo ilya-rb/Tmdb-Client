@@ -7,7 +7,7 @@ import com.agoda.kakao.recycler.KRecyclerView
 import com.agoda.kakao.swiperefresh.KSwipeRefreshLayout
 import com.agoda.kakao.text.KButton
 import com.illiarb.tmdbclient.R
-import com.illiarb.tmdbclient.discover.DiscoverFragment
+import com.illiarb.tmdbclient.ui.discover.DiscoverFragment
 import com.illiarb.tmdbexplorer.functional.recyclerview.MovieItem
 
 object DiscoverScreen : KScreen<DiscoverScreen>() {

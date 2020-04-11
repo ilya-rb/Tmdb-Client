@@ -1,8 +1,5 @@
 package com.illiarb.tmdbclient.navigation
 
-import com.illiarb.tmdblcient.core.navigation.Navigator
-import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
-import com.illiarb.tmdblcient.core.navigation.Router
 import java.util.LinkedList
 import java.util.Queue
 import javax.inject.Inject

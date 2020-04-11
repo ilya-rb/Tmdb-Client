@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
-import com.illiarb.tmdblcient.core.tools.WorkerCreator
+import com.illiarb.tmdbclient.tools.WorkManager
 import javax.inject.Inject
 
 class DaggerWorkerFactory @Inject constructor(
-  private val configurationFetchWorker: WorkerCreator
+  private val configurationFetchWorker: WorkManager.WorkerCreator
 ) : WorkerFactory() {
 
   override fun createWorker(

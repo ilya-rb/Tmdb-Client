@@ -3,12 +3,12 @@ package com.illiarb.tmdbexplorer.functional.tests
 import android.Manifest
 import androidx.test.rule.ActivityTestRule
 import androidx.test.rule.GrantPermissionRule
-import com.illiarb.tmdbclient.MainActivity
+import com.illiarb.tmdbclient.ui.main.MainActivity
 import com.illiarb.tmdbexplorer.functional.recyclerview.MovieItem
 import com.illiarb.tmdbexplorer.functional.screens.DiscoverScreen
 import com.illiarb.tmdbexplorer.functional.screens.HomeScreen
 import com.illiarb.tmdbexplorer.functional.screens.MovieDetailsScreen
-import com.illiarb.tmdblcient.core.domain.Genre
+import com.tmdbclient.servicetmdb.domain.Genre
 import com.kaspersky.kaspresso.kaspresso.Kaspresso
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import org.junit.Rule

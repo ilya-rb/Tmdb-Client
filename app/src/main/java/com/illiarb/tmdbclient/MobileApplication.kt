@@ -3,27 +3,57 @@ package com.illiarb.tmdbclient
 import android.app.Application
 import com.google.firebase.FirebaseApp
 import com.illiarb.tmdbclient.di.AppComponent
-import com.illiarb.tmdblcient.core.app.App
-import com.illiarb.tmdblcient.core.app.AppInitializer
-import com.illiarb.tmdblcient.core.di.providers.AppProvider
+import com.illiarb.tmdbclient.di.AppInjector
+import com.illiarb.tmdbclient.di.DaggerAppComponent
+import com.illiarb.tmdbclient.tools.AppInitializer
+import com.illiarb.tmdbclient.tools.DispatcherProvider
+import com.illiarb.tmdbclient.tools.ResourceResolver
+import com.illiarb.tmdbclient.tools.di.DaggerToolsComponent
+import com.illiarb.tmdclient.analytics.di.DaggerAnalyticsComponent
+import com.tmdbclient.servicetmdb.di.DaggerTmdbComponent
+import com.tmdbclient.servicetmdb.di.TmdbComponent
 import javax.inject.Inject
 
-class MobileApplication : Application(), App {
+// TODO: Remove open
+open class MobileApplication : Application() {
 
   @Inject
   lateinit var appInitializers: Set<@JvmSuppressWildcards AppInitializer>
 
-  private val applicationProvider by lazy {
-    AppComponent.get(this)
+  open val appComponent: AppComponent by lazy {
+    val toolsComponent = DaggerToolsComponent.builder()
+      .application(this)
+      .build()
+
+    val analyticsComponent = DaggerAnalyticsComponent.builder()
+      .application(this)
+      .build()
+
+    val tmdbComponent = DaggerTmdbComponent.builder()
+      .application(this)
+      .dependencies(
+        object : TmdbComponent.Dependencies {
+          override fun resourceResolver(): ResourceResolver = toolsComponent.resourceResolver()
+          override fun dispatcherProvider(): DispatcherProvider =
+            toolsComponent.dispatcherProvider()
+        }
+      )
+      .build()
+
+    DaggerAppComponent.builder()
+      .application(this)
+      .analyticsProvider(analyticsComponent)
+      .toolsProvider(toolsComponent)
+      .tmdbProvider(tmdbComponent)
+      .build()
   }
 
   override fun onCreate() {
     super.onCreate()
 
-    val appComponent = applicationProvider as AppComponent
     appComponent.inject(this)
 
-    MobileAppInjector(this).registerLifecycleCallbacks()
+    AppInjector(this).registerLifecycleCallbacks()
 
     FirebaseApp.initializeApp(this)
 
@@ -31,8 +61,4 @@ class MobileApplication : Application(), App {
       it.initialize(this)
     }
   }
-
-  override fun getApplication(): Application = this
-
-  override fun getAppProvider(): AppProvider = applicationProvider
 }

@@ -16,23 +16,21 @@ object Build {
 
 object Modules {
 
+  const val app = ":app"
+
   object Core {
-    const val core = ":core"
-    const val ui = ":core_ui"
-    const val uiImage = ":core_ui_image"
+    const val ui = ":libs:ui"
+    const val uiImage = ":libs:image-loader"
     const val test = ":core_test"
-    const val storage = ":core_storage"
-    const val tools = ":core_tools"
+    const val tools = ":libs:tools"
+    const val util = ":libs:util"
+    const val logger = ":libs:logger"
   }
 
   object Services {
-    const val tmdb = ":service_tmdb"
-    const val analytics = ":service_analytics"
+    const val tmdb = ":services:tmdb"
+    const val analytics = ":services:analytics"
   }
-
-  const val appFeatures = ":app_features"
-  const val featureSettings = ":app_features_settings"
-  const val debug = ":debug"
 }
 
 object Deps {
@@ -43,7 +41,7 @@ object Deps {
   }
 
   object Kotlin {
-    const val kotlinVersion = "1.3.70"
+    private const val kotlinVersion = "1.3.71"
 
     const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     const val std = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
@@ -62,6 +60,7 @@ object Deps {
     }
 
     object AndroidX {
+      private const val supportLibraryVersion = "1.2.0-alpha05"
       private const val archComponentsVersion = "2.2.0"
 
       object ViewModel {
@@ -77,8 +76,8 @@ object Deps {
 
       const val navigation = "androidx.navigation:navigation-fragment:2.3.0-alpha04"
       const val workManager = "androidx.work:work-runtime-ktx:2.3.4"
-      const val material = "com.google.android.material:material:1.2.0-alpha05"
-      const val recyclerView = "androidx.recyclerview:recyclerview:1.2.0-alpha02"
+      const val material = "com.google.android.material:material:$supportLibraryVersion"
+      const val recyclerView = "androidx.recyclerview:recyclerview:$supportLibraryVersion"
       const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
       const val emoji = "androidx.emoji:emoji:1.1.0-alpha01"
       const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta4"

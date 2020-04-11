@@ -1,18 +1,18 @@
 package com.illiarb.tmdbclient.appinitializers
 
+import android.app.Application
 import androidx.core.provider.FontRequest
 import androidx.emoji.text.EmojiCompat
 import androidx.emoji.text.FontRequestEmojiCompatConfig
 import com.illiarb.tmdbclient.R
-import com.illiarb.tmdblcient.core.app.App
-import com.illiarb.tmdblcient.core.app.AppInitializer
+import com.illiarb.tmdbclient.tools.AppInitializer
 import javax.inject.Inject
 
 class EmojiInitializer @Inject constructor() : AppInitializer {
 
-  override fun initialize(app: App) {
+  override fun initialize(app: Application) {
     val config = FontRequestEmojiCompatConfig(
-      app.getApplication(),
+      app,
       FontRequest(
         "com.google.android.gms.fonts",
         "com.google.android.gms",

@@ -55,21 +55,19 @@ dependencies {
 
   kapt(Deps.Dagger.compiler)
 
-  implementation(project(Modules.Core.core))
   implementation(project(Modules.Core.ui))
   implementation(project(Modules.Core.uiImage))
-  implementation(project(Modules.Core.storage))
   implementation(project(Modules.Core.tools))
+  implementation(project(Modules.Core.util))
+  implementation(project(Modules.Core.logger))
   implementation(project(Modules.Services.tmdb))
   implementation(project(Modules.Services.analytics))
-  implementation(project(Modules.appFeatures))
-  implementation(project(Modules.featureSettings))
-  implementation(project(Modules.debug))
 
   implementation(Deps.Dagger.core)
   implementation(Deps.Misc.timber)
   implementation(Deps.Android.Firebase.core)
   implementation(Deps.Android.AndroidX.navigation)
+  implementation(Deps.Android.AndroidX.workManager)
 
   // Play core lib for downloading dynamic features
   //implementation deps.playCore
@@ -77,6 +75,7 @@ dependencies {
   debugImplementation(Deps.Tools.LeakCanary.android)
   debugImplementation(Deps.Tools.LeakCanary.objectWatcher)
 
+  androidTestImplementation(project(Modules.Core.test))
   androidTestImplementation(Deps.Test.AndroidX.espressoIntents)
   androidTestImplementation(Deps.Test.AndroidX.runner)
   androidTestImplementation(Deps.Test.AndroidX.uiAutomator)

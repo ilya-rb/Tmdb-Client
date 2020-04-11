@@ -3,7 +3,7 @@ package com.illiarb.tmdbexplorer.functional.tests
 import android.Manifest
 import androidx.test.rule.ActivityTestRule
 import androidx.test.rule.GrantPermissionRule
-import com.illiarb.tmdbclient.MainActivity
+import com.illiarb.tmdbclient.ui.main.MainActivity
 import com.illiarb.tmdbexplorer.functional.screens.DiscoverScreen
 import com.illiarb.tmdbexplorer.functional.screens.HomeScreen
 import com.illiarb.tmdbexplorer.functional.screens.HomeScreen.GenreSectionItem

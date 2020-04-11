@@ -1,8 +1,8 @@
 package com.illiarb.tmdbcliient.coretest.interactor
 
-import com.illiarb.tmdblcient.core.domain.MovieSection
-import com.illiarb.tmdblcient.core.interactor.HomeInteractor
-import com.illiarb.tmdblcient.core.util.Result
+import com.illiarb.tmdbclient.util.Result
+import com.tmdbclient.servicetmdb.domain.MovieSection
+import com.tmdbclient.servicetmdb.interactor.HomeInteractor
 import java.util.Collections
 
 class TestHomeInteractor : HomeInteractor {

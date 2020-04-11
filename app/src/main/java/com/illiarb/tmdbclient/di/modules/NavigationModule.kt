@@ -2,8 +2,8 @@ package com.illiarb.tmdbclient.di.modules
 
 import com.illiarb.tmdbclient.navigation.ActionsBuffer
 import com.illiarb.tmdbclient.navigation.AppRouter
-import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
-import com.illiarb.tmdblcient.core.navigation.Router
+import com.illiarb.tmdbclient.navigation.NavigatorHolder
+import com.illiarb.tmdbclient.navigation.Router
 import dagger.Binds
 import dagger.Module
 

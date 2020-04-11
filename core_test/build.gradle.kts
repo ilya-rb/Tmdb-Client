@@ -24,9 +24,13 @@ android {
 
 dependencies {
 
-  implementation(project(Modules.Core.core))
-  implementation(project(Modules.Core.storage))
   implementation(project(Modules.Services.tmdb))
+  implementation(project(Modules.Services.analytics))
+  implementation(project(Modules.Core.logger))
+  implementation(project(Modules.Core.util))
+  implementation(project(Modules.Core.tools))
+
+  implementation(Deps.Android.AndroidX.workManager)
 
   api(Deps.Test.junit)
   api(Deps.Test.Mockito.core)

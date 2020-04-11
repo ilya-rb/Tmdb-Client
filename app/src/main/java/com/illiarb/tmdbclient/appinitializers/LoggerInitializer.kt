@@ -1,26 +1,33 @@
 package com.illiarb.tmdbclient.appinitializers
 
+import android.app.Application
 import com.illiarb.tmdbclient.BuildConfig
-import com.illiarb.tmdblcient.core.app.AppInitializer
-import com.illiarb.tmdblcient.core.app.App
-import com.illiarb.tmdblcient.core.tools.Logger
+import com.illiarb.tmdbclient.tools.AppInitializer
+import com.illiarb.tmdbclient.logger.Logger
+import com.illiarb.tmdbclient.logger.LoggerPriority
+import com.illiarb.tmdbclient.logger.LoggingStrategy
 import timber.log.Timber
 import javax.inject.Inject
 
 class LoggerInitializer @Inject constructor() : AppInitializer {
 
-  override fun initialize(app: App) {
+  override fun initialize(app: Application) {
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())
     }
 
-    Logger.addLoggingStrategy(object : Logger.LoggingStrategy {
-      override fun log(tag: String, priority: Logger.Priority, message: String, throwable: Throwable?) {
+    Logger.addLoggingStrategy(object : LoggingStrategy {
+      override fun log(
+        tag: String,
+        priority: LoggerPriority,
+        message: String,
+        throwable: Throwable?
+      ) {
         when (priority) {
-          Logger.Priority.WARN -> Timber.tag(tag).w(throwable, message)
-          Logger.Priority.DEBUG -> Timber.tag(tag).d(throwable, message)
-          Logger.Priority.INFO -> Timber.tag(tag).i(throwable, message)
-          Logger.Priority.ERROR -> Timber.tag(tag).e(throwable, message)
+          LoggerPriority.Warn -> Timber.tag(tag).w(throwable, message)
+          LoggerPriority.Debug -> Timber.tag(tag).d(throwable, message)
+          LoggerPriority.Info -> Timber.tag(tag).i(throwable, message)
+          LoggerPriority.Error -> Timber.tag(tag).e(throwable, message)
         }
       }
     })

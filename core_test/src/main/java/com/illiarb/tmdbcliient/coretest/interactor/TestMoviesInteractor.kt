@@ -1,23 +1,20 @@
 package com.illiarb.tmdbcliient.coretest.interactor
 
+import com.illiarb.tmdbclient.util.Result
 import com.illiarb.tmdbcliient.coretest.entity.FakeEntityFactory
-import com.illiarb.tmdblcient.core.domain.Movie
-import com.illiarb.tmdblcient.core.domain.MovieBlock
-import com.illiarb.tmdblcient.core.domain.Video
-import com.illiarb.tmdblcient.core.interactor.MoviesInteractor
-import com.illiarb.tmdblcient.core.util.Result
-import com.tmdbclient.servicetmdb.repository.MoviesRepository
+import com.tmdbclient.servicetmdb.domain.Movie
+import com.tmdbclient.servicetmdb.domain.MovieBlock
+import com.tmdbclient.servicetmdb.domain.Video
+import com.tmdbclient.servicetmdb.interactor.MoviesInteractor
 
-class TestMoviesInteractor(
-  private val moviesRepository: MoviesRepository
-) : MoviesInteractor {
+class TestMoviesInteractor : MoviesInteractor {
 
   override suspend fun getAllMovies(): Result<List<MovieBlock>> {
-    val filters = moviesRepository.getMovieFilters()
+    val filters = FakeEntityFactory.movieFilters
     val result = mutableListOf<MovieBlock>()
 
-    filters.unwrap().forEach {
-      val movies = moviesRepository.getMoviesByType(it.code).unwrap()
+    filters.forEach {
+      val movies = FakeEntityFactory.getMoviesByType(it.code, false).unwrap()
       result.add(MovieBlock(it, movies))
     }
 
@@ -25,7 +22,7 @@ class TestMoviesInteractor(
   }
 
   override suspend fun getMovieDetails(movieId: Int): Result<Movie> {
-    return moviesRepository.getMovieDetails(movieId, "")
+    return FakeEntityFactory.getMovieDetails(movieId, "")
   }
 
   override suspend fun getSimilarMovies(movieId: Int): Result<List<Movie>> {

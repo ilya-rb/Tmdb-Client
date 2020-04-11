@@ -1,7 +1,5 @@
 package com.illiarb.tmdbclient.navigation
 
-import com.illiarb.tmdblcient.core.navigation.NavigatorHolder
-import com.illiarb.tmdblcient.core.navigation.Router
 import javax.inject.Inject
 import javax.inject.Singleton
 

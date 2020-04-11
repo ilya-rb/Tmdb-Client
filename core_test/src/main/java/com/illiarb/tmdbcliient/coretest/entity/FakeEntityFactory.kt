@@ -1,7 +1,11 @@
 package com.illiarb.tmdbcliient.coretest.entity
 
-import com.illiarb.tmdblcient.core.domain.Genre
-import com.illiarb.tmdblcient.core.domain.Movie
+import com.illiarb.tmdbclient.util.Result
+import com.tmdbclient.servicetmdb.domain.Genre
+import com.tmdbclient.servicetmdb.domain.Image
+import com.tmdbclient.servicetmdb.domain.Movie
+import com.tmdbclient.servicetmdb.domain.MovieFilter
+import com.tmdbclient.servicetmdb.interactor.MoviesInteractor
 
 /**
  * Factory class to create entities for tests
@@ -11,18 +15,12 @@ import com.illiarb.tmdblcient.core.domain.Movie
 @Suppress("MagicNumber")
 object FakeEntityFactory {
 
-  fun createGenre(id: Int = 1, title: String = "Drama"): Genre = Genre(id, title)
-
-  fun createFakeMovie(init: () -> Movie = defaultMovieCreator()): Movie = init()
-
-  fun createFakeMovieList(
-    size: Int,
-    creator: () -> Movie = defaultMovieCreator()
-  ): List<Movie> = mutableListOf<Movie>().apply {
-    for (i in 0..size) {
-      add(creator.invoke())
-    }
-  }
+  val movieFilters = listOf(
+    MovieFilter("Now playing", MovieFilter.TYPE_NOW_PLAYING),
+    MovieFilter("Popular", MovieFilter.TYPE_POPULAR),
+    MovieFilter("Upcoming", MovieFilter.TYPE_UPCOMING),
+    MovieFilter("Top rated", MovieFilter.TYPE_TOP_RATED)
+  )
 
   private fun defaultMovieCreator(): () -> Movie = {
     Movie(
@@ -43,5 +41,63 @@ object FakeEntityFactory {
       9,
       emptyList()
     )
+  }
+
+  fun getMoviesByType(
+    type: String,
+    refresh: Boolean
+  ): Result<List<Movie>> {
+    val size = 10
+
+    return Result.Ok(
+      mutableListOf<Movie>().apply {
+        for (i in 0..size) {
+          add(createFakeMovie())
+        }
+      }
+    )
+  }
+
+  @Suppress("MagicNumber")
+  private val testGenres = listOf(
+    Genre(0, "Action"),
+    Genre(1, "Drama"),
+    Genre(2, "Animation"),
+    Genre(3, "Comedy"),
+    Genre(4, "Crime"),
+    Genre(5, "Documentary"),
+    Genre(6, "War"),
+    Genre(7, "Thriller"),
+    Genre(8, "Horror")
+  )
+
+  fun createGenre(id: Int = 1, title: String = "Drama"): Genre = Genre(id, title)
+
+  fun createFakeMovie(init: () -> Movie = defaultMovieCreator()): Movie = init()
+
+  fun createFakeMovieList(
+    size: Int,
+    creator: () -> Movie = defaultMovieCreator()
+  ): List<Movie> = mutableListOf<Movie>().apply {
+    for (i in 0..size) {
+      add(creator.invoke())
+    }
+  }
+
+  fun getGenres(): Result<List<Genre>> {
+    return Result.Ok(testGenres)
+  }
+
+  fun getMovieDetails(id: Int, appendToResponse: String): Result<Movie> {
+    var movie = createFakeMovie()
+    if (appendToResponse.contains(MoviesInteractor.KEY_INCLUDE_IMAGES)) {
+      movie = movie.copy(
+        images = listOf(
+          Image("image1", "image", emptyList()),
+          Image("image1", "image", emptyList())
+        )
+      )
+    }
+    return Result.Ok(movie)
   }
 }

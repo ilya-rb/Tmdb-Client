@@ -1,6 +1,6 @@
 package com.illiarb.tmdbcliient.coretest.tools
 
-import com.illiarb.tmdblcient.core.tools.ConnectivityStatus
+import com.illiarb.tmdbclient.tools.ConnectivityStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

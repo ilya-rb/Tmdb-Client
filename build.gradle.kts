@@ -69,14 +69,13 @@ allprojects {
 
 subprojects {
 
-  apply {
-    from(file("$rootDir/code_quality_tools/jacoco.gradle"))
-  }
-
   afterEvaluate {
-
     // Base extension for com.android.library and com.android.application
-    configure<com.android.build.gradle.BaseExtension> {
+    extensions.findByType<com.android.build.gradle.BaseExtension>()?.apply {
+      project.apply {
+        from(file("$rootDir/code_quality_tools/jacoco.gradle"))
+      }
+
       testOptions.unitTests.all(closureOf<Test> {
         // This allows to see tests execution progress
         // in the output on the CI.
