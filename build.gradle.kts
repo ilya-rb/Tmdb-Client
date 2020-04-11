@@ -24,7 +24,6 @@ buildscript {
     classpath(Deps.Kotlin.gradlePlugin)
     classpath(Deps.GradlePlugins.versionsCheck)
     classpath(Deps.GradlePlugins.jacoco)
-    "classpath"("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
   }
 }
 
@@ -71,14 +70,13 @@ allprojects {
 
 subprojects {
 
-  apply {
-    //from(file("$rootDir/code_quality_tools/jacoco.gradle"))
-  }
-
   afterEvaluate {
-
     // Base extension for com.android.library and com.android.application
     extensions.findByType<com.android.build.gradle.BaseExtension>()?.apply {
+      project.apply {
+        from(file("$rootDir/code_quality_tools/jacoco.gradle"))
+      }
+
       testOptions.unitTests.all(closureOf<Test> {
         // This allows to see tests execution progress
         // in the output on the CI.
