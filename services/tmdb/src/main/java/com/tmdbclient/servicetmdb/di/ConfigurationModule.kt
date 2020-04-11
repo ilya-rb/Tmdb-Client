@@ -22,6 +22,8 @@ import javax.inject.Qualifier
 @Module
 object ConfigurationModule {
 
+  private const val TIMEOUT_SECONDS = 10L
+
   @Provides
   @JvmStatic
   internal fun provideConfigurationApi(@ConfigurationClient retrofit: Retrofit): ConfigurationApi =
@@ -52,9 +54,9 @@ object ConfigurationModule {
     httpLoggingInterceptor: HttpLoggingInterceptor
   ): OkHttpClient {
     return OkHttpClient.Builder()
-      .connectTimeout(10, TimeUnit.SECONDS)
-      .readTimeout(10, TimeUnit.SECONDS)
-      .writeTimeout(10, TimeUnit.SECONDS)
+      .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+      .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+      .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
       .addInterceptor(apiKeyInterceptor)
       .addInterceptor(httpLoggingInterceptor)
       .build()

@@ -28,6 +28,7 @@ import javax.inject.Singleton
 object NetworkModule {
 
   private const val CACHE_SIZE_BYTES = 20 * 1024L
+  private const val TIMEOUT_SECONDS = 10L
 
   @Provides
   @JvmStatic
@@ -85,9 +86,9 @@ object NetworkModule {
     httpLoggingInterceptor: HttpLoggingInterceptor
   ): OkHttpClient =
     OkHttpClient.Builder()
-      .connectTimeout(10, TimeUnit.SECONDS)
-      .readTimeout(10, TimeUnit.SECONDS)
-      .writeTimeout(10, TimeUnit.SECONDS)
+      .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+      .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+      .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
       .addInterceptor(apiKeyInterceptor)
       .addInterceptor(httpLoggingInterceptor)
       .addInterceptor(regionInterceptor)
