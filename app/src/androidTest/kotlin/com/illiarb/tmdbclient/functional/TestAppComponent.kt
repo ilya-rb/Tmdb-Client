@@ -1,6 +1,6 @@
 package com.illiarb.tmdbclient.functional
 
-import com.illiarb.tmdbclient.MobileApplication
+import com.illiarb.tmdbclient.App
 import com.illiarb.tmdbclient.di.AppComponent
 import com.illiarb.tmdbclient.navigation.ActionsBuffer
 import com.illiarb.tmdbclient.navigation.AppRouter
@@ -23,7 +23,7 @@ class TestAppComponent : AppComponent,
 
   override fun router(): Router = router
 
-  override fun inject(app: MobileApplication) {
+  override fun inject(app: App) {
     app.appInitializers = emptySet()
   }
 }

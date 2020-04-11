@@ -4,10 +4,10 @@ import android.app.Application
 import com.facebook.flipper.core.FlipperPlugin
 import com.facebook.flipper.plugins.inspector.DescriptorMapping
 import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin
-import com.illiarb.tmdbclient.appinitializers.EmojiInitializer
-import com.illiarb.tmdbclient.appinitializers.FlipperInitializer
-import com.illiarb.tmdbclient.appinitializers.LoggerInitializer
-import com.illiarb.tmdbclient.appinitializers.WorkManagerInitializer
+import com.illiarb.tmdbclient.initializers.EmojiInitializer
+import com.illiarb.tmdbclient.initializers.FlipperInitializer
+import com.illiarb.tmdbclient.initializers.LoggerInitializer
+import com.illiarb.tmdbclient.initializers.WorkManagerInitializer
 import com.illiarb.tmdbclient.libs.tools.AppInitializer
 import dagger.Module
 import dagger.Provides

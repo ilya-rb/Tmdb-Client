@@ -15,10 +15,7 @@ import com.illiarb.tmdbclient.services.tmdb.di.TmdbComponent
 import javax.inject.Inject
 
 // TODO: Remove open
-open class MobileApplication : Application() {
-
-  @Inject
-  lateinit var appInitializers: Set<@JvmSuppressWildcards AppInitializer>
+open class App : Application() {
 
   open val appComponent: AppComponent by lazy {
     val toolsComponent = DaggerToolsComponent.builder()
@@ -51,13 +48,17 @@ open class MobileApplication : Application() {
   override fun onCreate() {
     super.onCreate()
 
-    appComponent.inject(this)
-
     AppInjector(this).registerLifecycleCallbacks()
 
     FirebaseApp.initializeApp(this)
 
-    appInitializers.forEach {
+    appComponent.inject(this)
+  }
+
+  @Inject
+  @Suppress("unused")
+  protected fun runInitializers(initializers: Set<@JvmSuppressWildcards AppInitializer>) {
+    initializers.forEach {
       it.initialize(this)
     }
   }

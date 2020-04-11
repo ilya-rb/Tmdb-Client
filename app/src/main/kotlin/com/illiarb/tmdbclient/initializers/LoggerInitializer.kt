@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.appinitializers
+package com.illiarb.tmdbclient.initializers
 
 import android.app.Application
 import com.illiarb.tmdbclient.BuildConfig
