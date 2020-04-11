@@ -5,13 +5,13 @@ import com.google.firebase.FirebaseApp
 import com.illiarb.tmdbclient.di.AppComponent
 import com.illiarb.tmdbclient.di.AppInjector
 import com.illiarb.tmdbclient.di.DaggerAppComponent
-import com.illiarb.tmdbclient.tools.AppInitializer
-import com.illiarb.tmdbclient.tools.DispatcherProvider
-import com.illiarb.tmdbclient.tools.ResourceResolver
-import com.illiarb.tmdbclient.tools.di.DaggerToolsComponent
-import com.illiarb.tmdclient.analytics.di.DaggerAnalyticsComponent
-import com.tmdbclient.servicetmdb.di.DaggerTmdbComponent
-import com.tmdbclient.servicetmdb.di.TmdbComponent
+import com.illiarb.tmdbclient.libs.tools.AppInitializer
+import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
+import com.illiarb.tmdbclient.libs.tools.ResourceResolver
+import com.illiarb.tmdbclient.libs.tools.di.DaggerToolsComponent
+import com.illiarb.tmdbclient.services.analytics.di.DaggerAnalyticsComponent
+import com.illiarb.tmdbclient.services.tmdb.di.DaggerTmdbComponent
+import com.illiarb.tmdbclient.services.tmdb.di.TmdbComponent
 import javax.inject.Inject
 
 // TODO: Remove open

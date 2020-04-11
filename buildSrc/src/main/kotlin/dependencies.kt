@@ -21,7 +21,7 @@ object Modules {
   object Core {
     const val ui = ":libs:ui"
     const val uiImage = ":libs:image-loader"
-    const val test = ":core_test"
+    const val test = ":libs:test"
     const val tools = ":libs:tools"
     const val util = ":libs:util"
     const val logger = ":libs:logger"

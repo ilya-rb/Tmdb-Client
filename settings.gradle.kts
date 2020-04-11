@@ -1,5 +1,3 @@
-include(":libs:logger")
-include(":libs:tools")
 plugins {
   id("com.gradle.enterprise") version "3.1.1"
 }
@@ -18,5 +16,7 @@ include(
   ":libs:ui",
   ":libs:image-loader",
   ":libs:util",
-  ":core_test"
+  ":libs:test",
+  ":libs:logger",
+  ":libs:tools"
 )
