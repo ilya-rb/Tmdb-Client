@@ -44,6 +44,7 @@ dependencies {
 
   implementation(project(Modules.Core.tools))
   implementation(project(Modules.Core.util))
+  implementation(project(Modules.Core.logger))
   implementation(Deps.Dagger.core)
   implementation(Deps.Android.Firebase.core)
   implementation(Deps.Android.AndroidX.workManager)
@@ -52,7 +53,9 @@ dependencies {
   implementation(Deps.Retrofit.core)
   implementation(Deps.Retrofit.converterGson)
   implementation(Deps.Retrofit.coroutinesAdapter)
-  implementation(Deps.Retrofit.okHttpLogger)
+
+  debugImplementation(Deps.Tools.Debug.Flipper.flipper)
+  debugImplementation(Deps.Tools.Debug.Flipper.flipperNetwork)
 
   testImplementation(project(Modules.Core.test))
   testImplementation(Deps.Test.AndroidX.extJunit)

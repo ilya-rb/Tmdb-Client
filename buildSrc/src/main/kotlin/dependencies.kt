@@ -113,7 +113,6 @@ object Deps {
     const val converterGson = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     const val coroutinesAdapter =
       "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
-    const val okHttpLogger = "com.squareup.okhttp3:logging-interceptor:4.4.0"
   }
 
   object AdapterDelegates {
@@ -132,12 +131,23 @@ object Deps {
 
   object Tools {
 
-    object LeakCanary {
-      private const val leakCanaryVersion = "2.2"
+    object Debug {
 
-      const val android = "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
-      const val objectWatcher =
-        "com.squareup.leakcanary:leakcanary-object-watcher-android:$leakCanaryVersion"
+      object Flipper {
+        private const val flipperVersion = "0.34.0"
+
+        const val flipper = "com.facebook.flipper:flipper:$flipperVersion"
+        const val flipperNetwork = "com.facebook.flipper:flipper-network-plugin:$flipperVersion"
+        const val soLoader = "com.facebook.soloader:soloader:0.8.2"
+      }
+
+      object LeakCanary {
+        private const val leakCanaryVersion = "2.2"
+
+        const val android = "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
+        const val objectWatcher =
+          "com.squareup.leakcanary:leakcanary-object-watcher-android:$leakCanaryVersion"
+      }
     }
   }
 
