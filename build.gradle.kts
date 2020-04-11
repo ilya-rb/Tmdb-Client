@@ -5,7 +5,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
 
-  val kotlin_version by extra("1.3.71")
   repositories {
     google()
     maven("https://plugins.gradle.org/m2/")
