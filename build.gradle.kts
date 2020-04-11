@@ -41,7 +41,7 @@ allprojects {
 
   apply {
     plugin("com.github.ben-manes.versions")
-    from(rootProject.file("code_quality_tools/detekt.gradle"))
+    from(rootProject.file("code-quality-tools/detekt.gradle"))
   }
 
   tasks.withType<JavaCompile>().all {
@@ -73,7 +73,7 @@ subprojects {
     // Base extension for com.android.library and com.android.application
     extensions.findByType<com.android.build.gradle.BaseExtension>()?.apply {
       project.apply {
-        from(file("$rootDir/code_quality_tools/jacoco.gradle"))
+        from(file("$rootDir/code-quality-tools/jacoco.gradle"))
       }
 
       testOptions.unitTests.all(closureOf<Test> {
@@ -128,5 +128,5 @@ tasks.register(name = "clean", type = Delete::class) {
 }
 
 tasks.register(name = "syncConfig", type = Exec::class) {
-  commandLine("sh", "$rootDir/ci_config/upload_config.sh")
+  commandLine("sh", "$rootDir/ci-config/upload-config.sh")
 }

@@ -4,7 +4,7 @@ detekt {
   failFast = false
   buildUponDefaultConfig = true
   autoCorrect = true
-  config = files("$rootDir/code_quality_tools/detekt_config.yml")
+  config = files("$rootDir/code_quality_tools/detekt-config.yml")
   reports {
     html {
       enabled = true
