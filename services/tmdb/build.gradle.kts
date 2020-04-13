@@ -60,6 +60,7 @@ dependencies {
   testImplementation(project(Modules.Core.test))
   testImplementation(Deps.Test.AndroidX.extJunit)
   testImplementation(Deps.Retrofit.core)
+  testImplementation(Deps.Retrofit.okHttp)
 
   androidTestImplementation(project(Modules.Core.test))
   androidTestImplementation(Deps.Test.AndroidX.extJunit)
