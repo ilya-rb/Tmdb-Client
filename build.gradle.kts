@@ -23,6 +23,7 @@ buildscript {
     classpath(Deps.Kotlin.gradlePlugin)
     classpath(Deps.GradlePlugins.versionsCheck)
     classpath(Deps.GradlePlugins.jacoco)
+    classpath(Deps.GradlePlugins.junit5)
   }
 }
 
@@ -77,6 +78,9 @@ subprojects {
       }
 
       testOptions.unitTests.all(closureOf<Test> {
+        // For JUnit 5
+        useJUnitPlatform()
+
         // This allows to see tests execution progress
         // in the output on the CI.
         testLogging {
@@ -89,7 +93,7 @@ subprojects {
             TestLogEvent.STANDARD_OUT
           )
         }
-      } /* Is there a way to avoid the cast? */ as Closure<Test>)
+      } as Closure<Test>)
 
       compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

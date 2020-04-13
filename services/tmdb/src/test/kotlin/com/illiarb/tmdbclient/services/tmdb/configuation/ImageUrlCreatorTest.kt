@@ -1,59 +1,72 @@
 package com.illiarb.tmdbclient.services.tmdb.configuation
 
+import com.google.common.truth.Correspondence
+import com.google.common.truth.Truth.assertThat
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageConfig
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageType
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageUrlCreator
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 
-class ImageUrlCreatorTest {
+internal class ImageUrlCreatorTest {
 
   private val imageUrlCreator = ImageUrlCreator()
 
-  @Test
-  fun `should contain profile size for profile image type`() {
-    val config = createImageConfig()
-    val image = imageUrlCreator.createImage(config, "image_path", ImageType.Profile)
+  @Nested
+  @DisplayName("Given a valid image config")
+  inner class ConfigSizesTest {
 
-    assertTrue(containsSizeOnly("profile/", image.sizes))
+    private val config = createImageConfig()
+    private val containsSubstring = Correspondence.from<String, String>(
+      { actual, expected -> actual?.contains(expected ?: "") ?: false },
+      "contains"
+    )
+
+    @ParameterizedTest
+    @EnumSource(ImageType::class)
+    fun `it should contain given size for given image type`(type: ImageType) {
+      val image = imageUrlCreator.createImage(config, "image_path", type)
+
+      assertThat(image.sizes)
+        .comparingElementsUsing(containsSubstring)
+        .contains(type.toString())
+    }
   }
 
-  @Test
-  fun `should contain backdrop size for backdrop image type`() {
-    val config = createImageConfig()
-    val image = imageUrlCreator.createImage(config, "image_path", ImageType.Backdrop)
+  @Nested
+  @DisplayName("Given an image config with the secure url without slash at the end")
+  inner class ConfigSecureUrlTest {
 
-    assertTrue(containsSizeOnly("backdrop/", image.sizes))
+    @ParameterizedTest
+    @EnumSource(ImageType::class)
+    fun `it should contain slash at the end of the url`(type: ImageType) {
+      val urlWithoutSlash = "https://url.com"
+      val config = createImageConfig(secureBaseUrl = urlWithoutSlash)
+      val image = imageUrlCreator.createImage(config, "image_path", type)
+
+      assertThat(image.baseUrl).startsWith(urlWithoutSlash.plus("/"))
+    }
   }
-
-  @Test
-  fun `should contain poster size for poster image type`() {
-    val config = createImageConfig()
-    val image = imageUrlCreator.createImage(config, "image_path", ImageType.Poster)
-
-    assertTrue(containsSizeOnly("poster/", image.sizes))
-  }
-
-  @Test
-  fun `should contain slash if secure url is missing`() {
-    val secureUrlWithoutSlash = "https://url.com"
-    val config = createImageConfig(secureBaseUrl = secureUrlWithoutSlash)
-    val image = imageUrlCreator.createImage(config, "image_path", ImageType.Poster)
-
-    assertTrue(image.baseUrl.startsWith("$secureUrlWithoutSlash/"))
-  }
-
-  private fun containsSizeOnly(expected: String, sizes: List<String>): Boolean =
-    sizes.all { it.contains(expected) }
 
   private fun createImageConfig(
     secureBaseUrl: String = "https://secure_base_url.com/"
   ): ImageConfig {
     return ImageConfig(
       secureBaseUrl = secureBaseUrl,
-      backdropSizes = listOf("backdrop/w500", "backdrop/w300"),
-      profileSizes = listOf("profile/w500", "profile/w300"),
-      posterSizes = listOf("poster/w500", "poster/w300")
+      backdropSizes = listOf(
+        "backdrop/w500",
+        "backdrop/w300"
+      ),
+      profileSizes = listOf(
+        "profile/w500",
+        "profile/w300"
+      ),
+      posterSizes = listOf(
+        "poster/w500",
+        "poster/w300"
+      )
     )
   }
 }

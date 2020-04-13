@@ -3,6 +3,7 @@ import java.util.Properties
 
 plugins {
   id("com.android.library")
+  id("de.mannodermaus.android-junit5")
   kotlin("android")
   kotlin("kapt")
 }
@@ -45,6 +46,7 @@ dependencies {
   implementation(project(Modules.Core.tools))
   implementation(project(Modules.Core.util))
   implementation(project(Modules.Core.logger))
+
   implementation(Deps.Dagger.core)
   implementation(Deps.Android.Firebase.core)
   implementation(Deps.Android.AndroidX.workManager)
@@ -58,11 +60,19 @@ dependencies {
   debugImplementation(Deps.Tools.Debug.Flipper.flipperNetwork)
 
   testImplementation(project(Modules.Core.test))
+
   testImplementation(Deps.Test.AndroidX.extJunit)
   testImplementation(Deps.Retrofit.core)
   testImplementation(Deps.Retrofit.okHttp)
+  testImplementation(Deps.Test.JUnit5.jupiterApi)
+  testImplementation(Deps.Test.JUnit5.jupiterParams)
+  testImplementation(Deps.Test.truth)
+
+  testRuntimeOnly(Deps.Test.JUnit5.jupiterEngine)
+  testRuntimeOnly(Deps.Test.JUnit5.junitVintageEngine)
 
   androidTestImplementation(project(Modules.Core.test))
+
   androidTestImplementation(Deps.Test.AndroidX.extJunit)
   androidTestImplementation(Deps.Test.AndroidX.runner)
 }
