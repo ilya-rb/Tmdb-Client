@@ -5,13 +5,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.illiarb.tmdbclient.libs.tools.ConnectivityStatus
-import com.illiarb.tmdbclient.libs.tools.DateFormatter
-import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
-import com.illiarb.tmdbclient.libs.tools.FeatureFlagStore
-import com.illiarb.tmdbclient.libs.tools.ResourceResolver
-import com.illiarb.tmdbclient.libs.tools.WorkManager
-import com.illiarb.tmdbclient.libs.tools.di.ToolsProvider
+import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import com.illiarb.tmdbclient.libs.test.analytics.TestAnalyticsService
 import com.illiarb.tmdbclient.libs.test.interactor.TestGenresInteractor
 import com.illiarb.tmdbclient.libs.test.interactor.TestHomeInteractor
@@ -21,6 +15,13 @@ import com.illiarb.tmdbclient.libs.test.tools.TestConnectivityStatus
 import com.illiarb.tmdbclient.libs.test.tools.TestDispatcherProvider
 import com.illiarb.tmdbclient.libs.test.tools.TestFeatureFlagStore
 import com.illiarb.tmdbclient.libs.test.tools.TestResourceResolver
+import com.illiarb.tmdbclient.libs.tools.ConnectivityStatus
+import com.illiarb.tmdbclient.libs.tools.DateFormatter
+import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
+import com.illiarb.tmdbclient.libs.tools.FeatureFlagStore
+import com.illiarb.tmdbclient.libs.tools.ResourceResolver
+import com.illiarb.tmdbclient.libs.tools.WorkManager
+import com.illiarb.tmdbclient.libs.tools.di.ToolsProvider
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
 import com.illiarb.tmdbclient.services.analytics.di.AnalyticsProvider
 import com.illiarb.tmdbclient.services.tmdb.di.TmdbProvider
@@ -60,4 +61,6 @@ object TestDependencies : ToolsProvider, AnalyticsProvider, TmdbProvider {
     object : WorkManager.WorkerCreator {
       override fun createWorkRequest(context: Context, params: WorkerParameters): Worker = null!!
     }
+
+  override fun networkFlipperPlugin(): NetworkFlipperPlugin = NetworkFlipperPlugin()
 }

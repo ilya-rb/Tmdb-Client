@@ -76,8 +76,11 @@ dependencies {
   // Play core lib for downloading dynamic features
   //implementation deps.playCore
 
-  debugImplementation(Deps.Tools.LeakCanary.android)
-  debugImplementation(Deps.Tools.LeakCanary.objectWatcher)
+  debugImplementation(Deps.Tools.Debug.LeakCanary.android)
+  debugImplementation(Deps.Tools.Debug.LeakCanary.objectWatcher)
+  debugImplementation(Deps.Tools.Debug.Flipper.flipper)
+  debugImplementation(Deps.Tools.Debug.Flipper.flipperNetwork)
+  debugImplementation(Deps.Tools.Debug.Flipper.soLoader)
 
   androidTestImplementation(project(Modules.Core.test))
   androidTestImplementation(Deps.Test.AndroidX.espressoIntents)

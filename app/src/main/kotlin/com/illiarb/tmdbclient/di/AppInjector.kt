@@ -7,12 +7,12 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
-import com.illiarb.tmdbclient.MobileApplication
+import com.illiarb.tmdbclient.App
 
 /**
  * @author ilya-rb on 24.12.18.
  */
-class AppInjector(private val app: MobileApplication) : Application.ActivityLifecycleCallbacks {
+class AppInjector(private val app: App) : Application.ActivityLifecycleCallbacks {
 
   override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
     if (activity is Injectable) {

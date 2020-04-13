@@ -36,6 +36,9 @@ dependencies {
 
   implementation(Deps.Android.AndroidX.workManager)
 
+  debugImplementation(Deps.Tools.Debug.Flipper.flipper)
+  debugImplementation(Deps.Tools.Debug.Flipper.flipperNetwork)
+
   api(Deps.Test.junit)
   api(Deps.Test.Mockito.core)
   api(Deps.Test.Mockito.inline)

@@ -1,6 +1,7 @@
 package com.illiarb.tmdbclient.services.tmdb.di
 
 import android.app.Application
+import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import com.illiarb.tmdbclient.libs.tools.DateFormatter
 import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
 import com.illiarb.tmdbclient.libs.tools.ResourceResolver
@@ -18,10 +19,10 @@ import javax.inject.Singleton
   modules = [
     ApiModule::class,
     NetworkModule::class,
-    NetworkModule::class,
     RepositoriesModule::class,
     InteractorsModule::class,
-    ConfigurationModule::class
+    ConfigurationModule::class,
+    FlipperModule::class
   ]
 )
 @Singleton
@@ -48,4 +49,5 @@ interface TmdbProvider {
   fun trendingInteractor(): TrendingInteractor
   fun dateFormatter(): DateFormatter
   fun configurationWorkerCreator(): WorkManager.WorkerCreator
+  fun networkFlipperPlugin(): NetworkFlipperPlugin
 }

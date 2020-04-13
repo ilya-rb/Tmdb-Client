@@ -1,6 +1,7 @@
 package com.illiarb.tmdbclient.services.tmdb.di
 
 import android.app.Application
+import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -17,7 +18,6 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.converter.gson.GsonConverterFactory
@@ -40,13 +40,6 @@ object NetworkModule {
     configurationRepository: ConfigurationRepository,
     resourceResolver: ResourceResolver
   ): RegionInterceptor = RegionInterceptor(configurationRepository, resourceResolver)
-
-  @Provides
-  @JvmStatic
-  internal fun provideLoggerInterceptor(): HttpLoggingInterceptor =
-    HttpLoggingInterceptor().apply {
-      level = HttpLoggingInterceptor.Level.BODY
-    }
 
   @Provides
   @JvmStatic
@@ -83,15 +76,15 @@ object NetworkModule {
     app: Application,
     apiKeyInterceptor: ApiKeyInterceptor,
     regionInterceptor: RegionInterceptor,
-    httpLoggingInterceptor: HttpLoggingInterceptor
+    flipperOkHttpInterceptor: FlipperOkhttpInterceptor
   ): OkHttpClient =
     OkHttpClient.Builder()
       .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
       .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
       .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
       .addInterceptor(apiKeyInterceptor)
-      .addInterceptor(httpLoggingInterceptor)
       .addInterceptor(regionInterceptor)
+      .addNetworkInterceptor(flipperOkHttpInterceptor)
       .retryOnConnectionFailure(true)
       .cache(Cache(app.filesDir, CACHE_SIZE_BYTES))
       .build()

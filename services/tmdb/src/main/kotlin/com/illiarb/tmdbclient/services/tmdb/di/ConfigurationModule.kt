@@ -12,7 +12,6 @@ import com.illiarb.tmdbclient.services.tmdb.internal.repository.ConfigurationRep
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -49,16 +48,12 @@ object ConfigurationModule {
   @Provides
   @ConfigurationClient
   @JvmStatic
-  internal fun provideConfigurationApiOkHttpClient(
-    apiKeyInterceptor: ApiKeyInterceptor,
-    httpLoggingInterceptor: HttpLoggingInterceptor
-  ): OkHttpClient {
+  internal fun provideConfigurationApiOkHttpClient(apiKeyInterceptor: ApiKeyInterceptor): OkHttpClient {
     return OkHttpClient.Builder()
       .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
       .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
       .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
       .addInterceptor(apiKeyInterceptor)
-      .addInterceptor(httpLoggingInterceptor)
       .build()
   }
 

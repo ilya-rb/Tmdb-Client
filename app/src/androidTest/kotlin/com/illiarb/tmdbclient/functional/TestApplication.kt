@@ -3,13 +3,13 @@ package com.illiarb.tmdbclient.functional
 import androidx.core.provider.FontRequest
 import androidx.emoji.text.EmojiCompat
 import androidx.emoji.text.FontRequestEmojiCompatConfig
-import com.illiarb.tmdbclient.MobileApplication
+import com.illiarb.tmdbclient.App
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.di.AppComponent
 import com.illiarb.tmdbclient.di.AppInjector
 
 // TODO: Fix this
-class TestApplication : MobileApplication() {
+class TestApplication : App() {
 
   private val testAppComponent = TestAppComponent()
 
