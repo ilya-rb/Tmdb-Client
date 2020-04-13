@@ -1,11 +1,8 @@
 package com.illiarb.tmdbclient.services.tmdb.interactor
 
-import com.illiarb.tmdbclient.libs.util.Result
+import com.google.common.truth.Truth.assertThat
 import com.illiarb.tmdbclient.libs.test.tools.TestDispatcherProvider
-import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.domain.Genre
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
 import com.illiarb.tmdbclient.services.tmdb.internal.configuration.Configuration
@@ -19,9 +16,12 @@ import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.PersonMappe
 import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.ReviewMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.ResultsModel
 import com.illiarb.tmdbclient.services.tmdb.repository.TestMovieRepository
+import com.nhaarman.mockitokotlin2.anyOrNull
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class MoviesInteractorTest {
 
@@ -30,20 +30,14 @@ class MoviesInteractorTest {
   private val movieApi = mock<MovieApi>()
   private val moviesRepository = TestMovieRepository()
 
-  private val interactor =
-    DefaultMoviesInteractor(
-      moviesRepository,
-      discoverApi,
-      movieApi,
-      MovieMapper(
-        GenreMapper(),
-        PersonMapper(),
-        ReviewMapper(),
-        ImageUrlCreator()
-      ),
-      cache,
-      TestDispatcherProvider()
-    )
+  private val interactor = DefaultMoviesInteractor(
+    moviesRepository,
+    discoverApi,
+    movieApi,
+    MovieMapper(GenreMapper(), PersonMapper(), ReviewMapper(), ImageUrlCreator()),
+    cache,
+    TestDispatcherProvider()
+  )
 
   @Test
   fun `should not pass genre id if all genres are selected`() = runBlockingTest {
@@ -64,6 +58,6 @@ class MoviesInteractorTest {
     whenever(cache.getConfiguration()).thenReturn(configuration)
 
     val details = interactor.getMovieDetails(id).unwrap()
-    assertTrue(details.images.isNotEmpty())
+    assertThat(details.images).isNotEmpty()
   }
 }
