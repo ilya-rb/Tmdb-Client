@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.databinding.FragmentMoviesBinding
-import com.illiarb.tmdbclient.di.AppComponent
+import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable
 import com.illiarb.tmdbclient.libs.ui.base.BaseViewBindingFragment
 import com.illiarb.tmdbclient.libs.ui.common.SnackbarController
@@ -71,12 +71,11 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
   override fun getViewBinding(inflater: LayoutInflater): FragmentMoviesBinding =
     FragmentMoviesBinding.inflate(inflater)
 
-  override fun inject(appComponent: AppComponent) {
+  override fun inject(appProvider: AppProvider) =
     DaggerHomeComponent.builder()
-      .dependencies(appComponent)
+      .dependencies(appProvider)
       .build()
       .inject(this)
-  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

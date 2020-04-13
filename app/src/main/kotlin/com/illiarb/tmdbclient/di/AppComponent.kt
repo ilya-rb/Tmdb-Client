@@ -30,15 +30,11 @@ import javax.inject.Singleton
   ]
 )
 @Singleton
-interface AppComponent :
-  MainComponent.Dependencies,
-  HomeComponent.Dependencies,
-  VideoListComponent.Dependencies,
-  MovieDetailsComponent.Dependencies,
-  DiscoverComponent.Dependencies {
+interface AppComponent : AppProvider {
 
   @Component.Builder
   interface Builder {
+
     @BindsInstance
     fun application(app: Application): Builder
     fun toolsProvider(provider: ToolsProvider): Builder
@@ -50,3 +46,10 @@ interface AppComponent :
 
   fun inject(app: App)
 }
+
+interface AppProvider :
+  MainComponent.Dependencies,
+  HomeComponent.Dependencies,
+  VideoListComponent.Dependencies,
+  MovieDetailsComponent.Dependencies,
+  DiscoverComponent.Dependencies

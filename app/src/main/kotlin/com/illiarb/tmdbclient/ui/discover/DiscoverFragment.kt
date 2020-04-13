@@ -12,13 +12,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.chip.Chip
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.databinding.FragmentDiscoverBinding
-import com.illiarb.tmdbclient.di.AppComponent
+import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable
-import com.illiarb.tmdbclient.navigation.Router.Action.ShowDiscover
-import com.illiarb.tmdbclient.ui.delegates.movieDelegate
-import com.illiarb.tmdbclient.ui.discover.DiscoverViewModel.Event
-import com.illiarb.tmdbclient.ui.discover.DiscoverViewModel.State
-import com.illiarb.tmdbclient.ui.discover.di.DaggerDiscoverComponent
 import com.illiarb.tmdbclient.libs.ui.base.BaseViewBindingFragment
 import com.illiarb.tmdbclient.libs.ui.common.SizeSpec
 import com.illiarb.tmdbclient.libs.ui.common.SnackbarController
@@ -27,7 +22,12 @@ import com.illiarb.tmdbclient.libs.ui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbclient.libs.ui.ext.setText
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.GridDecoration
+import com.illiarb.tmdbclient.navigation.Router.Action.ShowDiscover
 import com.illiarb.tmdbclient.services.tmdb.domain.Genre
+import com.illiarb.tmdbclient.ui.delegates.movieDelegate
+import com.illiarb.tmdbclient.ui.discover.DiscoverViewModel.Event
+import com.illiarb.tmdbclient.ui.discover.DiscoverViewModel.State
+import com.illiarb.tmdbclient.ui.discover.di.DaggerDiscoverComponent
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -55,9 +55,9 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
     ViewModelProvider(this, viewModelFactory).get(DiscoverViewModel::class.java)
   }
 
-  override fun inject(appComponent: AppComponent) =
+  override fun inject(appProvider: AppProvider) =
     DaggerDiscoverComponent.builder()
-      .dependencies(appComponent)
+      .dependencies(appProvider)
       .genreId(arguments?.getInt(ShowDiscover.EXTRA_GENRE_ID, Genre.GENRE_ALL) ?: Genre.GENRE_ALL)
       .build()
       .inject(this)

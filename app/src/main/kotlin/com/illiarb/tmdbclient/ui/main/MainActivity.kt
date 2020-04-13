@@ -12,11 +12,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.illiarb.tmdbclient.BuildConfig
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.databinding.ActivityMainBinding
-import com.illiarb.tmdbclient.di.AppComponent
+import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable
+import com.illiarb.tmdbclient.libs.tools.ConnectivityStatus
 import com.illiarb.tmdbclient.navigation.Navigator
 import com.illiarb.tmdbclient.navigation.NavigatorHolder
-import com.illiarb.tmdbclient.libs.tools.ConnectivityStatus
 import com.illiarb.tmdbclient.ui.debug.DebugSelectorFragment
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -37,10 +37,10 @@ class MainActivity : AppCompatActivity(), Injectable {
 
   private var connectionSnackbar: Snackbar? = null
 
-  override fun inject(appComponent: AppComponent) =
+  override fun inject(appProvider: AppProvider) =
     DaggerMainComponent.builder()
       .activity(this)
-      .dependencies(appComponent)
+      .dependencies(appProvider)
       .build()
       .inject(this)
 

@@ -7,16 +7,18 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
-import com.illiarb.tmdbclient.App
 
 /**
  * @author ilya-rb on 24.12.18.
  */
-class AppInjector(private val app: App) : Application.ActivityLifecycleCallbacks {
+class AppInjector(
+  private val application: Application,
+  private val provider: AppProvider
+) : Application.ActivityLifecycleCallbacks {
 
   override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
     if (activity is Injectable) {
-      activity.inject(app.appComponent)
+      activity.inject(provider)
     }
 
     if (activity is FragmentActivity) {
@@ -35,7 +37,7 @@ class AppInjector(private val app: App) : Application.ActivityLifecycleCallbacks
   override fun onActivityStopped(activity: Activity?) = Unit
 
   fun registerLifecycleCallbacks() {
-    app.registerActivityLifecycleCallbacks(this)
+    application.registerActivityLifecycleCallbacks(this)
   }
 
   private fun fragmentLifecycleCallbacks(): FragmentManager.FragmentLifecycleCallbacks {
@@ -46,7 +48,7 @@ class AppInjector(private val app: App) : Application.ActivityLifecycleCallbacks
         context: Context
       ) {
         if (fragment is Injectable) {
-          fragment.inject(app.appComponent)
+          fragment.inject(provider)
         }
       }
     }
