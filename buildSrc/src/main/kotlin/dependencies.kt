@@ -149,6 +149,14 @@ object Deps {
         const val objectWatcher =
           "com.squareup.leakcanary:leakcanary-object-watcher-android:$leakCanaryVersion"
       }
+
+      object Hyperion {
+        private const val hyperionVersion = "0.9.27"
+
+        const val core = "com.willowtreeapps.hyperion:hyperion-core:$hyperionVersion"
+        const val geigerCounter =
+          "com.willowtreeapps.hyperion:hyperion-geiger-counter:$hyperionVersion"
+      }
     }
   }
 

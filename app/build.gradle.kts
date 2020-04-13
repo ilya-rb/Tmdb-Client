@@ -81,6 +81,8 @@ dependencies {
   debugImplementation(Deps.Tools.Debug.Flipper.flipper)
   debugImplementation(Deps.Tools.Debug.Flipper.flipperNetwork)
   debugImplementation(Deps.Tools.Debug.Flipper.soLoader)
+  debugImplementation(Deps.Tools.Debug.Hyperion.core)
+  debugImplementation(Deps.Tools.Debug.Hyperion.geigerCounter)
 
   androidTestImplementation(project(Modules.Core.test))
   androidTestImplementation(Deps.Test.AndroidX.espressoIntents)
