@@ -21,6 +21,9 @@ android {
 
     versionCode = 1
     versionName = "1.0"
+
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
   }
 
   buildTypes {
@@ -36,6 +39,10 @@ android {
       isMinifyEnabled = false
       proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
     }
+  }
+
+  packagingOptions {
+    exclude("META-INF/LICENSE*")
   }
 }
 
@@ -72,7 +79,11 @@ dependencies {
   testRuntimeOnly(Deps.Test.JUnit5.junitVintageEngine)
 
   androidTestImplementation(project(Modules.Core.test))
-
+  androidTestImplementation(Deps.Test.JUnit5.jupiterApi)
+  androidTestImplementation(Deps.Test.JUnit5.androidTestCore)
   androidTestImplementation(Deps.Test.AndroidX.extJunit)
   androidTestImplementation(Deps.Test.AndroidX.runner)
+  androidTestImplementation(Deps.Test.truth)
+
+  androidTestRuntimeOnly(Deps.Test.JUnit5.androidTestRunner)
 }

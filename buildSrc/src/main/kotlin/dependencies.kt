@@ -177,11 +177,15 @@ object Deps {
 
     object JUnit5 {
       private const val jUnitVersion = "5.6.0"
+      private const val androidTestVersion = "1.0.0"
 
       const val jupiterApi = "org.junit.jupiter:junit-jupiter-api:$jUnitVersion"
       const val jupiterEngine = "org.junit.jupiter:junit-jupiter-engine:$jUnitVersion"
       const val jupiterParams = "org.junit.jupiter:junit-jupiter-params:$jUnitVersion"
       const val junitVintageEngine = "org.junit.vintage:junit-vintage-engine:$jUnitVersion"
+
+      const val androidTestCore = "de.mannodermaus.junit5:android-test-core:$androidTestVersion"
+      const val androidTestRunner = "de.mannodermaus.junit5:android-test-runner:$androidTestVersion"
     }
 
     object AndroidX {
