@@ -1,5 +1,6 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.network.interceptor
 
+import com.google.common.truth.Truth.assertThat
 import com.illiarb.tmdbclient.libs.tools.ResourceResolver
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.domain.Country
@@ -9,17 +10,14 @@ import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import okhttp3.Interceptor
 import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import java.util.Locale
 
-@ExperimentalCoroutinesApi
 class RegionInterceptorTest {
 
   @Test
@@ -43,7 +41,7 @@ class RegionInterceptorTest {
     }
 
     val intercepted = interceptor.captureInterceptedRequest(chain)
-    assertEquals(region, intercepted.url.queryParameter("region"))
+    assertThat(region).isEqualTo(intercepted.url.queryParameter("region"))
   }
 
   private suspend fun createInterceptorWithRegion(region: String): RegionInterceptor {

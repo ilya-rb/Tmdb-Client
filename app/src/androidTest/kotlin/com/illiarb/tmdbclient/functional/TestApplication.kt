@@ -1,23 +1,19 @@
 package com.illiarb.tmdbclient.functional
 
+import android.app.Application
 import androidx.core.provider.FontRequest
 import androidx.emoji.text.EmojiCompat
 import androidx.emoji.text.FontRequestEmojiCompatConfig
-import com.illiarb.tmdbclient.App
 import com.illiarb.tmdbclient.R
-import com.illiarb.tmdbclient.di.AppComponent
 import com.illiarb.tmdbclient.di.AppInjector
 
-// TODO: Fix this
-class TestApplication : App() {
+class TestApplication : Application() {
 
   private val testAppComponent = TestAppComponent()
 
-  override val appComponent: AppComponent get() = testAppComponent
-
   override fun onCreate() {
     super.onCreate()
-    AppInjector(this).registerLifecycleCallbacks()
+    AppInjector(this, testAppComponent).registerLifecycleCallbacks()
 
     val config = FontRequestEmojiCompatConfig(
       this,

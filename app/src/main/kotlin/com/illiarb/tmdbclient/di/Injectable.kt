@@ -5,5 +5,5 @@ package com.illiarb.tmdbclient.di
  */
 interface Injectable {
 
-  fun inject(appComponent: AppComponent)
+  fun inject(appProvider: AppProvider)
 }

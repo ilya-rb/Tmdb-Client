@@ -1,25 +1,23 @@
 package com.illiarb.tmdbclient.services.tmdb.repository
 
-import com.illiarb.tmdbclient.libs.util.Result
+import com.google.common.truth.Truth.assertThat
 import com.illiarb.tmdbclient.libs.test.tools.TestDispatcherProvider
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyZeroInteractions
-import com.nhaarman.mockitokotlin2.whenever
+import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.GenreApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.GenreMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.GenreListModel
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.GenreModel
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.DefaultGenresRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyZeroInteractions
+import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
-@ExperimentalCoroutinesApi
 class GenresRepositoryTest {
 
   private val genresApi = mock<GenreApi>()
@@ -45,7 +43,8 @@ class GenresRepositoryTest {
     verify(cache, times(1)).getGenres()
     verifyZeroInteractions(genresApi)
 
-    assertTrue(result is Result.Ok && result.data.isNotEmpty())
+    assertThat(result).isInstanceOf(Result.Ok::class.java)
+    assertThat(result.unwrap()).isNotEmpty()
   }
 
   @Test

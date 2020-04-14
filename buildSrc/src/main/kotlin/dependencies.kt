@@ -38,6 +38,7 @@ object Deps {
   object GradlePlugins {
     const val jacoco = "org.jacoco:org.jacoco.core:0.8.5"
     const val versionsCheck = "com.github.ben-manes:gradle-versions-plugin:0.27.0"
+    const val junit5 = "de.mannodermaus.gradle.plugins:android-junit5:1.6.0.0"
   }
 
   object Kotlin {
@@ -149,6 +150,14 @@ object Deps {
         const val objectWatcher =
           "com.squareup.leakcanary:leakcanary-object-watcher-android:$leakCanaryVersion"
       }
+
+      object Hyperion {
+        private const val hyperionVersion = "0.9.27"
+
+        const val core = "com.willowtreeapps.hyperion:hyperion-core:$hyperionVersion"
+        const val geigerCounter =
+          "com.willowtreeapps.hyperion:hyperion-geiger-counter:$hyperionVersion"
+      }
     }
   }
 
@@ -162,8 +171,22 @@ object Deps {
   object Test {
 
     const val junit = "junit:junit:4.13"
+    const val truth = "com.google.truth:truth:1.0.1"
     const val kaspresso = "com.kaspersky.android-components:kaspresso:1.1.0"
     const val kakao = "com.agoda.kakao:kakao:2.3.0"
+
+    object JUnit5 {
+      private const val jUnitVersion = "5.6.0"
+      private const val androidTestVersion = "1.0.0"
+
+      const val jupiterApi = "org.junit.jupiter:junit-jupiter-api:$jUnitVersion"
+      const val jupiterEngine = "org.junit.jupiter:junit-jupiter-engine:$jUnitVersion"
+      const val jupiterParams = "org.junit.jupiter:junit-jupiter-params:$jUnitVersion"
+      const val junitVintageEngine = "org.junit.vintage:junit-vintage-engine:$jUnitVersion"
+
+      const val androidTestCore = "de.mannodermaus.junit5:android-test-core:$androidTestVersion"
+      const val androidTestRunner = "de.mannodermaus.junit5:android-test-runner:$androidTestVersion"
+    }
 
     object AndroidX {
       private const val espressoVersion = "3.3.0-alpha04"

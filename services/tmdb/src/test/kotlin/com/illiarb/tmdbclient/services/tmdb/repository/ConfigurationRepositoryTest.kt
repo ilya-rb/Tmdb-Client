@@ -1,23 +1,21 @@
 package com.illiarb.tmdbclient.services.tmdb.repository
 
-import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.libs.test.tools.TestDispatcherProvider
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyZeroInteractions
-import com.nhaarman.mockitokotlin2.whenever
+import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
 import com.illiarb.tmdbclient.services.tmdb.internal.configuration.Configuration
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageConfig
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.ConfigurationApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.CountryMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.DefaultConfigurationRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyZeroInteractions
+import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
-@ExperimentalCoroutinesApi
 class ConfigurationRepositoryTest {
 
   private val cache = mock<TmdbCache>()
@@ -30,7 +28,7 @@ class ConfigurationRepositoryTest {
   )
 
   @Test
-  fun `should check cache first and return from cached data if not empty`() = runBlockingTest {
+  fun `it should check cache first and return from cached data if not empty`() = runBlockingTest {
     whenever(cache.getConfiguration())
       .thenReturn(
         Configuration(
@@ -51,19 +49,17 @@ class ConfigurationRepositoryTest {
   }
 
   @Test
-  fun `should check cache and if it is empty fetch from api`() = runBlockingTest {
+  fun `it should check cache and if it is empty fetch from api`() = runBlockingTest {
     whenever(cache.getConfiguration()).thenReturn(Configuration())
 
     repository.getConfiguration()
 
     verify(cache, times(1)).getConfiguration()
-
-    @Suppress("DeferredResultUnused")
     verify(api).getConfiguration()
   }
 
   @Test
-  fun `should store configuration in cache after successful fetch`() = runBlockingTest {
+  fun `it should store configuration in cache after successful fetch`() = runBlockingTest {
     val configToStore = Configuration()
 
     whenever(cache.getConfiguration()).thenReturn(Configuration())

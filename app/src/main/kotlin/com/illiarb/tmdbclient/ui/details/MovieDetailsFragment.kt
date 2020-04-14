@@ -8,21 +8,13 @@ import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.illiarb.tmdbclient.libs.imageloader.CropOptions
-import com.illiarb.tmdbclient.libs.imageloader.loadImage
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.databinding.FragmentMovieDetailsBinding
-import com.illiarb.tmdbclient.di.AppComponent
+import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable
-import com.illiarb.tmdbclient.navigation.Router.Action.ShowMovieDetails
+import com.illiarb.tmdbclient.libs.imageloader.CropOptions
+import com.illiarb.tmdbclient.libs.imageloader.loadImage
 import com.illiarb.tmdbclient.libs.tools.DateFormatter
-import com.illiarb.tmdbclient.ui.details.MovieDetailsViewModel.Event
-import com.illiarb.tmdbclient.ui.details.MovieDetailsViewModel.State
-import com.illiarb.tmdbclient.ui.details.delegates.movieInfoDelegate
-import com.illiarb.tmdbclient.ui.details.delegates.movieSimilarDelegate
-import com.illiarb.tmdbclient.ui.details.delegates.photoSectionDelegate
-import com.illiarb.tmdbclient.ui.details.di.DaggerMovieDetailsComponent
-import com.illiarb.tmdbclient.libs.util.Async
 import com.illiarb.tmdbclient.libs.ui.base.BaseViewBindingFragment
 import com.illiarb.tmdbclient.libs.ui.common.SnackbarController
 import com.illiarb.tmdbclient.libs.ui.ext.dimen
@@ -32,7 +24,15 @@ import com.illiarb.tmdbclient.libs.ui.ext.setVisible
 import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
+import com.illiarb.tmdbclient.libs.util.Async
+import com.illiarb.tmdbclient.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
+import com.illiarb.tmdbclient.ui.details.MovieDetailsViewModel.Event
+import com.illiarb.tmdbclient.ui.details.MovieDetailsViewModel.State
+import com.illiarb.tmdbclient.ui.details.delegates.movieInfoDelegate
+import com.illiarb.tmdbclient.ui.details.delegates.movieSimilarDelegate
+import com.illiarb.tmdbclient.ui.details.delegates.photoSectionDelegate
+import com.illiarb.tmdbclient.ui.details.di.DaggerMovieDetailsComponent
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -58,9 +58,9 @@ class MovieDetailsFragment : BaseViewBindingFragment<FragmentMovieDetailsBinding
     viewModelFactory.create(MovieDetailsViewModel::class.java)
   }
 
-  override fun inject(appComponent: AppComponent) =
+  override fun inject(appProvider: AppProvider) =
     DaggerMovieDetailsComponent.builder()
-      .dependencies(appComponent)
+      .dependencies(appProvider)
       .movieId(requireArguments().getInt(ShowMovieDetails.EXTRA_MOVIE_DETAILS))
       .build()
       .inject(this)

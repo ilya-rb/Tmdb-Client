@@ -1,45 +1,46 @@
 package com.illiarb.tmdbclient.services.tmdb
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.google.common.truth.Truth.assertThat
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
 import com.illiarb.tmdbclient.services.tmdb.internal.configuration.Configuration
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageConfig
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.GenreModel
-import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 
-@RunWith(AndroidJUnit4::class)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class TmdbCacheTest {
 
   private lateinit var cache: TmdbCache
 
-  @Before
-  fun before() {
+  @BeforeEach
+  fun beforeEach() {
     val context = InstrumentationRegistry.getInstrumentation().context
     cache = TmdbCache(context)
   }
 
-  @After
-  fun after() {
+  @AfterEach
+  fun afterEach() {
     cache.clear()
   }
 
   @Test
-  fun shouldStoreAndReadConfiguration() {
+  @DisplayName("it should store and read the configuration")
+  fun readWriteConfigurationTest() {
     val writeConfig = createConfiguration()
-    assertTrue(cache.storeConfiguration(writeConfig))
+    assertThat(cache.storeConfiguration(writeConfig)).isTrue()
 
     val readConfig = cache.getConfiguration()
-    assertEquals(writeConfig, readConfig)
+    assertThat(writeConfig).isEqualTo(readConfig)
   }
 
   @Test
-  fun shouldClearStorage() {
+  @DisplayName("it should clear the storage")
+  fun clearStorageTest() {
     val config = createConfiguration()
     val genres = listOf(GenreModel(), GenreModel())
 
@@ -49,11 +50,12 @@ class TmdbCacheTest {
 
     // Should remove every key from store
     val keys = cache.keys()
-    assertTrue(keys.none { keys.contains(it) })
+    assertThat(keys).isEmpty()
   }
 
   @Test
-  fun shouldReturnAllKeys() {
+  @DisplayName("it should return all keys")
+  fun returnKeysTest() {
     val config = createConfiguration()
     val genres = listOf(GenreModel(), GenreModel())
 
@@ -62,20 +64,18 @@ class TmdbCacheTest {
 
     val keys = cache.keys()
 
-    assertEquals(keys.size, 2)
-
-    assertTrue(keys.contains(TmdbCache.KEY_CONFIGURATION))
-    assertTrue(keys.contains(TmdbCache.KEY_GENRES))
+    assertThat(keys.size).isEqualTo(2)
+    assertThat(keys).contains(TmdbCache.KEY_CONFIGURATION)
+    assertThat(keys).contains(TmdbCache.KEY_GENRES)
   }
 
-  private fun createConfiguration() =
-    Configuration(
-      changeKeys = listOf("movies", "reviews", "images"),
-      images = ImageConfig(
-        secureBaseUrl = "secure_base_url",
-        backdropSizes = listOf("100", "200", "300"),
-        posterSizes = listOf("100", "200", "300"),
-        profileSizes = listOf("100", "200", "300")
-      )
+  private fun createConfiguration() = Configuration(
+    changeKeys = listOf("movies", "reviews", "images"),
+    images = ImageConfig(
+      secureBaseUrl = "secure_base_url",
+      backdropSizes = listOf("100", "200", "300"),
+      posterSizes = listOf("100", "200", "300"),
+      profileSizes = listOf("100", "200", "300")
     )
+  )
 }

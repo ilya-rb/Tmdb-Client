@@ -9,17 +9,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.illiarb.tmdbclient.databinding.FragmentVideoListBinding
-import com.illiarb.tmdbclient.di.AppComponent
+import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable
-import com.illiarb.tmdbclient.navigation.Router
-import com.illiarb.tmdbclient.ui.video.VideoListViewModel.Event
-import com.illiarb.tmdbclient.ui.video.VideoListViewModel.State
-import com.illiarb.tmdbclient.ui.video.di.DaggerVideoListComponent
 import com.illiarb.tmdbclient.libs.ui.base.BaseViewBindingFragment
 import com.illiarb.tmdbclient.libs.ui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbclient.libs.ui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.DelegatesAdapter
+import com.illiarb.tmdbclient.navigation.Router
+import com.illiarb.tmdbclient.ui.video.VideoListViewModel.Event
+import com.illiarb.tmdbclient.ui.video.VideoListViewModel.State
+import com.illiarb.tmdbclient.ui.video.di.DaggerVideoListComponent
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -55,9 +55,9 @@ class VideoListFragment : BaseViewBindingFragment<FragmentVideoListBinding>(), I
     ViewCompat.requestApplyInsets(view)
   }
 
-  override fun inject(appComponent: AppComponent) =
+  override fun inject(appProvider: AppProvider) =
     DaggerVideoListComponent.builder()
-      .dependencies(appComponent)
+      .dependencies(appProvider)
       .movieId(requireArguments().getInt(Router.Action.ShowVideos.EXTRA_MOVIE_ID))
       .build()
       .inject(this)

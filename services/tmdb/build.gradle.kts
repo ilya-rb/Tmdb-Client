@@ -3,6 +3,7 @@ import java.util.Properties
 
 plugins {
   id("com.android.library")
+  id("de.mannodermaus.android-junit5")
   kotlin("android")
   kotlin("kapt")
 }
@@ -20,6 +21,9 @@ android {
 
     versionCode = 1
     versionName = "1.0"
+
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
   }
 
   buildTypes {
@@ -36,6 +40,10 @@ android {
       proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
     }
   }
+
+  packagingOptions {
+    exclude("META-INF/LICENSE*")
+  }
 }
 
 dependencies {
@@ -45,6 +53,7 @@ dependencies {
   implementation(project(Modules.Core.tools))
   implementation(project(Modules.Core.util))
   implementation(project(Modules.Core.logger))
+
   implementation(Deps.Dagger.core)
   implementation(Deps.Android.Firebase.core)
   implementation(Deps.Android.AndroidX.workManager)
@@ -58,11 +67,23 @@ dependencies {
   debugImplementation(Deps.Tools.Debug.Flipper.flipperNetwork)
 
   testImplementation(project(Modules.Core.test))
+
   testImplementation(Deps.Test.AndroidX.extJunit)
   testImplementation(Deps.Retrofit.core)
   testImplementation(Deps.Retrofit.okHttp)
+  testImplementation(Deps.Test.JUnit5.jupiterApi)
+  testImplementation(Deps.Test.JUnit5.jupiterParams)
+  testImplementation(Deps.Test.truth)
+
+  testRuntimeOnly(Deps.Test.JUnit5.jupiterEngine)
+  testRuntimeOnly(Deps.Test.JUnit5.junitVintageEngine)
 
   androidTestImplementation(project(Modules.Core.test))
+  androidTestImplementation(Deps.Test.JUnit5.jupiterApi)
+  androidTestImplementation(Deps.Test.JUnit5.androidTestCore)
   androidTestImplementation(Deps.Test.AndroidX.extJunit)
   androidTestImplementation(Deps.Test.AndroidX.runner)
+  androidTestImplementation(Deps.Test.truth)
+
+  androidTestRuntimeOnly(Deps.Test.JUnit5.androidTestRunner)
 }

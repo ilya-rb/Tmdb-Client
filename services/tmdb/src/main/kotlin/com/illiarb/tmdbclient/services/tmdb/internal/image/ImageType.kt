@@ -6,5 +6,12 @@ internal enum class ImageType {
 
   Poster,
 
-  Profile
+  Profile;
+
+  override fun toString(): String =
+    when (this) {
+      Backdrop -> "backdrop"
+      Poster -> "poster"
+      Profile -> "profile"
+    }
 }
