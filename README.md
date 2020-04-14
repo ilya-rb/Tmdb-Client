@@ -10,15 +10,14 @@ Simple playground for testing various Android stuff(libraries, frameworks, archi
 
 ## Technologies:
 - Kotlin
-- Kotlin coroutines
 - AndroidX/Jetpack (View model, Navigation, Lifecycle)
 - Standard Square stuff (Retrofit, OkHttp)
 - Firebase (remote config) for feature flags
 - [Binary preferences](https://github.com/yandextaxitech/binaryprefs) as a simple cache
 - [Adapter delegates](https://github.com/sockeqwe/AdapterDelegates) for RecyclerView 
 - Glide
-- LeakCanary
-- JUnit4 for unit tests
+- LeakCanary, Flipper, Hyperion debug drawer
+- JUnit5 for unit and intergration tests
 - [Kaspresso](https://github.com/KasperskyLab/Kaspresso) for automated tests
 - Detekt for code analysis
 - Jacoco for tests coverage
