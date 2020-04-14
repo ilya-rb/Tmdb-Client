@@ -5,14 +5,12 @@
     android:layout_width="@dimen/item_movie_width"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:stateListAnimator="@xml/sla_scale_down"
     tools:viewBindingIgnore="true">
 
     <FrameLayout
         android:id="@+id/itemMovieCard"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_movie_height"
-        android:stateListAnimator="@xml/sla_scale_down">
+        android:layout_height="@dimen/item_movie_height">
 
         <ImageView
             android:id="@+id/itemMoviePoster"

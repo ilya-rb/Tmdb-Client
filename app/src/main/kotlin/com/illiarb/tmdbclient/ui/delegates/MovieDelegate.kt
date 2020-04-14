@@ -4,9 +4,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
+import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.libs.imageloader.CropOptions
 import com.illiarb.tmdbclient.libs.imageloader.loadImage
-import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
 import com.illiarb.tmdbclient.libs.ui.common.SizeSpec
 import com.illiarb.tmdbclient.libs.ui.ext.dimen
@@ -41,7 +41,7 @@ fun movieDelegate(
       crop(CropOptions.CenterCrop)
     }
 
-    image.setOnClickListener {
+    itemView.setOnClickListener {
       clickListener(item)
     }
   }
