@@ -1,14 +1,7 @@
 package com.illiarb.tmdbclient.services.tmdb.repository
 
-import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
 import com.illiarb.tmdbclient.libs.test.tools.TestResourceResolver
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-import com.nhaarman.mockitokotlin2.verifyZeroInteractions
-import com.nhaarman.mockitokotlin2.whenever
+import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.GenreMapper
@@ -17,13 +10,20 @@ import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.PersonMappe
 import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.ReviewMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.MovieModel
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.DefaultMoviesRepository
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
+import com.nhaarman.mockitokotlin2.verifyZeroInteractions
+import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 
-@ExperimentalCoroutinesApi
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class MoviesRepositoryTest {
 
   private val moviesApi = mock<MovieApi>()
@@ -44,8 +44,8 @@ class MoviesRepositoryTest {
     TestResourceResolver()
   )
 
-  @Before
-  fun before() {
+  @BeforeEach
+  fun beforeAll() {
     whenever(dispatcherProvider.io).thenReturn(Dispatchers.Unconfined)
   }
 
