@@ -1,16 +1,16 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.interactor
 
 import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
-import com.illiarb.tmdbclient.services.tmdb.domain.Genre
+import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.services.tmdb.domain.MovieBlock
 import com.illiarb.tmdbclient.services.tmdb.domain.MovieFilter
+import com.illiarb.tmdbclient.services.tmdb.domain.PagedList
 import com.illiarb.tmdbclient.services.tmdb.domain.Video
-import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
+import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.DiscoverApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
-import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
 import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.MovieMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.MoviesRepository
 import kotlinx.coroutines.withContext
@@ -53,14 +53,14 @@ internal class DefaultMoviesInteractor @Inject constructor(
     return repository.getMovieDetails(movieId, keys)
   }
 
-  override suspend fun discoverMovies(genreId: Int): Result<List<Movie>> {
-    val id = if (genreId == Genre.GENRE_ALL) null else genreId.toString()
+  override suspend fun discoverMovies(genreIds: List<Int>, page: Int): Result<PagedList<Movie>> {
+    val ids = if (genreIds.isEmpty()) null else genreIds.joinToString(",")
     val config = withContext(dispatcherProvider.io) {
       cache.getConfiguration()
     }
 
-    return discoverApi.discoverMovies(id).mapOnSuccess {
-      movieMapper.mapList(config, it.results)
+    return discoverApi.discoverMovies(ids, page).mapOnSuccess {
+      PagedList(movieMapper.mapList(config, it.results), it.page, it.totalPages)
     }
   }
 

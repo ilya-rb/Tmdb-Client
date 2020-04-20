@@ -1,9 +1,10 @@
 package com.illiarb.tmdbclient.services.tmdb.interactor
 
+import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.services.tmdb.domain.MovieBlock
+import com.illiarb.tmdbclient.services.tmdb.domain.PagedList
 import com.illiarb.tmdbclient.services.tmdb.domain.Video
-import com.illiarb.tmdbclient.libs.util.Result
 
 interface MoviesInteractor {
 
@@ -20,5 +21,5 @@ interface MoviesInteractor {
 
   suspend fun getSimilarMovies(movieId: Int): Result<List<Movie>>
 
-  suspend fun discoverMovies(genreId: Int): Result<List<Movie>>
+  suspend fun discoverMovies(genreIds: List<Int>, page: Int): Result<PagedList<Movie>>
 }

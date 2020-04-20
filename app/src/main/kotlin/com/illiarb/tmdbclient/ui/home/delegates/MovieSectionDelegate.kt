@@ -66,7 +66,7 @@ fun movieSection(
 }
 
 private class MovieSectionAdapter(clickListener: OnClickListener<Movie>) :
-  ListDelegationAdapter<List<Movie>>() {
+  ListDelegationAdapter<List<Any>>() {
 
   init {
     delegatesManager.addDelegate(

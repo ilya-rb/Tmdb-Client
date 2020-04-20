@@ -3,7 +3,6 @@ package com.illiarb.tmdbclient.services.tmdb.interactor
 import com.google.common.truth.Truth.assertThat
 import com.illiarb.tmdbclient.libs.test.tools.TestDispatcherProvider
 import com.illiarb.tmdbclient.libs.util.Result
-import com.illiarb.tmdbclient.services.tmdb.domain.Genre
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
 import com.illiarb.tmdbclient.services.tmdb.internal.configuration.Configuration
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageUrlCreator
@@ -16,6 +15,7 @@ import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.PersonMappe
 import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.ReviewMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.ResultsModel
 import com.illiarb.tmdbclient.services.tmdb.repository.TestMovieRepository
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -44,10 +44,13 @@ class MoviesInteractorTest {
     val configuration = Configuration(changeKeys = listOf("images"))
 
     whenever(cache.getConfiguration()).thenReturn(configuration)
-    whenever(discoverApi.discoverMovies(anyOrNull())).thenReturn(Result.Ok(ResultsModel(emptyList())))
 
-    interactor.discoverMovies(Genre.GENRE_ALL)
-    verify(discoverApi).discoverMovies(null)
+    whenever(discoverApi.discoverMovies(anyOrNull(), any()))
+      .thenReturn(Result.Ok(ResultsModel(emptyList(), 1, 1)))
+
+    interactor.discoverMovies(emptyList(), 1)
+
+    verify(discoverApi).discoverMovies(null, 1)
   }
 
   @Test

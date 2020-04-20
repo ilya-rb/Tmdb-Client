@@ -9,5 +9,8 @@ import retrofit2.http.Query
 internal interface DiscoverApi {
 
   @GET("discover/movie")
-  suspend fun discoverMovies(@Query("with_genres") genres: String? = null): Result<ResultsModel<MovieModel>>
+  suspend fun discoverMovies(
+    @Query("with_genres") genres: String? = null,
+    @Query("page") page: Int
+  ): Result<ResultsModel<MovieModel>>
 }

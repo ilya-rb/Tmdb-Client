@@ -21,13 +21,17 @@ class DelegatesAdapter<T>(
   }
 }
 
-private inline fun <T> simpleDiffUtilCallback(
+internal inline fun <T> simpleDiffUtilCallback(
   crossinline itemDiff: (old: T, new: T) -> Boolean
 ): DiffUtil.ItemCallback<T> {
   return object : DiffUtil.ItemCallback<T>() {
-
-    override fun areItemsTheSame(oldItem: T, newItem: T): Boolean =
-      if (oldItem === newItem) true else itemDiff(oldItem, newItem)
+    override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {
+      return if (oldItem === newItem) {
+        true
+      } else {
+        itemDiff(oldItem, newItem)
+      }
+    }
 
     @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(oldItem: T, newItem: T): Boolean = oldItem == newItem
