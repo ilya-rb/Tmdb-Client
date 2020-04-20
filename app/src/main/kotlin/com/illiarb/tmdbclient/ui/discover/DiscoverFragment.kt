@@ -126,16 +126,10 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
     binding.discoverList.apply {
       val gridLayoutManager = GridLayoutManager(requireContext(), GRID_SPAN_COUNT).apply {
         spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-          override fun getSpanSize(position: Int): Int {
-            return if (position == (adapter?.itemCount ?: 0) - 1) {
-              GRID_SPAN_COUNT
-            } else {
-              1
-            }
-          }
+          override fun getSpanSize(position: Int): Int =
+            if (position == (adapter?.itemCount ?: 0) - 1) GRID_SPAN_COUNT else 1
         }
       }
-
       adapter = this@DiscoverFragment.adapter
       layoutManager = gridLayoutManager
       removeAdapterOnDetach()
@@ -154,15 +148,7 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
 
     if (oldState?.genres != newState.genres) {
       newState.genres.forEach { genre ->
-        val chip = Chip(
-          context,
-          null,
-          com.illiarb.tmdbclient.libs.ui.R.attr.materialChipChoice
-        )
-
-        chip.text = genre.name
-        chip.id = genre.id
-
+        val chip = createChipFromGenre(genre)
         binding.discoverFiltersContainer.discoverGenres.addView(chip)
       }
     }
@@ -175,10 +161,17 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
       }
     }
 
-    if (oldState?.results != newState.results ||
-      oldState.isLoadingAdditionalPage != newState.isLoadingAdditionalPage
-    ) {
-      adapter.update(newState.results, newState.isLoadingAdditionalPage)
+    adapter.update(newState.results, newState.isLoadingAdditionalPage)
+  }
+
+  private fun createChipFromGenre(genre: Genre): Chip {
+    return Chip(
+      context,
+      null,
+      com.illiarb.tmdbclient.libs.ui.R.attr.materialChipChoice
+    ).also {
+      it.text = genre.name
+      it.id = genre.id
     }
   }
 
