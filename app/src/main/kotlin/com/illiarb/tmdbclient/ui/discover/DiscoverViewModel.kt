@@ -4,14 +4,14 @@ import androidx.lifecycle.viewModelScope
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.libs.ui.base.viewmodel.BaseViewModel
 import com.illiarb.tmdbclient.libs.ui.common.Text
-import com.illiarb.tmdbclient.services.tmdb.domain.Genre
-import com.illiarb.tmdbclient.services.tmdb.domain.Movie
+import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
+import com.illiarb.tmdbclient.services.tmdb.domain.Genre
+import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.services.tmdb.interactor.GenresInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
-import com.illiarb.tmdbclient.libs.util.Result
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,7 +31,10 @@ class DiscoverViewModel @Inject constructor(
         genres = emptyList(),
         screenTitle = Text.AsResource(R.string.discover_genres_all),
         selectedGenreId = Genre.GENRE_ALL,
-        isLoading = false
+        isLoading = false,
+        isLoadingAdditionalPage = false,
+        currentPage = 1,
+        totalPages = 0
       )
   }
 
@@ -40,6 +43,7 @@ class DiscoverViewModel @Inject constructor(
       is Event.MovieClick -> processMovieClick(event.movie)
       is Event.ApplyFilter -> applyFilter(event.id)
       is Event.ClearFilter -> applyFilter()
+      is Event.PageEndReached -> fetchLoadNextPageIfExists()
     }
   }
 
@@ -68,7 +72,7 @@ class DiscoverViewModel @Inject constructor(
         copy(isLoading = true)
       }
 
-      val results = moviesInteractor.discoverMovies(genreId)
+      val results = moviesInteractor.discoverMovies(genreId, 1)
 
       setState {
         copy(isLoading = false)
@@ -78,7 +82,9 @@ class DiscoverViewModel @Inject constructor(
         is Result.Ok -> {
           setState {
             copy(
-              results = results.data,
+              results = results.data.items,
+              currentPage = results.data.page,
+              totalPages = results.data.totalPages,
               selectedGenreId = genreId,
               screenTitle = if (genreId == Genre.GENRE_ALL) {
                 Text.AsResource(R.string.discover_genres_all)
@@ -98,17 +104,55 @@ class DiscoverViewModel @Inject constructor(
     }
   }
 
+  private fun fetchLoadNextPageIfExists() = viewModelScope.launch {
+    if (currentState.isLoadingAdditionalPage ||
+      currentState.currentPage == currentState.totalPages
+    ) {
+      return@launch
+    }
+
+    setState {
+      copy(isLoadingAdditionalPage = true)
+    }
+
+    val results =
+      moviesInteractor.discoverMovies(currentState.selectedGenreId, currentState.currentPage + 1)
+
+    when (results) {
+      is Result.Ok -> {
+        setState {
+          copy(
+            results = currentState.results.plus(results.data.items),
+            isLoadingAdditionalPage = false,
+            currentPage = results.data.page,
+            totalPages = results.data.totalPages
+          )
+        }
+      }
+      is Result.Err -> {
+        showMessage(results.error.message)
+        setState {
+          copy(isLoadingAdditionalPage = false)
+        }
+      }
+    }
+  }
+
   data class State(
     val results: List<Movie>,
     val genres: List<Genre>,
     val screenTitle: Text,
     val selectedGenreId: Int,
-    val isLoading: Boolean
+    val isLoading: Boolean,
+    val currentPage: Int,
+    val totalPages: Int,
+    val isLoadingAdditionalPage: Boolean
   )
 
   sealed class Event {
     class MovieClick(val movie: Movie) : Event()
     class ApplyFilter(val id: Int) : Event()
+    object PageEndReached : Event()
     object ClearFilter : Event()
   }
 }

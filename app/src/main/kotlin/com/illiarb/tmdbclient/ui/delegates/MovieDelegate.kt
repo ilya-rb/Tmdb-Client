@@ -19,7 +19,7 @@ fun movieDelegate(
   widthSpec: SizeSpec,
   heightSpec: SizeSpec,
   clickListener: OnClickListener<Movie>
-) = adapterDelegate<Movie, Movie>(R.layout.item_movie) {
+) = adapterDelegate<Movie, Any>(R.layout.item_movie) {
 
   val image = itemView.findViewById<ImageView>(R.id.itemMoviePoster)
   val title = itemView.findViewById<TextView>(R.id.itemMovieTitle)

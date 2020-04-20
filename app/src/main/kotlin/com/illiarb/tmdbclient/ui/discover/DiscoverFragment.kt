@@ -14,14 +14,16 @@ import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.databinding.FragmentDiscoverBinding
 import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable
+import com.illiarb.tmdbclient.libs.logger.Logger
 import com.illiarb.tmdbclient.libs.ui.base.BaseViewBindingFragment
 import com.illiarb.tmdbclient.libs.ui.common.SizeSpec
 import com.illiarb.tmdbclient.libs.ui.common.SnackbarController
 import com.illiarb.tmdbclient.libs.ui.ext.dimen
 import com.illiarb.tmdbclient.libs.ui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbclient.libs.ui.ext.setText
-import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.GridDecoration
+import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.pagination.InfiniteScrollListener
+import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.pagination.PaginalAdapter
 import com.illiarb.tmdbclient.navigation.Router.Action.ShowDiscover
 import com.illiarb.tmdbclient.services.tmdb.domain.Genre
 import com.illiarb.tmdbclient.ui.delegates.movieDelegate
@@ -42,7 +44,7 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
   @Inject
   lateinit var viewModelFactory: ViewModelProvider.Factory
 
-  private val adapter = DelegatesAdapter(
+  private val adapter = PaginalAdapter(
     movieDelegate(
       SizeSpec.MatchParent,
       SizeSpec.Fixed(R.dimen.discover_item_movie_height)
@@ -81,6 +83,7 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
 
     viewLifecycleOwner.lifecycleScope.launch {
       var oldState: State? = null
+
       viewModel.state.collect { newState ->
         render(oldState, newState)
         oldState = newState
@@ -118,10 +121,28 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
 
   private fun setupDiscoverList() {
     binding.discoverList.apply {
+      val gridLayoutManager = GridLayoutManager(requireContext(), GRID_SPAN_COUNT).apply {
+        spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+          override fun getSpanSize(position: Int): Int {
+            return if (position == (adapter?.itemCount ?: 0) - 1) {
+              GRID_SPAN_COUNT
+            } else {
+              1
+            }
+          }
+        }
+      }
+
       adapter = this@DiscoverFragment.adapter
-      layoutManager = GridLayoutManager(requireContext(), GRID_SPAN_COUNT)
+      layoutManager = gridLayoutManager
       removeAdapterOnDetach()
       addItemDecoration(GridDecoration(dimen(R.dimen.spacing_normal), GRID_SPAN_COUNT))
+      addOnScrollListener(object : InfiniteScrollListener(gridLayoutManager) {
+        override fun onLoadMore() {
+          Logger.i("DiscoverFragment", "Page end reached")
+          viewModel.events.offer(Event.PageEndReached)
+        }
+      })
     }
   }
 
@@ -146,8 +167,10 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
 
     binding.discoverFiltersContainer.discoverGenres.check(newState.selectedGenreId)
 
-    if (oldState?.results != newState.results) {
-      adapter.submitList(newState.results)
+    if (oldState?.results != newState.results ||
+      oldState.isLoadingAdditionalPage != newState.isLoadingAdditionalPage
+    ) {
+      adapter.update(newState.results, newState.isLoadingAdditionalPage)
     }
   }
 
