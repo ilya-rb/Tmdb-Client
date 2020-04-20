@@ -124,12 +124,8 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
 
   private fun setupDiscoverList() {
     binding.discoverList.apply {
-      val gridLayoutManager = GridLayoutManager(requireContext(), GRID_SPAN_COUNT).apply {
-        spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-          override fun getSpanSize(position: Int): Int =
-            if (position == (adapter?.itemCount ?: 0) - 1) GRID_SPAN_COUNT else 1
-        }
-      }
+      val gridLayoutManager = GridLayoutManager(requireContext(), GRID_SPAN_COUNT)
+        .apply { spanSizeLookup = createProgressGridSpanSizeLookup() }
       adapter = this@DiscoverFragment.adapter
       layoutManager = gridLayoutManager
       removeAdapterOnDetach()
@@ -162,6 +158,19 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
     }
 
     adapter.update(newState.results, newState.isLoadingAdditionalPage)
+  }
+
+  private fun createProgressGridSpanSizeLookup(
+    spanCount: Int = GRID_SPAN_COUNT
+  ): GridLayoutManager.SpanSizeLookup {
+    return object : GridLayoutManager.SpanSizeLookup() {
+      override fun getSpanSize(position: Int): Int =
+        if (position == adapter.itemCount - 1) {
+          spanCount
+        } else {
+          1
+        }
+    }
   }
 
   private fun createChipFromGenre(genre: Genre): Chip {
