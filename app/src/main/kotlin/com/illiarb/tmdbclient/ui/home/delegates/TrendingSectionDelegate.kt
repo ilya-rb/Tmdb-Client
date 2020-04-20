@@ -7,9 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
-import com.illiarb.tmdbclient.libs.imageloader.CropOptions
-import com.illiarb.tmdbclient.libs.imageloader.loadImage
 import com.illiarb.tmdbclient.R
+import com.illiarb.tmdbclient.libs.imageloader.CropOptions
+import com.illiarb.tmdbclient.libs.imageloader.clear
+import com.illiarb.tmdbclient.libs.imageloader.loadImage
 import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
 import com.illiarb.tmdbclient.libs.ui.ext.dimen
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.RecyclerViewStateSaver
@@ -81,6 +82,8 @@ private class TrendingSectionAdapter(clickListener: OnClickListener<Movie>) :
 
       bind {
         name.text = item.movie.title
+
+        image.clear()
         image.loadImage(item.movie.posterPath) {
           crop(CropOptions.Circle)
         }

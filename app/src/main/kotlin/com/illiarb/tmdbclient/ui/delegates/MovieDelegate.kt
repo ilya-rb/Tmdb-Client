@@ -6,6 +6,7 @@ import android.widget.TextView
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.libs.imageloader.CropOptions
+import com.illiarb.tmdbclient.libs.imageloader.clear
 import com.illiarb.tmdbclient.libs.imageloader.loadImage
 import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
 import com.illiarb.tmdbclient.libs.ui.common.SizeSpec
@@ -36,6 +37,7 @@ fun movieDelegate(
     rating.setInvisible(item.voteAverage == 0f)
     rating.text = item.voteAverage.toString()
 
+    image.clear()
     image.loadImage(item.posterPath) {
       cornerRadius(imageCornerRadius)
       crop(CropOptions.CenterCrop)
