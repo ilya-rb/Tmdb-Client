@@ -15,6 +15,7 @@ import com.illiarb.tmdbclient.databinding.FragmentMoviesBinding
 import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable
 import com.illiarb.tmdbclient.libs.ui.base.BaseViewBindingFragment
+import com.illiarb.tmdbclient.libs.ui.common.SimpleBundleStore
 import com.illiarb.tmdbclient.libs.ui.common.SnackbarController
 import com.illiarb.tmdbclient.libs.ui.ext.dimen
 import com.illiarb.tmdbclient.libs.ui.ext.doOnApplyWindowInsets
@@ -22,7 +23,6 @@ import com.illiarb.tmdbclient.libs.ui.ext.getColorAttr
 import com.illiarb.tmdbclient.libs.ui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.DelegatesAdapter
-import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.RecyclerViewStateSaver
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdbclient.libs.util.Async
 import com.illiarb.tmdbclient.ui.home.HomeViewModel.Event
@@ -46,10 +46,11 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
   }
 
-  private val stateSaver = RecyclerViewStateSaver()
+  private val bundleStore = SimpleBundleStore()
+
   private val adapter = DelegatesAdapter(
     movieSection(
-      stateSaver,
+      bundleStore,
       seeAllClickListener = {
         viewModel.events.offer(Event.SeeAllClick(it))
       },
@@ -57,13 +58,13 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
         viewModel.events.offer(Event.MovieClick(it))
       }
     ),
-    nowPlayingSection(stateSaver) {
+    nowPlayingSection(bundleStore) {
       viewModel.events.offer(Event.MovieClick(it))
     },
     genresSection {
       viewModel.events.offer(Event.GenreClick(it))
     },
-    trendingSection(stateSaver) {
+    trendingSection(bundleStore) {
       viewModel.events.offer(Event.MovieClick(it))
     }
   )
@@ -86,6 +87,8 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
 
     binding.moviesSwipeRefresh.isEnabled = false
 
+    bundleStore.onRestoreInstanceState(savedInstanceState = savedInstanceState)
+
     setupAppBarScrollListener()
     setupMoviesList()
 
@@ -100,9 +103,9 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     }
   }
 
-  override fun onDestroyView() {
-    super.onDestroyView()
-    stateSaver.saveInstanceState()
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    bundleStore.onSaveInstanceState(outState = outState)
   }
 
   private fun setupMoviesList() {

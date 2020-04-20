@@ -38,6 +38,7 @@ dependencies {
   implementation(Deps.Dagger.core)
 
   api(Deps.Android.AndroidX.material)
+  api(Deps.Android.AndroidX.recyclerView)
   api(Deps.Android.AndroidX.swipeRefreshLayout)
   api(Deps.Android.AndroidX.emoji)
   api(Deps.Android.AndroidX.constraintLayout)

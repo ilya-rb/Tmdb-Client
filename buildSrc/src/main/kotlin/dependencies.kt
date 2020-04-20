@@ -61,7 +61,6 @@ object Deps {
     }
 
     object AndroidX {
-      private const val supportLibraryVersion = "1.2.0-alpha05"
       private const val archComponentsVersion = "2.2.0"
 
       object ViewModel {
@@ -77,8 +76,8 @@ object Deps {
 
       const val navigation = "androidx.navigation:navigation-fragment:2.3.0-alpha04"
       const val workManager = "androidx.work:work-runtime-ktx:2.3.4"
-      const val material = "com.google.android.material:material:$supportLibraryVersion"
-      const val recyclerView = "androidx.recyclerview:recyclerview:$supportLibraryVersion"
+      const val material = "com.google.android.material:material:1.2.0-alpha05"
+      const val recyclerView = "androidx.recyclerview:recyclerview:1.2.0-alpha02"
       const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
       const val emoji = "androidx.emoji:emoji:1.1.0-alpha01"
       const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta4"

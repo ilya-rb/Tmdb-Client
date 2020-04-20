@@ -1,6 +1,5 @@
 package com.illiarb.tmdbclient.ui.home.delegates
 
-import android.os.Parcelable
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -8,35 +7,32 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 import com.illiarb.tmdbclient.R
-import com.illiarb.tmdbclient.ui.delegates.movieDelegate
 import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
+import com.illiarb.tmdbclient.libs.ui.common.SimpleBundleStore
 import com.illiarb.tmdbclient.libs.ui.common.SizeSpec
 import com.illiarb.tmdbclient.libs.ui.ext.dimen
-import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.RecyclerViewStateSaver
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
-import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.StateSaver
 import com.illiarb.tmdbclient.services.tmdb.domain.ListSection
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.services.tmdb.domain.MovieSection
+import com.illiarb.tmdbclient.ui.delegates.movieDelegate
 
 @Suppress("LongMethod")
 fun movieSection(
-  recyclerViewStateSaver: RecyclerViewStateSaver,
+  bundleStore: SimpleBundleStore,
   seeAllClickListener: OnClickListener<String>,
   movieClickListener: OnClickListener<Movie>
 ) = adapterDelegate<ListSection, MovieSection>(R.layout.item_movie_section) {
 
-  val adapter = MovieSectionAdapter(movieClickListener)
+  val adapter = MovieSectionAdapter(movieClickListener).apply {
+    stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+  }
+
   val sectionTitle = itemView.findViewById<TextView>(R.id.itemSectionTitle)
   val sectionList = itemView.findViewById<RecyclerView>(R.id.itemMovieSectionList)
   val seeAllButton = itemView.findViewById<View>(R.id.itemSectionSeeAll)
 
-  var key: String? = null
-  val stateCallback: StateSaver = {
-    key?.let {
-      putParcelable(it, sectionList.layoutManager?.onSaveInstanceState())
-    }
-  }
+  var saveStateKey = SimpleBundleStore.DEFAULT_SAVE_STATE_KEY
 
   sectionList.let {
     it.adapter = adapter
@@ -60,21 +56,17 @@ fun movieSection(
       seeAllClickListener(item.code)
     }
 
-    key = item.hashCode().toString().also {
-      recyclerViewStateSaver.registerStateSaver(it, stateCallback)
-    }
-
-    val state = recyclerViewStateSaver.state(key) as? Parcelable?
-    sectionList.layoutManager?.onRestoreInstanceState(state)
+    saveStateKey = item.code
+    sectionList.layoutManager?.onRestoreInstanceState(bundleStore.getParcelable(saveStateKey))
   }
 
   onViewDetachedFromWindow {
-    key?.let { recyclerViewStateSaver.unregisterStateSaver(it) }
-    key = null
+    bundleStore.putParcelable(saveStateKey, sectionList.layoutManager?.onSaveInstanceState())
   }
 }
 
-private class MovieSectionAdapter(clickListener: OnClickListener<Movie>) : ListDelegationAdapter<List<Movie>>() {
+private class MovieSectionAdapter(clickListener: OnClickListener<Movie>) :
+  ListDelegationAdapter<List<Movie>>() {
 
   init {
     delegatesManager.addDelegate(

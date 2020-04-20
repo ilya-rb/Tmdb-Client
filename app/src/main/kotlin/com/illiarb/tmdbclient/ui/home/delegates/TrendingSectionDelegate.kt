@@ -1,6 +1,5 @@
 package com.illiarb.tmdbclient.ui.home.delegates
 
-import android.os.Parcelable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,10 +11,9 @@ import com.illiarb.tmdbclient.libs.imageloader.CropOptions
 import com.illiarb.tmdbclient.libs.imageloader.clear
 import com.illiarb.tmdbclient.libs.imageloader.loadImage
 import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
+import com.illiarb.tmdbclient.libs.ui.common.SimpleBundleStore
 import com.illiarb.tmdbclient.libs.ui.ext.dimen
-import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.RecyclerViewStateSaver
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
-import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.StateSaver
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.services.tmdb.domain.MovieSection
 import com.illiarb.tmdbclient.services.tmdb.domain.TrendingSection
@@ -25,23 +23,18 @@ private const val KEY_TRENDING_STATE = "trending_state"
 
 @Suppress("LongMethod")
 fun trendingSection(
-  stateSaver: RecyclerViewStateSaver,
+  bundleStore: SimpleBundleStore,
   clickListener: OnClickListener<Movie>
 ) = adapterDelegate<TrendingSection, MovieSection>(R.layout.item_trending_section) {
 
-  val adapter = TrendingSectionAdapter(clickListener)
   val trendingList = itemView.findViewById<RecyclerView>(R.id.itemTrendingSectionList)
-  val stateCallback: StateSaver = {
-    putParcelable(KEY_TRENDING_STATE, trendingList.layoutManager?.onSaveInstanceState())
+  val adapter = TrendingSectionAdapter(clickListener).apply {
+    stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
   }
 
   trendingList.let {
     it.adapter = adapter
-    it.layoutManager = LinearLayoutManager(
-      itemView.context,
-      LinearLayoutManager.HORIZONTAL,
-      false
-    )
+    it.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
     it.addItemDecoration(
       SpaceDecoration.edgeInnerSpace(
         it.dimen(R.dimen.spacing_normal),
@@ -54,16 +47,13 @@ fun trendingSection(
     adapter.items = item.items
     adapter.notifyDataSetChanged()
 
-    val state = stateSaver.state(KEY_TRENDING_STATE) as? Parcelable?
-    trendingList.layoutManager?.onRestoreInstanceState(state)
-  }
-
-  onViewAttachedToWindow {
-    stateSaver.registerStateSaver(KEY_TRENDING_STATE, stateCallback)
+    trendingList.layoutManager?.onRestoreInstanceState(
+      bundleStore.getParcelable(KEY_TRENDING_STATE)
+    )
   }
 
   onViewDetachedFromWindow {
-    stateSaver.unregisterStateSaver(KEY_TRENDING_STATE)
+    bundleStore.putParcelable(KEY_TRENDING_STATE, trendingList.layoutManager?.onSaveInstanceState())
   }
 }
 
