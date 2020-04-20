@@ -104,35 +104,35 @@ class DiscoverViewModel @Inject constructor(
     }
   }
 
-  private fun fetchLoadNextPageIfExists() = viewModelScope.launch {
-    if (currentState.isLoadingAdditionalPage ||
-      currentState.currentPage == currentState.totalPages
-    ) {
-      return@launch
+  private fun fetchLoadNextPageIfExists() {
+    if (currentState.isLoadingAdditionalPage || currentState.currentPage == currentState.totalPages) {
+      return
     }
 
-    setState {
-      copy(isLoadingAdditionalPage = true)
-    }
-
-    val results =
-      moviesInteractor.discoverMovies(currentState.selectedGenreId, currentState.currentPage + 1)
-
-    when (results) {
-      is Result.Ok -> {
-        setState {
-          copy(
-            results = currentState.results.plus(results.data.items),
-            isLoadingAdditionalPage = false,
-            currentPage = results.data.page,
-            totalPages = results.data.totalPages
-          )
-        }
+    viewModelScope.launch {
+      setState {
+        copy(isLoadingAdditionalPage = true)
       }
-      is Result.Err -> {
-        showMessage(results.error.message)
-        setState {
-          copy(isLoadingAdditionalPage = false)
+
+      val results =
+        moviesInteractor.discoverMovies(currentState.selectedGenreId, currentState.currentPage + 1)
+
+      when (results) {
+        is Result.Ok -> {
+          setState {
+            copy(
+              results = currentState.results.plus(results.data.items),
+              isLoadingAdditionalPage = false,
+              currentPage = results.data.page,
+              totalPages = results.data.totalPages
+            )
+          }
+        }
+        is Result.Err -> {
+          showMessage(results.error.message)
+          setState {
+            copy(isLoadingAdditionalPage = false)
+          }
         }
       }
     }

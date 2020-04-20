@@ -14,7 +14,6 @@ import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.databinding.FragmentDiscoverBinding
 import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable
-import com.illiarb.tmdbclient.libs.logger.Logger
 import com.illiarb.tmdbclient.libs.ui.base.BaseViewBindingFragment
 import com.illiarb.tmdbclient.libs.ui.common.SizeSpec
 import com.illiarb.tmdbclient.libs.ui.common.SnackbarController
@@ -139,7 +138,6 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
       addItemDecoration(GridDecoration(dimen(R.dimen.spacing_normal), GRID_SPAN_COUNT))
       addOnScrollListener(object : InfiniteScrollListener(gridLayoutManager) {
         override fun onLoadMore() {
-          Logger.i("DiscoverFragment", "Page end reached")
           viewModel.events.offer(Event.PageEndReached)
         }
       })
