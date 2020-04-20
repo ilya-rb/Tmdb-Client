@@ -35,10 +35,10 @@ class TestMoviesInteractor : MoviesInteractor {
   }
 
   @Suppress("MagicNumber")
-  override suspend fun discoverMovies(genreId: Int, page: Int): Result<PagedList<Movie>> {
+  override suspend fun discoverMovies(genreIds: List<Int>, page: Int): Result<PagedList<Movie>> {
     val movieList = FakeEntityFactory.createFakeMovieList(5) {
       FakeEntityFactory.createFakeMovie().copy(
-        genres = listOf(FakeEntityFactory.createGenre(genreId))
+        genres = genreIds.map { FakeEntityFactory.createGenre(it) }
       )
     }
     return Result.Ok(PagedList(movieList, page = 1, totalPages = 1))

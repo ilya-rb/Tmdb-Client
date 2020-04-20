@@ -108,7 +108,11 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
   private fun setupFilters() {
     binding.root.findViewById<View>(R.id.discoverApplyFilter).setOnClickListener {
       dismissFiltersPanel()
-      viewModel.events.offer(Event.ApplyFilter(binding.discoverFiltersContainer.discoverGenres.checkedChipId))
+      viewModel.events.offer(
+        Event.ApplyFilter(
+          binding.discoverFiltersContainer.discoverGenres.checkedChipIds
+        )
+      )
     }
 
     binding.root.findViewById<View>(R.id.discoverClearFilter).setOnClickListener {
@@ -163,7 +167,13 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
       }
     }
 
-    binding.discoverFiltersContainer.discoverGenres.check(newState.selectedGenreId)
+    if (newState.selectedGenreIds.isEmpty()) {
+      binding.discoverFiltersContainer.discoverGenres.clearCheck()
+    } else {
+      newState.selectedGenreIds.forEach {
+        binding.discoverFiltersContainer.discoverGenres.check(it)
+      }
+    }
 
     if (oldState?.results != newState.results ||
       oldState.isLoadingAdditionalPage != newState.isLoadingAdditionalPage

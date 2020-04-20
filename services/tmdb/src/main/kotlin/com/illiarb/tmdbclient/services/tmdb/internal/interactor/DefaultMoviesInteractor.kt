@@ -2,7 +2,6 @@ package com.illiarb.tmdbclient.services.tmdb.internal.interactor
 
 import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
 import com.illiarb.tmdbclient.libs.util.Result
-import com.illiarb.tmdbclient.services.tmdb.domain.Genre
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.services.tmdb.domain.MovieBlock
 import com.illiarb.tmdbclient.services.tmdb.domain.MovieFilter
@@ -54,13 +53,13 @@ internal class DefaultMoviesInteractor @Inject constructor(
     return repository.getMovieDetails(movieId, keys)
   }
 
-  override suspend fun discoverMovies(genreId: Int, page: Int): Result<PagedList<Movie>> {
-    val id = if (genreId == Genre.GENRE_ALL) null else genreId.toString()
+  override suspend fun discoverMovies(genreIds: List<Int>, page: Int): Result<PagedList<Movie>> {
+    val ids = if (genreIds.isEmpty()) null else genreIds.joinToString(",")
     val config = withContext(dispatcherProvider.io) {
       cache.getConfiguration()
     }
 
-    return discoverApi.discoverMovies(id, page).mapOnSuccess {
+    return discoverApi.discoverMovies(ids, page).mapOnSuccess {
       PagedList(movieMapper.mapList(config, it.results), it.page, it.totalPages)
     }
   }

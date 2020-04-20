@@ -30,7 +30,7 @@ class DiscoverViewModel @Inject constructor(
         results = emptyList(),
         genres = emptyList(),
         screenTitle = Text.AsResource(R.string.discover_genres_all),
-        selectedGenreId = Genre.GENRE_ALL,
+        selectedGenreIds = emptyList(),
         isLoading = false,
         isLoadingAdditionalPage = false,
         currentPage = 1,
@@ -41,7 +41,7 @@ class DiscoverViewModel @Inject constructor(
   override fun onUiEvent(event: Event) {
     when (event) {
       is Event.MovieClick -> processMovieClick(event.movie)
-      is Event.ApplyFilter -> applyFilter(event.id)
+      is Event.ApplyFilter -> applyFilter(event.ids)
       is Event.ClearFilter -> applyFilter()
       is Event.PageEndReached -> fetchLoadNextPageIfExists()
     }
@@ -51,7 +51,7 @@ class DiscoverViewModel @Inject constructor(
     viewModelScope.launch {
       when (val genres = genresInteractor.getAllGenres()) {
         is Result.Ok -> setState { copy(genres = genres.data) }
-          .also { applyFilter(initialGenreId, isInitialLaunch = true) }
+          .also { applyFilter(listOf(initialGenreId), isInitialLaunch = true) }
         is Result.Err -> showMessage(genres.error.message)
       }
     }
@@ -61,10 +61,10 @@ class DiscoverViewModel @Inject constructor(
     router.executeAction(ShowMovieDetails(movie.id))//.also(analyticsService::trackRouterAction)
   }
 
-  private fun applyFilter(genreId: Int = Genre.GENRE_ALL, isInitialLaunch: Boolean = false) {
+  private fun applyFilter(genreIds: List<Int> = emptyList(), isInitialLaunch: Boolean = false) {
     viewModelScope.launch {
       // do nothing if this genre are already applied
-      if (currentState.selectedGenreId == genreId && !isInitialLaunch) {
+      if (currentState.selectedGenreIds == genreIds && !isInitialLaunch) {
         return@launch
       }
 
@@ -72,7 +72,7 @@ class DiscoverViewModel @Inject constructor(
         copy(isLoading = true)
       }
 
-      val results = moviesInteractor.discoverMovies(genreId, 1)
+      val results = moviesInteractor.discoverMovies(genreIds, 1)
 
       setState {
         copy(isLoading = false)
@@ -85,15 +85,15 @@ class DiscoverViewModel @Inject constructor(
               results = results.data.items,
               currentPage = results.data.page,
               totalPages = results.data.totalPages,
-              selectedGenreId = genreId,
-              screenTitle = if (genreId == Genre.GENRE_ALL) {
+              selectedGenreIds = genreIds,
+              screenTitle = if (genreIds.isEmpty()) {
                 Text.AsResource(R.string.discover_genres_all)
               } else {
-                val selected = currentState.genres.find { it.id == genreId }
-                if (selected == null) {
+                val selected = currentState.genres.filter { genreIds.contains(it.id) }
+                if (selected.isEmpty()) {
                   Text.AsResource(R.string.discover_genres_all)
                 } else {
-                  Text.AsString(selected.name)
+                  Text.AsString(selected.joinToString(",") { it.name })
                 }
               }
             )
@@ -115,7 +115,7 @@ class DiscoverViewModel @Inject constructor(
       }
 
       val results =
-        moviesInteractor.discoverMovies(currentState.selectedGenreId, currentState.currentPage + 1)
+        moviesInteractor.discoverMovies(currentState.selectedGenreIds, currentState.currentPage + 1)
 
       when (results) {
         is Result.Ok -> {
@@ -142,7 +142,7 @@ class DiscoverViewModel @Inject constructor(
     val results: List<Movie>,
     val genres: List<Genre>,
     val screenTitle: Text,
-    val selectedGenreId: Int,
+    val selectedGenreIds: List<Int>,
     val isLoading: Boolean,
     val currentPage: Int,
     val totalPages: Int,
@@ -151,7 +151,7 @@ class DiscoverViewModel @Inject constructor(
 
   sealed class Event {
     class MovieClick(val movie: Movie) : Event()
-    class ApplyFilter(val id: Int) : Event()
+    class ApplyFilter(val ids: List<Int>) : Event()
     object PageEndReached : Event()
     object ClearFilter : Event()
   }

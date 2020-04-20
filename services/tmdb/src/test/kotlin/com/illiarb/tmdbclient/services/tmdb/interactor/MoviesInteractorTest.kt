@@ -3,7 +3,6 @@ package com.illiarb.tmdbclient.services.tmdb.interactor
 import com.google.common.truth.Truth.assertThat
 import com.illiarb.tmdbclient.libs.test.tools.TestDispatcherProvider
 import com.illiarb.tmdbclient.libs.util.Result
-import com.illiarb.tmdbclient.services.tmdb.domain.Genre
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
 import com.illiarb.tmdbclient.services.tmdb.internal.configuration.Configuration
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageUrlCreator
@@ -49,7 +48,7 @@ class MoviesInteractorTest {
     whenever(discoverApi.discoverMovies(anyOrNull(), any()))
       .thenReturn(Result.Ok(ResultsModel(emptyList(), 1, 1)))
 
-    interactor.discoverMovies(Genre.GENRE_ALL, 1)
+    interactor.discoverMovies(emptyList(), 1)
 
     verify(discoverApi).discoverMovies(null, 1)
   }
