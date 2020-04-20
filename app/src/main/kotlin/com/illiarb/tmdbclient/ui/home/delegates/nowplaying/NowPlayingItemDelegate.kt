@@ -4,6 +4,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 import com.illiarb.tmdbclient.R
+import com.illiarb.tmdbclient.libs.imageloader.clear
 import com.illiarb.tmdbclient.libs.imageloader.loadImage
 import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
 import com.illiarb.tmdbclient.libs.ui.ext.setVisible
@@ -23,6 +24,7 @@ fun nowPlayingItemDelegate(
     rating.setVisible(item.voteAverage > 0)
     rating.text = item.voteAverage.toString()
 
+    poster.clear()
     poster.loadImage(item.posterPath)
 
     itemView.setOnClickListener {

@@ -3,6 +3,7 @@ package com.illiarb.tmdbclient.di
 import android.app.Application
 import com.illiarb.tmdbclient.App
 import com.illiarb.tmdbclient.di.modules.AppModule
+import com.illiarb.tmdbclient.di.modules.InitializersModule
 import com.illiarb.tmdbclient.di.modules.NavigationModule
 import com.illiarb.tmdbclient.di.modules.WorkModule
 import com.illiarb.tmdbclient.libs.tools.di.ToolsProvider
@@ -26,7 +27,8 @@ import javax.inject.Singleton
   modules = [
     AppModule::class,
     NavigationModule::class,
-    WorkModule::class
+    WorkModule::class,
+    InitializersModule::class
   ]
 )
 @Singleton

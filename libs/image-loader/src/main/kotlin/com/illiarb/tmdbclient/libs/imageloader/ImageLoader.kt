@@ -33,12 +33,11 @@ fun ImageView.loadImage(
     return
   }
 
-  clear()
-
   doOnLayout {
     val selectedSize = selectSize(image.sizes, it.width, it.height) ?: return@doOnLayout
     val options = requestOptions(RequestOptions())
-    val request = Glide.with(context)
+
+    Glide.with(context)
       .load(image.buildFullUrl(selectedSize))
       .apply(mapOptions(options))
       .also { request ->
@@ -50,28 +49,26 @@ fun ImageView.loadImage(
           request.thumbnail(options.thumbnail)
         }
       }
+      .listener(object : RequestListener<Drawable> {
+        override fun onLoadFailed(
+          e: GlideException?,
+          model: Any?,
+          target: Target<Drawable>?,
+          isFirstResource: Boolean
+        ): Boolean = false
 
-    request.listener(object : RequestListener<Drawable> {
-      override fun onLoadFailed(
-        e: GlideException?,
-        model: Any?,
-        target: Target<Drawable>?,
-        isFirstResource: Boolean
-      ): Boolean = false
-
-      override fun onResourceReady(
-        resource: Drawable?,
-        model: Any?,
-        target: Target<Drawable>?,
-        dataSource: DataSource?,
-        isFirstResource: Boolean
-      ): Boolean {
-        options.onImageReady()
-        return false
-      }
-    })
-
-    request.into(this)
+        override fun onResourceReady(
+          resource: Drawable?,
+          model: Any?,
+          target: Target<Drawable>?,
+          dataSource: DataSource?,
+          isFirstResource: Boolean
+        ): Boolean {
+          options.onImageReady()
+          return false
+        }
+      })
+      .into(this)
   }
 }
 
