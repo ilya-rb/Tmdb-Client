@@ -1,12 +1,12 @@
 package com.illiarb.tmdbclient.ui.home.delegates
 
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
-import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import com.illiarb.tmdbclient.R
+import com.illiarb.tmdbclient.databinding.ItemTrendingBinding
+import com.illiarb.tmdbclient.databinding.ItemTrendingSectionBinding
 import com.illiarb.tmdbclient.libs.imageloader.CropOptions
 import com.illiarb.tmdbclient.libs.imageloader.clear
 import com.illiarb.tmdbclient.libs.imageloader.loadImage
@@ -25,14 +25,15 @@ private const val KEY_TRENDING_STATE = "trending_state"
 fun trendingSection(
   bundleStore: SimpleBundleStore,
   clickListener: OnClickListener<Movie>
-) = adapterDelegate<TrendingSection, MovieSection>(R.layout.item_trending_section) {
+) = adapterDelegateViewBinding<TrendingSection, MovieSection, ItemTrendingSectionBinding>(
+  { inflater, root -> ItemTrendingSectionBinding.inflate(inflater, root, false) }
+) {
 
-  val trendingList = itemView.findViewById<RecyclerView>(R.id.itemTrendingSectionList)
   val adapter = TrendingSectionAdapter(clickListener).apply {
     stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
   }
 
-  trendingList.let {
+  binding.itemTrendingSectionList.let {
     it.adapter = adapter
     it.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
     it.addItemDecoration(
@@ -47,13 +48,16 @@ fun trendingSection(
     adapter.items = item.items
     adapter.notifyDataSetChanged()
 
-    trendingList.layoutManager?.onRestoreInstanceState(
+    binding.itemTrendingSectionList.layoutManager?.onRestoreInstanceState(
       bundleStore.getParcelable(KEY_TRENDING_STATE)
     )
   }
 
   onViewDetachedFromWindow {
-    bundleStore.putParcelable(KEY_TRENDING_STATE, trendingList.layoutManager?.onSaveInstanceState())
+    bundleStore.putParcelable(
+      KEY_TRENDING_STATE,
+      binding.itemTrendingSectionList.layoutManager?.onSaveInstanceState()
+    )
   }
 }
 
@@ -65,16 +69,15 @@ private class TrendingSectionAdapter(clickListener: OnClickListener<Movie>) :
   }
 
   private fun trendingDelegate(clickListener: OnClickListener<Movie>) =
-    adapterDelegate<TrendingItem, TrendingItem>(R.layout.item_trending) {
-
-      val image = itemView.findViewById<ImageView>(R.id.itemTrendingImage)
-      val name = itemView.findViewById<TextView>(R.id.itemTrendingName)
+    adapterDelegateViewBinding<TrendingItem, TrendingItem, ItemTrendingBinding>(
+      { inflater, root -> ItemTrendingBinding.inflate(inflater, root, false) }
+    ) {
 
       bind {
-        name.text = item.movie.title
+        binding.itemTrendingName.text = item.movie.title
 
-        image.clear()
-        image.loadImage(item.movie.posterPath) {
+        binding.itemTrendingImage.clear()
+        binding.itemTrendingImage.loadImage(item.movie.posterPath) {
           crop(CropOptions.Circle)
         }
 

@@ -117,10 +117,10 @@ object Deps {
   }
 
   object AdapterDelegates {
-    private const val adapterDelegatesVersion = "4.2.0"
+    private const val adapterDelegatesVersion = "4.3.0"
 
     const val core = "com.hannesdorfmann:adapterdelegates4:$adapterDelegatesVersion"
-    const val dsl = "com.hannesdorfmann:adapterdelegates4-kotlin-dsl:$adapterDelegatesVersion"
+    const val dsl = "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:$adapterDelegatesVersion"
   }
 
   object Dagger {

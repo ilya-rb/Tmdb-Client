@@ -6,8 +6,8 @@ import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.LoopingPagerAdapter
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 
-class NowPlayingPagerAdapter(clickListener: OnClickListener<Movie>) : ListDelegationAdapter<List<Movie>>(),
-  LoopingPagerAdapter {
+class NowPlayingPagerAdapter(clickListener: OnClickListener<Movie>) :
+  ListDelegationAdapter<List<Movie>>(), LoopingPagerAdapter {
 
   override val realCount: Int
     get() = items.size
@@ -24,9 +24,14 @@ class NowPlayingPagerAdapter(clickListener: OnClickListener<Movie>) : ListDelega
     return super.getItemViewType(getRealPosition(position))
   }
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any?>) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+    payloads: MutableList<Any?>
+  ) {
     super.onBindViewHolder(holder, getRealPosition(position), payloads)
   }
 
-  override fun getItemCount(): Int = if (realCount <= 1) realCount else LoopingPagerAdapter.MAX_COUNT
+  override fun getItemCount(): Int =
+    if (realCount <= 1) realCount else LoopingPagerAdapter.MAX_COUNT
 }

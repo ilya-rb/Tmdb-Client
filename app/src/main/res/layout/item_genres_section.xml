@@ -6,8 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingLeft="@dimen/spacing_normal"
-    android:paddingRight="@dimen/spacing_normal"
-    tools:viewBindingIgnore="true">
+    android:paddingRight="@dimen/spacing_normal">
 
     <TextView
         android:layout_width="match_parent"

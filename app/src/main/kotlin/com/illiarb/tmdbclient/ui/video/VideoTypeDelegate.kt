@@ -1,17 +1,15 @@
 package com.illiarb.tmdbclient.ui.video
 
-import android.widget.TextView
-import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
-import com.illiarb.tmdbclient.R
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
+import com.illiarb.tmdbclient.databinding.ItemVideoTypeBinding
 import com.illiarb.tmdbclient.ui.video.VideoListViewModel.UiVideoSection
 
-fun videoTypeDelegate() = adapterDelegate<UiVideoSection, Any>(R.layout.item_video_type) {
-
-  val itemTitle = itemView.findViewById<TextView>(R.id.itemVideoType)
-  val itemCount = itemView.findViewById<TextView>(R.id.itemVideoCount)
+fun videoTypeDelegate() = adapterDelegateViewBinding<UiVideoSection, Any, ItemVideoTypeBinding>(
+  { inflater, root -> ItemVideoTypeBinding.inflate(inflater, root, false) }
+) {
 
   bind {
-    itemTitle.text = item.title
-    itemCount.text = item.count.toString()
+    binding.itemVideoType.text = item.title
+    binding.itemVideoCount.text = item.count.toString()
   }
 }
