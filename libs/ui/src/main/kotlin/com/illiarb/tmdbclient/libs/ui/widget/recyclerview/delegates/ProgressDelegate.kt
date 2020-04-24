@@ -1,9 +1,11 @@
 package com.illiarb.tmdbclient.libs.ui.widget.recyclerview.delegates
 
-import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
-import com.illiarb.tmdbclient.libs.ui.R
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
+import com.illiarb.tmdbclient.libs.ui.databinding.ItemProgressBinding
 
-fun progressDelegate() = adapterDelegate<Any, Any>(R.layout.item_progress) {
+fun progressDelegate() = adapterDelegateViewBinding<Any, Any, ItemProgressBinding>(
+  { inflater, root -> ItemProgressBinding.inflate(inflater, root, false) }
+) {
   // No-op
 }
 

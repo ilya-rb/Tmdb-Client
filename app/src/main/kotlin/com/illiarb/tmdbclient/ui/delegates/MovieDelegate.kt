@@ -1,10 +1,8 @@
 package com.illiarb.tmdbclient.ui.delegates
 
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import com.illiarb.tmdbclient.R
+import com.illiarb.tmdbclient.databinding.ItemMovieBinding
 import com.illiarb.tmdbclient.libs.imageloader.CropOptions
 import com.illiarb.tmdbclient.libs.imageloader.clear
 import com.illiarb.tmdbclient.libs.imageloader.loadImage
@@ -19,26 +17,24 @@ fun movieDelegate(
   widthSpec: SizeSpec,
   heightSpec: SizeSpec,
   clickListener: OnClickListener<Movie>
-) = adapterDelegate<Movie, Any>(R.layout.item_movie) {
+) = adapterDelegateViewBinding<Movie, Any, ItemMovieBinding>(
+  { inflater, root -> ItemMovieBinding.inflate(inflater, root, false) }
+) {
 
-  val image = itemView.findViewById<ImageView>(R.id.itemMoviePoster)
-  val title = itemView.findViewById<TextView>(R.id.itemMovieTitle)
-  val card = itemView.findViewById<View>(R.id.itemMovieCard)
-  val rating = itemView.findViewById<TextView>(R.id.itemMovieRating)
   val imageCornerRadius = itemView.dimen(R.dimen.corner_radius_normal)
 
   itemView.setSize(widthSpec = widthSpec)
 
-  card.setSize(heightSpec = heightSpec)
+  binding.itemMovieCard.setSize(heightSpec = heightSpec)
 
   bind {
-    title.text = item.title
+    binding.itemMovieTitle.text = item.title
 
-    rating.setInvisible(item.voteAverage == 0f)
-    rating.text = item.voteAverage.toString()
+    binding.itemMovieRating.setInvisible(item.voteAverage == 0f)
+    binding.itemMovieRating.text = item.voteAverage.toString()
 
-    image.clear()
-    image.loadImage(item.posterPath) {
+    binding.itemMoviePoster.clear()
+    binding.itemMoviePoster.loadImage(item.posterPath) {
       cornerRadius(imageCornerRadius)
       crop(CropOptions.CenterCrop)
     }

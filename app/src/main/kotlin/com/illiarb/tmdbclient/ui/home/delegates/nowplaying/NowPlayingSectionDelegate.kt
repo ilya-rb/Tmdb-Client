@@ -3,8 +3,8 @@ package com.illiarb.tmdbclient.ui.home.delegates.nowplaying
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
-import com.illiarb.tmdbclient.R
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
+import com.illiarb.tmdbclient.databinding.ItemNowPlayingSectionBinding
 import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
 import com.illiarb.tmdbclient.libs.ui.common.SimpleBundleStore
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
@@ -20,9 +20,10 @@ private const val KEY_NOW_PLAYING_STATE = "now_playing_state"
 fun nowPlayingSection(
   bundleStore: SimpleBundleStore,
   clickListener: OnClickListener<Movie>
-) = adapterDelegate<NowPlayingSection, MovieSection>(R.layout.item_now_playing_section) {
+) = adapterDelegateViewBinding<NowPlayingSection, MovieSection, ItemNowPlayingSectionBinding>(
+  { inflater, root -> ItemNowPlayingSectionBinding.inflate(inflater, root, false) }
+) {
 
-  val nowPlayingPager = itemView.findViewById<RecyclerView>(R.id.nowPlayingPager)
   val snapHelper = PagerSnapHelper()
   val adapter = NowPlayingPagerAdapter(clickListener).apply {
     stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
@@ -36,9 +37,9 @@ fun nowPlayingSection(
       super.onScrollStateChanged(recyclerView, newState)
 
       if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-        val snapView = snapHelper.findSnapView(nowPlayingPager.layoutManager)
+        val snapView = snapHelper.findSnapView(binding.nowPlayingPager.layoutManager)
         snapView?.let {
-          val snapPosition = nowPlayingPager.getChildAdapterPosition(it)
+          val snapPosition = binding.nowPlayingPager.getChildAdapterPosition(it)
           if (snapPosition != RecyclerView.NO_POSITION) {
             currentPosition = snapPosition
           }
@@ -47,23 +48,23 @@ fun nowPlayingSection(
     }
   }
 
-  snapHelper.attachToRecyclerView(nowPlayingPager)
+  snapHelper.attachToRecyclerView(binding.nowPlayingPager)
 
-  nowPlayingPager.adapter = adapter
-  nowPlayingPager.layoutManager =
+  binding.nowPlayingPager.adapter = adapter
+  binding.nowPlayingPager.layoutManager =
     LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
 
   bind {
     adapter.items = item.movies
     adapter.notifyDataSetChanged()
 
-    nowPlayingPager.layoutManager?.onRestoreInstanceState(
+    binding.nowPlayingPager.layoutManager?.onRestoreInstanceState(
       bundleStore.getParcelable(KEY_NOW_PLAYING_STATE)
     )
   }
 
   onViewAttachedToWindow {
-    nowPlayingPager.addOnScrollListener(recyclerScrollListener)
+    binding.nowPlayingPager.addOnScrollListener(recyclerScrollListener)
 
     imagesTimer = fixedRateTimer(
       initialDelay = IMAGE_CHANGE_UPDATE_INTERVAL,
@@ -73,16 +74,16 @@ fun nowPlayingSection(
         return@fixedRateTimer
       }
       currentPosition++
-      nowPlayingPager.smoothScrollToPosition(currentPosition)
+      binding.nowPlayingPager.smoothScrollToPosition(currentPosition)
     }
   }
 
   onViewDetachedFromWindow {
-    nowPlayingPager.removeOnScrollListener(recyclerScrollListener)
+    binding.nowPlayingPager.removeOnScrollListener(recyclerScrollListener)
     imagesTimer?.cancel()
     bundleStore.putParcelable(
       KEY_NOW_PLAYING_STATE,
-      nowPlayingPager.layoutManager?.onSaveInstanceState()
+      binding.nowPlayingPager.layoutManager?.onSaveInstanceState()
     )
   }
 }

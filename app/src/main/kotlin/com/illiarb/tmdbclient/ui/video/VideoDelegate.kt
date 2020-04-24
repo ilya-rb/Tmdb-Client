@@ -1,21 +1,20 @@
 package com.illiarb.tmdbclient.ui.video
 
-import android.view.View
-import android.widget.TextView
-import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
-import com.illiarb.tmdbclient.R
-import com.illiarb.tmdbclient.ui.video.VideoListViewModel.UiVideo
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
+import com.illiarb.tmdbclient.databinding.ItemVideoBinding
 import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
 import com.illiarb.tmdbclient.libs.ui.ext.setVisible
+import com.illiarb.tmdbclient.ui.video.VideoListViewModel.UiVideo
 
-fun videoDelegate(clickListener: OnClickListener<UiVideo>) = adapterDelegate<UiVideo, Any>(R.layout.item_video) {
-
-  val title = itemView.findViewById<TextView>(R.id.itemVideoTitle)
-  val selectedView = itemView.findViewById<View>(R.id.itemVideoSelected)
+fun videoDelegate(
+  clickListener: OnClickListener<UiVideo>
+) = adapterDelegateViewBinding<UiVideo, Any, ItemVideoBinding>(
+  { inflater, root -> ItemVideoBinding.inflate(inflater, root, false) }
+) {
 
   bind {
-    title.text = item.video.name
-    selectedView.setVisible(item.isSelected)
+    binding.itemVideoTitle.text = item.video.name
+    binding.itemVideoSelected.setVisible(item.isSelected)
 
     itemView.setOnClickListener {
       clickListener(item)

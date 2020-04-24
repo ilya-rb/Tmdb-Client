@@ -1,12 +1,11 @@
 package com.illiarb.tmdbclient.ui.home.delegates
 
-import android.view.View
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
-import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import com.illiarb.tmdbclient.R
+import com.illiarb.tmdbclient.databinding.ItemMovieSectionBinding
 import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
 import com.illiarb.tmdbclient.libs.ui.common.SimpleBundleStore
 import com.illiarb.tmdbclient.libs.ui.common.SizeSpec
@@ -22,19 +21,17 @@ fun movieSection(
   bundleStore: SimpleBundleStore,
   seeAllClickListener: OnClickListener<String>,
   movieClickListener: OnClickListener<Movie>
-) = adapterDelegate<ListSection, MovieSection>(R.layout.item_movie_section) {
+) = adapterDelegateViewBinding<ListSection, MovieSection, ItemMovieSectionBinding>(
+  { inflater, root -> ItemMovieSectionBinding.inflate(inflater, root, false) }
+) {
 
   val adapter = MovieSectionAdapter(movieClickListener).apply {
     stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
   }
 
-  val sectionTitle = itemView.findViewById<TextView>(R.id.itemSectionTitle)
-  val sectionList = itemView.findViewById<RecyclerView>(R.id.itemMovieSectionList)
-  val seeAllButton = itemView.findViewById<View>(R.id.itemSectionSeeAll)
-
   var saveStateKey = SimpleBundleStore.DEFAULT_SAVE_STATE_KEY
 
-  sectionList.let {
+  binding.itemMovieSectionList.let {
     it.adapter = adapter
     it.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
     it.setHasFixedSize(true)
@@ -47,21 +44,27 @@ fun movieSection(
   }
 
   bind {
-    sectionTitle.text = item.title
+    binding.itemSectionTitle.text = item.title
 
     adapter.items = item.movies
     adapter.notifyDataSetChanged()
 
-    seeAllButton.setOnClickListener {
+    binding.itemSectionSeeAll.setOnClickListener {
       seeAllClickListener(item.code)
     }
 
     saveStateKey = item.code
-    sectionList.layoutManager?.onRestoreInstanceState(bundleStore.getParcelable(saveStateKey))
+
+    binding.itemMovieSectionList.layoutManager?.onRestoreInstanceState(
+      bundleStore.getParcelable(saveStateKey)
+    )
   }
 
   onViewDetachedFromWindow {
-    bundleStore.putParcelable(saveStateKey, sectionList.layoutManager?.onSaveInstanceState())
+    bundleStore.putParcelable(
+      saveStateKey,
+      binding.itemMovieSectionList.layoutManager?.onSaveInstanceState()
+    )
   }
 }
 

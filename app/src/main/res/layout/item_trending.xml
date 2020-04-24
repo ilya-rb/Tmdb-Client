@@ -5,8 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:stateListAnimator="@xml/sla_scale_down"
-    tools:ignore="UseCompoundDrawables"
-    tools:viewBindingIgnore="true">
+    tools:ignore="UseCompoundDrawables">
 
     <ImageView
         android:id="@+id/itemTrendingImage"
