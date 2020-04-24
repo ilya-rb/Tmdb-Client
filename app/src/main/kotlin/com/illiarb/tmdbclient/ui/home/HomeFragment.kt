@@ -27,8 +27,8 @@ import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdbclient.libs.util.Async
 import com.illiarb.tmdbclient.ui.home.HomeViewModel.Event
 import com.illiarb.tmdbclient.ui.home.HomeViewModel.State
+import com.illiarb.tmdbclient.ui.home.delegates.MovieSectionDelegate
 import com.illiarb.tmdbclient.ui.home.delegates.genresSection
-import com.illiarb.tmdbclient.ui.home.delegates.movieSection
 import com.illiarb.tmdbclient.ui.home.delegates.nowplaying.nowPlayingSection
 import com.illiarb.tmdbclient.ui.home.delegates.trendingSection
 import com.illiarb.tmdbclient.ui.home.di.DaggerHomeComponent
@@ -47,14 +47,13 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
   }
 
   private val bundleStore = SimpleBundleStore()
-
   private val adapter = DelegatesAdapter(
-    movieSection(
+    MovieSectionDelegate(
       bundleStore,
-      seeAllClickListener = {
+      onSeeAllClickListener = {
         viewModel.events.offer(Event.SeeAllClick(it))
       },
-      movieClickListener = {
+      onMovieClickListener = {
         viewModel.events.offer(Event.MovieClick(it))
       }
     ),

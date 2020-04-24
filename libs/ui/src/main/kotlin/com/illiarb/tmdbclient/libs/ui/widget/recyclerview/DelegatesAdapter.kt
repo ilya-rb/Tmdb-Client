@@ -11,17 +11,16 @@ class DelegatesAdapter<T>(
   itemDiff: (old: T, new: T) -> Boolean = { old, new -> old == new }
 ) : AsyncListDifferDelegationAdapter<T>(simpleDiffUtilCallback(itemDiff)) {
 
-  private var sharedRecycledViewPool: RecyclerView.RecycledViewPool? = null
+  private val sharedRecycledViewPool by lazy(LazyThreadSafetyMode.NONE) {
+    RecyclerView.RecycledViewPool()
+  }
 
   init {
     delegates.forEach {
       delegatesManager.addDelegate(it)
 
       if (it is HasSharedRecycledViewPool) {
-        if (sharedRecycledViewPool == null) {
-          sharedRecycledViewPool = RecyclerView.RecycledViewPool()
-        }
-        it.setSharedViewPool(sharedRecycledViewPool!!)
+        it.setSharedViewPool(sharedRecycledViewPool)
       }
     }
   }
@@ -29,11 +28,6 @@ class DelegatesAdapter<T>(
   fun submitList(items: List<T>) {
     differ.submitList(items)
   }
-}
-
-interface HasSharedRecycledViewPool {
-
-  fun setSharedViewPool(viewPool: RecyclerView.RecycledViewPool)
 }
 
 internal inline fun <T> simpleDiffUtilCallback(
