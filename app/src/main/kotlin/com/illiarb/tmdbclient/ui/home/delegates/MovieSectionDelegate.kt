@@ -12,7 +12,6 @@ import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
 import com.illiarb.tmdbclient.libs.ui.common.SimpleBundleStore
 import com.illiarb.tmdbclient.libs.ui.common.SizeSpec
 import com.illiarb.tmdbclient.libs.ui.ext.dimen
-import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.HasSharedRecycledViewPool
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdbclient.services.tmdb.domain.ListSection
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
@@ -22,10 +21,9 @@ import com.illiarb.tmdbclient.ui.delegates.movieDelegate
 class MovieSectionDelegate(
   private val bundleStore: SimpleBundleStore,
   private val onSeeAllClickListener: OnClickListener<String>,
-  private val onMovieClickListener: OnClickListener<Movie>
-) : AdapterDelegate<List<MovieSection>>(), HasSharedRecycledViewPool {
-
-  private var sharedRecycledViewPool: RecyclerView.RecycledViewPool? = null
+  private val onMovieClickListener: OnClickListener<Movie>,
+  private val sharedRecycledViewPool: RecyclerView.RecycledViewPool = RecyclerView.RecycledViewPool()
+) : AdapterDelegate<List<MovieSection>>() {
 
   override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
     return ViewHolder(
@@ -54,10 +52,6 @@ class MovieSectionDelegate(
     (holder as ViewHolder).onViewDetachedFromWindow()
   }
 
-  override fun setSharedViewPool(viewPool: RecyclerView.RecycledViewPool) {
-    sharedRecycledViewPool = viewPool
-  }
-
   private class MovieSectionAdapter(clickListener: OnClickListener<Movie>) :
     ListDelegationAdapter<List<Any>>() {
 
@@ -76,7 +70,7 @@ class MovieSectionDelegate(
     private val binding: ItemMovieSectionBinding,
     private val bundleStore: SimpleBundleStore,
     private val onSeeAllClickListener: OnClickListener<String>,
-    private val sharedRecycledViewPool: RecyclerView.RecycledViewPool?,
+    private val sharedRecycledViewPool: RecyclerView.RecycledViewPool,
     onMovieClickListener: OnClickListener<Movie>
   ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -92,16 +86,13 @@ class MovieSectionDelegate(
         it.layoutManager =
           LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
         it.setHasFixedSize(true)
+        it.setRecycledViewPool(sharedRecycledViewPool)
         it.addItemDecoration(
           SpaceDecoration.edgeInnerSpace(
             it.dimen(R.dimen.spacing_normal),
             it.dimen(R.dimen.spacing_small)
           )
         )
-
-        sharedRecycledViewPool?.let { pool ->
-          it.setRecycledViewPool(pool)
-        }
       }
     }
 
