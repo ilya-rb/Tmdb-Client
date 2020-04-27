@@ -2,7 +2,6 @@ package com.illiarb.tmdbclient.services.tmdb.mapper
 
 import com.google.common.truth.Correspondence
 import com.google.common.truth.Truth.assertThat
-import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.internal.configuration.Configuration
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageConfig
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageUrlCreator
@@ -13,12 +12,7 @@ import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.ReviewMappe
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.BackdropListModel
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.BackdropModel
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.MovieModel
-import com.illiarb.tmdbclient.services.tmdb.internal.repository.ConfigurationRepository
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 
@@ -26,18 +20,12 @@ import org.junit.jupiter.api.TestInstance
 class MovieMapperTest {
 
   private val secureBaseUrl = "https://base-url.com"
-  private val configurationRepository = mock<ConfigurationRepository>()
   private val imageUrlCreator = ImageUrlCreator()
   private val movieMapper =
     MovieMapper(GenreMapper(), PersonMapper(), ReviewMapper(), imageUrlCreator)
 
-  private lateinit var configuration: Configuration
-
-  @BeforeAll
-  fun beforeAll() = runBlocking {
-    mockConfiguration()
-    configuration = configurationRepository.getConfiguration().unwrap()
-  }
+  private val configuration: Configuration =
+    Configuration(images = ImageConfig(secureBaseUrl = secureBaseUrl))
 
   @Test
   fun `it should append url to start of the backdrop path`() = runBlockingTest {
@@ -66,13 +54,5 @@ class MovieMapperTest {
 
   private fun createBackdropList(): List<BackdropModel> {
     return mutableListOf(BackdropModel(filePath = "file_path"))
-  }
-
-  private suspend fun mockConfiguration() {
-    whenever(configurationRepository.getConfiguration()).thenReturn(
-      Result.Ok(
-        Configuration(images = ImageConfig(secureBaseUrl = secureBaseUrl))
-      )
-    )
   }
 }

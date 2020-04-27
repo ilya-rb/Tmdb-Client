@@ -5,11 +5,12 @@ import com.illiarb.tmdbclient.libs.tools.ResourceResolver
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.domain.Country
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.ConfigurationRepository
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.argumentCaptor
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import io.mockk.coEvery
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import kotlinx.coroutines.test.runBlockingTest
 import okhttp3.Interceptor
 import okhttp3.Protocol
@@ -23,47 +24,40 @@ class RegionInterceptorTest {
   @Test
   fun `it should append user region as query parameter`() = runBlockingTest {
     val region = "UA"
-    val interceptor = createInterceptorWithRegion(region)
+    val interceptor = RegionInterceptor(
+      mockk<ConfigurationRepository>().apply {
+        coEvery { getCountries() } returns Result.Ok(listOf(Country(region, region)))
+      },
+      mockk<ResourceResolver>().apply {
+        every { getUserLocale() } returns Locale(region, region)
+        every { getUserISOCountry() } returns region
+      }
+    )
+
     val request = Request.Builder()
       .url("https://api-url.com/request")
       .build()
 
-    val chain = mock<Interceptor.Chain>().also {
-      whenever(it.request()).thenReturn(request)
-      whenever(it.proceed(any())).thenReturn(
-        Response.Builder()
-          .request(request)
-          .protocol(Protocol.HTTP_1_1)
-          .message("")
-          .code(200)
-          .build()
-      )
+    val chain = mockk<Interceptor.Chain>().also {
+      every { it.request() } returns request
+      every { it.proceed(any()) } returns
+          Response.Builder()
+            .request(request)
+            .protocol(Protocol.HTTP_1_1)
+            .message("")
+            .code(200)
+            .build()
     }
 
-    val intercepted = interceptor.captureInterceptedRequest(chain)
-    assertThat(region).isEqualTo(intercepted.url.queryParameter("region"))
-  }
+    @Suppress("BlockingMethodInNonBlockingContext")
+    interceptor.intercept(chain)
 
-  private suspend fun createInterceptorWithRegion(region: String): RegionInterceptor {
-    val repository = mock<ConfigurationRepository>().also {
-      whenever(it.getCountries()).thenReturn(
-        Result.Ok(listOf(Country(region, region)))
-      )
-    }
+    val requestSlot = slot<Request>()
+    verify { chain.proceed(capture(requestSlot)) }
+    verify { chain.request() }
+    verify { chain.proceed(any()) }
+    confirmVerified(chain)
 
-    val resolver = mock<ResourceResolver>().also {
-      whenever(it.getUserLocale()).thenReturn(Locale(region, region))
-    }
-
-    return RegionInterceptor(repository, resolver)
-  }
-
-  private fun Interceptor.captureInterceptedRequest(chain: Interceptor.Chain): Request {
-    intercept(chain)
-
-    val requestCaptor = argumentCaptor<Request>()
-    verify(chain).proceed(requestCaptor.capture())
-
-    return requestCaptor.firstValue
+    assertThat(region).isEqualTo(requestSlot.captured.url.queryParameter("region"))
   }
 }

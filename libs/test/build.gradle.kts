@@ -40,11 +40,9 @@ dependencies {
   debugImplementation(Deps.Tools.Debug.Flipper.flipperNetwork)
 
   api(Deps.Test.junit)
-  api(Deps.Test.Mockito.core)
-  api(Deps.Test.Mockito.inline)
-  api(Deps.Test.Mockito.kotlin)
   api(Deps.Kotlin.reflect)
   api(Deps.Kotlin.coroutinesTest)
   api(Deps.Test.AndroidX.core)
   api(Deps.Test.AndroidX.rules)
+  api(Deps.Test.mockk)
 }

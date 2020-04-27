@@ -8,18 +8,19 @@ import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageConfig
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.ConfigurationApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.CountryMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.DefaultConfigurationRepository
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyZeroInteractions
-import com.nhaarman.mockitokotlin2.whenever
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Test
 
 class ConfigurationRepositoryTest {
 
-  private val cache = mock<TmdbCache>()
-  private val api = mock<ConfigurationApi>()
+  private val cache = mockk<TmdbCache>()
+  private val api = mockk<ConfigurationApi>()
   private val repository = DefaultConfigurationRepository(
     cache,
     api,
@@ -29,44 +30,49 @@ class ConfigurationRepositoryTest {
 
   @Test
   fun `it should check cache first and return from cached data if not empty`() = runBlockingTest {
-    whenever(cache.getConfiguration())
-      .thenReturn(
+    every { cache.getConfiguration() } returns
         Configuration(
+          changeKeys = listOf("images", "videos"),
           images = ImageConfig(
-            secureBaseUrl = "some_url",
-            backdropSizes = listOf("size"),
-            posterSizes = listOf("size"),
-            profileSizes = listOf("size")
-          ),
-          changeKeys = listOf("key_1", "key_2")
+            secureBaseUrl = "https://api.com/",
+            backdropSizes = listOf("w500"),
+            posterSizes = listOf("w500"),
+            profileSizes = listOf("w500")
+          )
         )
-      )
 
     repository.getConfiguration()
 
-    verify(cache, times(1)).getConfiguration()
-    verifyZeroInteractions(api)
+    verify(exactly = 1) { cache.getConfiguration() }
+    coVerify(exactly = 0) { api.getConfiguration() }
+
+    confirmVerified(cache, api)
   }
 
   @Test
   fun `it should check cache and if it is empty fetch from api`() = runBlockingTest {
-    whenever(cache.getConfiguration()).thenReturn(Configuration())
+    every { cache.getConfiguration() } returns Configuration()
 
     repository.getConfiguration()
 
-    verify(cache, times(1)).getConfiguration()
-    verify(api).getConfiguration()
+    verify(exactly = 1) { cache.getConfiguration() }
+    coVerify(exactly = 1) { api.getConfiguration() }
+
+    confirmVerified(api, cache)
   }
 
   @Test
   fun `it should store configuration in cache after successful fetch`() = runBlockingTest {
     val configToStore = Configuration()
 
-    whenever(cache.getConfiguration()).thenReturn(Configuration())
-    whenever(api.getConfiguration()).thenReturn(Result.Ok(configToStore))
+    every { cache.getConfiguration() } returns Configuration()
+    coEvery { api.getConfiguration() } returns Result.Ok(configToStore)
 
     repository.getConfiguration()
 
-    verify(cache, times(1)).storeConfiguration(configToStore)
+    verify { cache.storeConfiguration(configToStore) }
+    verify { cache.getConfiguration() }
+
+    confirmVerified(cache)
   }
 }
