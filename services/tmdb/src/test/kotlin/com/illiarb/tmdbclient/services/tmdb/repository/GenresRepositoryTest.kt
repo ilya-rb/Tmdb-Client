@@ -9,19 +9,19 @@ import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.GenreMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.GenreListModel
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.GenreModel
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.DefaultGenresRepository
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyZeroInteractions
-import com.nhaarman.mockitokotlin2.whenever
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Test
 
 class GenresRepositoryTest {
 
-  private val genresApi = mock<GenreApi>()
-  private val cache = mock<TmdbCache>()
+  private val genresApi = mockk<GenreApi>()
+  private val cache = mockk<TmdbCache>()
   private val repository = DefaultGenresRepository(
     genresApi,
     cache,
@@ -31,17 +31,12 @@ class GenresRepositoryTest {
 
   @Test
   fun `should check cache first and return cached data if not empty`() = runBlockingTest {
-    whenever(cache.getGenres()).thenReturn(
-      listOf(
-        GenreModel(),
-        GenreModel()
-      )
-    )
+    every { cache.getGenres() } returns listOf(GenreModel(), GenreModel())
 
     val result = repository.getGenres()
+    verify(exactly = 1) { cache.getGenres() }
 
-    verify(cache, times(1)).getGenres()
-    verifyZeroInteractions(genresApi)
+    confirmVerified(cache)
 
     assertThat(result).isInstanceOf(Result.Ok::class.java)
     assertThat(result.unwrap()).isNotEmpty()
@@ -49,25 +44,32 @@ class GenresRepositoryTest {
 
   @Test
   fun `should fetch data from api if cache is empty`() = runBlockingTest {
-    whenever(cache.getGenres()).thenReturn(emptyList())
+    every { cache.getGenres() } returns emptyList()
 
     repository.getGenres()
 
-    verify(cache, times(1)).getGenres()
+    verify(exactly = 1) { cache.getGenres() }
 
     @Suppress("DeferredResultUnused")
-    verify(genresApi).getGenres()
+    coVerify { genresApi.getGenres() }
+
+    confirmVerified(cache, genresApi)
   }
 
   @Test
   fun `should store genres in cache after successful fetch from api`() = runBlockingTest {
     val apiGenres = GenreListModel()
 
-    whenever(cache.getGenres()).thenReturn(emptyList())
-    whenever(genresApi.getGenres()).thenReturn(Result.Ok(apiGenres))
+    every { cache.getGenres() } returns emptyList()
+    coEvery { genresApi.getGenres() } returns Result.Ok(apiGenres)
 
     repository.getGenres()
 
-    verify(cache, times(1)).storeGenres(any())
+    verify(exactly = 1) { cache.storeGenres(any()) }
+    verify(exactly = 1) { cache.getGenres() }
+
+    coVerify { genresApi.getGenres() }
+
+    confirmVerified(cache, genresApi)
   }
 }

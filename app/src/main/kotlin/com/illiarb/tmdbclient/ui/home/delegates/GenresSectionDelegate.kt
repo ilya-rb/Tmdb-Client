@@ -3,6 +3,7 @@ package com.illiarb.tmdbclient.ui.home.delegates
 import com.google.android.material.chip.Chip
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import com.illiarb.tmdbclient.databinding.ItemGenresSectionBinding
+import com.illiarb.tmdbclient.libs.ui.R
 import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
 import com.illiarb.tmdbclient.services.tmdb.domain.Genre
 import com.illiarb.tmdbclient.services.tmdb.domain.GenresSection
@@ -18,7 +19,7 @@ fun genresSection(clickListener: OnClickListener<Genre>) =
         val chip = Chip(
           itemView.context,
           null,
-          com.illiarb.tmdbclient.libs.ui.R.attr.materialChipAction
+          R.attr.materialChipAction
         )
 
         chip.text = genre.name

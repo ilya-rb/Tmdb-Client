@@ -15,19 +15,19 @@ import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.PersonMappe
 import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.ReviewMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.ResultsModel
 import com.illiarb.tmdbclient.services.tmdb.repository.TestMovieRepository
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Test
 
 class MoviesInteractorTest {
 
-  private val cache = mock<TmdbCache>()
-  private val discoverApi = mock<DiscoverApi>()
-  private val movieApi = mock<MovieApi>()
+  private val cache = mockk<TmdbCache>()
+  private val discoverApi = mockk<DiscoverApi>()
+  private val movieApi = mockk<MovieApi>()
   private val moviesRepository = TestMovieRepository()
 
   private val interactor = DefaultMoviesInteractor(
@@ -40,27 +40,29 @@ class MoviesInteractorTest {
   )
 
   @Test
-  fun `should not pass genre id if all genres are selected`() = runBlockingTest {
-    val configuration = Configuration(changeKeys = listOf("images"))
+  fun `it should not pass genre id if all genres are selected`() = runBlockingTest {
+    every {
+      cache.getConfiguration()
+    } returns Configuration(changeKeys = listOf("images"))
 
-    whenever(cache.getConfiguration()).thenReturn(configuration)
-
-    whenever(discoverApi.discoverMovies(anyOrNull(), any()))
-      .thenReturn(Result.Ok(ResultsModel(emptyList(), 1, 1)))
+    coEvery {
+      discoverApi.discoverMovies(any(), any())
+    } returns Result.Ok(ResultsModel(emptyList(), 1, 1))
 
     interactor.discoverMovies(emptyList(), 1)
 
-    verify(discoverApi).discoverMovies(null, 1)
+    coVerify {
+      discoverApi.discoverMovies(null, 1)
+    }
+
+    confirmVerified(discoverApi)
   }
 
   @Test
-  fun `should include images to response if change key is present`() = runBlockingTest {
-    val id = 1
-    val configuration = Configuration(changeKeys = listOf("images"))
+  fun `it should include images to response if change key is present`() = runBlockingTest {
+    every { cache.getConfiguration() } returns Configuration(changeKeys = listOf("images"))
 
-    whenever(cache.getConfiguration()).thenReturn(configuration)
-
-    val details = interactor.getMovieDetails(id).unwrap()
+    val details = interactor.getMovieDetails(movieId = 1).unwrap()
     assertThat(details.images).isNotEmpty()
   }
 }

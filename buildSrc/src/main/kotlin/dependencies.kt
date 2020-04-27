@@ -57,7 +57,7 @@ object Deps {
       const val compileSdkVersion = 29
       const val targetSdkVersion = 29
       const val minSdkVersion = 21
-      const val gradlePlugin = "com.android.tools.build:gradle:4.0.0-beta04"
+      const val gradlePlugin = "com.android.tools.build:gradle:4.0.0-beta05"
     }
 
     object AndroidX {
@@ -116,11 +116,20 @@ object Deps {
       "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
   }
 
+  object Moshi {
+    private const val moshiVersion = "1.9.2"
+
+    const val core = "com.squareup.moshi:moshi:$moshiVersion"
+    const val kotlin = "com.squareup.moshi:moshi-kotlin:$moshiVersion"
+    const val codegen = "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
+  }
+
   object AdapterDelegates {
     private const val adapterDelegatesVersion = "4.3.0"
 
     const val core = "com.hannesdorfmann:adapterdelegates4:$adapterDelegatesVersion"
-    const val dsl = "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:$adapterDelegatesVersion"
+    const val dsl =
+      "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:$adapterDelegatesVersion"
   }
 
   object Dagger {
@@ -173,6 +182,7 @@ object Deps {
     const val truth = "com.google.truth:truth:1.0.1"
     const val kaspresso = "com.kaspersky.android-components:kaspresso:1.1.0"
     const val kakao = "com.agoda.kakao:kakao:2.3.0"
+    const val mockk = "io.mockk:mockk:1.10.0"
 
     object JUnit5 {
       private const val jUnitVersion = "5.6.0"
@@ -197,14 +207,6 @@ object Deps {
       const val espressoIntents = "androidx.test.espresso:espresso-intents:$espressoVersion"
       const val extJunit = "androidx.test.ext:junit:1.1.2-alpha04"
       const val uiAutomator = "androidx.test.uiautomator:uiautomator:2.2.0"
-    }
-
-    object Mockito {
-      private const val mockitoVersion = "3.3.1"
-
-      const val core = "org.mockito:mockito-core:$mockitoVersion"
-      const val inline = "org.mockito:mockito-inline:$mockitoVersion"
-      const val kotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
     }
   }
 }
