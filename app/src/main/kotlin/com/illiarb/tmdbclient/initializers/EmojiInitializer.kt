@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.core.provider.FontRequest
 import androidx.emoji.text.EmojiCompat
 import androidx.emoji.text.FontRequestEmojiCompatConfig
-import com.illiarb.tmdbclient.R
+import com.illiarb.tmdbclient.libs.ui.R
 import com.illiarb.tmdbclient.libs.tools.AppInitializer
 import javax.inject.Inject
 
