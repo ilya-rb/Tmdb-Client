@@ -25,6 +25,7 @@ object Modules {
     const val tools = ":libs:tools"
     const val util = ":libs:util"
     const val logger = ":libs:logger"
+    const val buildConfig = ":libs:buildconfig"
   }
 
   object Services {
@@ -42,7 +43,7 @@ object Deps {
   }
 
   object Kotlin {
-    private const val kotlinVersion = "1.3.71"
+    private const val kotlinVersion = "1.3.72"
 
     const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     const val std = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"

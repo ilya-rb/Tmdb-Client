@@ -1,6 +1,3 @@
-import java.io.FileInputStream
-import java.util.Properties
-
 plugins {
   id("com.android.library")
   id("de.mannodermaus.android-junit5")
@@ -27,14 +24,6 @@ android {
   }
 
   buildTypes {
-    all {
-      val config = file("$rootDir/api-config.properties")
-      val properties = Properties().also { it.load(FileInputStream(config)) }
-
-      buildConfigField("String", "API_URL", properties.getProperty("api.url"))
-      buildConfigField("String", "API_KEY", properties.getProperty("api.key"))
-    }
-
     getByName("release") {
       isMinifyEnabled = false
       proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
@@ -53,6 +42,7 @@ dependencies {
   implementation(project(Modules.Core.tools))
   implementation(project(Modules.Core.util))
   implementation(project(Modules.Core.logger))
+  implementation(project(Modules.Core.buildConfig))
 
   implementation(Deps.Dagger.core)
   implementation(Deps.Android.Firebase.core)

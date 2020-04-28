@@ -71,6 +71,17 @@ allprojects {
 subprojects {
 
   afterEvaluate {
+    // Disable build config generation for libraries
+    extensions.findByType<com.android.build.gradle.LibraryExtension>()?.apply {
+      libraryVariants.all {
+        generateBuildConfigProvider?.let {
+          it {
+            enabled = false
+          }
+        }
+      }
+    }
+
     // Base extension for com.android.library and com.android.application
     extensions.findByType<com.android.build.gradle.BaseExtension>()?.apply {
       project.apply {

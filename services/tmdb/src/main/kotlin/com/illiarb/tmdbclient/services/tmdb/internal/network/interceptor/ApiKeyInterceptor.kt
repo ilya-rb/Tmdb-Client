@@ -1,11 +1,13 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.network.interceptor
 
-import com.illiarb.tmdbclient.services.tmdb.BuildConfig
+import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 
-internal class ApiKeyInterceptor @Inject constructor() : Interceptor {
+internal class ApiKeyInterceptor @Inject constructor(
+  private val tmdbConfig: TmdbConfig
+) : Interceptor {
 
   companion object {
     const val QUERY_PARAM_API_KEY = "api_key"
@@ -18,7 +20,7 @@ internal class ApiKeyInterceptor @Inject constructor() : Interceptor {
         chain.request()
           .url()
           .newBuilder()
-          .addQueryParameter(QUERY_PARAM_API_KEY, BuildConfig.API_KEY)
+          .addQueryParameter(QUERY_PARAM_API_KEY, tmdbConfig.apiKey)
           .build()
       )
       .build()

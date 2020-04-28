@@ -1,8 +1,8 @@
 package com.illiarb.tmdbclient.services.analytics.di
 
 import android.app.Application
+import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
-import com.illiarb.tmdbclient.services.analytics.BuildConfig
 import com.illiarb.tmdbclient.services.analytics.internal.DefaultAnalyticsService
 import com.illiarb.tmdbclient.services.analytics.internal.trackers.DebugAnalyticsTracker
 import com.illiarb.tmdbclient.services.analytics.internal.trackers.FirebaseAnalyticTracker
@@ -19,9 +19,10 @@ object AnalyticsModule {
   @JvmStatic
   internal fun provideAnalyticsService(
     firebaseAnalyticTracker: FirebaseAnalyticTracker,
-    debugAnalyticsTracker: DebugAnalyticsTracker
+    debugAnalyticsTracker: DebugAnalyticsTracker,
+    buildConfig: BuildConfig
   ): AnalyticsService {
-    return if (BuildConfig.DEBUG) {
+    return if (buildConfig.isDebug) {
       DefaultAnalyticsService(setOf(debugAnalyticsTracker))
     } else {
       DefaultAnalyticsService(setOf(firebaseAnalyticTracker))
