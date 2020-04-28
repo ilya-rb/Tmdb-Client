@@ -4,8 +4,6 @@ import com.illiarb.tmdbclient.App
 import com.illiarb.tmdbclient.di.AppComponent
 import com.illiarb.tmdbclient.libs.test.TestDependencies
 import com.illiarb.tmdbclient.libs.tools.di.ToolsProvider
-import com.illiarb.tmdbclient.navigation.ActionsBuffer
-import com.illiarb.tmdbclient.navigation.AppRouter
 import com.illiarb.tmdbclient.navigation.NavigatorHolder
 import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.services.analytics.di.AnalyticsProvider
@@ -16,8 +14,8 @@ class TestAppComponent : AppComponent,
   TmdbProvider by TestDependencies,
   AnalyticsProvider by TestDependencies {
 
-  private val navigatorHolder = ActionsBuffer()
-  private val router = AppRouter(navigatorHolder)
+  private val navigatorHolder = NavigatorHolder.ActionsBuffer()
+  private val router = Router.DefaultRouter(navigatorHolder)
 
   override fun navigatorHolder(): NavigatorHolder = navigatorHolder
 
