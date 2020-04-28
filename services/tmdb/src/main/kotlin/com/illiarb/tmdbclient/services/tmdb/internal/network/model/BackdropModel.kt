@@ -1,7 +1,14 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.network.model
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-internal data class BackdropModel(@SerializedName("file_path") val filePath: String)
+@JsonClass(generateAdapter = true)
+internal data class BackdropModel(
+  @Json(name = "file_path") val filePath: String
+)
 
-internal data class BackdropListModel(@SerializedName("backdrops") val backdrops: List<BackdropModel>)
+@JsonClass(generateAdapter = true)
+internal data class BackdropListModel(
+  @Json(name = "backdrops") val backdrops: List<BackdropModel>
+)

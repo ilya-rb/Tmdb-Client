@@ -1,62 +1,64 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.network.model
 
-import com.google.gson.annotations.SerializedName
 import com.illiarb.tmdbclient.services.tmdb.domain.Video
 import com.ironz.binaryprefs.serialization.serializer.persistable.Persistable
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataInput
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataOutput
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 internal data class MovieModel(
 
-  @SerializedName("id")
+  @Json(name = "id")
   var id: Int = 0,
 
-  @SerializedName("poster_path")
+  @Json(name = "poster_path")
   var posterPath: String? = null,
 
-  @SerializedName("backdrop_path")
+  @Json(name = "backdrop_path")
   var backdropPath: String? = null,
 
-  @SerializedName("release_date")
+  @Json(name = "release_date")
   var releaseDate: String = "",
 
-  @SerializedName("overview")
+  @Json(name = "overview")
   var overview: String? = null,
 
-  @SerializedName("title")
+  @Json(name = "title")
   var title: String = "",
 
-  @SerializedName("vote_average")
+  @Json(name = "vote_average")
   var voteAverage: Float = 0f,
 
-  @SerializedName("budget")
+  @Json(name = "budget")
   val budget: Int = 0,
 
-  @SerializedName("genres")
+  @Json(name = "genres")
   val genres: List<GenreModel>? = emptyList(),
 
-  @SerializedName("homepage")
+  @Json(name = "homepage")
   val homepage: String? = null,
 
-  @SerializedName("runtime")
+  @Json(name = "runtime")
   val runtime: Int = 0,
 
-  @SerializedName("status")
+  @Json(name = "status")
   val status: String? = null,
 
-  @SerializedName("reviews")
+  @Json(name = "reviews")
   val reviews: ResultsModel<ReviewModel>? = null,
 
-  @SerializedName("images")
+  @Json(name = "images")
   val images: BackdropListModel? = null,
 
-  @SerializedName("credits")
+  @Json(name = "credits")
   val credits: CreditsModel? = null,
 
-  @SerializedName("production_countries")
+  @Json(name = "production_countries")
   val productionCountries: List<ProductionCountryModel> = emptyList(),
 
-  @SerializedName("videos")
+  @Json(name = "videos")
   val videos: ResultsModel<Video>? = null
 
 ) : Persistable, TrendingModel {

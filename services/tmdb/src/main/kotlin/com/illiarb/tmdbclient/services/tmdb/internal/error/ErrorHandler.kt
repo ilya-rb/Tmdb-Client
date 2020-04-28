@@ -1,9 +1,9 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.error
 
-import com.google.gson.Gson
 import com.illiarb.tmdbclient.libs.util.ApiException
 import com.illiarb.tmdbclient.libs.util.NetworkException
 import com.illiarb.tmdbclient.libs.util.UnknownErrorException
+import com.squareup.moshi.Moshi
 import okhttp3.ResponseBody
 import retrofit2.HttpException
 import java.io.IOException
@@ -14,8 +14,8 @@ import javax.inject.Inject
  * @author ilya-rb on 16.01.19.
  */
 class ErrorHandler @Inject constructor(
-  private val gson: Gson,
-  private val resourceResolver: com.illiarb.tmdbclient.libs.tools.ResourceResolver
+  private val resourceResolver: com.illiarb.tmdbclient.libs.tools.ResourceResolver,
+  private val moshi: Moshi
 ) {
 
   fun createFromThrowable(error: Throwable): Throwable =
@@ -29,7 +29,8 @@ class ErrorHandler @Inject constructor(
     if (body == null) {
       UnknownErrorException("")//resourceResolver.getString(R.string.error_unknown))
     } else {
-      gson.fromJson(body.string(), ApiException::class.java)
+      ApiException(0, "message")
+      //gson.fromJson(body.string(), ApiException::class.java)
     }
 
   private fun createNetworkError(error: HttpException): Throwable {
@@ -38,7 +39,7 @@ class ErrorHandler @Inject constructor(
     return if (errorBody == null) {
       UnknownErrorException("")//resourceResolver.getString(R.string.error_unknown))
     } else {
-      gson.fromJson(errorBody.string(), ApiException::class.java)
+      ApiException(0, "message")
     }
   }
 

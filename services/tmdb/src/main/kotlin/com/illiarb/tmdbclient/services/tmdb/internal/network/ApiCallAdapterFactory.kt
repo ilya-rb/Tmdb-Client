@@ -2,6 +2,7 @@ package com.illiarb.tmdbclient.services.tmdb.internal.network
 
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.internal.error.ErrorHandler
+import okio.Timeout
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Callback
@@ -26,10 +27,7 @@ class CallAdapterFactory @Inject constructor(
         when (getRawType(callType)) {
           Result::class.java -> {
             val resultType = getParameterUpperBound(0, callType as ParameterizedType)
-            ResultAdapter(
-              resultType,
-              errorHandler
-            )
+            ResultAdapter(resultType, errorHandler)
           }
           else -> null
         }
@@ -52,11 +50,9 @@ class ResultCall<T>(
   private val errorHandler: ErrorHandler
 ) : CallDelegate<T, Result<T>>(proxy) {
 
-  override fun cloneImpl() =
-    ResultCall(
-      proxy.clone(),
-      errorHandler
-    )
+  override fun timeout(): Timeout = Timeout.NONE
+
+  override fun cloneImpl() = ResultCall(proxy.clone(), errorHandler)
 
   override fun enqueueImpl(callback: Callback<Result<T>>) = proxy.enqueue(object : Callback<T> {
 
@@ -74,11 +70,10 @@ class ResultCall<T>(
     }
 
     override fun onFailure(call: Call<T>, t: Throwable) {
-      callback.onResponse(this@ResultCall, Response.success(
-        Result.Err(
-          errorHandler.createFromThrowable(t)
-        )
-      ))
+      callback.onResponse(
+        this@ResultCall,
+        Response.success(Result.Err(errorHandler.createFromThrowable(t)))
+      )
     }
   })
 }

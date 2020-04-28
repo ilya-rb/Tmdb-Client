@@ -107,11 +107,11 @@ object Deps {
   }
 
   object Retrofit {
-    private const val retrofitVersion = "2.7.1"
+    private const val retrofitVersion = "2.8.1"
 
     const val core = "com.squareup.retrofit2:retrofit:$retrofitVersion"
     const val okHttp = "com.squareup.okhttp3:okhttp:4.5.0"
-    const val converterGson = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    const val converterGson = "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
     const val coroutinesAdapter =
       "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
   }

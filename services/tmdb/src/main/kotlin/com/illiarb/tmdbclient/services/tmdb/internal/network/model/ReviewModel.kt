@@ -1,16 +1,18 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.network.model
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 internal data class ReviewModel(
 
-  @SerializedName("author")
+  @Json(name = "author")
   val author: String,
 
-  @SerializedName("content")
+  @Json(name = "content")
   val content: String,
 
-  @SerializedName("url")
+  @Json(name = "url")
   val url: String
 
 )

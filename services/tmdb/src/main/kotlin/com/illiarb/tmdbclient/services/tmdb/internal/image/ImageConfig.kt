@@ -1,26 +1,28 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.image
 
-import com.google.gson.annotations.SerializedName
+import com.illiarb.tmdbclient.services.tmdb.internal.cache.readStringList
+import com.illiarb.tmdbclient.services.tmdb.internal.cache.writeStringList
 import com.ironz.binaryprefs.serialization.serializer.persistable.Persistable
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataInput
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataOutput
-import com.illiarb.tmdbclient.services.tmdb.internal.cache.readStringList
-import com.illiarb.tmdbclient.services.tmdb.internal.cache.writeStringList
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
 /**
  * @author ilya-rb on 30.11.18.
  */
+@JsonClass(generateAdapter = true)
 internal data class ImageConfig(
-  @SerializedName("secure_base_url")
+  @Json(name = "secure_base_url")
   var secureBaseUrl: String = "",
 
-  @SerializedName("backdrop_sizes")
+  @Json(name = "backdrop_sizes")
   var backdropSizes: List<String> = emptyList(),
 
-  @SerializedName("profile_sizes")
+  @Json(name = "profile_sizes")
   var posterSizes: List<String> = emptyList(),
 
-  @SerializedName("poster_sizes")
+  @Json(name = "poster_sizes")
   var profileSizes: List<String> = emptyList()
 ) : Persistable {
 
