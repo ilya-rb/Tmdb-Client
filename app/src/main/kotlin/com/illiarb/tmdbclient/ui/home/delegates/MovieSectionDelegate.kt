@@ -17,6 +17,7 @@ import com.illiarb.tmdbclient.services.tmdb.domain.ListSection
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.services.tmdb.domain.MovieSection
 import com.illiarb.tmdbclient.ui.delegates.movieDelegate
+import com.illiarb.tmdbclient.libs.ui.R as UiR
 
 class MovieSectionDelegate(
   private val bundleStore: SimpleBundleStore,
@@ -89,8 +90,8 @@ class MovieSectionDelegate(
         it.setRecycledViewPool(sharedRecycledViewPool)
         it.addItemDecoration(
           SpaceDecoration.edgeInnerSpace(
-            it.dimen(R.dimen.spacing_normal),
-            it.dimen(R.dimen.spacing_small)
+            it.dimen(UiR.dimen.spacing_normal),
+            it.dimen(UiR.dimen.spacing_small)
           )
         )
       }
