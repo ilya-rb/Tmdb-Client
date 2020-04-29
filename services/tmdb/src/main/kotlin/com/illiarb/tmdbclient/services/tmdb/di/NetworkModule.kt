@@ -5,6 +5,7 @@ import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
 import com.illiarb.tmdbclient.libs.tools.ResourceResolver
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
 import com.illiarb.tmdbclient.services.tmdb.internal.error.ErrorHandler
@@ -32,7 +33,8 @@ object NetworkModule {
 
   @Provides
   @JvmStatic
-  internal fun provideApiKeyInterceptor(): ApiKeyInterceptor = ApiKeyInterceptor()
+  internal fun provideApiKeyInterceptor(tmdbConfig: TmdbConfig): ApiKeyInterceptor =
+    ApiKeyInterceptor(tmdbConfig)
 
   @Provides
   @JvmStatic

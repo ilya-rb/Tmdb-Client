@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.network.interceptor
 
 import com.google.common.truth.Truth.assertThat
-import com.illiarb.tmdbclient.services.tmdb.BuildConfig
+import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
@@ -15,9 +15,14 @@ import org.junit.jupiter.api.Test
 
 class ApiKeyInterceptorTest {
 
+  private val fakeTmdbConfig = object : TmdbConfig {
+    override val apiKey: String get() = "api_key"
+    override val apiUrl: String get() = "https://api-url.com/"
+  }
+
   @Test
   fun `it should append build config api key as query parameter to request url`() {
-    val interceptor = ApiKeyInterceptor()
+    val interceptor = ApiKeyInterceptor(fakeTmdbConfig)
     val chain = mockk<Interceptor.Chain>().also {
       val request = Request.Builder()
         .url("https://api-url.com/endpoint")
@@ -43,6 +48,6 @@ class ApiKeyInterceptorTest {
     confirmVerified(chain)
 
     val apiKeyParam = requestSlot.captured.url.queryParameter(ApiKeyInterceptor.QUERY_PARAM_API_KEY)
-    assertThat(apiKeyParam).isEqualTo(BuildConfig.API_KEY)
+    assertThat(apiKeyParam).isEqualTo(fakeTmdbConfig.apiKey)
   }
 }

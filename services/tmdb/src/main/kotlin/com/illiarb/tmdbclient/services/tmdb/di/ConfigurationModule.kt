@@ -3,8 +3,8 @@ package com.illiarb.tmdbclient.services.tmdb.di
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
 import com.illiarb.tmdbclient.libs.tools.WorkManager
-import com.illiarb.tmdbclient.services.tmdb.BuildConfig
 import com.illiarb.tmdbclient.services.tmdb.internal.configuration.ConfigurationFetchWork
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.ConfigurationApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.interceptor.ApiKeyInterceptor
@@ -35,10 +35,11 @@ object ConfigurationModule {
     @ConfigurationClient
     okHttpClient: OkHttpClient,
     callAdapterFactory: CallAdapter.Factory,
-    converterFactory: Converter.Factory
+    converterFactory: Converter.Factory,
+    tmdbConfig: TmdbConfig
   ): Retrofit {
     return Retrofit.Builder()
-      .baseUrl(BuildConfig.API_URL)
+      .baseUrl(tmdbConfig.apiUrl)
       .addCallAdapterFactory(callAdapterFactory)
       .client(okHttpClient)
       .addConverterFactory(converterFactory)
@@ -48,7 +49,9 @@ object ConfigurationModule {
   @Provides
   @ConfigurationClient
   @JvmStatic
-  internal fun provideConfigurationApiOkHttpClient(apiKeyInterceptor: ApiKeyInterceptor): OkHttpClient {
+  internal fun provideConfigurationApiOkHttpClient(
+    apiKeyInterceptor: ApiKeyInterceptor
+  ): OkHttpClient {
     return OkHttpClient.Builder()
       .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
       .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)

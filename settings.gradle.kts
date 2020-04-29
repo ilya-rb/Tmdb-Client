@@ -18,5 +18,6 @@ include(
   ":libs:util",
   ":libs:test",
   ":libs:logger",
-  ":libs:tools"
+  ":libs:tools",
+  ":libs:buildconfig"
 )
