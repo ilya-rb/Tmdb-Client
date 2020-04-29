@@ -8,7 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.illiarb.tmdbclient.R
+import com.illiarb.tmdbclient.libs.ui.R
 import com.illiarb.tmdbclient.databinding.FragmentMovieDetailsBinding
 import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable

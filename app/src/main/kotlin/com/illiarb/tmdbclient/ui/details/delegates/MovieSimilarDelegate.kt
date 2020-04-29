@@ -12,6 +12,7 @@ import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.ui.delegates.movieDelegate
 import com.illiarb.tmdbclient.ui.details.MovieDetailsViewModel
+import com.illiarb.tmdbclient.libs.ui.R as UiR
 
 fun movieSimilarDelegate(
   clickListener: OnClickListener<Movie>
@@ -33,8 +34,8 @@ fun movieSimilarDelegate(
     isNestedScrollingEnabled = false
     addItemDecoration(
       SpaceDecoration.edgeInnerSpace(
-        itemView.dimen(R.dimen.spacing_normal),
-        itemView.dimen(R.dimen.spacing_small)
+        itemView.dimen(UiR.dimen.spacing_normal),
+        itemView.dimen(UiR.dimen.spacing_small)
       )
     )
   }

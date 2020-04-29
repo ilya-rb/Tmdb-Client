@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.ui.delegates
 
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
-import com.illiarb.tmdbclient.R
+import com.illiarb.tmdbclient.libs.ui.R
 import com.illiarb.tmdbclient.databinding.ItemMovieBinding
 import com.illiarb.tmdbclient.libs.imageloader.CropOptions
 import com.illiarb.tmdbclient.libs.imageloader.clear
