@@ -36,6 +36,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.google.android.material.R as MaterialR
+import com.illiarb.tmdbclient.libs.ui.R as UiR
 
 class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectable {
 
@@ -86,6 +88,10 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
 
     binding.moviesSwipeRefresh.isEnabled = false
 
+    binding.imageTmdb.setOnClickListener {
+      viewModel.events.offer(Event.TmdbIconClick)
+    }
+
     bundleStore.onRestoreInstanceState(savedInstanceState = savedInstanceState)
 
     setupAppBarScrollListener()
@@ -114,9 +120,9 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
       addItemDecoration(
         SpaceDecoration(
           spacingTopFirst = 0,
-          spacingTop = dimen(R.dimen.spacing_small),
-          spacingBottom = dimen(R.dimen.spacing_small),
-          spacingBottomLast = dimen(R.dimen.spacing_normal)
+          spacingTop = dimen(UiR.dimen.spacing_small),
+          spacingBottom = dimen(UiR.dimen.spacing_small),
+          spacingBottomLast = dimen(UiR.dimen.spacing_normal)
         )
       )
       isNestedScrollingEnabled = false
@@ -133,11 +139,11 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
 
       val colorEvaluator = ArgbEvaluator()
       val startColor = Color.TRANSPARENT
-      val endColor: Int = requireView().getColorAttr(R.attr.colorPrimary)
+      val endColor: Int = requireView().getColorAttr(MaterialR.attr.colorPrimary)
       val endStateHeight: Int = requireView().dimen(R.dimen.app_bar_end_state_height)
 
       val elevationEvaluator = FloatEvaluator()
-      val endElevation = requireView().dimen(R.dimen.elevation_normal).toFloat()
+      val endElevation = requireView().dimen(UiR.dimen.elevation_normal).toFloat()
 
       override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         val fraction = calculateFraction(recyclerView.computeVerticalScrollOffset(), endStateHeight)

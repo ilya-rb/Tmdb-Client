@@ -72,6 +72,7 @@ dependencies {
   implementation(project(Modules.Core.util))
   implementation(project(Modules.Core.logger))
   implementation(project(Modules.Core.buildConfig))
+  implementation(project(Modules.Core.customTabs))
   implementation(project(Modules.Services.tmdb))
   implementation(project(Modules.Services.analytics))
 

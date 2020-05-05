@@ -19,5 +19,6 @@ include(
   ":libs:test",
   ":libs:logger",
   ":libs:tools",
-  ":libs:buildconfig"
+  ":libs:buildconfig",
+  ":libs:custom-tabs"
 )
