@@ -6,7 +6,7 @@ import com.illiarb.tmdbclient.libs.util.Async
 import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.navigation.Router.Action.ShowDiscover
 import com.illiarb.tmdbclient.navigation.Router.Action.ShowMovieDetails
-import com.illiarb.tmdbclient.navigation.Router.Action.ShowTmdbPage
+import com.illiarb.tmdbclient.navigation.Router.Action.WebViewAction.ShowTmdbPage
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
 import com.illiarb.tmdbclient.services.tmdb.domain.Genre
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie

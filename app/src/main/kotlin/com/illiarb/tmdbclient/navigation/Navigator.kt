@@ -24,26 +24,12 @@ interface Navigator {
 
     override fun executeAction(action: Action) {
       val controller = Navigation.findNavController(activity, R.id.nav_host_fragment)
-      val destination = when (action) {
-        is Action.ShowMovieDetails -> R.id.action_to_movie_details
-        is Action.ShowDiscover -> R.id.action_moviesFragment_to_discoverFragment
-        is Action.ShowVideos -> R.id.movie_to_player
-        else -> 0
-      }
 
-      if (action is Action.ShowTmdbPage) {
-        CustomTabsHelper.openCustomTab(
-          activity,
-          CustomTabsIntent.Builder()
-            .setShowTitle(true)
-            .enableUrlBarHiding()
-            .build(),
-          Uri.parse("https://www.themoviedb.org"),
-          WebViewFallback()
-        )
-      } else if (destination != 0) {
+      if (action is Action.WebViewAction) {
+        showWebView(action)
+      } else {
         controller.navigate(
-          destination,
+          action.destinationId,
           setDestinationArgs(action),
           setNavOptions(),
           setNavExtras(action)
@@ -76,6 +62,18 @@ interface Navigator {
       } else {
         null
       }
+    }
+
+    private fun showWebView(action: Action.WebViewAction) {
+      CustomTabsHelper.openCustomTab(
+        activity,
+        CustomTabsIntent.Builder()
+          .setShowTitle(true)
+          .enableUrlBarHiding()
+          .build(),
+        Uri.parse(action.url),
+        WebViewFallback()
+      )
     }
   }
 }
