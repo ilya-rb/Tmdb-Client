@@ -18,9 +18,6 @@ import com.illiarb.tmdbclient.libs.logger.Logger
 internal object CustomTabsPackageHelper {
 
   private const val STABLE_PACKAGE = "com.android.chrome"
-  private const val BETA_PACKAGE = "com.chrome.beta"
-  private const val DEV_PACKAGE = "com.chrome.dev"
-  private const val LOCAL_PACKAGE = "com.google.android.apps.chrome"
 
   private val TAG = CustomTabsPackageHelper::class.java.simpleName
   private var packageNameToUse: String? = null
@@ -40,6 +37,7 @@ internal object CustomTabsPackageHelper {
     if (packageNameToUse != null) {
       return packageNameToUse
     }
+
     val pm = context.packageManager
 
     // Get default VIEW intent handler.
@@ -66,17 +64,11 @@ internal object CustomTabsPackageHelper {
     packageNameToUse = when {
       packagesSupportingCustomTabs.isEmpty() -> null
       packagesSupportingCustomTabs.size == 1 -> packagesSupportingCustomTabs[0]
-      !TextUtils.isEmpty(defaultHandlerPackageName) &&
-          !hasSpecializedHandlerIntents(
-            context,
-            activityIntent
-          )
-          && packagesSupportingCustomTabs.contains(defaultHandlerPackageName)
-      -> defaultHandlerPackageName
+      !defaultHandlerPackageName.isNullOrEmpty()
+          && !TextUtils.isEmpty(defaultHandlerPackageName)
+          && !hasSpecializedHandlerIntents(context, activityIntent)
+          && packagesSupportingCustomTabs.contains(defaultHandlerPackageName) -> defaultHandlerPackageName
       packagesSupportingCustomTabs.contains(STABLE_PACKAGE) -> STABLE_PACKAGE
-      packagesSupportingCustomTabs.contains(BETA_PACKAGE) -> BETA_PACKAGE
-      packagesSupportingCustomTabs.contains(DEV_PACKAGE) -> DEV_PACKAGE
-      packagesSupportingCustomTabs.contains(LOCAL_PACKAGE) -> LOCAL_PACKAGE
       else -> null
     }
     return packageNameToUse
@@ -106,15 +98,4 @@ internal object CustomTabsPackageHelper {
     }
     return false
   }
-
-  /**
-   * @return All possible chrome package names that provide custom tabs feature.
-   */
-  val packages: List<String>
-    get() = listOf("",
-      STABLE_PACKAGE,
-      BETA_PACKAGE,
-      DEV_PACKAGE,
-      LOCAL_PACKAGE
-    )
 }
