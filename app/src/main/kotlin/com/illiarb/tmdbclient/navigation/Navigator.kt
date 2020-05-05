@@ -34,7 +34,10 @@ interface Navigator {
       if (action is Action.ShowTmdbPage) {
         CustomTabsHelper.openCustomTab(
           activity,
-          CustomTabsIntent.Builder().build(),
+          CustomTabsIntent.Builder()
+            .setShowTitle(true)
+            .enableUrlBarHiding()
+            .build(),
           Uri.parse("https://www.themoviedb.org"),
           WebViewFallback()
         )
