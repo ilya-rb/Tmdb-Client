@@ -2,7 +2,7 @@ package com.illiarb.tmdbclient.ui.details.delegates
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
-import com.illiarb.tmdbclient.R
+import com.illiarb.tmdbclient.libs.ui.R
 import com.illiarb.tmdbclient.databinding.ItemMoviePhotosBinding
 import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
 import com.illiarb.tmdbclient.libs.ui.ext.dimen

@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.illiarb.tmdbclient.libs.ui.R as UiR
 
 class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Injectable {
 
@@ -129,7 +130,7 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
       adapter = this@DiscoverFragment.adapter
       layoutManager = gridLayoutManager
       removeAdapterOnDetach()
-      addItemDecoration(GridDecoration(dimen(R.dimen.spacing_normal), GRID_SPAN_COUNT))
+      addItemDecoration(GridDecoration(dimen(UiR.dimen.spacing_normal), GRID_SPAN_COUNT))
       addOnScrollListener(object : InfiniteScrollListener(gridLayoutManager) {
         override fun onLoadMore() {
           viewModel.events.offer(Event.PageEndReached)
