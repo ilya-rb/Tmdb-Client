@@ -6,6 +6,7 @@ import com.illiarb.tmdbclient.libs.util.Async
 import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.navigation.Router.Action.ShowDiscover
 import com.illiarb.tmdbclient.navigation.Router.Action.ShowMovieDetails
+import com.illiarb.tmdbclient.navigation.Router.Action.ShowTmdbPage
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
 import com.illiarb.tmdbclient.services.tmdb.domain.Genre
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
@@ -64,15 +65,17 @@ class HomeViewModel @Inject constructor(
   override fun onUiEvent(event: Event) {
     when (event) {
       is Event.SeeAllClick -> router.executeAction(ShowDiscover())
-        //.also(analyticsService::trackRouterAction)
+      //.also(analyticsService::trackRouterAction)
 
       is Event.MovieClick ->
         router.executeAction(ShowMovieDetails(event.movie.id))
-          //.also(analyticsService::trackRouterAction)
+      //.also(analyticsService::trackRouterAction)
 
       is Event.GenreClick ->
         router.executeAction(ShowDiscover(event.genre.id))
-          //.also(analyticsService::trackRouterAction)
+      //.also(analyticsService::trackRouterAction)
+
+      is Event.TmdbIconClick -> router.executeAction(ShowTmdbPage)
     }
   }
 
@@ -82,5 +85,6 @@ class HomeViewModel @Inject constructor(
     data class MovieClick(val movie: Movie) : Event()
     data class SeeAllClick(val code: String) : Event()
     data class GenreClick(val genre: Genre) : Event()
+    object TmdbIconClick : Event()
   }
 }

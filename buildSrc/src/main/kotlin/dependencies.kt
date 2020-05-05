@@ -26,6 +26,7 @@ object Modules {
     const val util = ":libs:util"
     const val logger = ":libs:logger"
     const val buildConfig = ":libs:buildconfig"
+    const val customTabs = ":libs:custom-tabs"
   }
 
   object Services {
@@ -82,6 +83,7 @@ object Deps {
       const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
       const val emoji = "androidx.emoji:emoji:1.1.0-alpha01"
       const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta4"
+      const val browserHelper = "com.google.androidbrowserhelper:androidbrowserhelper:1.1.0"
     }
 
     object Compose {

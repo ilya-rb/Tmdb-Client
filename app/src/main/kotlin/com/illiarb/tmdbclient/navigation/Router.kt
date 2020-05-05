@@ -14,6 +14,10 @@ interface Router {
 
   sealed class Action {
 
+    companion object {
+      const val ARG_WEB_VIEW_LAUNCH_URL = "launch_url"
+    }
+
     class ShowMovieDetails(val id: Int, val sharedPoster: ImageView? = null) : Action() {
       companion object {
         const val EXTRA_MOVIE_DETAILS = "id"
@@ -31,6 +35,8 @@ interface Router {
         const val EXTRA_MOVIE_ID = "id"
       }
     }
+
+    object ShowTmdbPage : Action()
   }
 
   @Singleton
