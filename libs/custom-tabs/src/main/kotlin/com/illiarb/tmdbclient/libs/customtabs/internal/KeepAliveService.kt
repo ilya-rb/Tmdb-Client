@@ -13,8 +13,7 @@ import android.os.Binder
  */
 internal class KeepAliveService : Service() {
 
-  override fun onBind(intent: Intent) =
-    binder
+  override fun onBind(intent: Intent) = binder
 
   companion object {
     private val binder = Binder()
