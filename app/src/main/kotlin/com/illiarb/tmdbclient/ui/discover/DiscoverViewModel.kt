@@ -3,10 +3,12 @@ package com.illiarb.tmdbclient.ui.discover
 import androidx.lifecycle.viewModelScope
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.libs.ui.base.viewmodel.BaseViewModel
+import com.illiarb.tmdbclient.libs.ui.common.ErrorMessage
 import com.illiarb.tmdbclient.libs.ui.common.Text
+import com.illiarb.tmdbclient.libs.ui.common.ViewStateEvent
 import com.illiarb.tmdbclient.libs.util.Result
+import com.illiarb.tmdbclient.navigation.Action.ShowMovieDetails
 import com.illiarb.tmdbclient.navigation.Router
-import com.illiarb.tmdbclient.navigation.Router.Action.ShowMovieDetails
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
 import com.illiarb.tmdbclient.services.tmdb.domain.Genre
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
@@ -34,7 +36,8 @@ class DiscoverViewModel @Inject constructor(
         isLoading = false,
         isLoadingAdditionalPage = false,
         currentPage = 1,
-        totalPages = 0
+        totalPages = 0,
+        errorMessage = null
       )
   }
 
@@ -49,10 +52,17 @@ class DiscoverViewModel @Inject constructor(
 
   init {
     viewModelScope.launch {
-      when (val genres = genresInteractor.getAllGenres()) {
-        is Result.Ok -> setState { copy(genres = genres.data) }
-          .also { applyFilter(listOf(initialGenreId), isInitialLaunch = true) }
-        is Result.Err -> showMessage(genres.error.message)
+      val genres = genresInteractor.getAllGenres()
+
+      setState {
+        when (genres) {
+          is Result.Ok -> copy(genres = genres.data).also {
+            applyFilter(listOf(initialGenreId), isInitialLaunch = true)
+          }
+          is Result.Err -> {
+            copy(errorMessage = ViewStateEvent(ErrorMessage(genres.error.message ?: "")))
+          }
+        }
       }
     }
   }
@@ -75,31 +85,37 @@ class DiscoverViewModel @Inject constructor(
       val results = moviesInteractor.discoverMovies(genreIds, 1)
 
       setState {
-        copy(isLoading = false)
-      }
-
-      when (results) {
-        is Result.Ok -> {
-          setState {
+        when (results) {
+          is Result.Ok -> {
             copy(
+              isLoading = false,
               results = results.data.items,
               currentPage = results.data.page,
               totalPages = results.data.totalPages,
               selectedGenreIds = genreIds,
-              screenTitle = if (genreIds.isEmpty()) {
-                Text.AsResource(R.string.discover_genres_all)
-              } else {
-                val selected = currentState.genres.filter { genreIds.contains(it.id) }
-                if (selected.isEmpty()) {
-                  Text.AsResource(R.string.discover_genres_all)
-                } else {
-                  Text.AsString(selected.joinToString(",") { it.name })
-                }
-              }
+              screenTitle = createGenresTitle(genreIds)
+            )
+          }
+          is Result.Err -> {
+            copy(
+              isLoading = false,
+              errorMessage = ViewStateEvent(ErrorMessage(results.error.message ?: ""))
             )
           }
         }
-        is Result.Err -> showMessage(results.error.message)
+      }
+    }
+  }
+
+  private fun createGenresTitle(genreIds: List<Int>): Text {
+    return if (genreIds.isEmpty()) {
+      Text.AsResource(R.string.discover_genres_all)
+    } else {
+      val selected = currentState.genres.filter { genreIds.contains(it.id) }
+      if (selected.isEmpty()) {
+        Text.AsResource(R.string.discover_genres_all)
+      } else {
+        Text.AsString(selected.joinToString(",") { it.name })
       }
     }
   }
@@ -117,9 +133,9 @@ class DiscoverViewModel @Inject constructor(
       val results =
         moviesInteractor.discoverMovies(currentState.selectedGenreIds, currentState.currentPage + 1)
 
-      when (results) {
-        is Result.Ok -> {
-          setState {
+      setState {
+        when (results) {
+          is Result.Ok -> {
             copy(
               results = currentState.results.plus(results.data.items),
               isLoadingAdditionalPage = false,
@@ -127,11 +143,11 @@ class DiscoverViewModel @Inject constructor(
               totalPages = results.data.totalPages
             )
           }
-        }
-        is Result.Err -> {
-          showMessage(results.error.message)
-          setState {
-            copy(isLoadingAdditionalPage = false)
+          is Result.Err -> {
+            copy(
+              isLoadingAdditionalPage = false,
+              errorMessage = ViewStateEvent(ErrorMessage(results.error.message ?: ""))
+            )
           }
         }
       }
@@ -146,7 +162,8 @@ class DiscoverViewModel @Inject constructor(
     val isLoading: Boolean,
     val currentPage: Int,
     val totalPages: Int,
-    val isLoadingAdditionalPage: Boolean
+    val isLoadingAdditionalPage: Boolean,
+    val errorMessage: ViewStateEvent<ErrorMessage>?
   )
 
   sealed class Event {

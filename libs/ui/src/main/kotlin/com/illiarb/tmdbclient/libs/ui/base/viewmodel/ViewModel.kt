@@ -7,7 +7,5 @@ interface ViewModel<State, Event> {
 
   val events: SendChannel<Event>
 
-  val errorState: Flow<BaseViewModel.ErrorState>
-
   val state: Flow<State>
 }
