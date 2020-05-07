@@ -9,15 +9,16 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
-import com.illiarb.tmdbclient.BuildConfig
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.databinding.ActivityMainBinding
 import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable
+import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.libs.tools.ConnectivityStatus
+import com.illiarb.tmdbclient.navigation.Action
 import com.illiarb.tmdbclient.navigation.Navigator
 import com.illiarb.tmdbclient.navigation.NavigatorHolder
-import com.illiarb.tmdbclient.ui.debug.DebugSelectorFragment
+import com.illiarb.tmdbclient.navigation.Router
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,6 +33,12 @@ class MainActivity : AppCompatActivity(), Injectable {
 
   @Inject
   lateinit var connectivityStatus: ConnectivityStatus
+
+  @Inject
+  lateinit var buildConfig: BuildConfig
+
+  @Inject
+  lateinit var router: Router
 
   private lateinit var binding: ActivityMainBinding
 
@@ -50,11 +57,10 @@ class MainActivity : AppCompatActivity(), Injectable {
     binding = ActivityMainBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
-    if (BuildConfig.DEBUG) {
+    if (buildConfig.isDebug) {
       binding.btnDebug.visibility = View.VISIBLE
       binding.btnDebug.setOnClickListener {
-        DebugSelectorFragment.newInstance()
-          .show(supportFragmentManager, DebugSelectorFragment::class.java.name)
+        router.executeAction(Action.ShowUiComponents)
       }
     }
 

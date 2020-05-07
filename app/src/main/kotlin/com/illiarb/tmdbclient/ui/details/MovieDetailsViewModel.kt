@@ -1,16 +1,18 @@
 package com.illiarb.tmdbclient.ui.details
 
 import androidx.lifecycle.viewModelScope
+import com.illiarb.tmdbclient.libs.ui.base.viewmodel.BaseViewModel
+import com.illiarb.tmdbclient.libs.ui.common.ErrorMessage
+import com.illiarb.tmdbclient.libs.ui.common.ViewStateEvent
+import com.illiarb.tmdbclient.libs.util.Async
+import com.illiarb.tmdbclient.navigation.Action.ShowMovieDetails
+import com.illiarb.tmdbclient.navigation.Action.ShowVideos
+import com.illiarb.tmdbclient.navigation.Router
+import com.illiarb.tmdbclient.services.analytics.AnalyticsService
+import com.illiarb.tmdbclient.services.tmdb.domain.Movie
+import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
 import com.illiarb.tmdbclient.ui.details.MovieDetailsViewModel.Event
 import com.illiarb.tmdbclient.ui.details.MovieDetailsViewModel.State
-import com.illiarb.tmdbclient.libs.ui.base.viewmodel.BaseViewModel
-import com.illiarb.tmdbclient.services.tmdb.domain.Movie
-import com.illiarb.tmdbclient.navigation.Router
-import com.illiarb.tmdbclient.navigation.Router.Action.ShowMovieDetails
-import com.illiarb.tmdbclient.navigation.Router.Action.ShowVideos
-import com.illiarb.tmdbclient.libs.util.Async
-import com.illiarb.tmdbclient.services.analytics.AnalyticsService
-import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,7 +24,12 @@ class MovieDetailsViewModel @Inject constructor(
 ) : BaseViewModel<State, Event>(initialState()) {
 
   companion object {
-    private fun initialState() = State(movie = Async.Uninitialized, movieSections = emptyList())
+    private fun initialState() =
+      State(
+        movie = Async.Uninitialized,
+        movieSections = emptyList(),
+        error = null
+      )
   }
 
   init {
@@ -57,9 +64,11 @@ class MovieDetailsViewModel @Inject constructor(
 
       movieDetails.doOnError { error ->
         setState {
-          copy(movie = movieDetails)
+          copy(
+            movie = movieDetails,
+            error = ViewStateEvent(ErrorMessage(error.message ?: ""))
+          )
         }
-        showMessage(error.message)
       }
     }
   }
@@ -68,16 +77,20 @@ class MovieDetailsViewModel @Inject constructor(
     when (event) {
       is Event.MovieClicked -> {
         router.executeAction(ShowMovieDetails(event.movie.id))
-          //.also(analyticsService::trackRouterAction)
+        //.also(analyticsService::trackRouterAction)
       }
       is Event.PlayClicked -> {
         router.executeAction(ShowVideos(movieId))
-          //.also(analyticsService::trackRouterAction)
+        //.also(analyticsService::trackRouterAction)
       }
     }
   }
 
-  data class State(val movie: Async<Movie>, val movieSections: List<Any>)
+  data class State(
+    val movie: Async<Movie>,
+    val movieSections: List<Any>,
+    val error: ViewStateEvent<ErrorMessage>?
+  )
 
   data class MovieInfo(val movie: Movie)
 

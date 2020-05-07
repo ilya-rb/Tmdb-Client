@@ -27,6 +27,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/uiComponentsFragment"
+        android:name="com.illiarb.tmdbclient.ui.debug.UiComponentsFragment"
+        android:label="UiComponentsFragment"
+        tools:layout="@layout/fragment_ui_components" />
+
+    <fragment
         android:id="@+id/moviesFragment"
         android:name="com.illiarb.tmdbclient.ui.home.HomeFragment"
         android:label="MoviesFragment"
@@ -37,6 +43,10 @@
             app:destination="@id/discoverFragment" />
 
     </fragment>
+
+    <action
+        android:id="@+id/action_to_ui_components"
+        app:destination="@id/uiComponentsFragment" />
 
     <action
         android:id="@+id/action_to_movie_details"

@@ -1,8 +1,10 @@
 package com.illiarb.tmdbclient.ui.main
 
 import androidx.fragment.app.FragmentActivity
-import com.illiarb.tmdbclient.navigation.NavigatorHolder
+import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.libs.tools.ConnectivityStatus
+import com.illiarb.tmdbclient.navigation.NavigatorHolder
+import com.illiarb.tmdbclient.navigation.Router
 import dagger.BindsInstance
 import dagger.Component
 
@@ -18,6 +20,8 @@ interface MainComponent {
   interface Dependencies {
     fun connectivityStatus(): ConnectivityStatus
     fun navigatorHolder(): NavigatorHolder
+    fun router(): Router
+    fun buildConfig(): BuildConfig
   }
 
   @Component.Builder

@@ -10,7 +10,6 @@ import androidx.navigation.fragment.FragmentNavigator
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.libs.customtabs.CustomTabsHelper
 import com.illiarb.tmdbclient.libs.customtabs.WebViewFallback
-import com.illiarb.tmdbclient.navigation.Router.Action
 import javax.inject.Inject
 
 /**

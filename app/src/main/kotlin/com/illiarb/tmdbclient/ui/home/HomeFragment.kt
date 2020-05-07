@@ -33,7 +33,6 @@ import com.illiarb.tmdbclient.ui.home.delegates.nowplaying.nowPlayingSection
 import com.illiarb.tmdbclient.ui.home.delegates.trendingSection
 import com.illiarb.tmdbclient.ui.home.di.DaggerHomeComponent
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.google.android.material.R as MaterialR
@@ -48,6 +47,7 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
   }
 
+  private val snackbarController = SnackbarController()
   private val bundleStore = SimpleBundleStore()
   private val adapter = DelegatesAdapter(
     MovieSectionDelegate(
@@ -101,10 +101,6 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
       viewModel.state.collect {
         render(it)
       }
-    }
-
-    viewLifecycleOwner.lifecycleScope.launch {
-      SnackbarController().bind(binding.root, viewModel.errorState.map { it.message })
     }
   }
 
@@ -164,6 +160,12 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
 
   private fun render(state: State) {
     binding.moviesSwipeRefresh.isRefreshing = state.sections is Async.Loading<*>
+
     state.sections.doOnSuccess(adapter::submitList)
+    state.error?.let { error ->
+      error.consume { message ->
+        snackbarController.showMessage(binding.root, message.message)
+      }
+    }
   }
 }

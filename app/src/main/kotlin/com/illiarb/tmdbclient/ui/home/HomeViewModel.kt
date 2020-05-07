@@ -2,11 +2,13 @@ package com.illiarb.tmdbclient.ui.home
 
 import androidx.lifecycle.viewModelScope
 import com.illiarb.tmdbclient.libs.ui.base.viewmodel.BaseViewModel
+import com.illiarb.tmdbclient.libs.ui.common.ErrorMessage
+import com.illiarb.tmdbclient.libs.ui.common.ViewStateEvent
 import com.illiarb.tmdbclient.libs.util.Async
+import com.illiarb.tmdbclient.navigation.Action.ShowDiscover
+import com.illiarb.tmdbclient.navigation.Action.ShowMovieDetails
+import com.illiarb.tmdbclient.navigation.Action.WebViewAction.ShowTmdbPage
 import com.illiarb.tmdbclient.navigation.Router
-import com.illiarb.tmdbclient.navigation.Router.Action.ShowDiscover
-import com.illiarb.tmdbclient.navigation.Router.Action.ShowMovieDetails
-import com.illiarb.tmdbclient.navigation.Router.Action.WebViewAction.ShowTmdbPage
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
 import com.illiarb.tmdbclient.services.tmdb.domain.Genre
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
@@ -37,7 +39,14 @@ class HomeViewModel @Inject constructor(
       }
 
       val sections = homeInteractor.getHomeSections().asAsync()
-        .doOnError { showMessage(it.message) }
+
+      sections.doOnError {
+        it.message?.let { message ->
+          setState {
+            copy(error = ViewStateEvent(ErrorMessage(message)))
+          }
+        }
+      }
 
       setState {
         copy(sections = sections)
@@ -79,7 +88,10 @@ class HomeViewModel @Inject constructor(
     }
   }
 
-  data class State(val sections: Async<List<MovieSection>>, val error: String?)
+  data class State(
+    val sections: Async<List<MovieSection>>,
+    val error: ViewStateEvent<ErrorMessage>?
+  )
 
   sealed class Event {
     data class MovieClick(val movie: Movie) : Event()
