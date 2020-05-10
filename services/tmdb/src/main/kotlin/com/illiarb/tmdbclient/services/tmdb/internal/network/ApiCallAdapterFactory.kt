@@ -2,6 +2,7 @@ package com.illiarb.tmdbclient.services.tmdb.internal.network
 
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.internal.error.ErrorHandler
+import okio.Timeout
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Callback
@@ -57,6 +58,8 @@ class ResultCall<T>(
       proxy.clone(),
       errorHandler
     )
+
+  override fun timeout(): Timeout = Timeout.NONE
 
   override fun enqueueImpl(callback: Callback<Result<T>>) = proxy.enqueue(object : Callback<T> {
 
