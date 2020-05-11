@@ -36,6 +36,8 @@ dependencies {
   kapt(Deps.Dagger.compiler)
 
   implementation(Deps.Dagger.core)
+  implementation(Deps.Kotlin.std)
+  implementation(Deps.Kotlin.coroutines)
 
   api(Deps.Android.AndroidX.material)
   api(Deps.Android.AndroidX.recyclerView)

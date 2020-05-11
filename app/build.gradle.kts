@@ -76,6 +76,8 @@ dependencies {
   implementation(project(Modules.Services.tmdb))
   implementation(project(Modules.Services.analytics))
 
+  implementation(Deps.Kotlin.std)
+  implementation(Deps.Kotlin.coroutines)
   implementation(Deps.Dagger.core)
   implementation(Deps.Misc.timber)
   implementation(Deps.Android.Firebase.core)
