@@ -38,6 +38,7 @@ android {
 dependencies {
 
   kapt(Deps.Dagger.compiler)
+  kapt(Deps.Moshi.codegen)
 
   implementation(project(Modules.Core.tools))
   implementation(project(Modules.Core.util))
@@ -50,20 +51,18 @@ dependencies {
   implementation(Deps.Android.Firebase.remoteConfig)
   implementation(Deps.Misc.binaryPrefs)
   implementation(Deps.Retrofit.core)
-  implementation(Deps.Retrofit.converterGson)
+  implementation(Deps.Retrofit.converterMoshi)
   implementation(Deps.Retrofit.coroutinesAdapter)
+  implementation(Deps.Moshi.core)
+  implementation(Deps.Moshi.kotlin)
+  implementation(Deps.Moshi.adapters)
 
   debugImplementation(Deps.Tools.Debug.Flipper.flipper)
   debugImplementation(Deps.Tools.Debug.Flipper.flipperNetwork)
 
   testImplementation(project(Modules.Core.test))
-
-  testImplementation(Deps.Test.AndroidX.extJunit)
   testImplementation(Deps.Retrofit.core)
   testImplementation(Deps.Retrofit.okHttp)
-  testImplementation(Deps.Test.JUnit5.jupiterApi)
-  testImplementation(Deps.Test.JUnit5.jupiterParams)
-  testImplementation(Deps.Test.truth)
 
   testRuntimeOnly(Deps.Test.JUnit5.jupiterEngine)
   testRuntimeOnly(Deps.Test.JUnit5.junitVintageEngine)

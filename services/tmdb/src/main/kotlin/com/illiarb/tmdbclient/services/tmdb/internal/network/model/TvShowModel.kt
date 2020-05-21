@@ -1,13 +1,15 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.network.model
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 internal data class TvShowModel(
 
-  @SerializedName("poster_path")
+  @Json(name = "poster_path")
   val posterPath: String,
 
-  @SerializedName("name")
+  @Json(name = "name")
   val name: String
 
 ) : TrendingModel

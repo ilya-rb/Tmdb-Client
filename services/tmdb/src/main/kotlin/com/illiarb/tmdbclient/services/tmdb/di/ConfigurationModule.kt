@@ -9,6 +9,7 @@ import com.illiarb.tmdbclient.services.tmdb.internal.configuration.Configuration
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.ConfigurationApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.interceptor.ApiKeyInterceptor
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.ConfigurationRepository
+import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -33,7 +34,7 @@ object ConfigurationModule {
   @JvmStatic
   internal fun provideConfigurationApiRetrofit(
     @ConfigurationClient
-    okHttpClient: OkHttpClient,
+    okHttpClient: Lazy<OkHttpClient>,
     callAdapterFactory: CallAdapter.Factory,
     converterFactory: Converter.Factory,
     tmdbConfig: TmdbConfig
@@ -41,7 +42,7 @@ object ConfigurationModule {
     return Retrofit.Builder()
       .baseUrl(tmdbConfig.apiUrl)
       .addCallAdapterFactory(callAdapterFactory)
-      .client(okHttpClient)
+      .callFactory { okHttpClient.get().newCall(it) }
       .addConverterFactory(converterFactory)
       .build()
   }

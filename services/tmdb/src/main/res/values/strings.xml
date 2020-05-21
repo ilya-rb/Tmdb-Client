@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">ServiceTmdb</string>
+    <string name="error_unknown">Unknown error</string>
+    <string name="error_bad_connection">Network error. Please check your connection</string>
 </resources>

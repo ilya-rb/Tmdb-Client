@@ -1,18 +1,20 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.network.model
 
-import com.google.gson.annotations.SerializedName
+import com.illiarb.tmdbclient.services.tmdb.internal.cache.readPersistableList
+import com.illiarb.tmdbclient.services.tmdb.internal.cache.writePersistableList
 import com.ironz.binaryprefs.serialization.serializer.persistable.Persistable
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataInput
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataOutput
-import com.illiarb.tmdbclient.services.tmdb.internal.cache.readPersistableList
-import com.illiarb.tmdbclient.services.tmdb.internal.cache.writePersistableList
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 internal data class CountryModel(
 
-  @SerializedName("iso_3166_1")
+  @Json(name = "iso_3166_1")
   var code: String = "",
 
-  @SerializedName("english_name")
+  @Json(name = "english_name")
   var name: String = ""
 
 ) : Persistable {

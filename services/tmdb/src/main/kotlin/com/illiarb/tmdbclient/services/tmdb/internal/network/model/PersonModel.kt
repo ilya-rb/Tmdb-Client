@@ -1,19 +1,21 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.network.model
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 internal data class PersonModel(
 
-  @SerializedName("id")
+  @Json(name = "id")
   val id: Int,
 
-  @SerializedName("name")
+  @Json(name = "name")
   val name: String,
 
-  @SerializedName("character")
+  @Json(name = "character")
   val character: String,
 
-  @SerializedName("profile_path")
+  @Json(name = "profile_path")
   val profilePath: String
 
 ) : TrendingModel

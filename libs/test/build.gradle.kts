@@ -39,10 +39,14 @@ dependencies {
   debugImplementation(Deps.Tools.Debug.Flipper.flipper)
   debugImplementation(Deps.Tools.Debug.Flipper.flipperNetwork)
 
-  api(Deps.Test.junit)
   api(Deps.Kotlin.reflect)
   api(Deps.Kotlin.coroutinesTest)
   api(Deps.Test.AndroidX.core)
   api(Deps.Test.AndroidX.rules)
+  api(Deps.Test.AndroidX.extJunit)
+  api(Deps.Test.JUnit5.jupiterApi)
+  api(Deps.Test.JUnit5.jupiterParams)
+  api(Deps.Test.truth)
   api(Deps.Test.mockk)
+  api(Deps.Test.junit)
 }

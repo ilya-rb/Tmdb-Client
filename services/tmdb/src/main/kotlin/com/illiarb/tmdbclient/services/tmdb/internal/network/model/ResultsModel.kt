@@ -1,9 +1,11 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.network.model
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 internal data class ResultsModel<T>(
-  @SerializedName("results") val results: List<T>,
-  @SerializedName("page") val page: Int,
-  @SerializedName("total_pages") val totalPages: Int
+  @Json(name = "results") val results: List<T>,
+  @Json(name = "page") val page: Int = 1,
+  @Json(name = "total_pages") val totalPages: Int = 1
 )

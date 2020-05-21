@@ -1,5 +1,9 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.network.model
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-internal data class CreditsModel(@SerializedName("cast") val cast: List<PersonModel>)
+@JsonClass(generateAdapter = true)
+internal data class CreditsModel(
+  @Json(name = "cast") val cast: List<PersonModel>
+)

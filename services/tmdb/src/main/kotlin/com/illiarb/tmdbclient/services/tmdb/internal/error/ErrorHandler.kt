@@ -1,9 +1,10 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.error
 
-import com.google.gson.Gson
 import com.illiarb.tmdbclient.libs.util.ApiException
 import com.illiarb.tmdbclient.libs.util.NetworkException
 import com.illiarb.tmdbclient.libs.util.UnknownErrorException
+import com.illiarb.tmdbclient.services.tmdb.R
+import com.squareup.moshi.Moshi
 import okhttp3.ResponseBody
 import retrofit2.HttpException
 import java.io.IOException
@@ -14,31 +15,36 @@ import javax.inject.Inject
  * @author ilya-rb on 16.01.19.
  */
 class ErrorHandler @Inject constructor(
-  private val gson: Gson,
-  private val resourceResolver: com.illiarb.tmdbclient.libs.tools.ResourceResolver
+  private val resourceResolver: com.illiarb.tmdbclient.libs.tools.ResourceResolver,
+  private val moshi: Moshi
 ) {
 
   fun createFromThrowable(error: Throwable): Throwable =
     when {
-      isNetworkError(error) -> NetworkException("")//resourceResolver.getString(R.string.error_bad_connection))
+      isNetworkError(error) -> NetworkException(resourceResolver.getString(R.string.error_bad_connection))
       error is HttpException -> createNetworkError(error)
-      else -> UnknownErrorException("")//resourceResolver.getString(R.string.error_unknown))
+      else -> UnknownErrorException(resourceResolver.getString(R.string.error_unknown))
     }
 
   fun createFromErrorBody(body: ResponseBody?): Throwable =
     if (body == null) {
-      UnknownErrorException("")//resourceResolver.getString(R.string.error_unknown))
+      UnknownErrorException(resourceResolver.getString(R.string.error_unknown))
     } else {
-      gson.fromJson(body.string(), ApiException::class.java)
+      val error = moshi.adapter(TmdbError::class.java).fromJson(body.toString())
+      if (error == null) {
+        UnknownErrorException(resourceResolver.getString(R.string.error_unknown))
+      } else {
+        ApiException(error.statusCode, error.statusMessage)
+      }
     }
 
   private fun createNetworkError(error: HttpException): Throwable {
     val errorBody = error.response()?.errorBody()
 
     return if (errorBody == null) {
-      UnknownErrorException("")//resourceResolver.getString(R.string.error_unknown))
+      UnknownErrorException(resourceResolver.getString(R.string.error_unknown))
     } else {
-      gson.fromJson(errorBody.string(), ApiException::class.java)
+      ApiException(0, "message")
     }
   }
 

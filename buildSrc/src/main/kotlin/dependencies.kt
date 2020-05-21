@@ -115,7 +115,7 @@ object Deps {
 
     const val core = "com.squareup.retrofit2:retrofit:$retrofitVersion"
     const val okHttp = "com.squareup.okhttp3:okhttp:4.6.0"
-    const val converterGson = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    const val converterMoshi = "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
     const val coroutinesAdapter =
       "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
   }
@@ -126,6 +126,7 @@ object Deps {
     const val core = "com.squareup.moshi:moshi:$moshiVersion"
     const val kotlin = "com.squareup.moshi:moshi-kotlin:$moshiVersion"
     const val codegen = "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
+    const val adapters = "com.squareup.moshi:moshi-adapters:$moshiVersion"
   }
 
   object AdapterDelegates {

@@ -9,7 +9,7 @@ class SnackbarController {
 
   fun showMessage(root: View, message: String) {
     if (snackbar == null) {
-      snackbar = Snackbar.make(root, message, Snackbar.LENGTH_INDEFINITE)
+      snackbar = Snackbar.make(root, message, Snackbar.LENGTH_LONG)
     } else {
       snackbar!!.setText(message)
     }

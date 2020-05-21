@@ -2,9 +2,6 @@ package com.illiarb.tmdbclient.services.tmdb.di
 
 import android.app.Application
 import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
-import com.google.gson.FieldNamingPolicy
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
 import com.illiarb.tmdbclient.libs.tools.ResourceResolver
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
@@ -12,16 +9,21 @@ import com.illiarb.tmdbclient.services.tmdb.internal.error.ErrorHandler
 import com.illiarb.tmdbclient.services.tmdb.internal.network.CallAdapterFactory
 import com.illiarb.tmdbclient.services.tmdb.internal.network.interceptor.ApiKeyInterceptor
 import com.illiarb.tmdbclient.services.tmdb.internal.network.interceptor.RegionInterceptor
+import com.illiarb.tmdbclient.services.tmdb.internal.network.model.MovieModel
+import com.illiarb.tmdbclient.services.tmdb.internal.network.model.PersonModel
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.TrendingModel
-import com.illiarb.tmdbclient.services.tmdb.internal.network.serializer.TrendingItemDeserializer
+import com.illiarb.tmdbclient.services.tmdb.internal.network.model.TvShowModel
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.ConfigurationRepository
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.CallAdapter
 import retrofit2.Converter
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -45,11 +47,18 @@ object NetworkModule {
 
   @Provides
   @JvmStatic
-  internal fun provideTmdbGson(trendingDeserializer: TrendingItemDeserializer): Gson =
-    GsonBuilder()
-      .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-      .registerTypeAdapter(TrendingModel::class.java, trendingDeserializer)
-      .create()
+  @Singleton
+  internal fun provideMoshi(): Moshi {
+    return Moshi.Builder()
+      .add(
+        PolymorphicJsonAdapterFactory.of(TrendingModel::class.java, "media_type")
+          .withSubtype(MovieModel::class.java, "movie")
+          .withSubtype(TvShowModel::class.java, "tv")
+          .withSubtype(PersonModel::class.java, "person")
+      )
+      .add(KotlinJsonAdapterFactory())
+      .build()
+  }
 
   @Provides
   @JvmStatic
@@ -59,13 +68,8 @@ object NetworkModule {
 
   @Provides
   @JvmStatic
-  internal fun provideApiConverterFactory(gson: Gson): Converter.Factory =
-    GsonConverterFactory.create(gson)
-
-  @Provides
-  @JvmStatic
-  internal fun provideTrendingItemDeserializer(): TrendingItemDeserializer =
-    TrendingItemDeserializer()
+  internal fun provideApiConverterFactory(moshi: Moshi): Converter.Factory =
+    MoshiConverterFactory.create(moshi)
 
   @Provides
   @Singleton

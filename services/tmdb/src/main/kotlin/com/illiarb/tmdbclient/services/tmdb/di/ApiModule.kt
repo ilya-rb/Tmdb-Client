@@ -7,6 +7,7 @@ import com.illiarb.tmdbclient.services.tmdb.internal.network.api.GenreApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.TrendingApi
 import com.illiarb.tmdbclient.services.tmdb.internal.util.TmdbDateFormatter
+import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -40,7 +41,7 @@ object ApiModule {
   @Provides
   @JvmStatic
   internal fun provideTmdbRetrofit(
-    okHttpClient: OkHttpClient,
+    okHttpClient: Lazy<OkHttpClient>,
     callAdapterFactory: CallAdapter.Factory,
     converterFactory: Converter.Factory,
     tmdbConfig: TmdbConfig
@@ -48,7 +49,7 @@ object ApiModule {
     Retrofit.Builder()
       .baseUrl(tmdbConfig.apiUrl)
       .addCallAdapterFactory(callAdapterFactory)
-      .client(okHttpClient)
+      .callFactory { okHttpClient.get().newCall(it) }
       .addConverterFactory(converterFactory)
       .build()
 
