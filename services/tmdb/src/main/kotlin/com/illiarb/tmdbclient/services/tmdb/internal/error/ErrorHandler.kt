@@ -3,6 +3,7 @@ package com.illiarb.tmdbclient.services.tmdb.internal.error
 import com.illiarb.tmdbclient.libs.util.ApiException
 import com.illiarb.tmdbclient.libs.util.NetworkException
 import com.illiarb.tmdbclient.libs.util.UnknownErrorException
+import com.illiarb.tmdbclient.services.tmdb.R
 import com.squareup.moshi.Moshi
 import okhttp3.ResponseBody
 import retrofit2.HttpException
@@ -20,24 +21,28 @@ class ErrorHandler @Inject constructor(
 
   fun createFromThrowable(error: Throwable): Throwable =
     when {
-      isNetworkError(error) -> NetworkException("")//resourceResolver.getString(R.string.error_bad_connection))
+      isNetworkError(error) -> NetworkException(resourceResolver.getString(R.string.error_bad_connection))
       error is HttpException -> createNetworkError(error)
-      else -> UnknownErrorException("")//resourceResolver.getString(R.string.error_unknown))
+      else -> UnknownErrorException(resourceResolver.getString(R.string.error_unknown))
     }
 
   fun createFromErrorBody(body: ResponseBody?): Throwable =
     if (body == null) {
-      UnknownErrorException("")//resourceResolver.getString(R.string.error_unknown))
+      UnknownErrorException(resourceResolver.getString(R.string.error_unknown))
     } else {
-      ApiException(0, "message")
-      //gson.fromJson(body.string(), ApiException::class.java)
+      val error = moshi.adapter(TmdbError::class.java).fromJson(body.toString())
+      if (error == null) {
+        UnknownErrorException(resourceResolver.getString(R.string.error_unknown))
+      } else {
+        ApiException(error.statusCode, error.statusMessage)
+      }
     }
 
   private fun createNetworkError(error: HttpException): Throwable {
     val errorBody = error.response()?.errorBody()
 
     return if (errorBody == null) {
-      UnknownErrorException("")//resourceResolver.getString(R.string.error_unknown))
+      UnknownErrorException(resourceResolver.getString(R.string.error_unknown))
     } else {
       ApiException(0, "message")
     }
