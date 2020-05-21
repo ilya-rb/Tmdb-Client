@@ -126,6 +126,7 @@ object Deps {
     const val core = "com.squareup.moshi:moshi:$moshiVersion"
     const val kotlin = "com.squareup.moshi:moshi-kotlin:$moshiVersion"
     const val codegen = "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
+    const val adapters = "com.squareup.moshi:moshi-adapters:$moshiVersion"
   }
 
   object AdapterDelegates {

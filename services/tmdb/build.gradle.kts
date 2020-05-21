@@ -51,10 +51,11 @@ dependencies {
   implementation(Deps.Android.Firebase.remoteConfig)
   implementation(Deps.Misc.binaryPrefs)
   implementation(Deps.Retrofit.core)
-  implementation(Deps.Retrofit.converterGson)
+  implementation(Deps.Retrofit.converterMoshi)
   implementation(Deps.Retrofit.coroutinesAdapter)
   implementation(Deps.Moshi.core)
   implementation(Deps.Moshi.kotlin)
+  implementation(Deps.Moshi.adapters)
 
   debugImplementation(Deps.Tools.Debug.Flipper.flipper)
   debugImplementation(Deps.Tools.Debug.Flipper.flipperNetwork)

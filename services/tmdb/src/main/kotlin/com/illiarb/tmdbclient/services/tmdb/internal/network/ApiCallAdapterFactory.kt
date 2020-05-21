@@ -54,8 +54,6 @@ class ResultCall<T>(
 
   override fun cloneImpl() = ResultCall(proxy.clone(), errorHandler)
 
-  override fun timeout(): Timeout = Timeout.NONE
-
   override fun enqueueImpl(callback: Callback<Result<T>>) = proxy.enqueue(object : Callback<T> {
 
     override fun onResponse(call: Call<T>, response: Response<T>) {
