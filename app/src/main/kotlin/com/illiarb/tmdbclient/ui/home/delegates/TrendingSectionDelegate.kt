@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
-import com.illiarb.tmdbclient.R
+import com.illiarb.tmdbclient.libs.ui.R
 import com.illiarb.tmdbclient.databinding.ItemTrendingBinding
 import com.illiarb.tmdbclient.databinding.ItemTrendingSectionBinding
 import com.illiarb.tmdbclient.libs.imageloader.CropOptions

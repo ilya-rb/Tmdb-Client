@@ -2,6 +2,8 @@ package com.illiarb.tmdbclient.services.tmdb.di
 
 import android.app.Application
 import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
+import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
+import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
 import com.illiarb.tmdbclient.libs.tools.DateFormatter
 import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
 import com.illiarb.tmdbclient.libs.tools.ResourceResolver
@@ -31,6 +33,8 @@ interface TmdbComponent : TmdbProvider {
   interface Dependencies {
     fun dispatcherProvider(): DispatcherProvider
     fun resourceResolver(): ResourceResolver
+    fun buildConfig(): BuildConfig
+    fun tmdbConfig(): TmdbConfig
   }
 
   @Component.Builder

@@ -27,6 +27,13 @@ android {
   }
 
   buildTypes {
+    all {
+      val config = file("$rootDir/api-config.properties")
+      val properties = Properties().also { it.load(FileInputStream(config)) }
+      buildConfigField("String", "API_URL", properties.getProperty("api.url"))
+      buildConfigField("String", "API_KEY", properties.getProperty("api.key"))
+    }
+
     getByName("release") {
       isMinifyEnabled = true
       isDebuggable = false
@@ -64,9 +71,13 @@ dependencies {
   implementation(project(Modules.Core.tools))
   implementation(project(Modules.Core.util))
   implementation(project(Modules.Core.logger))
+  implementation(project(Modules.Core.buildConfig))
+  implementation(project(Modules.Core.customTabs))
   implementation(project(Modules.Services.tmdb))
   implementation(project(Modules.Services.analytics))
 
+  implementation(Deps.Kotlin.std)
+  implementation(Deps.Kotlin.coroutines)
   implementation(Deps.Dagger.core)
   implementation(Deps.Misc.timber)
   implementation(Deps.Android.Firebase.core)

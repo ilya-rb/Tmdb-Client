@@ -7,7 +7,7 @@ import javax.inject.Singleton
 
 interface NavigatorHolder {
 
-  fun executeAction(action: Router.Action)
+  fun executeAction(action: Action)
 
   fun setNavigator(navigator: Navigator)
 
@@ -16,7 +16,7 @@ interface NavigatorHolder {
   @Singleton
   class ActionsBuffer @Inject constructor() : NavigatorHolder {
 
-    private val actionsBuffer: Queue<Router.Action> = LinkedList()
+    private val actionsBuffer: Queue<Action> = LinkedList()
     private var navigator: Navigator? = null
 
     override fun setNavigator(navigator: Navigator) {
@@ -33,7 +33,7 @@ interface NavigatorHolder {
       navigator = null
     }
 
-    override fun executeAction(action: Router.Action) {
+    override fun executeAction(action: Action) {
       navigator?.executeAction(action) ?: actionsBuffer.add(action)
     }
   }

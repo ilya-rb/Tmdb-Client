@@ -45,8 +45,4 @@ dependencies {
   api(Deps.Test.AndroidX.core)
   api(Deps.Test.AndroidX.rules)
   api(Deps.Test.mockk)
-  api(Deps.Test.JUnit5.jupiterApi)
-  api(Deps.Test.JUnit5.jupiterParams)
-  api(Deps.Test.truth)
-  api(Deps.Test.AndroidX.extJunit)
 }

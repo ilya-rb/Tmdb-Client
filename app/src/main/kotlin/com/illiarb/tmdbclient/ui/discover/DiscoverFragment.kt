@@ -23,16 +23,16 @@ import com.illiarb.tmdbclient.libs.ui.ext.setText
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.GridDecoration
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.pagination.InfiniteScrollListener
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.pagination.PaginalAdapter
-import com.illiarb.tmdbclient.navigation.Router.Action.ShowDiscover
+import com.illiarb.tmdbclient.navigation.Action.ShowDiscover
 import com.illiarb.tmdbclient.services.tmdb.domain.Genre
 import com.illiarb.tmdbclient.ui.delegates.movieDelegate
 import com.illiarb.tmdbclient.ui.discover.DiscoverViewModel.Event
 import com.illiarb.tmdbclient.ui.discover.DiscoverViewModel.State
 import com.illiarb.tmdbclient.ui.discover.di.DaggerDiscoverComponent
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.illiarb.tmdbclient.libs.ui.R as UiR
 
 class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Injectable {
 
@@ -43,6 +43,7 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
   @Inject
   lateinit var viewModelFactory: ViewModelProvider.Factory
 
+  private val snackbarController = SnackbarController()
   private val adapter = PaginalAdapter(
     movieDelegate(
       SizeSpec.MatchParent,
@@ -89,10 +90,6 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
       }
     }
 
-    viewLifecycleOwner.lifecycleScope.launch {
-      SnackbarController().bind(binding.root, viewModel.errorState.map { it.message })
-    }
-
     ViewCompat.requestApplyInsets(view)
   }
 
@@ -129,7 +126,7 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
       adapter = this@DiscoverFragment.adapter
       layoutManager = gridLayoutManager
       removeAdapterOnDetach()
-      addItemDecoration(GridDecoration(dimen(R.dimen.spacing_normal), GRID_SPAN_COUNT))
+      addItemDecoration(GridDecoration(dimen(UiR.dimen.spacing_normal), GRID_SPAN_COUNT))
       addOnScrollListener(object : InfiniteScrollListener(gridLayoutManager) {
         override fun onLoadMore() {
           viewModel.events.offer(Event.PageEndReached)
@@ -158,6 +155,12 @@ class DiscoverFragment : BaseViewBindingFragment<FragmentDiscoverBinding>(), Inj
     }
 
     adapter.update(newState.results, newState.isLoadingAdditionalPage)
+
+    newState.errorMessage?.let { error ->
+      error.consume { message ->
+        snackbarController.showMessage(binding.root, message.message)
+      }
+    }
   }
 
   private fun createProgressGridSpanSizeLookup(

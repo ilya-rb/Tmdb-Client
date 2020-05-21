@@ -28,7 +28,8 @@ buildscript {
 }
 
 plugins {
-  id("io.gitlab.arturbosch.detekt") version "1.7.4" apply false
+  id("io.gitlab.arturbosch.detekt") version "1.8.0" apply false
+  id("com.github.ben-manes.versions") version "0.28.0"
 }
 
 allprojects {
@@ -41,7 +42,6 @@ allprojects {
   }
 
   apply {
-    plugin("com.github.ben-manes.versions")
     from(rootProject.file("code-quality-tools/detekt.gradle"))
   }
 
@@ -71,6 +71,17 @@ allprojects {
 subprojects {
 
   afterEvaluate {
+    // Disable build config generation for libraries
+    extensions.findByType<com.android.build.gradle.LibraryExtension>()?.apply {
+      libraryVariants.all {
+        generateBuildConfigProvider?.let {
+          it {
+            enabled = false
+          }
+        }
+      }
+    }
+
     // Base extension for com.android.library and com.android.application
     extensions.findByType<com.android.build.gradle.BaseExtension>()?.apply {
       project.apply {

@@ -33,9 +33,10 @@ import com.illiarb.tmdbclient.ui.home.delegates.nowplaying.nowPlayingSection
 import com.illiarb.tmdbclient.ui.home.delegates.trendingSection
 import com.illiarb.tmdbclient.ui.home.di.DaggerHomeComponent
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.google.android.material.R as MaterialR
+import com.illiarb.tmdbclient.libs.ui.R as UiR
 
 class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectable {
 
@@ -46,6 +47,7 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
   }
 
+  private val snackbarController = SnackbarController()
   private val bundleStore = SimpleBundleStore()
   private val adapter = DelegatesAdapter(
     MovieSectionDelegate(
@@ -86,6 +88,10 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
 
     binding.moviesSwipeRefresh.isEnabled = false
 
+    binding.imageTmdb.setOnClickListener {
+      viewModel.events.offer(Event.TmdbIconClick)
+    }
+
     bundleStore.onRestoreInstanceState(savedInstanceState = savedInstanceState)
 
     setupAppBarScrollListener()
@@ -95,10 +101,6 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
       viewModel.state.collect {
         render(it)
       }
-    }
-
-    viewLifecycleOwner.lifecycleScope.launch {
-      SnackbarController().bind(binding.root, viewModel.errorState.map { it.message })
     }
   }
 
@@ -114,9 +116,9 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
       addItemDecoration(
         SpaceDecoration(
           spacingTopFirst = 0,
-          spacingTop = dimen(R.dimen.spacing_small),
-          spacingBottom = dimen(R.dimen.spacing_small),
-          spacingBottomLast = dimen(R.dimen.spacing_normal)
+          spacingTop = dimen(UiR.dimen.spacing_small),
+          spacingBottom = dimen(UiR.dimen.spacing_small),
+          spacingBottomLast = dimen(UiR.dimen.spacing_normal)
         )
       )
       isNestedScrollingEnabled = false
@@ -133,11 +135,11 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
 
       val colorEvaluator = ArgbEvaluator()
       val startColor = Color.TRANSPARENT
-      val endColor: Int = requireView().getColorAttr(R.attr.colorPrimary)
+      val endColor: Int = requireView().getColorAttr(MaterialR.attr.colorPrimary)
       val endStateHeight: Int = requireView().dimen(R.dimen.app_bar_end_state_height)
 
       val elevationEvaluator = FloatEvaluator()
-      val endElevation = requireView().dimen(R.dimen.elevation_normal).toFloat()
+      val endElevation = requireView().dimen(UiR.dimen.elevation_normal).toFloat()
 
       override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         val fraction = calculateFraction(recyclerView.computeVerticalScrollOffset(), endStateHeight)
@@ -158,6 +160,12 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
 
   private fun render(state: State) {
     binding.moviesSwipeRefresh.isRefreshing = state.sections is Async.Loading<*>
+
     state.sections.doOnSuccess(adapter::submitList)
+    state.error?.let { error ->
+      error.consume { message ->
+        snackbarController.showMessage(binding.root, message.message)
+      }
+    }
   }
 }

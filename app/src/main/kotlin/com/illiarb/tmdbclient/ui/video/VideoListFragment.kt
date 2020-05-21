@@ -16,7 +16,7 @@ import com.illiarb.tmdbclient.libs.ui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbclient.libs.ui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.DelegatesAdapter
-import com.illiarb.tmdbclient.navigation.Router
+import com.illiarb.tmdbclient.navigation.Action
 import com.illiarb.tmdbclient.ui.video.VideoListViewModel.Event
 import com.illiarb.tmdbclient.ui.video.VideoListViewModel.State
 import com.illiarb.tmdbclient.ui.video.di.DaggerVideoListComponent
@@ -58,7 +58,7 @@ class VideoListFragment : BaseViewBindingFragment<FragmentVideoListBinding>(), I
   override fun inject(appProvider: AppProvider) =
     DaggerVideoListComponent.builder()
       .dependencies(appProvider)
-      .movieId(requireArguments().getInt(Router.Action.ShowVideos.EXTRA_MOVIE_ID))
+      .movieId(requireArguments().getInt(Action.ShowVideos.EXTRA_MOVIE_ID))
       .build()
       .inject(this)
 

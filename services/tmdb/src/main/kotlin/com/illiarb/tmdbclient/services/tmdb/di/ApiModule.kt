@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.services.tmdb.di
 
+import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
 import com.illiarb.tmdbclient.libs.tools.DateFormatter
-import com.illiarb.tmdbclient.services.tmdb.BuildConfig
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.DiscoverApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.GenreApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
@@ -43,10 +43,11 @@ object ApiModule {
   internal fun provideTmdbRetrofit(
     okHttpClient: Lazy<OkHttpClient>,
     callAdapterFactory: CallAdapter.Factory,
-    converterFactory: Converter.Factory
+    converterFactory: Converter.Factory,
+    tmdbConfig: TmdbConfig
   ): Retrofit =
     Retrofit.Builder()
-      .baseUrl(BuildConfig.API_URL)
+      .baseUrl(tmdbConfig.apiUrl)
       .addCallAdapterFactory(callAdapterFactory)
       .callFactory { okHttpClient.get().newCall(it) }
       .addConverterFactory(converterFactory)
