@@ -9,7 +9,7 @@ import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataOutput
 /**
  * @author ilya-rb on 26.10.18.
  */
-fun <T : Persistable> BinaryPreferencesBuilder.registerPersistables(
+internal fun <T : Persistable> BinaryPreferencesBuilder.registerPersistables(
   persistables: Map<String, Class<out T>>
 ): BinaryPreferencesBuilder = apply {
   persistables.forEach {
@@ -17,12 +17,13 @@ fun <T : Persistable> BinaryPreferencesBuilder.registerPersistables(
   }
 }
 
-fun <T : Persistable> Preferences.getValue(key: String, result: T): T = getPersistable(key, result)
+internal fun <T : Persistable> Preferences.getValue(key: String, result: T): T =
+  getPersistable(key, result)
 
-fun Preferences.putValue(key: String, value: Persistable) =
+internal fun Preferences.putValue(key: String, value: Persistable) =
   edit().putPersistable(key, value).commit()
 
-fun <T : Persistable> DataOutput.writePersistableList(list: Collection<T>) {
+internal fun <T : Persistable> DataOutput.writePersistableList(list: Collection<T>) {
   if (list.isNotEmpty()) {
     writeInt(list.size)
 
@@ -32,7 +33,7 @@ fun <T : Persistable> DataOutput.writePersistableList(list: Collection<T>) {
   }
 }
 
-fun <T : Persistable> DataInput.readPersistableList(
+internal fun <T : Persistable> DataInput.readPersistableList(
   outList: MutableCollection<T>,
   creator: () -> T
 ) {
@@ -42,7 +43,7 @@ fun <T : Persistable> DataInput.readPersistableList(
   }
 }
 
-fun DataOutput.writeStringList(list: Collection<String>) {
+internal fun DataOutput.writeStringList(list: Collection<String>) {
   if (list.isNotEmpty()) {
     writeInt(list.size)
 
@@ -52,7 +53,7 @@ fun DataOutput.writeStringList(list: Collection<String>) {
   }
 }
 
-fun DataInput.readStringList(outList: MutableCollection<String>) {
+internal fun DataInput.readStringList(outList: MutableCollection<String>) {
   val size = readInt()
 
   for (i in 0 until size) {

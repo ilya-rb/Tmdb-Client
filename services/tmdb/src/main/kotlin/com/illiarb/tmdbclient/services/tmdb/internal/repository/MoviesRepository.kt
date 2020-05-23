@@ -1,14 +1,14 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.repository
 
-import com.illiarb.tmdbclient.services.tmdb.domain.Movie
-import com.illiarb.tmdbclient.services.tmdb.domain.MovieFilter
-import com.illiarb.tmdbclient.services.tmdb.domain.Review
 import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
 import com.illiarb.tmdbclient.libs.tools.ResourceResolver
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.R
-import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
+import com.illiarb.tmdbclient.services.tmdb.domain.Movie
+import com.illiarb.tmdbclient.services.tmdb.domain.MovieFilter
+import com.illiarb.tmdbclient.services.tmdb.domain.Review
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
+import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.MovieMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.ReviewMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.MovieModel
@@ -33,7 +33,8 @@ internal interface MoviesRepository {
 internal class DefaultMoviesRepository @Inject constructor(
   private val moviesService: MovieApi,
   private val dispatcherProvider: DispatcherProvider,
-  private val persistableStorage: TmdbCache,
+  private val configurationRepository: ConfigurationRepository,
+  private val cache: TmdbCache,
   private val movieMapper: MovieMapper,
   private val reviewMapper: ReviewMapper,
   private val resourceResolver: ResourceResolver
@@ -42,13 +43,13 @@ internal class DefaultMoviesRepository @Inject constructor(
   override suspend fun getMoviesByType(type: String, refresh: Boolean): Result<List<Movie>> =
     Result.create {
       withContext(dispatcherProvider.io) {
-        val configuration = persistableStorage.getConfiguration()
+        val configuration = configurationRepository.getConfiguration(refresh = false).unwrap()
 
         if (refresh) {
           return@withContext movieMapper.mapList(configuration, fetchFromNetworkAndStore(type))
         }
 
-        val cached = persistableStorage.getMoviesByType(type)
+        val cached = cache.getMoviesByType(type)
         if (cached.isEmpty()) {
           movieMapper.mapList(configuration, fetchFromNetworkAndStore(type))
         } else {
@@ -61,7 +62,7 @@ internal class DefaultMoviesRepository @Inject constructor(
     Result.create {
       withContext(dispatcherProvider.io) {
         val details = moviesService.getMovieDetails(id, appendToResponse).unwrap()
-        val configuration = persistableStorage.getConfiguration()
+        val configuration = configurationRepository.getConfiguration(refresh = false).unwrap()
         movieMapper.map(configuration, details)
       }
     }
@@ -84,7 +85,7 @@ internal class DefaultMoviesRepository @Inject constructor(
 
   private suspend fun fetchFromNetworkAndStore(type: String): List<MovieModel> {
     val result = moviesService.getMoviesByType(type).unwrap().results
-    persistableStorage.storeMovies(type, result)
+    cache.storeMovies(type, result)
     return result
   }
 }
