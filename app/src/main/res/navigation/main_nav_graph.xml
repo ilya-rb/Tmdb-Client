@@ -5,18 +5,18 @@
 
     <fragment
         android:id="@+id/discoverFragment"
-        android:name="com.illiarb.tmdbclient.ui.discover.DiscoverFragment"
+        android:name="com.illiarb.tmdbclient.modules.discover.DiscoverFragment"
         android:label="DiscoverFragment"
         tools:layout="@layout/fragment_discover" />
 
     <fragment
         android:id="@+id/videoListFragment"
-        android:name="com.illiarb.tmdbclient.ui.video.VideoListFragment"
+        android:name="com.illiarb.tmdbclient.modules.video.VideoListFragment"
         tools:layout="@layout/fragment_video_list" />
 
     <fragment
         android:id="@+id/movieDetailsFragment"
-        android:name="com.illiarb.tmdbclient.ui.details.MovieDetailsFragment"
+        android:name="com.illiarb.tmdbclient.modules.details.MovieDetailsFragment"
         android:label="MovieDetailsFragment"
         tools:layout="@layout/fragment_movie_details">
 
@@ -28,13 +28,13 @@
 
     <fragment
         android:id="@+id/uiComponentsFragment"
-        android:name="com.illiarb.tmdbclient.ui.debug.UiComponentsFragment"
+        android:name="com.illiarb.tmdbclient.modules.debug.UiComponentsFragment"
         android:label="UiComponentsFragment"
         tools:layout="@layout/fragment_ui_components" />
 
     <fragment
         android:id="@+id/moviesFragment"
-        android:name="com.illiarb.tmdbclient.ui.home.HomeFragment"
+        android:name="com.illiarb.tmdbclient.modules.home.HomeFragment"
         android:label="MoviesFragment"
         tools:layout="@layout/fragment_movies">
 

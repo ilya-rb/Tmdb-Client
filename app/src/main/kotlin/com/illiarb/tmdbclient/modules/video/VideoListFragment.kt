@@ -1,0 +1,112 @@
+package com.illiarb.tmdbclient.modules.video
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import androidx.core.view.ViewCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.illiarb.tmdbclient.databinding.FragmentVideoListBinding
+import com.illiarb.tmdbclient.di.AppProvider
+import com.illiarb.tmdbclient.di.Injectable
+import com.illiarb.tmdbclient.libs.ui.base.BaseViewBindingFragment
+import com.illiarb.tmdbclient.libs.ui.ext.doOnApplyWindowInsets
+import com.illiarb.tmdbclient.libs.ui.ext.removeAdapterOnDetach
+import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
+import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.DelegatesAdapter
+import com.illiarb.tmdbclient.navigation.Action
+import com.illiarb.tmdbclient.modules.video.VideoListViewModel.Event
+import com.illiarb.tmdbclient.modules.video.VideoListViewModel.State
+import com.illiarb.tmdbclient.modules.video.di.DaggerVideoListComponent
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+class VideoListFragment : BaseViewBindingFragment<FragmentVideoListBinding>(), Injectable {
+
+  @Inject
+  lateinit var viewModelFactory: ViewModelProvider.Factory
+
+  private val videosAdapter = DelegatesAdapter(
+    videoTypeDelegate(),
+    videoDelegate {
+      viewModel.events.offer(Event.VideoClicked(it))
+    }
+  )
+
+  private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
+    ViewModelProvider(this, viewModelFactory).get(VideoListViewModel::class.java)
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    setupVideoPlayer()
+    setupVideoList()
+
+    binding.toolbar.setNavigationOnClickListener {
+      requireActivity().onBackPressed()
+    }
+
+    bind()
+
+    ViewCompat.requestApplyInsets(view)
+  }
+
+  override fun inject(appProvider: AppProvider) =
+    DaggerVideoListComponent.builder()
+      .dependencies(appProvider)
+      .movieId(requireArguments().getInt(Action.ShowVideos.EXTRA_MOVIE_ID))
+      .build()
+      .inject(this)
+
+  override fun getViewBinding(inflater: LayoutInflater): FragmentVideoListBinding =
+    FragmentVideoListBinding.inflate(inflater)
+
+  private fun setupVideoPlayer() {
+    binding.youtubePlayer.doOnApplyWindowInsets { view, windowInsets, _ ->
+      view.updatePadding(top = windowInsets.systemWindowInsetTop)
+    }
+  }
+
+  private fun setupVideoList() {
+    binding.youtubeVideosList.apply {
+      adapter = videosAdapter
+      layoutManager = LinearLayoutManager(requireContext())
+      removeAdapterOnDetach()
+      doOnApplyWindowInsets { view, windowInsets, padding ->
+        view.updatePadding(bottom = padding.bottom + windowInsets.systemWindowInsetBottom)
+      }
+      addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+          binding.appBar.setLifted(dy > 0)
+        }
+      })
+    }
+  }
+
+  private fun bind() {
+    viewLifecycleOwner.lifecycleScope.launch {
+      var oldModel: State? = null
+
+      viewModel.state.collect { newState ->
+        render(oldModel, newState)
+        oldModel = newState
+      }
+    }
+  }
+
+  private fun render(oldModel: State?, newModel: State) {
+    videosAdapter.submitList(newModel.videos)
+
+    if (oldModel?.selected != newModel.selected && newModel.selected != null) {
+      playVideo(newModel.selected.video.key)
+    }
+  }
+
+  private fun playVideo(videoId: String) {
+    binding.youtubePlayer.playVideo(videoId)
+  }
+}

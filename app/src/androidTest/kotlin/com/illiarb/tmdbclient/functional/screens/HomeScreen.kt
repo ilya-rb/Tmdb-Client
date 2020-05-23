@@ -6,7 +6,7 @@ import com.agoda.kakao.recycler.KRecyclerItem
 import com.agoda.kakao.recycler.KRecyclerView
 import com.agoda.kakao.text.KTextView
 import com.illiarb.tmdbclient.R
-import com.illiarb.tmdbclient.ui.home.HomeFragment
+import com.illiarb.tmdbclient.modules.home.HomeFragment
 import com.illiarb.tmdbclient.functional.recyclerview.MovieItem
 import org.hamcrest.Matcher
 
