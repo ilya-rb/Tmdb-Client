@@ -27,8 +27,6 @@ android {
 }
 
 dependencies {
-  implementation(project(Modules.Core.ui))
-  implementation(project(Modules.Services.tmdb))
   implementation(Deps.Glide.core)
   implementation(Deps.Kotlin.std)
 }
