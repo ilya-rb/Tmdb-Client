@@ -80,6 +80,7 @@ dependencies {
   implementation(Deps.Kotlin.coroutines)
   implementation(Deps.Dagger.core)
   implementation(Deps.Misc.timber)
+  implementation(Deps.Misc.viewBindingPropertyDelegate)
   implementation(Deps.Android.Firebase.core)
   implementation(Deps.Android.AndroidX.navigation)
   implementation(Deps.Android.AndroidX.workManager)

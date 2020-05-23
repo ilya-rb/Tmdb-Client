@@ -1,16 +1,16 @@
 package com.illiarb.tmdbclient.modules.debug
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.fragment.app.Fragment
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.databinding.FragmentUiComponentsBinding
+import com.illiarb.tmdbclient.libs.ui.base.BaseFragment
 import com.illiarb.tmdbclient.libs.ui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
 
-class UiComponentsFragment : Fragment() {
+class UiComponentsFragment : BaseFragment(R.layout.fragment_ui_components) {
 
   companion object {
 
@@ -19,32 +19,25 @@ class UiComponentsFragment : Fragment() {
     fun newInstance() = UiComponentsFragment()
   }
 
-  private lateinit var binding: FragmentUiComponentsBinding
-
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View? {
-    binding = FragmentUiComponentsBinding.inflate(inflater)
-    return binding.root
+  private val viewBinding by viewBinding { fragment ->
+    FragmentUiComponentsBinding.bind(fragment.requireView())
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    binding.toolbar.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
+    viewBinding.toolbar.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
       v.updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
     }
 
     for (i in 0 until TABS_COUNT) {
-      binding.tabs.addTab(binding.tabs.newTab().setText("Tab $i"))
+      viewBinding.tabs.addTab(viewBinding.tabs.newTab().setText("Tab $i"))
     }
 
-    binding.nightMode.isChecked =
+    viewBinding.nightMode.isChecked =
       AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
 
-    binding.nightMode.setOnCheckedChangeListener { _, isChecked ->
+    viewBinding.nightMode.setOnCheckedChangeListener { _, isChecked ->
       AppCompatDelegate.setDefaultNightMode(
         if (isChecked) {
           AppCompatDelegate.MODE_NIGHT_YES

@@ -179,6 +179,7 @@ object Deps {
     const val lottie = "com.airbnb.android:lottie:3.0.7"
     const val binaryPrefs = "com.github.yandextaxitech:binaryprefs:1.0.1"
     const val javax = "javax.inject:javax.inject:1"
+    const val viewBindingPropertyDelegate = "com.github.kirich1409:ViewBindingPropertyDelegate:0.3"
   }
 
   object Test {

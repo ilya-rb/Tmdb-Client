@@ -1,30 +1,31 @@
 package com.illiarb.tmdbclient.modules.video
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.databinding.FragmentVideoListBinding
 import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable
-import com.illiarb.tmdbclient.libs.ui.base.BaseViewBindingFragment
+import com.illiarb.tmdbclient.libs.ui.base.BaseFragment
 import com.illiarb.tmdbclient.libs.ui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbclient.libs.ui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.DelegatesAdapter
-import com.illiarb.tmdbclient.navigation.Action
 import com.illiarb.tmdbclient.modules.video.VideoListViewModel.Event
 import com.illiarb.tmdbclient.modules.video.VideoListViewModel.State
 import com.illiarb.tmdbclient.modules.video.di.DaggerVideoListComponent
+import com.illiarb.tmdbclient.navigation.Action
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class VideoListFragment : BaseViewBindingFragment<FragmentVideoListBinding>(), Injectable {
+class VideoListFragment : BaseFragment(R.layout.fragment_video_list), Injectable {
 
   @Inject
   lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -36,6 +37,10 @@ class VideoListFragment : BaseViewBindingFragment<FragmentVideoListBinding>(), I
     }
   )
 
+  private val viewBinding by viewBinding { fragment ->
+    FragmentVideoListBinding.bind(fragment.requireView())
+  }
+
   private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
     ViewModelProvider(this, viewModelFactory).get(VideoListViewModel::class.java)
   }
@@ -46,7 +51,7 @@ class VideoListFragment : BaseViewBindingFragment<FragmentVideoListBinding>(), I
     setupVideoPlayer()
     setupVideoList()
 
-    binding.toolbar.setNavigationOnClickListener {
+    viewBinding.toolbar.setNavigationOnClickListener {
       requireActivity().onBackPressed()
     }
 
@@ -62,17 +67,14 @@ class VideoListFragment : BaseViewBindingFragment<FragmentVideoListBinding>(), I
       .build()
       .inject(this)
 
-  override fun getViewBinding(inflater: LayoutInflater): FragmentVideoListBinding =
-    FragmentVideoListBinding.inflate(inflater)
-
   private fun setupVideoPlayer() {
-    binding.youtubePlayer.doOnApplyWindowInsets { view, windowInsets, _ ->
+    viewBinding.youtubePlayer.doOnApplyWindowInsets { view, windowInsets, _ ->
       view.updatePadding(top = windowInsets.systemWindowInsetTop)
     }
   }
 
   private fun setupVideoList() {
-    binding.youtubeVideosList.apply {
+    viewBinding.youtubeVideosList.apply {
       adapter = videosAdapter
       layoutManager = LinearLayoutManager(requireContext())
       removeAdapterOnDetach()
@@ -81,7 +83,7 @@ class VideoListFragment : BaseViewBindingFragment<FragmentVideoListBinding>(), I
       }
       addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-          binding.appBar.setLifted(dy > 0)
+          viewBinding.appBar.setLifted(dy > 0)
         }
       })
     }
@@ -107,6 +109,6 @@ class VideoListFragment : BaseViewBindingFragment<FragmentVideoListBinding>(), I
   }
 
   private fun playVideo(videoId: String) {
-    binding.youtubePlayer.playVideo(videoId)
+    viewBinding.youtubePlayer.playVideo(videoId)
   }
 }
