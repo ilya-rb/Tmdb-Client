@@ -29,6 +29,7 @@ fun ImageView.loadImage(
   Glide.with(context)
     .load(image.asGlideResource())
     .apply(mapOptions(options))
+    .error(options.errorRes)
     .also { request ->
       if (options.useCrossFade) {
         request.transition(DrawableTransitionOptions.withCrossFade())

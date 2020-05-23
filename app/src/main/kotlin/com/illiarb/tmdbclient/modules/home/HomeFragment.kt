@@ -4,17 +4,17 @@ import android.animation.ArgbEvaluator
 import android.animation.FloatEvaluator
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.databinding.FragmentMoviesBinding
 import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable
-import com.illiarb.tmdbclient.libs.ui.base.BaseViewBindingFragment
+import com.illiarb.tmdbclient.libs.ui.base.BaseFragment
 import com.illiarb.tmdbclient.libs.ui.common.SimpleBundleStore
 import com.illiarb.tmdbclient.libs.ui.common.SnackbarController
 import com.illiarb.tmdbclient.libs.ui.ext.dimen
@@ -38,10 +38,14 @@ import javax.inject.Inject
 import com.google.android.material.R as MaterialR
 import com.illiarb.tmdbclient.libs.ui.R as UiR
 
-class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectable {
+class HomeFragment : BaseFragment(R.layout.fragment_movies), Injectable {
 
   @Inject
   lateinit var viewModelFactory: ViewModelProvider.Factory
+
+  private val viewBinding by viewBinding { fragment ->
+    FragmentMoviesBinding.bind(fragment.requireView())
+  }
 
   private val viewModel: HomeViewModel by lazy(LazyThreadSafetyMode.NONE) {
     ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
@@ -70,9 +74,6 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
     }
   )
 
-  override fun getViewBinding(inflater: LayoutInflater): FragmentMoviesBinding =
-    FragmentMoviesBinding.inflate(inflater)
-
   override fun inject(appProvider: AppProvider) =
     DaggerHomeComponent.builder()
       .dependencies(appProvider)
@@ -82,13 +83,13 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    binding.appBar.doOnApplyWindowInsets { v, insets, padding ->
+    viewBinding.appBar.doOnApplyWindowInsets { v, insets, padding ->
       v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
     }
 
-    binding.moviesSwipeRefresh.isEnabled = false
+    viewBinding.moviesSwipeRefresh.isEnabled = false
 
-    binding.imageTmdb.setOnClickListener {
+    viewBinding.imageTmdb.setOnClickListener {
       viewModel.events.offer(Event.TmdbIconClick)
     }
 
@@ -110,7 +111,7 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
   }
 
   private fun setupMoviesList() {
-    binding.moviesList.apply {
+    viewBinding.moviesList.apply {
       adapter = this@HomeFragment.adapter
       layoutManager = LinearLayoutManager(requireContext())
       setHasFixedSize(true)
@@ -132,7 +133,7 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
 
   @Suppress("MagicNumber")
   private fun setupAppBarScrollListener() {
-    binding.moviesList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+    viewBinding.moviesList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
       val colorEvaluator = ArgbEvaluator()
       val startColor = Color.TRANSPARENT
@@ -147,8 +148,8 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
         val appBarColor = colorEvaluator.evaluate(fraction, startColor, endColor) as Int
         val elevation = elevationEvaluator.evaluate(fraction, 0, endElevation)
 
-        binding.appBar.setBackgroundColor(appBarColor)
-        binding.appBar.elevation = elevation
+        viewBinding.appBar.setBackgroundColor(appBarColor)
+        viewBinding.appBar.elevation = elevation
       }
 
       private fun Int.toPercentOf(max: Int): Int = this * 100 / max
@@ -160,12 +161,12 @@ class HomeFragment : BaseViewBindingFragment<FragmentMoviesBinding>(), Injectabl
   }
 
   private fun render(state: State) {
-    binding.moviesSwipeRefresh.isRefreshing = state.sections is Async.Loading<*>
+    viewBinding.moviesSwipeRefresh.isRefreshing = state.sections is Async.Loading<*>
 
     state.sections.doOnSuccess(adapter::submitList)
     state.error?.let { error ->
       error.consume { message ->
-        snackbarController.showMessage(binding.root, message.message)
+        snackbarController.showMessage(viewBinding.root, message.message)
       }
     }
   }
