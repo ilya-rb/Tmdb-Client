@@ -11,6 +11,7 @@ import com.illiarb.tmdbclient.services.tmdb.internal.repository.ConfigurationRep
 import kotlinx.coroutines.runBlocking
 import java.io.IOException
 import java.util.concurrent.TimeUnit
+import com.illiarb.tmdbclient.libs.util.Result as UtilResult
 
 /**
  * @author ilya-rb on 03.12.18.
@@ -41,8 +42,8 @@ internal class ConfigurationFetchWork(
     return try {
       runBlocking {
         when (configurationRepository.getConfiguration(refresh = true)) {
-          is com.illiarb.tmdbclient.libs.util.Result.Ok -> Result.success()
-          is com.illiarb.tmdbclient.libs.util.Result.Err -> Result.failure()
+          is UtilResult.Ok -> Result.success()
+          is UtilResult.Err -> Result.failure()
         }
       }
       Result.success()

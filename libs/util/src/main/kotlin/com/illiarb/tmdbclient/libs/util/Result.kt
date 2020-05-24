@@ -19,6 +19,8 @@ sealed class Result<out T> {
     }
   }
 
+  fun isError(): Boolean = this is Err
+
   fun error(): Throwable = (this as Err).error
 
   inline fun <R : Any> mapOnSuccess(block: (T) -> R): Result<R> {
