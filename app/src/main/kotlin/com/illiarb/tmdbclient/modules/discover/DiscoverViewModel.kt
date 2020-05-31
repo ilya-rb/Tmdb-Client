@@ -30,23 +30,27 @@ class DiscoverViewModel @Inject constructor(
     private fun initialState(): State =
       State(
         results = emptyList(),
-        genres = emptyList(),
+        filter = Filter(selectedGenreIds = emptyList(), yearConstraints = YearConstraints.AllYears),
         screenTitle = Text.AsResource(R.string.discover_genres_all),
-        selectedGenreIds = emptyList(),
+        availableGenres = emptyList(),
         isLoading = false,
         isLoadingAdditionalPage = false,
         currentPage = 1,
         totalPages = 0,
-        errorMessage = null
+        errorMessage = null,
+        yearsDialog = null
       )
   }
 
   override fun onUiEvent(event: Event) {
     when (event) {
       is Event.MovieClick -> processMovieClick(event.movie)
-      is Event.ApplyFilter -> applyFilter(event.ids)
-      is Event.ClearFilter -> applyFilter()
+      is Event.ApplyFilter -> applyFilter(event.filter)
+      is Event.ClearFilter -> applyFilter(Filter.empty())
       is Event.PageEndReached -> fetchLoadNextPageIfExists()
+      is Event.YearsFilterClicked -> setState {
+        copy(yearsDialog = ViewStateEvent(YearConstraints.generateAvailableConstraints()))
+      }
     }
   }
 
@@ -56,8 +60,13 @@ class DiscoverViewModel @Inject constructor(
 
       setState {
         when (genres) {
-          is Result.Ok -> copy(genres = genres.data).also {
-            applyFilter(listOf(initialGenreId), isInitialLaunch = true)
+          is Result.Ok -> {
+            copy(availableGenres = genres.data).also {
+              applyFilter(
+                filter = Filter(listOf(initialGenreId), YearConstraints.AllYears),
+                isInitialLaunch = true
+              )
+            }
           }
           is Result.Err -> {
             copy(errorMessage = ViewStateEvent(ErrorMessage(genres.error.message ?: "")))
@@ -71,10 +80,10 @@ class DiscoverViewModel @Inject constructor(
     router.executeAction(ShowMovieDetails(movie.id))//.also(analyticsService::trackRouterAction)
   }
 
-  private fun applyFilter(genreIds: List<Int> = emptyList(), isInitialLaunch: Boolean = false) {
+  private fun applyFilter(filter: Filter, isInitialLaunch: Boolean = false) {
     viewModelScope.launch {
-      // do nothing if this genre are already applied
-      if (currentState.selectedGenreIds == genreIds && !isInitialLaunch) {
+      // do nothing if this filter are already applied
+      if (currentState.filter == filter && !isInitialLaunch) {
         return@launch
       }
 
@@ -82,7 +91,7 @@ class DiscoverViewModel @Inject constructor(
         copy(isLoading = true)
       }
 
-      val results = moviesInteractor.discoverMovies(genreIds, 1)
+      val results = moviesInteractor.discoverMovies(filter.selectedGenreIds, 1)
 
       setState {
         when (results) {
@@ -92,8 +101,8 @@ class DiscoverViewModel @Inject constructor(
               results = results.data.items,
               currentPage = results.data.page,
               totalPages = results.data.totalPages,
-              selectedGenreIds = genreIds,
-              screenTitle = createGenresTitle(genreIds)
+              filter = filter,
+              screenTitle = createGenresTitle(filter.selectedGenreIds)
             )
           }
           is Result.Err -> {
@@ -111,7 +120,7 @@ class DiscoverViewModel @Inject constructor(
     return if (genreIds.isEmpty()) {
       Text.AsResource(R.string.discover_genres_all)
     } else {
-      val selected = currentState.genres.filter { genreIds.contains(it.id) }
+      val selected = currentState.availableGenres.filter { genreIds.contains(it.id) }
       if (selected.isEmpty()) {
         Text.AsResource(R.string.discover_genres_all)
       } else {
@@ -130,8 +139,10 @@ class DiscoverViewModel @Inject constructor(
         copy(isLoadingAdditionalPage = true)
       }
 
-      val results =
-        moviesInteractor.discoverMovies(currentState.selectedGenreIds, currentState.currentPage + 1)
+      val results = moviesInteractor.discoverMovies(
+        genreIds = currentState.filter.selectedGenreIds,
+        page = currentState.currentPage + 1
+      )
 
       setState {
         when (results) {
@@ -156,19 +167,21 @@ class DiscoverViewModel @Inject constructor(
 
   data class State(
     val results: List<Movie>,
-    val genres: List<Genre>,
+    val availableGenres: List<Genre>,
+    val filter: Filter,
     val screenTitle: Text,
-    val selectedGenreIds: List<Int>,
     val isLoading: Boolean,
     val currentPage: Int,
     val totalPages: Int,
     val isLoadingAdditionalPage: Boolean,
-    val errorMessage: ViewStateEvent<ErrorMessage>?
+    val errorMessage: ViewStateEvent<ErrorMessage>?,
+    val yearsDialog: ViewStateEvent<List<YearConstraints>>?
   )
 
   sealed class Event {
     class MovieClick(val movie: Movie) : Event()
-    class ApplyFilter(val ids: List<Int>) : Event()
+    class ApplyFilter(val filter: Filter) : Event()
+    object YearsFilterClicked : Event()
     object PageEndReached : Event()
     object ClearFilter : Event()
   }

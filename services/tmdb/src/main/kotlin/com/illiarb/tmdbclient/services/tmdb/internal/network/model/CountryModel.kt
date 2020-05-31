@@ -10,13 +10,8 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 internal data class CountryModel(
-
-  @Json(name = "iso_3166_1")
-  var code: String = "",
-
-  @Json(name = "english_name")
-  var name: String = ""
-
+  @Json(name = "iso_3166_1") var code: String = "",
+  @Json(name = "english_name") var name: String = ""
 ) : Persistable {
 
   override fun readExternal(input: DataInput) {

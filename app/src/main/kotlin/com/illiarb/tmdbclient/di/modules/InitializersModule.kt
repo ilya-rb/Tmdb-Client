@@ -3,7 +3,6 @@ package com.illiarb.tmdbclient.di.modules
 import com.illiarb.tmdbclient.initializers.EmojiInitializer
 import com.illiarb.tmdbclient.initializers.FlipperInitializer
 import com.illiarb.tmdbclient.initializers.LoggerInitializer
-import com.illiarb.tmdbclient.initializers.WorkManagerInitializer
 import com.illiarb.tmdbclient.libs.tools.AppInitializer
 import dagger.Binds
 import dagger.Module
@@ -23,8 +22,4 @@ interface InitializersModule {
   @Binds
   @IntoSet
   fun bindEmojiInitializer(initializer: EmojiInitializer): AppInitializer
-
-  @Binds
-  @IntoSet
-  fun bindWorkManagerInitializer(initializer: WorkManagerInitializer): AppInitializer
 }

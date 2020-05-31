@@ -1,5 +1,7 @@
 package com.illiarb.tmdbclient.services.tmdb.domain
 
+import com.illiarb.tmdbclient.libs.util.DisplayFormattedDate
+
 data class Movie(
   val id: Int,
   val posterPath: Image?,
@@ -7,7 +9,7 @@ data class Movie(
   val genres: List<Genre>,
   val homepage: String?,
   val credits: List<Person>,
-  val releaseDate: String,
+  val releaseDate: DisplayFormattedDate,
   val overview: String?,
   val reviews: List<Review>,
   val runtime: Int,

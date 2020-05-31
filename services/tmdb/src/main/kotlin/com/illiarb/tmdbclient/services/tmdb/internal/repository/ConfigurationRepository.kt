@@ -1,13 +1,14 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.repository
 
 import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
-import com.illiarb.tmdbclient.services.tmdb.domain.Country
 import com.illiarb.tmdbclient.libs.util.Result
-import com.illiarb.tmdbclient.services.tmdb.internal.network.api.ConfigurationApi
+import com.illiarb.tmdbclient.services.tmdb.domain.Country
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
-import com.illiarb.tmdbclient.services.tmdb.internal.configuration.Configuration
+import com.illiarb.tmdbclient.services.tmdb.internal.network.api.ConfigurationApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.CountryMapper
+import com.illiarb.tmdbclient.services.tmdb.internal.network.model.Configuration
 import kotlinx.coroutines.withContext
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -26,10 +27,15 @@ internal class DefaultConfigurationRepository @Inject constructor(
   private val countryMapper: CountryMapper
 ) : ConfigurationRepository {
 
+  companion object {
+    const val CONFIGURATION_EXPIRY_DAYS = 2
+  }
+
   override suspend fun getConfiguration(refresh: Boolean): Result<Configuration> = Result.create {
-    if (refresh) {
+    if (refresh || isConfigurationExpired()) {
       val configuration = api.getConfiguration().unwrap()
       cache.storeConfiguration(configuration)
+      cache.updateConfigurationTimestamp(System.currentTimeMillis())
       return@create cache.getConfiguration()
     }
 
@@ -56,5 +62,10 @@ internal class DefaultConfigurationRepository @Inject constructor(
       }
       countryMapper.mapList(result)
     }
+  }
+
+  private fun isConfigurationExpired(): Boolean {
+    val configurationLastUpdated = cache.getConfigurationLastUpdateTimestamp()
+    return TimeUnit.MILLISECONDS.toDays(configurationLastUpdated) > CONFIGURATION_EXPIRY_DAYS
   }
 }

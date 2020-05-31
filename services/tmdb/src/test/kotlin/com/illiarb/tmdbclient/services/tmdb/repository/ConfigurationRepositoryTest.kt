@@ -3,10 +3,10 @@ package com.illiarb.tmdbclient.services.tmdb.repository
 import com.illiarb.tmdbclient.libs.test.tools.TestDispatcherProvider
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
-import com.illiarb.tmdbclient.services.tmdb.internal.configuration.Configuration
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageConfig
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.ConfigurationApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.CountryMapper
+import com.illiarb.tmdbclient.services.tmdb.internal.network.model.Configuration
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.DefaultConfigurationRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -41,9 +41,12 @@ class ConfigurationRepositoryTest {
           )
         )
 
+    every { cache.getConfigurationLastUpdateTimestamp() } returns 0L
+
     repository.getConfiguration()
 
     verify(exactly = 1) { cache.getConfiguration() }
+    verify { cache.getConfigurationLastUpdateTimestamp() }
     coVerify(exactly = 0) { api.getConfiguration() }
 
     confirmVerified(cache, api)
@@ -52,10 +55,12 @@ class ConfigurationRepositoryTest {
   @Test
   fun `it should check cache and if it is empty fetch from api`() = runBlockingTest {
     every { cache.getConfiguration() } returns Configuration()
+    every { cache.getConfigurationLastUpdateTimestamp() } returns 0L
 
     repository.getConfiguration()
 
     verify(exactly = 1) { cache.getConfiguration() }
+    verify { cache.getConfigurationLastUpdateTimestamp() }
     coVerify(exactly = 1) { api.getConfiguration() }
 
     confirmVerified(api, cache)
@@ -63,15 +68,19 @@ class ConfigurationRepositoryTest {
 
   @Test
   fun `it should store configuration in cache after successful fetch`() = runBlockingTest {
-    val configToStore = Configuration()
+    val configToStore =
+      Configuration()
 
     every { cache.getConfiguration() } returns Configuration()
+    every { cache.getConfigurationLastUpdateTimestamp() } returns 0L
+
     coEvery { api.getConfiguration() } returns Result.Ok(configToStore)
 
     repository.getConfiguration()
 
     verify { cache.storeConfiguration(configToStore) }
     verify { cache.getConfiguration() }
+    verify { cache.getConfigurationLastUpdateTimestamp() }
 
     confirmVerified(cache)
   }

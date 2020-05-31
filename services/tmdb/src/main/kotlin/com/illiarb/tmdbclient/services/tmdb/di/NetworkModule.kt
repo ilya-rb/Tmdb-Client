@@ -5,7 +5,7 @@ import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
 import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
 import com.illiarb.tmdbclient.libs.tools.ResourceResolver
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
-import com.illiarb.tmdbclient.services.tmdb.internal.error.ErrorHandler
+import com.illiarb.tmdbclient.services.tmdb.internal.error.ErrorCreator
 import com.illiarb.tmdbclient.services.tmdb.internal.network.CallAdapterFactory
 import com.illiarb.tmdbclient.services.tmdb.internal.network.interceptor.ApiKeyInterceptor
 import com.illiarb.tmdbclient.services.tmdb.internal.network.interceptor.RegionInterceptor
@@ -62,8 +62,8 @@ object NetworkModule {
 
   @Provides
   @JvmStatic
-  internal fun provideCallAdapterFactory(errorHandler: ErrorHandler): CallAdapter.Factory {
-    return CallAdapterFactory(errorHandler)
+  internal fun provideCallAdapterFactory(errorCreator: ErrorCreator): CallAdapter.Factory {
+    return CallAdapterFactory(errorCreator)
   }
 
   @Provides

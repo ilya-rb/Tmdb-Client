@@ -4,10 +4,8 @@ import android.app.Application
 import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
-import com.illiarb.tmdbclient.libs.tools.DateFormatter
 import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
 import com.illiarb.tmdbclient.libs.tools.ResourceResolver
-import com.illiarb.tmdbclient.libs.tools.WorkManager
 import com.illiarb.tmdbclient.services.tmdb.interactor.GenresInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.HomeInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
@@ -51,7 +49,5 @@ interface TmdbProvider {
   fun genresInteractor(): GenresInteractor
   fun moviesInteractor(): MoviesInteractor
   fun trendingInteractor(): TrendingInteractor
-  fun dateFormatter(): DateFormatter
-  fun configurationWorkerCreator(): WorkManager.WorkerCreator
   fun networkFlipperPlugin(): NetworkFlipperPlugin
 }

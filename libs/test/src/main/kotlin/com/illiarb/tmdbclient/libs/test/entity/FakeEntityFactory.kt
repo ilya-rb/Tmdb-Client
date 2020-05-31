@@ -1,5 +1,6 @@
 package com.illiarb.tmdbclient.libs.test.entity
 
+import com.illiarb.tmdbclient.libs.util.DisplayFormattedDate
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.domain.Genre
 import com.illiarb.tmdbclient.services.tmdb.domain.Image
@@ -30,7 +31,7 @@ object FakeEntityFactory {
       emptyList(),
       "http://google.com",
       emptyList(),
-      "2018-01-12",
+      DisplayFormattedDate("12 Jan 2018"),
       "overview",
       emptyList(),
       120,

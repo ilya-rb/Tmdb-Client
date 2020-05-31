@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.network.mappers
 
 import com.illiarb.tmdbclient.services.tmdb.domain.TrendingSection.TrendingItem
-import com.illiarb.tmdbclient.services.tmdb.internal.configuration.Configuration
+import com.illiarb.tmdbclient.services.tmdb.internal.network.model.Configuration
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.MovieModel
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.PersonModel
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.TrendingModel

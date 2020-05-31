@@ -5,15 +5,14 @@ import com.illiarb.tmdbclient.App
 import com.illiarb.tmdbclient.di.modules.AppModule
 import com.illiarb.tmdbclient.di.modules.InitializersModule
 import com.illiarb.tmdbclient.di.modules.NavigationModule
-import com.illiarb.tmdbclient.di.modules.WorkModule
 import com.illiarb.tmdbclient.libs.tools.di.ToolsProvider
-import com.illiarb.tmdbclient.services.analytics.di.AnalyticsProvider
-import com.illiarb.tmdbclient.services.tmdb.di.TmdbProvider
 import com.illiarb.tmdbclient.modules.details.di.MovieDetailsComponent
 import com.illiarb.tmdbclient.modules.discover.di.DiscoverComponent
 import com.illiarb.tmdbclient.modules.home.di.HomeComponent
 import com.illiarb.tmdbclient.modules.main.MainComponent
 import com.illiarb.tmdbclient.modules.video.di.VideoListComponent
+import com.illiarb.tmdbclient.services.analytics.di.AnalyticsProvider
+import com.illiarb.tmdbclient.services.tmdb.di.TmdbProvider
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -27,7 +26,6 @@ import javax.inject.Singleton
   modules = [
     AppModule::class,
     NavigationModule::class,
-    WorkModule::class,
     InitializersModule::class
   ]
 )

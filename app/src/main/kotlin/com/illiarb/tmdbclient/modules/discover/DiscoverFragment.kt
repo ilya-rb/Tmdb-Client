@@ -2,9 +2,11 @@ package com.illiarb.tmdbclient.modules.discover
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -47,9 +49,7 @@ class DiscoverFragment : BaseFragment(R.layout.fragment_discover), Injectable {
     FragmentDiscoverBinding.bind(fragment.requireView())
   }
 
-  private val viewModel: DiscoverViewModel by lazy(LazyThreadSafetyMode.NONE) {
-    ViewModelProvider(this, viewModelFactory).get(DiscoverViewModel::class.java)
-  }
+  private val viewModel by viewModels<DiscoverViewModel>(factoryProducer = { viewModelFactory })
 
   private val snackbarController = SnackbarController()
   private val adapter = PaginalAdapter(
@@ -104,19 +104,29 @@ class DiscoverFragment : BaseFragment(R.layout.fragment_discover), Injectable {
   }
 
   private fun setupFilters() {
-    viewBinding.root.findViewById<View>(R.id.discoverApplyFilter).setOnClickListener {
+    viewBinding.discoverFiltersContainer.discoverApplyFilter.setOnClickListener {
       dismissFiltersPanel()
       viewModel.events.offer(
         Event.ApplyFilter(
-          viewBinding.discoverFiltersContainer.discoverGenres.checkedChipIds
+          Filter(
+            selectedGenreIds = viewBinding.discoverFiltersContainer.discoverGenres.checkedChipIds,
+            yearConstraints = YearConstraints.AllYears
+          )
         )
       )
     }
 
-    viewBinding.root.findViewById<View>(R.id.discoverClearFilter).setOnClickListener {
+    viewBinding.discoverFiltersContainer.discoverClearFilter.setOnClickListener {
       viewBinding.discoverFiltersContainer.discoverGenres.clearCheck()
       dismissFiltersPanel()
       viewModel.events.offer(Event.ClearFilter)
+    }
+
+    viewBinding.discoverFiltersContainer.discoverYears.let {
+      it.text = "All years"
+      it.setOnClickListener {
+        viewModel.events.offer(Event.YearsFilterClicked)
+      }
     }
   }
 
@@ -140,17 +150,17 @@ class DiscoverFragment : BaseFragment(R.layout.fragment_discover), Injectable {
     viewBinding.discoverSwipeRefresh.isRefreshing = newState.isLoading
     viewBinding.toolbarTitle.setText(newState.screenTitle)
 
-    if (oldState?.genres != newState.genres) {
-      newState.genres.forEach { genre ->
+    if (oldState?.availableGenres != newState.availableGenres) {
+      newState.availableGenres.forEach { genre ->
         val chip = createChipFromGenre(genre)
         viewBinding.discoverFiltersContainer.discoverGenres.addView(chip)
       }
     }
 
-    if (newState.selectedGenreIds.isEmpty()) {
+    if (newState.filter.selectedGenreIds.isEmpty()) {
       viewBinding.discoverFiltersContainer.discoverGenres.clearCheck()
     } else {
-      newState.selectedGenreIds.forEach {
+      newState.filter.selectedGenreIds.forEach {
         viewBinding.discoverFiltersContainer.discoverGenres.check(it)
       }
     }
@@ -160,6 +170,17 @@ class DiscoverFragment : BaseFragment(R.layout.fragment_discover), Injectable {
     newState.errorMessage?.let { error ->
       error.consume { message ->
         snackbarController.showMessage(viewBinding.root, message.message)
+      }
+    }
+
+    newState.yearsDialog?.let { dialog ->
+      dialog.consume {
+        AlertDialog.Builder(requireContext())
+          .setItems(dialog.payload.map { it.toString() }.toTypedArray()) { dialog, _ ->
+            dialog.dismiss()
+          }
+          .create()
+          .show()
       }
     }
   }

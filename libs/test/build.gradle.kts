@@ -34,8 +34,6 @@ dependencies {
   implementation(project(Modules.Core.util))
   implementation(project(Modules.Core.tools))
 
-  implementation(Deps.Android.AndroidX.workManager)
-
   debugImplementation(Deps.Tools.Debug.Flipper.flipper)
   debugImplementation(Deps.Tools.Debug.Flipper.flipperNetwork)
 

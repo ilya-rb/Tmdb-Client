@@ -1,14 +1,8 @@
 package com.illiarb.tmdbclient.services.tmdb.di
 
-import android.content.Context
-import androidx.work.Worker
-import androidx.work.WorkerParameters
 import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
-import com.illiarb.tmdbclient.libs.tools.WorkManager
-import com.illiarb.tmdbclient.services.tmdb.internal.configuration.ConfigurationFetchWork
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.ConfigurationApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.interceptor.ApiKeyInterceptor
-import com.illiarb.tmdbclient.services.tmdb.internal.repository.ConfigurationRepository
 import dagger.Lazy
 import dagger.Module
 import dagger.Provides
@@ -59,18 +53,6 @@ object ConfigurationModule {
       .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
       .addInterceptor(apiKeyInterceptor)
       .build()
-  }
-
-  @Provides
-  @JvmStatic
-  internal fun provideConfigurationWorkerCreator(
-    configurationRepository: ConfigurationRepository
-  ): WorkManager.WorkerCreator {
-    return object : WorkManager.WorkerCreator {
-      override fun createWorkRequest(context: Context, params: WorkerParameters): Worker {
-        return ConfigurationFetchWork(context, params, configurationRepository)
-      }
-    }
   }
 
   @Qualifier

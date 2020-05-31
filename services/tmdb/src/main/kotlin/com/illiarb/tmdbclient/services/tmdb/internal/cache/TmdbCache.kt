@@ -1,15 +1,15 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.cache
 
 import android.content.Context
-import com.ironz.binaryprefs.BinaryPreferencesBuilder
-import com.ironz.binaryprefs.serialization.serializer.persistable.Persistable
-import com.illiarb.tmdbclient.services.tmdb.internal.configuration.Configuration
+import com.illiarb.tmdbclient.services.tmdb.internal.network.model.Configuration
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.CountryList
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.CountryModel
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.GenreListModel
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.GenreModel
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.MovieListModel
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.MovieModel
+import com.ironz.binaryprefs.BinaryPreferencesBuilder
+import com.ironz.binaryprefs.serialization.serializer.persistable.Persistable
 
 internal class TmdbCache(context: Context) {
 
@@ -22,6 +22,7 @@ internal class TmdbCache(context: Context) {
     const val KEY_CONFIGURATION = "configuration"
     const val KEY_GENRES = "genres"
     const val KEY_COUNTRIES = "countries"
+    const val KEY_CONFIGURATION_LAST_UPDATE = "configuration_last_update"
   }
 
   private val tmdbStore = BinaryPreferencesBuilder(context)
@@ -45,8 +46,15 @@ internal class TmdbCache(context: Context) {
   fun storeConfiguration(configuration: Configuration) =
     tmdbStore.putValue(KEY_CONFIGURATION, configuration)
 
+  fun updateConfigurationTimestamp(time: Long) {
+    tmdbStore.edit().putLong(KEY_CONFIGURATION_LAST_UPDATE, time)
+  }
+
   fun getConfiguration(): Configuration =
     tmdbStore.getPersistable(KEY_CONFIGURATION, Configuration())
+
+  fun getConfigurationLastUpdateTimestamp(): Long =
+    tmdbStore.getLong(KEY_CONFIGURATION_LAST_UPDATE, 0)
 
   fun getCountries(): List<CountryModel> =
     tmdbStore.getPersistable(KEY_COUNTRIES, CountryList()).countries

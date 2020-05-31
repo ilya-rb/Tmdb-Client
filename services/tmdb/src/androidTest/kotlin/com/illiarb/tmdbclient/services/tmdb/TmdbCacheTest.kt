@@ -3,7 +3,7 @@ package com.illiarb.tmdbclient.services.tmdb
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
-import com.illiarb.tmdbclient.services.tmdb.internal.configuration.Configuration
+import com.illiarb.tmdbclient.services.tmdb.internal.network.model.Configuration
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageConfig
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.GenreModel
 import org.junit.jupiter.api.AfterEach
@@ -69,13 +69,14 @@ class TmdbCacheTest {
     assertThat(keys).contains(TmdbCache.KEY_GENRES)
   }
 
-  private fun createConfiguration() = Configuration(
-    changeKeys = listOf("movies", "reviews", "images"),
-    images = ImageConfig(
-      secureBaseUrl = "secure_base_url",
-      backdropSizes = listOf("100", "200", "300"),
-      posterSizes = listOf("100", "200", "300"),
-      profileSizes = listOf("100", "200", "300")
+  private fun createConfiguration() =
+    Configuration(
+      changeKeys = listOf("movies", "reviews", "images"),
+      images = ImageConfig(
+        secureBaseUrl = "secure_base_url",
+        backdropSizes = listOf("100", "200", "300"),
+        posterSizes = listOf("100", "200", "300"),
+        profileSizes = listOf("100", "200", "300")
+      )
     )
-  )
 }
