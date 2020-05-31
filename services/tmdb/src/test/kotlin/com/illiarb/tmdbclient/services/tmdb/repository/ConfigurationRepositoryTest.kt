@@ -3,7 +3,7 @@ package com.illiarb.tmdbclient.services.tmdb.repository
 import com.illiarb.tmdbclient.libs.test.tools.TestDispatcherProvider
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
-import com.illiarb.tmdbclient.services.tmdb.internal.configuration.Configuration
+import com.illiarb.tmdbclient.services.tmdb.internal.network.model.Configuration
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageConfig
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.ConfigurationApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.CountryMapper
@@ -63,7 +63,8 @@ class ConfigurationRepositoryTest {
 
   @Test
   fun `it should store configuration in cache after successful fetch`() = runBlockingTest {
-    val configToStore = Configuration()
+    val configToStore =
+      Configuration()
 
     every { cache.getConfiguration() } returns Configuration()
     coEvery { api.getConfiguration() } returns Result.Ok(configToStore)

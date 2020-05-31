@@ -4,7 +4,7 @@ import com.illiarb.tmdbclient.libs.test.tools.TestResourceResolver
 import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
-import com.illiarb.tmdbclient.services.tmdb.internal.configuration.Configuration
+import com.illiarb.tmdbclient.services.tmdb.internal.network.model.Configuration
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.GenreMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.MovieMapper
@@ -13,6 +13,7 @@ import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.ReviewMappe
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.MovieModel
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.ConfigurationRepository
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.DefaultMoviesRepository
+import com.illiarb.tmdbclient.services.tmdb.internal.util.TmdbDateFormatter
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
@@ -44,7 +45,8 @@ class MoviesRepositoryTest {
       GenreMapper(),
       PersonMapper(),
       ReviewMapper(),
-      mockk()
+      mockk(),
+      TmdbDateFormatter()
     ),
     ReviewMapper(),
     TestResourceResolver()

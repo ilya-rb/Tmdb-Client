@@ -5,7 +5,6 @@ import com.illiarb.tmdbclient.libs.tools.ConnectivityStatus
 import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
 import com.illiarb.tmdbclient.libs.tools.FeatureFlagStore
 import com.illiarb.tmdbclient.libs.tools.ResourceResolver
-import com.illiarb.tmdbclient.libs.tools.WorkManager
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -27,5 +26,4 @@ interface ToolsProvider {
   fun resourceResolver(): ResourceResolver
   fun dispatcherProvider(): DispatcherProvider
   fun featureFlagStore(): FeatureFlagStore
-  fun workManager(): WorkManager
 }

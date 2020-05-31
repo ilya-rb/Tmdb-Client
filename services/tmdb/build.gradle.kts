@@ -47,7 +47,6 @@ dependencies {
 
   implementation(Deps.Dagger.core)
   implementation(Deps.Android.Firebase.core)
-  implementation(Deps.Android.AndroidX.workManager)
   implementation(Deps.Android.Firebase.remoteConfig)
   implementation(Deps.Misc.binaryPrefs)
   implementation(Deps.Retrofit.core)

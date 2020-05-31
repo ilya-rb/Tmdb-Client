@@ -2,7 +2,7 @@ package com.illiarb.tmdbclient.services.tmdb.mapper
 
 import com.google.common.truth.Correspondence
 import com.google.common.truth.Truth.assertThat
-import com.illiarb.tmdbclient.services.tmdb.internal.configuration.Configuration
+import com.illiarb.tmdbclient.services.tmdb.internal.network.model.Configuration
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageConfig
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageUrlCreator
 import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.GenreMapper
@@ -12,6 +12,7 @@ import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.ReviewMappe
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.BackdropListModel
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.BackdropModel
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.MovieModel
+import com.illiarb.tmdbclient.services.tmdb.internal.util.TmdbDateFormatter
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -22,10 +23,12 @@ class MovieMapperTest {
   private val secureBaseUrl = "https://base-url.com"
   private val imageUrlCreator = ImageUrlCreator()
   private val movieMapper =
-    MovieMapper(GenreMapper(), PersonMapper(), ReviewMapper(), imageUrlCreator)
+    MovieMapper(GenreMapper(), PersonMapper(), ReviewMapper(), imageUrlCreator, TmdbDateFormatter())
 
   private val configuration: Configuration =
-    Configuration(images = ImageConfig(secureBaseUrl = secureBaseUrl))
+    Configuration(
+      images = ImageConfig(secureBaseUrl = secureBaseUrl)
+    )
 
   @Test
   fun `it should append url to start of the backdrop path`() = runBlockingTest {

@@ -13,17 +13,10 @@ import com.squareup.moshi.JsonClass
  */
 @JsonClass(generateAdapter = true)
 internal data class ImageConfig(
-  @Json(name = "secure_base_url")
-  var secureBaseUrl: String = "",
-
-  @Json(name = "backdrop_sizes")
-  var backdropSizes: List<String> = emptyList(),
-
-  @Json(name = "profile_sizes")
-  var posterSizes: List<String> = emptyList(),
-
-  @Json(name = "poster_sizes")
-  var profileSizes: List<String> = emptyList()
+  @Json(name = "secure_base_url") var secureBaseUrl: String = "",
+  @Json(name = "backdrop_sizes") var backdropSizes: List<String> = emptyList(),
+  @Json(name = "profile_sizes") var posterSizes: List<String> = emptyList(),
+  @Json(name = "poster_sizes") var profileSizes: List<String> = emptyList()
 ) : Persistable {
 
   override fun readExternal(input: DataInput) {

@@ -5,7 +5,5 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 internal data class ProductionCountryModel(
-
-  @Json(name = "name")
-  val name: String
+  @Json(name = "name") val name: String
 )

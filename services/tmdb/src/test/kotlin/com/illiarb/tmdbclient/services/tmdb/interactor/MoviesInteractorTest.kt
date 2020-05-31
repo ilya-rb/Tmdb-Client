@@ -4,7 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import com.illiarb.tmdbclient.libs.test.tools.TestDispatcherProvider
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
-import com.illiarb.tmdbclient.services.tmdb.internal.configuration.Configuration
+import com.illiarb.tmdbclient.services.tmdb.internal.network.model.Configuration
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageUrlCreator
 import com.illiarb.tmdbclient.services.tmdb.internal.interactor.DefaultMoviesInteractor
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.DiscoverApi
@@ -14,6 +14,7 @@ import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.MovieMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.PersonMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.ReviewMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.network.model.ResultsModel
+import com.illiarb.tmdbclient.services.tmdb.internal.util.TmdbDateFormatter
 import com.illiarb.tmdbclient.services.tmdb.repository.TestMovieRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -34,7 +35,7 @@ class MoviesInteractorTest {
     moviesRepository,
     discoverApi,
     movieApi,
-    MovieMapper(GenreMapper(), PersonMapper(), ReviewMapper(), ImageUrlCreator()),
+    MovieMapper(GenreMapper(), PersonMapper(), ReviewMapper(), ImageUrlCreator(), TmdbDateFormatter()),
     cache,
     TestDispatcherProvider()
   )
@@ -43,7 +44,9 @@ class MoviesInteractorTest {
   fun `it should not pass genre id if all genres are selected`() = runBlockingTest {
     every {
       cache.getConfiguration()
-    } returns Configuration(changeKeys = listOf("images"))
+    } returns Configuration(
+      changeKeys = listOf("images")
+    )
 
     coEvery {
       discoverApi.discoverMovies(any(), any())
@@ -60,7 +63,9 @@ class MoviesInteractorTest {
 
   @Test
   fun `it should include images to response if change key is present`() = runBlockingTest {
-    every { cache.getConfiguration() } returns Configuration(changeKeys = listOf("images"))
+    every { cache.getConfiguration() } returns Configuration(
+      changeKeys = listOf("images")
+    )
 
     val details = interactor.getMovieDetails(movieId = 1).unwrap()
     assertThat(details.images).isNotEmpty()

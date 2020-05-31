@@ -1,12 +1,10 @@
 package com.illiarb.tmdbclient.services.tmdb.di
 
 import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
-import com.illiarb.tmdbclient.libs.tools.DateFormatter
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.DiscoverApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.GenreApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.TrendingApi
-import com.illiarb.tmdbclient.services.tmdb.internal.util.TmdbDateFormatter
 import dagger.Lazy
 import dagger.Module
 import dagger.Provides
@@ -52,8 +50,4 @@ object ApiModule {
       .callFactory { okHttpClient.get().newCall(it) }
       .addConverterFactory(converterFactory)
       .build()
-
-  @Provides
-  @JvmStatic
-  internal fun provideDateFormatter(): DateFormatter = TmdbDateFormatter()
 }

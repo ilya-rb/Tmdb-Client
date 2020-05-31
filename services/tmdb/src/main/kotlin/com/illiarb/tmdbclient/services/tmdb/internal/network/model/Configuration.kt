@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.services.tmdb.internal.configuration
+package com.illiarb.tmdbclient.services.tmdb.internal.network.model
 
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.readStringList
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.writeStringList
@@ -15,13 +15,8 @@ import java.util.Collections
  */
 @JsonClass(generateAdapter = true)
 internal data class Configuration(
-
-  @Json(name = "images")
-  var images: ImageConfig = ImageConfig(),
-
-  @Json(name = "change_keys")
-  var changeKeys: List<String> = Collections.emptyList()
-
+  @Json(name = "images") var images: ImageConfig = ImageConfig(),
+  @Json(name = "change_keys") var changeKeys: List<String> = Collections.emptyList()
 ) : Persistable {
 
   override fun readExternal(input: DataInput) {

@@ -83,7 +83,6 @@ dependencies {
   implementation(Deps.Misc.viewBindingPropertyDelegate)
   implementation(Deps.Android.Firebase.core)
   implementation(Deps.Android.AndroidX.navigation)
-  implementation(Deps.Android.AndroidX.workManager)
 
   // Play core lib for downloading dynamic features
   //implementation deps.playCore

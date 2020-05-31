@@ -13,7 +13,6 @@ import com.illiarb.tmdbclient.databinding.FragmentMovieDetailsBinding
 import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable
 import com.illiarb.tmdbclient.libs.imageloader.CropOptions
-import com.illiarb.tmdbclient.libs.tools.DateFormatter
 import com.illiarb.tmdbclient.libs.ui.base.BaseFragment
 import com.illiarb.tmdbclient.libs.ui.common.SnackbarController
 import com.illiarb.tmdbclient.libs.ui.ext.dimen
@@ -43,9 +42,6 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
   @Inject
   lateinit var viewModelFactory: ViewModelProvider.Factory
 
-  @Inject
-  lateinit var dateFormatter: DateFormatter
-
   private val viewBinding by viewBinding { fragment ->
     FragmentMovieDetailsBinding.bind(fragment.requireView())
   }
@@ -53,7 +49,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
   private val snackbarController = SnackbarController()
   private val sectionsAdapter by lazy(LazyThreadSafetyMode.NONE) {
     DelegatesAdapter(
-      movieInfoDelegate(dateFormatter),
+      movieInfoDelegate(),
       movieSimilarDelegate { viewModel.events.offer(Event.MovieClicked(it)) },
       photoSectionDelegate { }
     )

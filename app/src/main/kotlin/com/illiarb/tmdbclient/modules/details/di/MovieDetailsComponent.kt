@@ -1,6 +1,5 @@
 package com.illiarb.tmdbclient.modules.details.di
 
-import com.illiarb.tmdbclient.libs.tools.DateFormatter
 import com.illiarb.tmdbclient.libs.ui.di.ViewModelModule
 import com.illiarb.tmdbclient.modules.details.MovieDetailsFragment
 import com.illiarb.tmdbclient.navigation.Router
@@ -19,7 +18,6 @@ interface MovieDetailsComponent {
     fun router(): Router
     fun moviesInteractor(): MoviesInteractor
     fun analyticsService(): AnalyticsService
-    fun dateFormatter(): DateFormatter
   }
 
   @Component.Builder

@@ -36,5 +36,4 @@ dependencies {
   implementation(Deps.Kotlin.std)
   implementation(Deps.Kotlin.coroutines)
   implementation(Deps.Android.Firebase.remoteConfig)
-  implementation(Deps.Android.AndroidX.workManager)
 }

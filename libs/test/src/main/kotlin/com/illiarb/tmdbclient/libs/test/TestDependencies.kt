@@ -1,10 +1,5 @@
 package com.illiarb.tmdbclient.libs.test
 
-import android.content.Context
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequest
-import androidx.work.Worker
-import androidx.work.WorkerParameters
 import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import com.illiarb.tmdbclient.libs.test.analytics.TestAnalyticsService
 import com.illiarb.tmdbclient.libs.test.interactor.TestGenresInteractor
@@ -16,11 +11,9 @@ import com.illiarb.tmdbclient.libs.test.tools.TestDispatcherProvider
 import com.illiarb.tmdbclient.libs.test.tools.TestFeatureFlagStore
 import com.illiarb.tmdbclient.libs.test.tools.TestResourceResolver
 import com.illiarb.tmdbclient.libs.tools.ConnectivityStatus
-import com.illiarb.tmdbclient.libs.tools.DateFormatter
 import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
 import com.illiarb.tmdbclient.libs.tools.FeatureFlagStore
 import com.illiarb.tmdbclient.libs.tools.ResourceResolver
-import com.illiarb.tmdbclient.libs.tools.WorkManager
 import com.illiarb.tmdbclient.libs.tools.di.ToolsProvider
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
 import com.illiarb.tmdbclient.services.analytics.di.AnalyticsProvider
@@ -32,35 +25,14 @@ import com.illiarb.tmdbclient.services.tmdb.interactor.TrendingInteractor
 
 @Suppress("TooManyFunctions")
 object TestDependencies : ToolsProvider, AnalyticsProvider, TmdbProvider {
-
   override fun connectivityStatus(): ConnectivityStatus = TestConnectivityStatus()
   override fun resourceResolver(): ResourceResolver = TestResourceResolver()
   override fun dispatcherProvider(): DispatcherProvider = TestDispatcherProvider()
   override fun featureFlagStore(): FeatureFlagStore = TestFeatureFlagStore()
-
-  override fun workManager(): WorkManager =
-    object : WorkManager {
-      override fun enqueuePeriodicWork(
-        uniqueWorkName: String,
-        periodicWorkPolicy: ExistingPeriodicWorkPolicy,
-        workRequest: PeriodicWorkRequest
-      ) = Unit
-    }
-
   override fun analyticsService(): AnalyticsService = TestAnalyticsService()
   override fun homeInteractor(): HomeInteractor = TestHomeInteractor()
   override fun genresInteractor(): GenresInteractor = TestGenresInteractor()
   override fun moviesInteractor(): MoviesInteractor = TestMoviesInteractor()
   override fun trendingInteractor(): TrendingInteractor = TestTrendingInteractor()
-  override fun dateFormatter(): DateFormatter =
-    object : DateFormatter {
-      override fun formatDate(date: String): String = ""
-    }
-
-  override fun configurationWorkerCreator(): WorkManager.WorkerCreator =
-    object : WorkManager.WorkerCreator {
-      override fun createWorkRequest(context: Context, params: WorkerParameters): Worker = null!!
-    }
-
   override fun networkFlipperPlugin(): NetworkFlipperPlugin = NetworkFlipperPlugin()
 }

@@ -60,7 +60,7 @@ object Deps {
       const val compileSdkVersion = 29
       const val targetSdkVersion = 29
       const val minSdkVersion = 21
-      const val gradlePlugin = "com.android.tools.build:gradle:4.0.0-rc01"
+      const val gradlePlugin = "com.android.tools.build:gradle:4.0.0"
     }
 
     object AndroidX {
@@ -74,11 +74,10 @@ object Deps {
 
       object Lifecycle {
         const val ktx = "androidx.lifecycle:lifecycle-runtime-ktx:$archComponentsVersion"
-        const val liveData = "androidx.lifecycle:lifecycle-livedata-ktx:$archComponentsVersion"
       }
 
+      const val fragment = "androidx.fragment:fragment-ktx:1.2.4"
       const val navigation = "androidx.navigation:navigation-fragment:2.3.0-alpha06"
-      const val workManager = "androidx.work:work-runtime-ktx:2.4.0-alpha03"
       const val material = "com.google.android.material:material:1.2.0-alpha06"
       const val recyclerView = "androidx.recyclerview:recyclerview:1.2.0-alpha03"
       const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-rc01"

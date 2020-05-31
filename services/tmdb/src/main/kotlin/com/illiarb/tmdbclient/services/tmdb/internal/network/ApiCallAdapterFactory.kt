@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.network
 
 import com.illiarb.tmdbclient.libs.util.Result
-import com.illiarb.tmdbclient.services.tmdb.internal.error.ErrorHandler
+import com.illiarb.tmdbclient.services.tmdb.internal.error.ErrorCreator
 import okio.Timeout
 import retrofit2.Call
 import retrofit2.CallAdapter
@@ -13,7 +13,7 @@ import java.lang.reflect.Type
 import javax.inject.Inject
 
 class CallAdapterFactory @Inject constructor(
-  private val errorHandler: ErrorHandler
+  private val errorCreator: ErrorCreator
 ) : CallAdapter.Factory() {
 
   override fun get(
@@ -27,7 +27,7 @@ class CallAdapterFactory @Inject constructor(
         when (getRawType(callType)) {
           Result::class.java -> {
             val resultType = getParameterUpperBound(0, callType as ParameterizedType)
-            ResultAdapter(resultType, errorHandler)
+            ResultAdapter(resultType, errorCreator)
           }
           else -> null
         }
@@ -38,33 +38,31 @@ class CallAdapterFactory @Inject constructor(
 
 class ResultAdapter(
   private val type: Type,
-  private val errorHandler: ErrorHandler
+  private val errorCreator: ErrorCreator
 ) : CallAdapter<Type, Call<Result<Type>>> {
   override fun responseType() = type
   override fun adapt(call: Call<Type>): Call<Result<Type>> =
-    ResultCall(call, errorHandler)
+    ResultCall(call, errorCreator)
 }
 
 class ResultCall<T>(
   proxy: Call<T>,
-  private val errorHandler: ErrorHandler
+  private val errorCreator: ErrorCreator
 ) : CallDelegate<T, Result<T>>(proxy) {
 
   override fun timeout(): Timeout = Timeout.NONE
 
-  override fun cloneImpl() = ResultCall(proxy.clone(), errorHandler)
+  override fun cloneImpl() = ResultCall(proxy.clone(), errorCreator)
 
   override fun enqueueImpl(callback: Callback<Result<T>>) = proxy.enqueue(object : Callback<T> {
 
     override fun onResponse(call: Call<T>, response: Response<T>) {
       val result: Result<T> = if (response.isSuccessful) {
+        @Suppress("USELESS_CAST")
+        // false positive
         Result.Ok(response.body()!!) as Result<T>
       } else {
-        Result.Err(
-          errorHandler.createFromErrorBody(
-            response.errorBody()
-          )
-        )
+        Result.Err(errorCreator.createFromErrorBody(response.errorBody()))
       }
       callback.onResponse(this@ResultCall, Response.success(result))
     }
@@ -72,7 +70,7 @@ class ResultCall<T>(
     override fun onFailure(call: Call<T>, t: Throwable) {
       callback.onResponse(
         this@ResultCall,
-        Response.success(Result.Err(errorHandler.createFromThrowable(t)))
+        Response.success(Result.Err(errorCreator.createFromThrowable(t)))
       )
     }
   })
