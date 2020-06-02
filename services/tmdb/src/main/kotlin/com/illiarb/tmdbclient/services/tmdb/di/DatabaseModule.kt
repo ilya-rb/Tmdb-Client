@@ -13,7 +13,7 @@ object DatabaseModule {
   @Provides
   @JvmStatic
   @Singleton
-  internal fun bindTmdbDatabase(app: Application): TmdbDatabase {
+  internal fun provideTmdbDatabase(app: Application): TmdbDatabase {
     return Room.databaseBuilder(app, TmdbDatabase::class.java, TmdbDatabase.DATABASE_NAME)
       .build()
   }
