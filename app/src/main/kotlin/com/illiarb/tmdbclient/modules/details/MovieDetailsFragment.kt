@@ -29,7 +29,7 @@ import com.illiarb.tmdbclient.modules.details.delegates.movieInfoDelegate
 import com.illiarb.tmdbclient.modules.details.delegates.movieSimilarDelegate
 import com.illiarb.tmdbclient.modules.details.delegates.photoSectionDelegate
 import com.illiarb.tmdbclient.modules.details.di.DaggerMovieDetailsComponent
-import com.illiarb.tmdbclient.navigation.Action.ShowMovieDetails
+import com.illiarb.tmdbclient.navigation.NavigationAction
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.ui.loadTmdbImage
 import kotlinx.coroutines.flow.collect
@@ -62,7 +62,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
   override fun inject(appProvider: AppProvider) =
     DaggerMovieDetailsComponent.builder()
       .dependencies(appProvider)
-      .movieId(requireArguments().getInt(ShowMovieDetails.EXTRA_MOVIE_DETAILS))
+      .movieId(requireArguments().getInt(NavigationAction.EXTRA_MOVIE_DETAILS_MOVIE_ID))
       .build()
       .inject(this)
 

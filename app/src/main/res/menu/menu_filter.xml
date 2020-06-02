@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_filter_clear"
+        android:title="@string/discover_filter_clear"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_filter_apply"
+        android:title="@string/discover_filter_apply"
+        app:showAsAction="ifRoom" />
+
+</menu>

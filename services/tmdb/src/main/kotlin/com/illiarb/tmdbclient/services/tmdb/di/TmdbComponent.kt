@@ -6,6 +6,7 @@ import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
 import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
 import com.illiarb.tmdbclient.libs.tools.ResourceResolver
+import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.GenresInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.HomeInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
@@ -20,6 +21,7 @@ import javax.inject.Singleton
     ApiModule::class,
     NetworkModule::class,
     RepositoriesModule::class,
+    DatabaseModule::class,
     InteractorsModule::class,
     ConfigurationModule::class,
     FlipperModule::class
@@ -49,5 +51,6 @@ interface TmdbProvider {
   fun genresInteractor(): GenresInteractor
   fun moviesInteractor(): MoviesInteractor
   fun trendingInteractor(): TrendingInteractor
+  fun filtersInteractor(): FiltersInteractor
   fun networkFlipperPlugin(): NetworkFlipperPlugin
 }

@@ -5,8 +5,8 @@ import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageConfig
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.ConfigurationApi
-import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.CountryMapper
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.Configuration
+import com.illiarb.tmdbclient.services.tmdb.internal.mappers.CountryMapper
+import com.illiarb.tmdbclient.services.tmdb.internal.model.Configuration
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.DefaultConfigurationRepository
 import io.mockk.coEvery
 import io.mockk.coVerify

@@ -5,12 +5,11 @@ import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.domain.Country
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.ConfigurationApi
-import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.CountryMapper
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.Configuration
+import com.illiarb.tmdbclient.services.tmdb.internal.mappers.CountryMapper
+import com.illiarb.tmdbclient.services.tmdb.internal.model.Configuration
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import javax.inject.Singleton
 
 internal interface ConfigurationRepository {
 
@@ -19,7 +18,6 @@ internal interface ConfigurationRepository {
   suspend fun getCountries(): Result<List<Country>>
 }
 
-@Singleton
 internal class DefaultConfigurationRepository @Inject constructor(
   private val cache: TmdbCache,
   private val api: ConfigurationApi,

@@ -1,12 +1,12 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.interactor
 
 import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
-import com.illiarb.tmdbclient.services.tmdb.domain.TrendingSection
 import com.illiarb.tmdbclient.libs.util.Result
+import com.illiarb.tmdbclient.services.tmdb.domain.TrendingSection
 import com.illiarb.tmdbclient.services.tmdb.interactor.TrendingInteractor
-import com.illiarb.tmdbclient.services.tmdb.internal.network.api.TrendingApi
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
-import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.TrendingMapper
+import com.illiarb.tmdbclient.services.tmdb.internal.mappers.TrendingMapper
+import com.illiarb.tmdbclient.services.tmdb.internal.network.api.TrendingApi
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 

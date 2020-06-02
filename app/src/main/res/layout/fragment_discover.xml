@@ -4,72 +4,78 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/discoverSwipeRefresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.motion.widget.MotionLayout
-        android:id="@+id/discoverRoot"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutDescription="@xml/fragment_discover_motion_scene">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="0dp"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorSurface"
-            android:elevation="@dimen/elevation_normal"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/ic_arrow_back">
+            app:liftOnScroll="true"
+            app:liftOnScrollTargetViewId="@id/discoverList">
 
-            <TextView
-                android:id="@+id/toolbarTitle"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textAppearance="?attr/textAppearanceBody1"
-                tools:text="@string/discover_genres_title" />
+                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:title="@string/discover_title">
 
-        </androidx.appcompat.widget.Toolbar>
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end">
+
+                    <ImageView
+                        android:id="@+id/discoverFilter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@null"
+                        android:padding="@dimen/spacing_normal"
+                        android:src="@drawable/ic_filter_list"
+                        android:tint="?attr/colorOnBackground" />
+
+                    <TextView
+                        android:id="@+id/discoverFilterCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:layout_marginEnd="@dimen/spacing_small"
+                        android:background="@drawable/bg_filter_badge"
+                        android:gravity="center"
+                        android:textColor="?attr/colorOnSecondary"
+                        android:textSize="12sp"
+                        android:visibility="gone"
+                        tools:text="1"
+                        tools:visibility="visible" />
+
+                </FrameLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/discoverList"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="@dimen/spacing_normal"
-            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal"
             android:clipToPadding="false"
             android:paddingTop="@dimen/spacing_normal"
             android:paddingBottom="@dimen/spacing_normal"
-            app:layout_constraintBottom_toTopOf="@id/discoverFiltersContainer"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:itemCount="10"
             tools:layoutManager="GridLayoutManager"
+            tools:layout_marginTop="?attr/actionBarSize"
             tools:listitem="@layout/item_movie"
             tools:spanCount="3" />
 
-        <View
-            android:id="@+id/discoverOverlay"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/tmdb_black"
-            app:layout_constraintBottom_toTopOf="@id/discoverFiltersContainer"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <include
-            android:id="@+id/discoverFiltersContainer"
-            layout="@layout/layout_discover_filter"
-            android:layout_width="0dp"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-    </androidx.constraintlayout.motion.widget.MotionLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

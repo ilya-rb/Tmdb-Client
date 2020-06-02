@@ -3,6 +3,7 @@ plugins {
   id("de.mannodermaus.android-junit5")
   kotlin("android")
   kotlin("kapt")
+  kotlin("plugin.serialization") version "1.3.70"
 }
 
 apply {
@@ -39,15 +40,19 @@ dependencies {
 
   kapt(Deps.Dagger.compiler)
   kapt(Deps.Moshi.codegen)
+  kapt(Deps.Android.AndroidX.Room.compiler)
 
   implementation(project(Modules.Core.tools))
   implementation(project(Modules.Core.util))
   implementation(project(Modules.Core.logger))
   implementation(project(Modules.Core.buildConfig))
 
+  implementation(Deps.Kotlin.serialization)
+  implementation(Deps.Kotlin.serializationCbor)
   implementation(Deps.Dagger.core)
   implementation(Deps.Android.Firebase.core)
   implementation(Deps.Android.Firebase.remoteConfig)
+  implementation(Deps.Android.AndroidX.Room.core)
   implementation(Deps.Misc.binaryPrefs)
   implementation(Deps.Retrofit.core)
   implementation(Deps.Retrofit.converterMoshi)

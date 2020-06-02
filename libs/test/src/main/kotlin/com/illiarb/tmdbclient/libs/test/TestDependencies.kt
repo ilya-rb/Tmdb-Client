@@ -2,6 +2,7 @@ package com.illiarb.tmdbclient.libs.test
 
 import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import com.illiarb.tmdbclient.libs.test.analytics.TestAnalyticsService
+import com.illiarb.tmdbclient.libs.test.interactor.TestFiltersInteractor
 import com.illiarb.tmdbclient.libs.test.interactor.TestGenresInteractor
 import com.illiarb.tmdbclient.libs.test.interactor.TestHomeInteractor
 import com.illiarb.tmdbclient.libs.test.interactor.TestMoviesInteractor
@@ -18,6 +19,7 @@ import com.illiarb.tmdbclient.libs.tools.di.ToolsProvider
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
 import com.illiarb.tmdbclient.services.analytics.di.AnalyticsProvider
 import com.illiarb.tmdbclient.services.tmdb.di.TmdbProvider
+import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.GenresInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.HomeInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
@@ -35,4 +37,5 @@ object TestDependencies : ToolsProvider, AnalyticsProvider, TmdbProvider {
   override fun moviesInteractor(): MoviesInteractor = TestMoviesInteractor()
   override fun trendingInteractor(): TrendingInteractor = TestTrendingInteractor()
   override fun networkFlipperPlugin(): NetworkFlipperPlugin = NetworkFlipperPlugin()
+  override fun filtersInteractor(): FiltersInteractor = TestFiltersInteractor()
 }

@@ -2,6 +2,7 @@ package com.illiarb.tmdbclient.libs.test.interactor
 
 import com.illiarb.tmdbclient.libs.test.entity.FakeEntityFactory
 import com.illiarb.tmdbclient.libs.util.Result
+import com.illiarb.tmdbclient.services.tmdb.domain.Filter
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.services.tmdb.domain.MovieBlock
 import com.illiarb.tmdbclient.services.tmdb.domain.PagedList
@@ -35,10 +36,10 @@ class TestMoviesInteractor : MoviesInteractor {
   }
 
   @Suppress("MagicNumber")
-  override suspend fun discoverMovies(genreIds: List<Int>, page: Int): Result<PagedList<Movie>> {
+  override suspend fun discoverMovies(filter: Filter, page: Int): Result<PagedList<Movie>> {
     val movieList = FakeEntityFactory.createFakeMovieList(5) {
       FakeEntityFactory.createFakeMovie().copy(
-        genres = genreIds.map { FakeEntityFactory.createGenre(it) }
+        genres = filter.selectedGenreIds.map { FakeEntityFactory.createGenre(it) }
       )
     }
     return Result.Ok(PagedList(movieList, page = 1, totalPages = 1))

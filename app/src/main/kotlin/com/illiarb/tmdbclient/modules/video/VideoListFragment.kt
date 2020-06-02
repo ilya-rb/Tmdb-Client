@@ -20,7 +20,7 @@ import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbclient.modules.video.VideoListViewModel.Event
 import com.illiarb.tmdbclient.modules.video.VideoListViewModel.State
 import com.illiarb.tmdbclient.modules.video.di.DaggerVideoListComponent
-import com.illiarb.tmdbclient.navigation.Action
+import com.illiarb.tmdbclient.navigation.NavigationAction
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -63,7 +63,7 @@ class VideoListFragment : BaseFragment(R.layout.fragment_video_list), Injectable
   override fun inject(appProvider: AppProvider) =
     DaggerVideoListComponent.builder()
       .dependencies(appProvider)
-      .movieId(requireArguments().getInt(Action.ShowVideos.EXTRA_MOVIE_ID))
+      .movieId(requireArguments().getInt(NavigationAction.EXTRA_VIDEOS_MOVIE_ID))
       .build()
       .inject(this)
 

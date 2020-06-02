@@ -1,8 +1,8 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.network.api
 
 import com.illiarb.tmdbclient.libs.util.Result
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.ResultsModel
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.TrendingModel
+import com.illiarb.tmdbclient.services.tmdb.internal.model.ResultsModel
+import com.illiarb.tmdbclient.services.tmdb.internal.model.TrendingModel
 import retrofit2.http.GET
 import retrofit2.http.Path
 

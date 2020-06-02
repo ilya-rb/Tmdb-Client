@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -15,7 +14,6 @@ import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable
 import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.libs.tools.ConnectivityStatus
-import com.illiarb.tmdbclient.navigation.Action
 import com.illiarb.tmdbclient.navigation.Navigator
 import com.illiarb.tmdbclient.navigation.NavigatorHolder
 import com.illiarb.tmdbclient.navigation.Router
@@ -56,13 +54,6 @@ class MainActivity : AppCompatActivity(), Injectable {
 
     binding = ActivityMainBinding.inflate(layoutInflater)
     setContentView(binding.root)
-
-    if (buildConfig.isDebug) {
-      binding.btnDebug.visibility = View.VISIBLE
-      binding.btnDebug.setOnClickListener {
-        router.executeAction(Action.ShowUiComponents)
-      }
-    }
 
     lifecycleScope.launch {
       connectivityStatus.connectionState().collect {

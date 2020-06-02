@@ -2,16 +2,16 @@ package com.illiarb.tmdbclient.services.tmdb.mapper
 
 import com.google.common.truth.Correspondence
 import com.google.common.truth.Truth.assertThat
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.Configuration
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageConfig
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageUrlCreator
-import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.GenreMapper
-import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.MovieMapper
-import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.PersonMapper
-import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.ReviewMapper
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.BackdropListModel
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.BackdropModel
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.MovieModel
+import com.illiarb.tmdbclient.services.tmdb.internal.mappers.GenreMapper
+import com.illiarb.tmdbclient.services.tmdb.internal.mappers.MovieMapper
+import com.illiarb.tmdbclient.services.tmdb.internal.mappers.PersonMapper
+import com.illiarb.tmdbclient.services.tmdb.internal.mappers.ReviewMapper
+import com.illiarb.tmdbclient.services.tmdb.internal.model.BackdropListModel
+import com.illiarb.tmdbclient.services.tmdb.internal.model.BackdropModel
+import com.illiarb.tmdbclient.services.tmdb.internal.model.Configuration
+import com.illiarb.tmdbclient.services.tmdb.internal.model.MovieModel
 import com.illiarb.tmdbclient.services.tmdb.internal.util.TmdbDateFormatter
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Test

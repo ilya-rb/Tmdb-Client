@@ -1,9 +1,11 @@
 package com.illiarb.tmdbclient.services.tmdb.di
 
+import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.GenresInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.HomeInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.TrendingInteractor
+import com.illiarb.tmdbclient.services.tmdb.internal.interactor.DefaultFiltersInteractor
 import com.illiarb.tmdbclient.services.tmdb.internal.interactor.DefaultGenresInteractor
 import com.illiarb.tmdbclient.services.tmdb.internal.interactor.DefaultHomeInteractor
 import com.illiarb.tmdbclient.services.tmdb.internal.interactor.DefaultMoviesInteractor
@@ -25,4 +27,7 @@ internal interface InteractorsModule {
 
   @Binds
   fun bindGenresInteractor(impl: DefaultGenresInteractor): GenresInteractor
+
+  @Binds
+  fun bindFiltersInteractor(impl: DefaultFiltersInteractor): FiltersInteractor
 }

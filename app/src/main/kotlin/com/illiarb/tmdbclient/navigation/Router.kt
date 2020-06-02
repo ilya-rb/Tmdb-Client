@@ -8,12 +8,12 @@ import javax.inject.Singleton
  */
 interface Router {
 
-  fun executeAction(action: Action): Action
+  fun executeAction(action: NavigationAction): NavigationAction
 
   @Singleton
   class DefaultRouter @Inject constructor(private val navigatorHolder: NavigatorHolder) : Router {
 
-    override fun executeAction(action: Action): Action {
+    override fun executeAction(action: NavigationAction): NavigationAction {
       navigatorHolder.executeAction(action)
       return action
     }

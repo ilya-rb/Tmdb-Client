@@ -7,9 +7,8 @@ import com.illiarb.tmdbclient.libs.ui.common.ViewStateEvent
 import com.illiarb.tmdbclient.libs.util.Async
 import com.illiarb.tmdbclient.modules.home.HomeViewModel.Event
 import com.illiarb.tmdbclient.modules.home.HomeViewModel.State
-import com.illiarb.tmdbclient.navigation.Action.ShowDiscover
-import com.illiarb.tmdbclient.navigation.Action.ShowMovieDetails
-import com.illiarb.tmdbclient.navigation.Action.WebViewAction.ShowTmdbPage
+import com.illiarb.tmdbclient.navigation.NavigationAction.Home
+import com.illiarb.tmdbclient.navigation.NavigationAction.WebViewAction
 import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
 import com.illiarb.tmdbclient.services.tmdb.domain.Genre
@@ -73,18 +72,12 @@ class HomeViewModel @Inject constructor(
 
   override fun onUiEvent(event: Event) {
     when (event) {
-      is Event.SeeAllClick -> router.executeAction(ShowDiscover())
-      //.also(analyticsService::trackRouterAction)
-
-      is Event.MovieClick ->
-        router.executeAction(ShowMovieDetails(event.movie.id))
-      //.also(analyticsService::trackRouterAction)
-
-      is Event.GenreClick ->
-        router.executeAction(ShowDiscover(event.genre.id))
-      //.also(analyticsService::trackRouterAction)
-
-      is Event.TmdbIconClick -> router.executeAction(ShowTmdbPage)
+      is Event.SeeAllClick -> router.executeAction(Home.GoToDiscover())
+      is Event.MovieClick -> router.executeAction(Home.GoToMovieDetails(event.movie.id))
+      is Event.GenreClick -> router.executeAction(Home.GoToDiscover(event.genre.id))
+      is Event.TmdbIconClick -> router.executeAction(WebViewAction.GoToTmdbPage)
+      is Event.DebugClick -> router.executeAction(Home.GoToUiComponents)
+      is Event.DiscoverClick -> router.executeAction(Home.GoToDiscover())
     }
   }
 
@@ -97,6 +90,8 @@ class HomeViewModel @Inject constructor(
     data class MovieClick(val movie: Movie) : Event()
     data class SeeAllClick(val code: String) : Event()
     data class GenreClick(val genre: Genre) : Event()
+    object DiscoverClick : Event()
     object TmdbIconClick : Event()
+    object DebugClick : Event()
   }
 }

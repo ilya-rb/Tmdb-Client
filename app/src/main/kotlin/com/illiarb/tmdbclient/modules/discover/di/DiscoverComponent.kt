@@ -1,9 +1,10 @@
 package com.illiarb.tmdbclient.modules.discover.di
 
-import com.illiarb.tmdbclient.navigation.Router
-import com.illiarb.tmdbclient.modules.discover.DiscoverFragment
 import com.illiarb.tmdbclient.libs.ui.di.ViewModelModule
+import com.illiarb.tmdbclient.modules.discover.DiscoverFragment
+import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
+import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.GenresInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
 import dagger.BindsInstance
@@ -23,6 +24,7 @@ interface DiscoverComponent {
     fun genresInteractor(): GenresInteractor
     fun router(): Router
     fun analyticsService(): AnalyticsService
+    fun filtersInteractor(): FiltersInteractor
   }
 
   @Component.Builder
