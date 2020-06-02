@@ -48,31 +48,11 @@ class FilterViewModel @Inject constructor(
     super.onUiEvent(event)
 
     when (event) {
-      is Event.YearConstraintSelected -> setState {
-        copy(
-          filter = filter.copy(
-            yearConstraints = availableYearConstraints[event.position]
-          )
-        )
-      }
+      is Event.YearConstraintSelected -> onYearConstraintSelected(event.position)
       is Event.YearFilterClicked -> setState {
         copy(selectYears = ViewStateEvent(availableYearConstraints))
       }
-      is Event.GenreChecked -> setState {
-        copy(
-          filter = filter.copy(
-            selectedGenreIds = if (filter.selectedGenreIds.contains(event.id) && !event.isChecked) {
-              filter.selectedGenreIds.toMutableList().also {
-                it.remove(event.id)
-              }
-            } else {
-              filter.selectedGenreIds.toMutableList().also {
-                it.add(event.id)
-              }
-            }
-          )
-        )
-      }
+      is Event.GenreChecked -> onGenreChecked(event.id, event.isChecked)
       is Event.ClearFilter -> saveFilterAndExit(Filter.empty())
       is Event.ApplyFilter -> {
         setState {
@@ -80,6 +60,34 @@ class FilterViewModel @Inject constructor(
         }
         saveFilterAndExit(currentState.filter)
       }
+    }
+  }
+
+  private fun onYearConstraintSelected(position: Int) {
+    setState {
+      copy(
+        filter = filter.copy(
+          yearConstraints = availableYearConstraints[position]
+        )
+      )
+    }
+  }
+
+  private fun onGenreChecked(genreId: Int, isChecked: Boolean) {
+    setState {
+      copy(
+        filter = filter.copy(
+          selectedGenreIds = if (filter.selectedGenreIds.contains(genreId) && !isChecked) {
+            filter.selectedGenreIds.toMutableList().also {
+              it.remove(genreId)
+            }
+          } else {
+            filter.selectedGenreIds.toMutableList().also {
+              it.add(genreId)
+            }
+          }
+        )
+      )
     }
   }
 

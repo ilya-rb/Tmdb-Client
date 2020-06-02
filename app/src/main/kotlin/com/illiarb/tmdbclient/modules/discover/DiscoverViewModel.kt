@@ -79,7 +79,7 @@ class DiscoverViewModel @Inject constructor(
   }
 
   private fun processMovieClick(movie: Movie) {
-    router.executeAction(NavigationAction.Discover.GoToMovieDetails(movie.id))//.also(analyticsService::trackRouterAction)
+    router.executeAction(NavigationAction.Discover.GoToMovieDetails(movie.id))
   }
 
   private fun applyFilter(filter: Filter, isInitialLaunch: Boolean = false) {
@@ -118,7 +118,9 @@ class DiscoverViewModel @Inject constructor(
   }
 
   private fun fetchLoadNextPageIfExists() {
-    if (currentState.isLoadingAdditionalPage || currentState.currentPage == currentState.totalPages) {
+    if (currentState.isLoadingAdditionalPage ||
+      currentState.currentPage == currentState.totalPages
+    ) {
       return
     }
 

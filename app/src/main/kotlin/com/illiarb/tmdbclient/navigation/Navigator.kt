@@ -9,6 +9,9 @@ import androidx.navigation.Navigation
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.libs.customtabs.CustomTabsHelper
 import com.illiarb.tmdbclient.libs.customtabs.WebViewFallback
+import com.illiarb.tmdbclient.navigation.NavigationAction.Companion.EXTRA_DISCOVER_GENRE_ID
+import com.illiarb.tmdbclient.navigation.NavigationAction.Companion.EXTRA_MOVIE_DETAILS_MOVIE_ID
+import com.illiarb.tmdbclient.navigation.NavigationAction.Companion.EXTRA_VIDEOS_MOVIE_ID
 import com.illiarb.tmdbclient.navigation.NavigationAction.Discover
 import com.illiarb.tmdbclient.navigation.NavigationAction.Home
 import com.illiarb.tmdbclient.navigation.NavigationAction.MovieDetails
@@ -39,16 +42,13 @@ interface Navigator {
     }
 
     private fun setDestinationArgs(action: NavigationAction): Bundle {
-      return when (action) {
-        is Home.GoToMovieDetails ->
-          Bundle().apply { putInt(NavigationAction.EXTRA_MOVIE_DETAILS_MOVIE_ID, action.id) }
-        is Home.GoToDiscover ->
-          Bundle().apply { putInt(NavigationAction.EXTRA_DISCOVER_GENRE_ID, action.id) }
-        is Discover.GoToMovieDetails ->
-          Bundle().apply { putInt(NavigationAction.EXTRA_MOVIE_DETAILS_MOVIE_ID, action.id) }
-        is MovieDetails.GoToVideos ->
-          Bundle().apply { putInt(NavigationAction.EXTRA_VIDEOS_MOVIE_ID, action.id) }
-        else -> Bundle.EMPTY
+      return Bundle().apply {
+        when (action) {
+          is Home.GoToMovieDetails -> putInt(EXTRA_MOVIE_DETAILS_MOVIE_ID, action.id)
+          is Home.GoToDiscover -> putInt(EXTRA_DISCOVER_GENRE_ID, action.id)
+          is Discover.GoToMovieDetails -> putInt(EXTRA_MOVIE_DETAILS_MOVIE_ID, action.id)
+          is MovieDetails.GoToVideos -> putInt(EXTRA_VIDEOS_MOVIE_ID, action.id)
+        }
       }
     }
 
