@@ -30,3 +30,6 @@ Simple playground for testing various Android stuff(libraries, frameworks, archi
 ![5](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/5.png)
 ![6](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/6.png)
 ![7](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/7.png)
+
+## Navigation graph
+![NavGraph](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/nav_graph.png)
