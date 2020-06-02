@@ -9,10 +9,10 @@ import com.illiarb.tmdbclient.services.tmdb.internal.error.ErrorCreator
 import com.illiarb.tmdbclient.services.tmdb.internal.network.CallAdapterFactory
 import com.illiarb.tmdbclient.services.tmdb.internal.network.interceptor.ApiKeyInterceptor
 import com.illiarb.tmdbclient.services.tmdb.internal.network.interceptor.RegionInterceptor
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.MovieModel
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.PersonModel
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.TrendingModel
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.TvShowModel
+import com.illiarb.tmdbclient.services.tmdb.internal.model.MovieModel
+import com.illiarb.tmdbclient.services.tmdb.internal.model.PersonModel
+import com.illiarb.tmdbclient.services.tmdb.internal.model.TrendingModel
+import com.illiarb.tmdbclient.services.tmdb.internal.model.TvShowModel
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.ConfigurationRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory

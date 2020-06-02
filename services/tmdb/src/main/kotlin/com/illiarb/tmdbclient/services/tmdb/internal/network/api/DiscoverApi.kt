@@ -1,8 +1,8 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.network.api
 
 import com.illiarb.tmdbclient.libs.util.Result
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.MovieModel
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.ResultsModel
+import com.illiarb.tmdbclient.services.tmdb.internal.model.MovieModel
+import com.illiarb.tmdbclient.services.tmdb.internal.model.ResultsModel
 import retrofit2.http.GET
 import retrofit2.http.Query
 

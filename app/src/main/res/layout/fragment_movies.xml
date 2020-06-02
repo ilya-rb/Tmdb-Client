@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/moviesSwipeRefresh"
     android:layout_width="match_parent"
@@ -15,13 +16,16 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             tools:layoutManager="LinearLayoutManager"
+            tools:layout_marginTop="?attr/actionBarSize"
             tools:listitem="@layout/item_movie_section"
             tools:orientation="vertical" />
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/appBar"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:menu="@menu/menu_home"
+            tools:background="@color/tmdb_blue_800">
 
             <ImageView
                 android:id="@+id/imageTmdb"

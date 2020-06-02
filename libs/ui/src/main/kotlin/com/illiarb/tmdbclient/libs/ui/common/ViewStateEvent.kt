@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.libs.ui.common
 
 /**
- * Source:
+ * Adapted from:
  * https://github.com/ditn/JsonPlaceholderApp/blob/master/app/src/main/java/com/adambennett/jsonplaceholderapp/ui/mvi/ViewStateEvent.kt
  */
 import java.util.concurrent.atomic.AtomicBoolean
@@ -36,6 +36,24 @@ data class ViewStateEvent<T>(val payload: T) {
     if (!isConsumed.getAndSet(true)) {
       action(payload)
     }
+  }
+
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (javaClass != other?.javaClass) return false
+
+    other as ViewStateEvent<*>
+
+    if (payload != other.payload) return false
+    if (isConsumed.get() != other.isConsumed.get()) return false
+
+    return true
+  }
+
+  override fun hashCode(): Int {
+    var result = payload?.hashCode() ?: 0
+    result = 31 * result + isConsumed.hashCode()
+    return result
   }
 }
 

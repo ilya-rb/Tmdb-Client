@@ -2,16 +2,12 @@ package com.illiarb.tmdbclient.modules.discover
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
-import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.google.android.material.chip.Chip
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.databinding.FragmentDiscoverBinding
 import com.illiarb.tmdbclient.di.AppProvider
@@ -20,8 +16,10 @@ import com.illiarb.tmdbclient.libs.ui.base.BaseFragment
 import com.illiarb.tmdbclient.libs.ui.common.SizeSpec
 import com.illiarb.tmdbclient.libs.ui.common.SnackbarController
 import com.illiarb.tmdbclient.libs.ui.ext.dimen
+import com.illiarb.tmdbclient.libs.ui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbclient.libs.ui.ext.removeAdapterOnDetach
-import com.illiarb.tmdbclient.libs.ui.ext.setText
+import com.illiarb.tmdbclient.libs.ui.ext.setVisible
+import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.GridDecoration
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.pagination.InfiniteScrollListener
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.pagination.PaginalAdapter
@@ -29,7 +27,7 @@ import com.illiarb.tmdbclient.modules.delegates.movieDelegate
 import com.illiarb.tmdbclient.modules.discover.DiscoverViewModel.Event
 import com.illiarb.tmdbclient.modules.discover.DiscoverViewModel.State
 import com.illiarb.tmdbclient.modules.discover.di.DaggerDiscoverComponent
-import com.illiarb.tmdbclient.navigation.Action.ShowDiscover
+import com.illiarb.tmdbclient.navigation.NavigationAction
 import com.illiarb.tmdbclient.services.tmdb.domain.Genre
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -64,7 +62,10 @@ class DiscoverFragment : BaseFragment(R.layout.fragment_discover), Injectable {
   override fun inject(appProvider: AppProvider) =
     DaggerDiscoverComponent.builder()
       .dependencies(appProvider)
-      .genreId(arguments?.getInt(ShowDiscover.EXTRA_GENRE_ID, Genre.GENRE_ALL) ?: Genre.GENRE_ALL)
+      .genreId(
+        arguments?.getInt(NavigationAction.EXTRA_DISCOVER_GENRE_ID, Genre.GENRE_ALL)
+          ?: Genre.GENRE_ALL
+      )
       .build()
       .inject(this)
 
@@ -72,17 +73,8 @@ class DiscoverFragment : BaseFragment(R.layout.fragment_discover), Injectable {
     super.onViewCreated(view, savedInstanceState)
 
     viewBinding.discoverSwipeRefresh.isEnabled = false
-    viewBinding.discoverRoot.setTransitionListener(object : TransitionAdapter() {
-      override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
-        viewBinding.discoverOverlay.isClickable = currentId == R.id.filtersEnd
-      }
-    })
-
-    viewBinding.discoverOverlay.setOnClickListener { viewBinding.discoverRoot.transitionToStart() }
-    viewBinding.discoverOverlay.isClickable = false
 
     setupToolbar()
-    setupFilters()
     setupDiscoverList()
 
     viewLifecycleOwner.lifecycleScope.launch {
@@ -98,35 +90,16 @@ class DiscoverFragment : BaseFragment(R.layout.fragment_discover), Injectable {
   }
 
   private fun setupToolbar() {
+    viewBinding.appBar.doOnApplyWindowInsets { v, insets, padding ->
+      v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
+    }
+
     viewBinding.toolbar.setNavigationOnClickListener {
       activity?.onBackPressed()
     }
-  }
 
-  private fun setupFilters() {
-    viewBinding.discoverFiltersContainer.discoverApplyFilter.setOnClickListener {
-      dismissFiltersPanel()
-      viewModel.events.offer(
-        Event.ApplyFilter(
-          Filter(
-            selectedGenreIds = viewBinding.discoverFiltersContainer.discoverGenres.checkedChipIds,
-            yearConstraints = YearConstraints.AllYears
-          )
-        )
-      )
-    }
-
-    viewBinding.discoverFiltersContainer.discoverClearFilter.setOnClickListener {
-      viewBinding.discoverFiltersContainer.discoverGenres.clearCheck()
-      dismissFiltersPanel()
-      viewModel.events.offer(Event.ClearFilter)
-    }
-
-    viewBinding.discoverFiltersContainer.discoverYears.let {
-      it.text = "All years"
-      it.setOnClickListener {
-        viewModel.events.offer(Event.YearsFilterClicked)
-      }
+    viewBinding.discoverFilter.setOnClickListener {
+      viewModel.events.offer(Event.FilterClicked)
     }
   }
 
@@ -143,44 +116,27 @@ class DiscoverFragment : BaseFragment(R.layout.fragment_discover), Injectable {
           viewModel.events.offer(Event.PageEndReached)
         }
       })
+      doOnApplyWindowInsets { v, insets, initialPadding ->
+        v.updatePadding(bottom = initialPadding.bottom + insets.systemWindowInsetBottom)
+      }
     }
   }
 
   private fun render(oldState: State?, newState: State) {
     viewBinding.discoverSwipeRefresh.isRefreshing = newState.isLoading
-    viewBinding.toolbarTitle.setText(newState.screenTitle)
 
-    if (oldState?.availableGenres != newState.availableGenres) {
-      newState.availableGenres.forEach { genre ->
-        val chip = createChipFromGenre(genre)
-        viewBinding.discoverFiltersContainer.discoverGenres.addView(chip)
-      }
+    newState.filter.count().let { count ->
+      viewBinding.discoverFilterCount.setVisible(count > 0)
+      viewBinding.discoverFilterCount.text = count.toString()
     }
 
-    if (newState.filter.selectedGenreIds.isEmpty()) {
-      viewBinding.discoverFiltersContainer.discoverGenres.clearCheck()
-    } else {
-      newState.filter.selectedGenreIds.forEach {
-        viewBinding.discoverFiltersContainer.discoverGenres.check(it)
-      }
+    if (oldState?.results != newState.results) {
+      adapter.update(newState.results, newState.isLoadingAdditionalPage)
     }
-
-    adapter.update(newState.results, newState.isLoadingAdditionalPage)
 
     newState.errorMessage?.let { error ->
       error.consume { message ->
         snackbarController.showMessage(viewBinding.root, message.message)
-      }
-    }
-
-    newState.yearsDialog?.let { dialog ->
-      dialog.consume {
-        AlertDialog.Builder(requireContext())
-          .setItems(dialog.payload.map { it.toString() }.toTypedArray()) { dialog, _ ->
-            dialog.dismiss()
-          }
-          .create()
-          .show()
       }
     }
   }
@@ -196,20 +152,5 @@ class DiscoverFragment : BaseFragment(R.layout.fragment_discover), Injectable {
           1
         }
     }
-  }
-
-  private fun createChipFromGenre(genre: Genre): Chip {
-    return Chip(
-      context,
-      null,
-      com.illiarb.tmdbclient.libs.ui.R.attr.materialChipChoice
-    ).also {
-      it.text = genre.name
-      it.id = genre.id
-    }
-  }
-
-  private fun dismissFiltersPanel() {
-    viewBinding.discoverRoot.transitionToStart()
   }
 }

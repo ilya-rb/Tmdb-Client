@@ -13,9 +13,19 @@ sealed class Result<out T> {
     is Err -> throw error
   }
 
-  fun doIfOk(block: (T) -> Unit) {
-    if (this is Ok) {
-      block(data)
+  inline fun doIfOk(block: (T) -> Unit): Result<T> {
+    return this.also {
+      if (this is Ok) {
+        block(data)
+      }
+    }
+  }
+
+  inline fun doIfErr(block: (Throwable) -> Unit): Result<T> {
+    return this.also {
+      if (this is Err) {
+        block(error)
+      }
     }
   }
 

@@ -83,8 +83,18 @@ class HomeFragment : BaseFragment(R.layout.fragment_movies), Injectable {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    viewBinding.appBar.doOnApplyWindowInsets { v, insets, padding ->
-      v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
+    viewBinding.toolbar.apply {
+      setOnMenuItemClickListener {
+        when (it.itemId) {
+          R.id.menu_home_debug -> viewModel.events.offer(Event.DebugClick)
+          R.id.menu_home_discover -> viewModel.events.offer(Event.DiscoverClick)
+        }
+        true
+      }
+
+      doOnApplyWindowInsets { v, insets, padding ->
+        v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
+      }
     }
 
     viewBinding.moviesSwipeRefresh.isEnabled = false
@@ -95,7 +105,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_movies), Injectable {
 
     bundleStore.onRestoreInstanceState(savedInstanceState = savedInstanceState)
 
-    setupAppBarScrollListener()
+    setupToolbarScrollListener()
     setupMoviesList()
 
     viewLifecycleOwner.lifecycleScope.launch {
@@ -132,9 +142,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_movies), Injectable {
   }
 
   @Suppress("MagicNumber")
-  private fun setupAppBarScrollListener() {
+  private fun setupToolbarScrollListener() {
     viewBinding.moviesList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
       val colorEvaluator = ArgbEvaluator()
       val startColor = Color.TRANSPARENT
       val endColor: Int = requireView().getColorAttr(MaterialR.attr.colorPrimary)
@@ -148,8 +157,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_movies), Injectable {
         val appBarColor = colorEvaluator.evaluate(fraction, startColor, endColor) as Int
         val elevation = elevationEvaluator.evaluate(fraction, 0, endElevation)
 
-        viewBinding.appBar.setBackgroundColor(appBarColor)
-        viewBinding.appBar.elevation = elevation
+        viewBinding.toolbar.setBackgroundColor(appBarColor)
+        viewBinding.toolbar.elevation = elevation
       }
 
       private fun Int.toPercentOf(max: Int): Int = this * 100 / max

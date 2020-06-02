@@ -1,13 +1,13 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.cache
 
 import android.content.Context
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.Configuration
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.CountryList
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.CountryModel
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.GenreListModel
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.GenreModel
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.MovieListModel
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.MovieModel
+import com.illiarb.tmdbclient.services.tmdb.internal.model.Configuration
+import com.illiarb.tmdbclient.services.tmdb.internal.model.CountryList
+import com.illiarb.tmdbclient.services.tmdb.internal.model.CountryModel
+import com.illiarb.tmdbclient.services.tmdb.internal.model.GenreListModel
+import com.illiarb.tmdbclient.services.tmdb.internal.model.GenreModel
+import com.illiarb.tmdbclient.services.tmdb.internal.model.MovieListModel
+import com.illiarb.tmdbclient.services.tmdb.internal.model.MovieModel
 import com.ironz.binaryprefs.BinaryPreferencesBuilder
 import com.ironz.binaryprefs.serialization.serializer.persistable.Persistable
 

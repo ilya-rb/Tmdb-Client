@@ -8,6 +8,7 @@ import com.illiarb.tmdbclient.di.modules.NavigationModule
 import com.illiarb.tmdbclient.libs.tools.di.ToolsProvider
 import com.illiarb.tmdbclient.modules.details.di.MovieDetailsComponent
 import com.illiarb.tmdbclient.modules.discover.di.DiscoverComponent
+import com.illiarb.tmdbclient.modules.discover.filter.di.FilterComponent
 import com.illiarb.tmdbclient.modules.home.di.HomeComponent
 import com.illiarb.tmdbclient.modules.main.MainComponent
 import com.illiarb.tmdbclient.modules.video.di.VideoListComponent
@@ -52,4 +53,5 @@ interface AppProvider :
   HomeComponent.Dependencies,
   VideoListComponent.Dependencies,
   MovieDetailsComponent.Dependencies,
-  DiscoverComponent.Dependencies
+  DiscoverComponent.Dependencies,
+  FilterComponent.Dependencies

@@ -9,9 +9,9 @@ import com.illiarb.tmdbclient.services.tmdb.domain.MovieFilter
 import com.illiarb.tmdbclient.services.tmdb.domain.Review
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
-import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.MovieMapper
-import com.illiarb.tmdbclient.services.tmdb.internal.network.mappers.ReviewMapper
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.MovieModel
+import com.illiarb.tmdbclient.services.tmdb.internal.mappers.MovieMapper
+import com.illiarb.tmdbclient.services.tmdb.internal.mappers.ReviewMapper
+import com.illiarb.tmdbclient.services.tmdb.internal.model.MovieModel
 import kotlinx.coroutines.withContext
 import java.util.Locale
 import javax.inject.Inject

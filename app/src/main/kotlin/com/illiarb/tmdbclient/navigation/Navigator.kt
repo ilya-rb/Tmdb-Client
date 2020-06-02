@@ -6,10 +6,12 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.FragmentNavigator
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.libs.customtabs.CustomTabsHelper
 import com.illiarb.tmdbclient.libs.customtabs.WebViewFallback
+import com.illiarb.tmdbclient.navigation.NavigationAction.Discover
+import com.illiarb.tmdbclient.navigation.NavigationAction.Home
+import com.illiarb.tmdbclient.navigation.NavigationAction.MovieDetails
 import javax.inject.Inject
 
 /**
@@ -17,14 +19,14 @@ import javax.inject.Inject
  */
 interface Navigator {
 
-  fun executeAction(action: Action)
+  fun executeAction(action: NavigationAction)
 
   class DefaultNavigator @Inject constructor(private val activity: FragmentActivity) : Navigator {
 
-    override fun executeAction(action: Action) {
+    override fun executeAction(action: NavigationAction) {
       val controller = Navigation.findNavController(activity, R.id.nav_host_fragment)
 
-      if (action is Action.WebViewAction) {
+      if (action is NavigationAction.WebViewAction) {
         showWebView(action)
       } else {
         controller.navigate(
@@ -36,34 +38,25 @@ interface Navigator {
       }
     }
 
-    private fun setDestinationArgs(action: Action): Bundle {
+    private fun setDestinationArgs(action: NavigationAction): Bundle {
       return when (action) {
-        is Action.ShowMovieDetails -> Bundle().apply {
-          putInt(Action.ShowMovieDetails.EXTRA_MOVIE_DETAILS, action.id)
-        }
-        is Action.ShowDiscover -> Bundle().apply {
-          putInt(Action.ShowDiscover.EXTRA_GENRE_ID, action.id)
-        }
-        is Action.ShowVideos -> Bundle().apply {
-          putInt(Action.ShowVideos.EXTRA_MOVIE_ID, action.movieId)
-        }
+        is Home.GoToMovieDetails ->
+          Bundle().apply { putInt(NavigationAction.EXTRA_MOVIE_DETAILS_MOVIE_ID, action.id) }
+        is Home.GoToDiscover ->
+          Bundle().apply { putInt(NavigationAction.EXTRA_DISCOVER_GENRE_ID, action.id) }
+        is Discover.GoToMovieDetails ->
+          Bundle().apply { putInt(NavigationAction.EXTRA_MOVIE_DETAILS_MOVIE_ID, action.id) }
+        is MovieDetails.GoToVideos ->
+          Bundle().apply { putInt(NavigationAction.EXTRA_VIDEOS_MOVIE_ID, action.id) }
         else -> Bundle.EMPTY
       }
     }
 
     private fun setNavOptions(): NavOptions = NavOptions.Builder().build()
 
-    private fun setNavExtras(action: Action): androidx.navigation.Navigator.Extras? {
-      return if (action is Action.ShowMovieDetails && action.sharedPoster != null) {
-        FragmentNavigator.Extras.Builder()
-          .addSharedElement(action.sharedPoster, action.sharedPoster.transitionName)
-          .build()
-      } else {
-        null
-      }
-    }
+    private fun setNavExtras(action: NavigationAction): androidx.navigation.Navigator.Extras? = null
 
-    private fun showWebView(action: Action.WebViewAction) {
+    private fun showWebView(action: NavigationAction.WebViewAction) {
       CustomTabsHelper.openCustomTab(
         activity,
         CustomTabsIntent.Builder()

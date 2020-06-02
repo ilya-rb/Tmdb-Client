@@ -3,9 +3,9 @@ package com.illiarb.tmdbclient.services.tmdb
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.Configuration
+import com.illiarb.tmdbclient.services.tmdb.internal.model.Configuration
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageConfig
-import com.illiarb.tmdbclient.services.tmdb.internal.network.model.GenreModel
+import com.illiarb.tmdbclient.services.tmdb.internal.model.GenreModel
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName

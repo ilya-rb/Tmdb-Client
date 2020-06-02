@@ -46,12 +46,15 @@ object Deps {
   object Kotlin {
     private const val kotlinVersion = "1.3.72"
     private const val kotlinCoroutinesVersion = "1.3.6"
+    private const val kotlinSerializationVersion = "0.20.0"
 
     const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     const val std = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesVersion"
     const val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion"
+    const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlinSerializationVersion"
+    const val serializationCbor = "org.jetbrains.kotlinx:kotlinx-serialization-cbor:$kotlinSerializationVersion"
   }
 
   object Android {
@@ -74,6 +77,13 @@ object Deps {
 
       object Lifecycle {
         const val ktx = "androidx.lifecycle:lifecycle-runtime-ktx:$archComponentsVersion"
+      }
+
+      object Room {
+        private const val roomVersion = "2.2.5"
+
+        const val core = "androidx.room:room-ktx:$roomVersion"
+        const val compiler = "androidx.room:room-compiler:$roomVersion"
       }
 
       const val fragment = "androidx.fragment:fragment-ktx:1.2.4"
