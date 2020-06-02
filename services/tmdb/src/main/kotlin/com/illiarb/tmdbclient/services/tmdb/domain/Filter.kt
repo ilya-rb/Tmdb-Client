@@ -75,6 +75,7 @@ sealed class YearConstraints {
 
   fun displayName(): String {
     return when (this) {
+      // TODO: Resources
       is AllYears -> "All years"
       is SingleYear -> year.toString()
       is YearRange -> "$startYear - $endYear"
