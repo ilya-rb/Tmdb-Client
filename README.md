@@ -11,9 +11,10 @@ Simple playground for testing various Android stuff(libraries, frameworks, archi
 ## Technologies:
 - Kotlin
 - AndroidX/Jetpack (View model, Navigation, Lifecycle)
+- Room
 - Standard Square stuff (Retrofit, OkHttp)
 - Firebase (remote config) for feature flags
-- [Binary preferences](https://github.com/yandextaxitech/binaryprefs) as a simple cache
+- [Binary preferences](https://github.com/yandextaxitech/binaryprefs) as a file cache
 - [Adapter delegates](https://github.com/sockeqwe/AdapterDelegates) for RecyclerView 
 - Glide
 - LeakCanary, Flipper, Hyperion debug drawer
