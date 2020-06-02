@@ -73,10 +73,8 @@ class HomeViewModel @Inject constructor(
   override fun onUiEvent(event: Event) {
     when (event) {
       is Event.SeeAllClick -> router.executeAction(Home.GoToDiscover())
-      is Event.MovieClick ->
-        router.executeAction(Home.GoToMovieDetails(event.movie.id))
-      is Event.GenreClick ->
-        router.executeAction(Home.GoToDiscover(event.genre.id))
+      is Event.MovieClick -> router.executeAction(Home.GoToMovieDetails(event.movie.id))
+      is Event.GenreClick -> router.executeAction(Home.GoToDiscover(event.genre.id))
       is Event.TmdbIconClick -> router.executeAction(WebViewAction.GoToTmdbPage)
       is Event.DebugClick -> router.executeAction(Home.GoToUiComponents)
       is Event.DiscoverClick -> router.executeAction(Home.GoToDiscover())
