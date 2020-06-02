@@ -23,9 +23,10 @@ Simple playground for testing various Android stuff(libraries, frameworks, archi
 - Jacoco for tests coverage
 
 ## Some screenshots:
-![1](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/1.jpeg)
-![2](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/2.jpeg)
-![3](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/3.jpeg)
-![4](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/4.jpeg)
-![5](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/5.jpeg)
-![6](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/6.jpeg)
+![1](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/1.png)
+![2](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/2.png)
+![3](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/3.png)
+![4](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/4.png)
+![5](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/5.png)
+![6](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/6.png)
+![7](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/7.png)
