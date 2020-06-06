@@ -16,6 +16,6 @@ class TestFiltersInteractor : FiltersInteractor {
   }
 
   override suspend fun getFilter(): Result<Filter> {
-    return Result.Ok(Filter.empty())
+    return Result.Ok(Filter.create())
   }
 }

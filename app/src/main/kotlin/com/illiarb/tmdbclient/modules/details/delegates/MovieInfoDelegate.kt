@@ -3,10 +3,11 @@ package com.illiarb.tmdbclient.modules.details.delegates
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.databinding.ItemMovieInfoBinding
-import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.MovieInfo
+import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.MovieDetailsSection
+import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.MovieDetailsSection.MovieInfo
 
 fun movieInfoDelegate() =
-  adapterDelegateViewBinding<MovieInfo, Any, ItemMovieInfoBinding>(
+  adapterDelegateViewBinding<MovieInfo, MovieDetailsSection, ItemMovieInfoBinding>(
     { inflater, root -> ItemMovieInfoBinding.inflate(inflater, root, false) }
   ) {
 

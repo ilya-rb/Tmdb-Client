@@ -8,12 +8,13 @@ import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
 import com.illiarb.tmdbclient.libs.ui.ext.dimen
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
-import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.MoviePhotos
+import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.MovieDetailsSection
+import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.MovieDetailsSection.MoviePhotos
 import com.illiarb.tmdbclient.services.tmdb.domain.Image
 
 fun photoSectionDelegate(
   clickListener: OnClickListener<Image>
-) = adapterDelegateViewBinding<MoviePhotos, Any, ItemMoviePhotosBinding>(
+) = adapterDelegateViewBinding<MoviePhotos, MovieDetailsSection, ItemMoviePhotosBinding>(
   { inflater, root -> ItemMoviePhotosBinding.inflate(inflater, root, false) }
 ) {
 

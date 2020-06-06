@@ -6,7 +6,6 @@ import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.databinding.FragmentVideoListBinding
@@ -51,11 +50,14 @@ class VideoListFragment : BaseFragment(R.layout.fragment_video_list), Injectable
     setupVideoPlayer()
     setupVideoList()
 
-    viewBinding.toolbar.setNavigationOnClickListener {
-      requireActivity().onBackPressed()
-    }
+    viewLifecycleOwner.lifecycleScope.launch {
+      var oldModel: State? = null
 
-    bind()
+      viewModel.state.collect { newState ->
+        render(oldModel, newState)
+        oldModel = newState
+      }
+    }
 
     ViewCompat.requestApplyInsets(view)
   }
@@ -77,25 +79,11 @@ class VideoListFragment : BaseFragment(R.layout.fragment_video_list), Injectable
     viewBinding.youtubeVideosList.apply {
       adapter = videosAdapter
       layoutManager = LinearLayoutManager(requireContext())
+      setHasFixedSize(true)
+      itemAnimator?.changeDuration = 0L
       removeAdapterOnDetach()
       doOnApplyWindowInsets { view, windowInsets, padding ->
         view.updatePadding(bottom = padding.bottom + windowInsets.systemWindowInsetBottom)
-      }
-      addOnScrollListener(object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-          viewBinding.appBar.setLifted(dy > 0)
-        }
-      })
-    }
-  }
-
-  private fun bind() {
-    viewLifecycleOwner.lifecycleScope.launch {
-      var oldModel: State? = null
-
-      viewModel.state.collect { newState ->
-        render(oldModel, newState)
-        oldModel = newState
       }
     }
   }

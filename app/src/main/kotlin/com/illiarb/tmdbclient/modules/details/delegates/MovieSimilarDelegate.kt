@@ -10,13 +10,14 @@ import com.illiarb.tmdbclient.libs.ui.ext.dimen
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdbclient.modules.delegates.movieDelegate
-import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel
+import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.MovieDetailsSection
+import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.MovieDetailsSection.MovieSimilar
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.libs.ui.R as UiR
 
 fun movieSimilarDelegate(
   clickListener: OnClickListener<Movie>
-) = adapterDelegateViewBinding<MovieDetailsViewModel.MovieSimilar, Any, ItemMovieSimilarBinding>(
+) = adapterDelegateViewBinding<MovieSimilar, MovieDetailsSection, ItemMovieSimilarBinding>(
   { inflater, root -> ItemMovieSimilarBinding.inflate(inflater, root, false) }
 ) {
 

@@ -48,9 +48,13 @@
                         android:layout_marginEnd="@dimen/spacing_small"
                         android:background="@drawable/bg_filter_badge"
                         android:gravity="center"
+                        android:scaleX="0"
+                        android:scaleY="0"
                         android:textColor="?attr/colorOnSecondary"
                         android:textSize="12sp"
                         android:visibility="gone"
+                        tools:scaleX="1"
+                        tools:scaleY="1"
                         tools:text="1"
                         tools:visibility="visible" />
 

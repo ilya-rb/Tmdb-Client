@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.illiarb.tmdbclient.libs.ui.base.viewmodel.BaseViewModel
 import com.illiarb.tmdbclient.libs.ui.common.ErrorMessage
 import com.illiarb.tmdbclient.libs.ui.common.ViewStateEvent
-import com.illiarb.tmdbclient.libs.util.Async
+import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.Event
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.State
 import com.illiarb.tmdbclient.navigation.NavigationAction.MovieDetails
@@ -23,50 +23,48 @@ class MovieDetailsViewModel @Inject constructor(
 ) : BaseViewModel<State, Event>(initialState()) {
 
   companion object {
-    private fun initialState() =
-      State(
-        movie = Async.Uninitialized,
-        movieSections = emptyList(),
-        error = null
-      )
+    private fun initialState() = State(
+      isLoading = true,
+      movie = null,
+      movieSections = emptyList(),
+      error = null
+    )
   }
 
   init {
     viewModelScope.launch {
-      setState {
-        copy(movie = Async.Loading())
-      }
+      when (val movieDetails = moviesInteractor.getMovieDetails(movieId)) {
+        is Result.Ok -> {
+          val movie = movieDetails.data
+          val sections = mutableListOf<MovieDetailsSection>()
+            .apply {
+              add(MovieDetailsSection.MovieInfo(movie))
 
-      val movieDetails = moviesInteractor.getMovieDetails(movieId).asAsync()
+              if (movie.images.isNotEmpty()) {
+                add(MovieDetailsSection.MoviePhotos(movie))
+              }
 
-      movieDetails.doOnSuccess { movie ->
-        val sections = mutableListOf<Any>().apply {
-          add(MovieInfo(movie))
+              val similar = moviesInteractor.getSimilarMovies(movieId)
+              similar.doIfOk {
+                add(MovieDetailsSection.MovieSimilar(it))
+              }
+            }
 
-          if (movie.images.isNotEmpty()) {
-            add(MoviePhotos(movie))
-          }
-
-          val similar = moviesInteractor.getSimilarMovies(movieId)
-          similar.doIfOk {
-            add(MovieSimilar(it))
+          setState {
+            copy(
+              isLoading = false,
+              movie = movie,
+              movieSections = sections
+            )
           }
         }
-
-        setState {
-          copy(
-            movie = movieDetails,
-            movieSections = sections
-          )
-        }
-      }
-
-      movieDetails.doOnError { error ->
-        setState {
-          copy(
-            movie = movieDetails,
-            error = ViewStateEvent(ErrorMessage(error.message ?: ""))
-          )
+        is Result.Err -> {
+          setState {
+            copy(
+              isLoading = false,
+              error = ViewStateEvent(ErrorMessage(movieDetails.error.message ?: ""))
+            )
+          }
         }
       }
     }
@@ -74,28 +72,23 @@ class MovieDetailsViewModel @Inject constructor(
 
   override fun onUiEvent(event: Event) {
     when (event) {
-      is Event.MovieClicked -> {
-        router.executeAction(MovieDetails.GoToMovieDetails(event.movie.id))
-        //.also(analyticsService::trackRouterAction)
-      }
-      is Event.PlayClicked -> {
-        router.executeAction(MovieDetails.GoToVideos(movieId))
-        //.also(analyticsService::trackRouterAction)
-      }
+      is Event.MovieClicked -> router.executeAction(MovieDetails.GoToMovieDetails(event.movie.id))
+      is Event.PlayClicked -> router.executeAction(MovieDetails.GoToVideos(movieId))
     }
   }
 
   data class State(
-    val movie: Async<Movie>,
-    val movieSections: List<Any>,
+    val isLoading: Boolean,
+    val movie: Movie?,
+    val movieSections: List<MovieDetailsSection>,
     val error: ViewStateEvent<ErrorMessage>?
   )
 
-  data class MovieInfo(val movie: Movie)
-
-  data class MoviePhotos(val movie: Movie)
-
-  data class MovieSimilar(val movies: List<Movie>)
+  sealed class MovieDetailsSection {
+    data class MovieInfo(val movie: Movie) : MovieDetailsSection()
+    data class MoviePhotos(val movie: Movie) : MovieDetailsSection()
+    data class MovieSimilar(val movies: List<Movie>) : MovieDetailsSection()
+  }
 
   sealed class Event {
     object PlayClicked : Event()

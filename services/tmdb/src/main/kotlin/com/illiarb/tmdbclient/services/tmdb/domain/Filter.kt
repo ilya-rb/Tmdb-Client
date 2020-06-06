@@ -11,8 +11,11 @@ data class Filter(
 
   companion object {
 
-    fun empty(): Filter {
-      return Filter(selectedGenreIds = emptyList(), yearConstraints = YearConstraints.AllYears)
+    fun create(
+      genreIds: List<Int> = emptyList(),
+      yearConstraints: YearConstraints = YearConstraints.AllYears
+    ): Filter {
+      return Filter(genreIds, yearConstraints)
     }
   }
 

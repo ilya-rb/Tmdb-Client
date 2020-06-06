@@ -1,6 +1,5 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.interactor
 
-import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.domain.Filter
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
@@ -9,12 +8,11 @@ import com.illiarb.tmdbclient.services.tmdb.domain.MovieFilter
 import com.illiarb.tmdbclient.services.tmdb.domain.PagedList
 import com.illiarb.tmdbclient.services.tmdb.domain.Video
 import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
-import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
 import com.illiarb.tmdbclient.services.tmdb.internal.mappers.MovieMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.DiscoverApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
+import com.illiarb.tmdbclient.services.tmdb.internal.repository.ConfigurationRepository
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.MoviesRepository
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 internal class DefaultMoviesInteractor @Inject constructor(
@@ -22,8 +20,7 @@ internal class DefaultMoviesInteractor @Inject constructor(
   private val discoverApi: DiscoverApi,
   private val movieApi: MovieApi,
   private val movieMapper: MovieMapper,
-  private val cache: TmdbCache,
-  private val dispatcherProvider: DispatcherProvider
+  private val configurationRepository: ConfigurationRepository
 ) : MoviesInteractor {
 
   override suspend fun getAllMovies(): Result<List<MovieBlock>> {
@@ -39,9 +36,12 @@ internal class DefaultMoviesInteractor @Inject constructor(
   }
 
   override suspend fun getMovieDetails(movieId: Int): Result<Movie> {
-    val configuration = withContext(dispatcherProvider.io) { cache.getConfiguration() }
-    val imageKey = configuration.changeKeys.find { it == MoviesInteractor.KEY_INCLUDE_IMAGES }
-    val videoKey = configuration.changeKeys.find { it == MoviesInteractor.KEY_INCLUDE_VIDEOS }
+    val configuration = when (val result = configurationRepository.getConfiguration()) {
+      is Result.Ok -> result.data
+      is Result.Err -> null
+    }
+    val imageKey = configuration?.changeKeys?.find { it == MoviesInteractor.KEY_INCLUDE_IMAGES }
+    val videoKey = configuration?.changeKeys?.find { it == MoviesInteractor.KEY_INCLUDE_VIDEOS }
     val keys = buildString {
       imageKey?.let { append(it) }
       videoKey?.let {
@@ -61,22 +61,24 @@ internal class DefaultMoviesInteractor @Inject constructor(
       filter.selectedGenreIds.joinToString(",")
     }
 
-    val config = withContext(dispatcherProvider.io) {
-      cache.getConfiguration()
+    val config = configurationRepository.getConfiguration()
+    if (config.isError()) {
+      return Result.Err(config.error())
     }
 
     return discoverApi.discoverMovies(ids, page).mapOnSuccess {
-      PagedList(movieMapper.mapList(config, it.results), it.page, it.totalPages)
+      PagedList(movieMapper.mapList(config.unwrap(), it.results), it.page, it.totalPages)
     }
   }
 
   override suspend fun getSimilarMovies(movieId: Int): Result<List<Movie>> {
-    val config = withContext(dispatcherProvider.io) {
-      cache.getConfiguration()
+    val config = configurationRepository.getConfiguration()
+    if (config.isError()) {
+      return Result.Err(config.error())
     }
 
     return movieApi.getSimilarMovies(movieId).mapOnSuccess {
-      movieMapper.mapList(config, it.results)
+      movieMapper.mapList(config.unwrap(), it.results)
     }
   }
 
