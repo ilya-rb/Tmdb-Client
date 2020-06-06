@@ -82,27 +82,26 @@ class HomeViewModel @Inject constructor(
       is Event.TmdbIconClick -> router.executeAction(WebViewAction.GoToTmdbPage)
       is Event.DebugClick -> router.executeAction(Home.GoToUiComponents)
       is Event.DiscoverClick -> router.executeAction(Home.GoToDiscover)
-      is Event.GenreClick -> {
-        viewModelScope.launch {
-          when (val filter = filtersInteractor.getFilter()) {
-            is Result.Ok -> {
-              val updateResult =
-                filtersInteractor.saveFilter(Filter.create(genreIds = listOf(event.genre.id)))
-              when (updateResult) {
-                is Result.Ok -> router.executeAction(Home.GoToDiscover)
-                is Result.Err -> {
-                  setState {
-                    copy(error = ViewStateEvent(ErrorMessage(updateResult.error.message ?: "")))
-                  }
-                }
-              }
-            }
-            is Result.Err -> {
-              setState {
-                copy(error = ViewStateEvent(ErrorMessage(filter.error.message ?: "")))
-              }
+      is Event.GenreClick -> onGenreClicked(event.genre)
+    }
+  }
+
+  private fun onGenreClicked(genre: Genre) = viewModelScope.launch {
+    when (val filter = filtersInteractor.getFilter()) {
+      is Result.Ok -> {
+        when (val updateResult =
+          filtersInteractor.saveFilter(Filter.create(genreIds = listOf(genre.id)))) {
+          is Result.Ok -> router.executeAction(Home.GoToDiscover)
+          is Result.Err -> {
+            setState {
+              copy(error = ViewStateEvent(ErrorMessage(updateResult.error.message ?: "")))
             }
           }
+        }
+      }
+      is Result.Err -> {
+        setState {
+          copy(error = ViewStateEvent(ErrorMessage(filter.error.message ?: "")))
         }
       }
     }

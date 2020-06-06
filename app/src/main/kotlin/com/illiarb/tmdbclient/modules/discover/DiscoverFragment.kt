@@ -37,6 +37,7 @@ class DiscoverFragment : BaseFragment(R.layout.fragment_discover), Injectable {
 
   companion object {
     private const val GRID_SIZE = 3 // 3x3
+    private const val BADGE_REVEAL_DURATION = 300L
   }
 
   @Inject
@@ -131,7 +132,7 @@ class DiscoverFragment : BaseFragment(R.layout.fragment_discover), Injectable {
       animate()
         .scaleX(1f)
         .scaleY(1f)
-        .setDuration(300L)
+        .setDuration(BADGE_REVEAL_DURATION)
         .setInterpolator(badgeRevealInterpolator)
         .start()
     }
