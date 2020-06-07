@@ -5,6 +5,7 @@ import android.animation.FloatEvaluator
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,7 +25,6 @@ import com.illiarb.tmdbclient.libs.ui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
-import com.illiarb.tmdbclient.libs.util.Async
 import com.illiarb.tmdbclient.modules.home.HomeViewModel.Event
 import com.illiarb.tmdbclient.modules.home.HomeViewModel.State
 import com.illiarb.tmdbclient.modules.home.delegates.MovieSectionDelegate
@@ -43,12 +43,9 @@ class HomeFragment : BaseFragment(R.layout.fragment_movies), Injectable {
   @Inject
   lateinit var viewModelFactory: ViewModelProvider.Factory
 
+  private val viewModel by viewModels<HomeViewModel>(factoryProducer = { viewModelFactory })
   private val viewBinding by viewBinding { fragment ->
     FragmentMoviesBinding.bind(fragment.requireView())
-  }
-
-  private val viewModel: HomeViewModel by lazy(LazyThreadSafetyMode.NONE) {
-    ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
   }
 
   private val snackbarController = SnackbarController()
@@ -141,6 +138,16 @@ class HomeFragment : BaseFragment(R.layout.fragment_movies), Injectable {
     }
   }
 
+  private fun render(state: State) {
+    viewBinding.moviesSwipeRefresh.isRefreshing = state.isLoadingSections
+
+    adapter.submitList(state.sections)
+
+    state.error?.consume { message ->
+      snackbarController.showMessage(viewBinding.root, message.message)
+    }
+  }
+
   @Suppress("MagicNumber")
   private fun setupToolbarScrollListener() {
     viewBinding.moviesList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -167,16 +174,5 @@ class HomeFragment : BaseFragment(R.layout.fragment_movies), Injectable {
         return start.coerceAtMost(end).toPercentOf(end) / 100f
       }
     })
-  }
-
-  private fun render(state: State) {
-    viewBinding.moviesSwipeRefresh.isRefreshing = state.sections is Async.Loading<*>
-
-    state.sections.doOnSuccess(adapter::submitList)
-    state.error?.let { error ->
-      error.consume { message ->
-        snackbarController.showMessage(viewBinding.root, message.message)
-      }
-    }
   }
 }

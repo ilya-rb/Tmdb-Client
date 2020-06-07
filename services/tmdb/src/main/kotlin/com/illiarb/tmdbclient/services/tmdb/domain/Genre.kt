@@ -5,8 +5,6 @@ import java.util.Locale
 data class Genre(val id: Int, val name: String) {
 
   companion object {
-    const val GENRE_ALL = -1
-
     const val DRAMA = "drama"
     const val FANTASY = "fantasy"
     const val SCIENCE_FICTION = "science fiction"

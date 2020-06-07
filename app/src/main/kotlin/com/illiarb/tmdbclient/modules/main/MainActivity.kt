@@ -1,5 +1,6 @@
 package com.illiarb.tmdbclient.modules.main
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.snackbar.Snackbar
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.databinding.ActivityMainBinding
@@ -16,7 +18,6 @@ import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.libs.tools.ConnectivityStatus
 import com.illiarb.tmdbclient.navigation.Navigator
 import com.illiarb.tmdbclient.navigation.NavigatorHolder
-import com.illiarb.tmdbclient.navigation.Router
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,10 +36,7 @@ class MainActivity : AppCompatActivity(), Injectable {
   @Inject
   lateinit var buildConfig: BuildConfig
 
-  @Inject
-  lateinit var router: Router
-
-  private lateinit var binding: ActivityMainBinding
+  private val viewBinding by viewBinding<ActivityMainBinding>(R.id.root)
 
   private var connectionSnackbar: Snackbar? = null
 
@@ -51,9 +49,7 @@ class MainActivity : AppCompatActivity(), Injectable {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-
-    binding = ActivityMainBinding.inflate(layoutInflater)
-    setContentView(binding.root)
+    setContentView(R.layout.activity_main)
 
     lifecycleScope.launch {
       connectivityStatus.connectionState().collect {
@@ -77,11 +73,12 @@ class MainActivity : AppCompatActivity(), Injectable {
       ConnectivityStatus.ConnectionState.CONNECTED -> connectionSnackbar?.dismiss()
       ConnectivityStatus.ConnectionState.NOT_CONNECTED -> {
         connectionSnackbar = Snackbar.make(
-          binding.root,
+          viewBinding.root,
           R.string.network_not_connected,
           Snackbar.LENGTH_INDEFINITE
         ).apply {
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+          @SuppressLint("NewApi")
+          if (buildConfig.isQ) {
             setupSnackbarConnectivityAction()
           }
         }.also { it.show() }

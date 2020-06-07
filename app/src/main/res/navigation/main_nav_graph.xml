@@ -44,14 +44,7 @@
         android:id="@+id/filtersFragment"
         android:name="com.illiarb.tmdbclient.modules.discover.filter.FilterFragment"
         android:label="FiltersFragment"
-        tools:layout="@layout/fragment_filter">
-
-        <action
-            android:id="@+id/action_filters_to_discover"
-            app:destination="@id/discoverFragment"
-            app:popUpTo="@id/discoverFragment" />
-
-    </fragment>
+        tools:layout="@layout/fragment_filter" />
 
     <fragment
         android:id="@+id/uiComponentsFragment"

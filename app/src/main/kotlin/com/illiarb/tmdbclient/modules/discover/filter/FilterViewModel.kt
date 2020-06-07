@@ -3,8 +3,9 @@ package com.illiarb.tmdbclient.modules.discover.filter
 import androidx.lifecycle.viewModelScope
 import com.illiarb.tmdbclient.libs.ui.base.viewmodel.BaseViewModel
 import com.illiarb.tmdbclient.libs.ui.common.ViewStateEvent
+import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.modules.discover.filter.FilterViewModel.State
-import com.illiarb.tmdbclient.navigation.NavigationAction.Filters
+import com.illiarb.tmdbclient.navigation.NavigationAction
 import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.services.tmdb.domain.Filter
 import com.illiarb.tmdbclient.services.tmdb.domain.Genre
@@ -21,7 +22,7 @@ class FilterViewModel @Inject constructor(
 ) : BaseViewModel<State, FilterViewModel.Event>(initialState()) {
 
   companion object {
-    fun initialState(): State = State(Filter.empty(), emptyList())
+    fun initialState(): State = State(filter = Filter.create(), availableGenres = emptyList())
   }
 
   private val availableYearConstraints = YearConstraints.generateAvailableConstraints()
@@ -53,7 +54,7 @@ class FilterViewModel @Inject constructor(
         copy(selectYears = ViewStateEvent(availableYearConstraints))
       }
       is Event.GenreChecked -> onGenreChecked(event.id, event.isChecked)
-      is Event.ClearFilter -> saveFilterAndExit(Filter.empty())
+      is Event.ClearFilter -> saveFilterAndExit(Filter.create())
       is Event.ApplyFilter -> {
         setState {
           copy(filter = filter.copy(selectedGenreIds = event.selectedGenreIds))
@@ -93,15 +94,12 @@ class FilterViewModel @Inject constructor(
 
   private fun saveFilterAndExit(filter: Filter) {
     viewModelScope.launch {
-      filtersInteractor.saveFilter(filter)
-        .doIfOk {
-          router.executeAction(Filters.BackToDiscover)
+      when (val updateResult = filtersInteractor.saveFilter(filter)) {
+        is Result.Ok -> router.executeAction(NavigationAction.Exit)
+        is Result.Err -> setState {
+          copy(error = ViewStateEvent(updateResult.error.message ?: ""))
         }
-        .doIfErr {
-          setState {
-            copy(error = ViewStateEvent(it.message ?: ""))
-          }
-        }
+      }
     }
   }
 

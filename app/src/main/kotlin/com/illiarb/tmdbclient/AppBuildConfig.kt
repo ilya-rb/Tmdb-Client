@@ -13,6 +13,7 @@ class AppBuildConfig(private val context: Context) : BuildConfig {
   override val sdkInt: Int get() = Build.VERSION.SDK_INT
   override val applicationId: String get() = AndroidBuildConfig.APPLICATION_ID
   override val buildType: String get() = AndroidBuildConfig.BUILD_TYPE
+  override val isQ: Boolean get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 
   override val versionCode: Long
     @SuppressLint("NewApi")

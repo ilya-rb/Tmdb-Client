@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,7 +23,6 @@ import com.illiarb.tmdbclient.libs.ui.ext.setVisible
 import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
-import com.illiarb.tmdbclient.libs.util.Async
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.Event
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.State
 import com.illiarb.tmdbclient.modules.details.delegates.movieInfoDelegate
@@ -42,6 +42,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
   @Inject
   lateinit var viewModelFactory: ViewModelProvider.Factory
 
+  private val viewModel by viewModels<MovieDetailsViewModel>(factoryProducer = { viewModelFactory })
   private val viewBinding by viewBinding { fragment ->
     FragmentMovieDetailsBinding.bind(fragment.requireView())
   }
@@ -53,10 +54,6 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
       movieSimilarDelegate { viewModel.events.offer(Event.MovieClicked(it)) },
       photoSectionDelegate { }
     )
-  }
-
-  private val viewModel: MovieDetailsViewModel by lazy(LazyThreadSafetyMode.NONE) {
-    viewModelFactory.create(MovieDetailsViewModel::class.java)
   }
 
   override fun inject(appProvider: AppProvider) =
@@ -113,18 +110,16 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
   }
 
   private fun render(newState: State) {
-    viewBinding.swipeRefresh.isRefreshing = newState.movie is Async.Loading<*>
+    viewBinding.swipeRefresh.isRefreshing = newState.isLoading
 
     sectionsAdapter.submitList(newState.movieSections)
 
-    newState.movie.doOnSuccess {
+    newState.movie?.let {
       showMovieDetails(it)
     }
 
-    newState.error?.let { error ->
-      error.consume { message ->
-        snackbarController.showMessage(viewBinding.root, message.message)
-      }
+    newState.error?.consume { message ->
+      snackbarController.showMessage(viewBinding.root, message.message)
     }
   }
 

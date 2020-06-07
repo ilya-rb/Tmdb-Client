@@ -7,4 +7,5 @@ interface BuildConfig {
   val buildType: String
   val versionCode: Long
   val versionName: String
+  val isQ: Boolean
 }
