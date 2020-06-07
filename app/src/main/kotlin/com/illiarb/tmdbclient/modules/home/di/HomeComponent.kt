@@ -4,6 +4,7 @@ import com.illiarb.tmdbclient.libs.ui.di.ViewModelModule
 import com.illiarb.tmdbclient.modules.home.HomeFragment
 import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
+import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.HomeInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.TrendingInteractor
 import dagger.Component
@@ -20,6 +21,7 @@ interface HomeComponent {
   interface Dependencies {
     fun homeInteractor(): HomeInteractor
     fun trendingInteractor(): TrendingInteractor
+    fun filtersInteractor(): FiltersInteractor
     fun router(): Router
     fun analyticsService(): AnalyticsService
   }

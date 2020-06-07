@@ -23,10 +23,11 @@ sealed class Async<out T> {
    */
   open operator fun invoke(): T? = null
 
-  inline fun doOnSuccess(block: (T) -> Unit) {
+  inline fun doOnSuccess(block: (T) -> Unit): Async<T> {
     if (this is Success) {
       block(this())
     }
+    return this
   }
 
   inline fun doOnError(block: (Throwable) -> Unit) = this.also {

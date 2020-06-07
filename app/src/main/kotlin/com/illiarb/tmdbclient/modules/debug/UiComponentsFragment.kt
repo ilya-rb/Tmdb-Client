@@ -13,10 +13,7 @@ import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
 class UiComponentsFragment : BaseFragment(R.layout.fragment_ui_components) {
 
   companion object {
-
-    const val TABS_COUNT = 3
-
-    fun newInstance() = UiComponentsFragment()
+    private const val TABS_COUNT = 3
   }
 
   private val viewBinding by viewBinding { fragment ->

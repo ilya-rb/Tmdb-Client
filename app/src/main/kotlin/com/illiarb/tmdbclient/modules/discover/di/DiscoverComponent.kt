@@ -5,9 +5,7 @@ import com.illiarb.tmdbclient.modules.discover.DiscoverFragment
 import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
 import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
-import com.illiarb.tmdbclient.services.tmdb.interactor.GenresInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
-import dagger.BindsInstance
 import dagger.Component
 
 @Component(
@@ -21,7 +19,6 @@ interface DiscoverComponent {
 
   interface Dependencies {
     fun moviesInteractor(): MoviesInteractor
-    fun genresInteractor(): GenresInteractor
     fun router(): Router
     fun analyticsService(): AnalyticsService
     fun filtersInteractor(): FiltersInteractor
@@ -29,8 +26,6 @@ interface DiscoverComponent {
 
   @Component.Builder
   interface Builder {
-    @BindsInstance
-    fun genreId(id: Int): Builder
     fun dependencies(dependencies: Dependencies): Builder
     fun build(): DiscoverComponent
   }

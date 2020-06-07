@@ -20,7 +20,7 @@ internal class DefaultFiltersInteractor @Inject constructor(
   private val filtersDao = db.filterDao()
 
   override val filter: Flow<Filter>
-    get() = filtersDao.filter().map { it?.filter ?: Filter.empty() }
+    get() = filtersDao.filter().map { it?.filter ?: Filter.create() }
 
   override suspend fun saveFilter(filter: Filter): Result<Unit> {
     return Result.create {
@@ -35,7 +35,7 @@ internal class DefaultFiltersInteractor @Inject constructor(
   override suspend fun getFilter(): Result<Filter> {
     return Result.create {
       withContext(dispatcherProvider.io) {
-        filtersDao.getFilter()?.filter ?: Filter.empty()
+        filtersDao.getFilter()?.filter ?: Filter.create()
       }
     }
   }
