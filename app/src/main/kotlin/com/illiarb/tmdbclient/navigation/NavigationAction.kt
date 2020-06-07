@@ -37,8 +37,6 @@ sealed class NavigationAction(@IdRes val destinationId: Int) {
     class GoToMovieDetails(val id: Int) : Discover(R.id.action_discover_to_movie_details)
   }
 
-  class Filters(@IdRes destinationId: Int) : NavigationAction(destinationId)
-
   sealed class WebViewAction(val url: String) : NavigationAction(NO_ID) {
 
     object GoToTmdbPage : WebViewAction("https://www.themoviedb.org")

@@ -32,6 +32,10 @@ import com.google.android.material.R as MaterialR
 
 class FilterFragment : BaseFragment(R.layout.fragment_filter), Injectable {
 
+  companion object {
+    private const val CHIP_REVEAL_DURATION = 200L
+  }
+
   private val snackbarController = SnackbarController()
   private val chipRevealInterpolator = AccelerateDecelerateInterpolator()
   private val viewModel by viewModels<FilterViewModel>(factoryProducer = { viewModelFactory })
@@ -164,7 +168,7 @@ class FilterFragment : BaseFragment(R.layout.fragment_filter), Injectable {
     chip.animate()
       .scaleX(1f)
       .scaleY(1f)
-      .setDuration(200L)
+      .setDuration(CHIP_REVEAL_DURATION)
       .setInterpolator(chipRevealInterpolator)
       .setStartDelay(20L * position)
       .start()
