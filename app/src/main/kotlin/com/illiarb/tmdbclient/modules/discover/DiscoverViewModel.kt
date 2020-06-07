@@ -12,17 +12,14 @@ import com.illiarb.tmdbclient.services.tmdb.domain.Filter
 import com.illiarb.tmdbclient.services.tmdb.domain.Genre
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
-import com.illiarb.tmdbclient.services.tmdb.interactor.GenresInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class DiscoverViewModel @Inject constructor(
-  initialGenreId: Int,
   private val router: Router,
   private val moviesInteractor: MoviesInteractor,
-  private val genresInteractor: GenresInteractor,
   private val analyticsService: AnalyticsService,
   private val filtersInteractor: FiltersInteractor
 ) : BaseViewModel<DiscoverViewModel.State, DiscoverViewModel.Event>(initialState()) {
@@ -33,7 +30,7 @@ class DiscoverViewModel @Inject constructor(
       State(
         results = emptyList(),
         availableGenres = emptyList(),
-        filter = Filter.empty(),
+        filter = Filter.create(),
         isLoading = false,
         isLoadingAdditionalPage = false,
         currentPage = 1,
@@ -51,29 +48,9 @@ class DiscoverViewModel @Inject constructor(
   }
 
   init {
-//    viewModelScope.launch {
-//      val genres = genresInteractor.getAllGenres()
-//
-//      setState {
-//        when (genres) {
-//          is Result.Ok -> {
-//            copy(availableGenres = genres.data).also {
-//              applyFilter(
-//                filter = Filter(listOf(initialGenreId), YearConstraints.AllYears),
-//                isInitialLaunch = true
-//              )
-//            }
-//          }
-//          is Result.Err -> {
-//            copy(errorMessage = ViewStateEvent(ErrorMessage(genres.error.message ?: "")))
-//          }
-//        }
-//      }
-//    }
-
     viewModelScope.launch {
       filtersInteractor.filter.collect {
-        applyFilter(it, isInitialLaunch = false)
+        applyFilter(it)
       }
     }
   }
@@ -82,18 +59,13 @@ class DiscoverViewModel @Inject constructor(
     router.executeAction(NavigationAction.Discover.GoToMovieDetails(movie.id))
   }
 
-  private fun applyFilter(filter: Filter, isInitialLaunch: Boolean = false) {
+  private fun applyFilter(filter: Filter) {
     viewModelScope.launch {
-      // do nothing if this filter are already applied
-      if (currentState.filter == filter && !isInitialLaunch) {
-        return@launch
-      }
-
       setState {
         copy(isLoading = true)
       }
 
-      val results = moviesInteractor.discoverMovies(filter, 1)
+      val results = moviesInteractor.discoverMovies(filter, page = 1)
 
       setState {
         when (results) {
