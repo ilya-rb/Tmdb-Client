@@ -8,7 +8,7 @@ import com.illiarb.tmdbclient.services.tmdb.internal.repository.ConfigurationRep
 internal class TestConfigurationRepository : ConfigurationRepository {
 
   override suspend fun getConfiguration(refresh: Boolean): Result<Configuration> {
-    return Result.Ok(Configuration())
+    return Result.Ok(Configuration(changeKeys = listOf("images")))
   }
 
   override suspend fun getCountries(): Result<List<Country>> {
