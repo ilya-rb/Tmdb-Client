@@ -8,10 +8,10 @@ import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.services.tmdb.domain.MovieFilter
 import com.illiarb.tmdbclient.services.tmdb.domain.Review
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
-import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
 import com.illiarb.tmdbclient.services.tmdb.internal.mappers.MovieMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.mappers.ReviewMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.model.MovieModel
+import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
 import kotlinx.coroutines.withContext
 import java.util.Locale
 import javax.inject.Inject
@@ -50,10 +50,10 @@ internal class DefaultMoviesRepository @Inject constructor(
         }
 
         val cached = cache.getMoviesByType(type)
-        if (cached.isEmpty()) {
+        if (cached.isExpired() || cached.movies.isEmpty()) {
           movieMapper.mapList(configuration, fetchFromNetworkAndStore(type))
         } else {
-          movieMapper.mapList(configuration, cached)
+          movieMapper.mapList(configuration, cached.movies)
         }
       }
     }

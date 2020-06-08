@@ -4,13 +4,14 @@ import com.illiarb.tmdbclient.libs.test.tools.TestResourceResolver
 import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
-import com.illiarb.tmdbclient.services.tmdb.internal.model.Configuration
-import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
 import com.illiarb.tmdbclient.services.tmdb.internal.mappers.GenreMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.mappers.MovieMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.mappers.PersonMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.mappers.ReviewMapper
+import com.illiarb.tmdbclient.services.tmdb.internal.model.Configuration
+import com.illiarb.tmdbclient.services.tmdb.internal.model.MovieListModel
 import com.illiarb.tmdbclient.services.tmdb.internal.model.MovieModel
+import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.ConfigurationRepository
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.DefaultMoviesRepository
 import com.illiarb.tmdbclient.services.tmdb.internal.util.TmdbDateFormatter
@@ -77,7 +78,7 @@ class MoviesRepositoryTest {
       configurationRepository.getConfiguration(any())
     } returns Result.Ok(Configuration())
 
-    every { cache.getMoviesByType(type) } returns listOf(MovieModel())
+    every { cache.getMoviesByType(type) } returns MovieListModel(listOf(MovieModel()))
 
     repository.getMoviesByType(type)
 

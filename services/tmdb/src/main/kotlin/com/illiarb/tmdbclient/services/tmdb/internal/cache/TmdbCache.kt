@@ -31,8 +31,8 @@ internal class TmdbCache(context: Context) {
     .registerPersistables(getPersistablesMap())
     .build()
 
-  fun getMoviesByType(type: String): List<MovieModel> =
-    tmdbStore.getValue(type, MovieListModel()).movies
+  fun getMoviesByType(type: String): MovieListModel =
+    tmdbStore.getValue(type, MovieListModel())
 
   fun getGenres(): List<GenreModel> =
     tmdbStore.getValue(KEY_GENRES, GenreListModel()).genres
