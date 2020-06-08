@@ -13,7 +13,6 @@ import com.illiarb.tmdbclient.services.tmdb.internal.mappers.ReviewMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.model.MovieModel
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
 import kotlinx.coroutines.withContext
-import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -77,9 +76,10 @@ internal class DefaultMoviesRepository @Inject constructor(
 
   override suspend fun getMovieFilters(): Result<List<MovieFilter>> = Result.create {
     withContext(dispatcherProvider.io) {
-      resourceResolver
-        .getStringArray(R.array.movie_filters)
-        .map { MovieFilter(it, it.toLowerCase(Locale.getDefault()).replace(" ", "_")) }
+      resourceResolver.getStringArray(R.array.movie_filters_codes)
+        .zip(resourceResolver.getStringArray(R.array.movie_filters)) { filter, code ->
+          MovieFilter(code, filter)
+        }
     }
   }
 

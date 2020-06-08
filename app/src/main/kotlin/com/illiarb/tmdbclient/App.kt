@@ -1,7 +1,6 @@
 package com.illiarb.tmdbclient
 
 import android.app.Application
-import com.google.firebase.FirebaseApp
 import com.illiarb.tmdbclient.di.AppComponent
 import com.illiarb.tmdbclient.di.AppInjector
 import com.illiarb.tmdbclient.di.DaggerAppComponent
@@ -61,8 +60,6 @@ class App : Application() {
     super.onCreate()
 
     AppInjector(this, appComponent).registerLifecycleCallbacks()
-
-    FirebaseApp.initializeApp(this)
 
     appComponent.inject(this)
   }

@@ -30,20 +30,19 @@ internal class DefaultConfigurationRepository @Inject constructor(
   }
 
   override suspend fun getConfiguration(refresh: Boolean): Result<Configuration> = Result.create {
-    if (refresh || isConfigurationExpired()) {
-      val configuration = api.getConfiguration().unwrap()
-      cache.storeConfiguration(configuration)
-      cache.updateConfigurationTimestamp(System.currentTimeMillis())
-      return@create cache.getConfiguration()
-    }
+    withContext(dispatcherProvider.io) {
+      if (refresh || isConfigurationExpired()) {
+        fetchConfigurationAndStore()
+        return@withContext cache.getConfiguration()
+      }
 
-    val cached = withContext(dispatcherProvider.io) { cache.getConfiguration() }
-    if (cached.isNotEmpty()) {
-      cached
-    } else {
-      val configuration = api.getConfiguration().unwrap()
-      cache.storeConfiguration(configuration)
-      withContext(dispatcherProvider.io) { cache.getConfiguration() }
+      val cached = cache.getConfiguration()
+      if (cached.isNotEmpty()) {
+        cached
+      } else {
+        fetchConfigurationAndStore()
+        cache.getConfiguration()
+      }
     }
   }
 
@@ -55,11 +54,15 @@ internal class DefaultConfigurationRepository @Inject constructor(
       val countries = api.getCountries().unwrap()
       cache.storeCountries(countries)
 
-      val result = withContext(dispatcherProvider.io) {
-        cache.getCountries()
-      }
+      val result = withContext(dispatcherProvider.io) { cache.getCountries() }
       countryMapper.mapList(result)
     }
+  }
+
+  private suspend fun fetchConfigurationAndStore() {
+    val configuration = api.getConfiguration().unwrap()
+    cache.storeConfiguration(configuration)
+    cache.updateConfigurationTimestamp(System.currentTimeMillis())
   }
 
   private fun isConfigurationExpired(): Boolean {

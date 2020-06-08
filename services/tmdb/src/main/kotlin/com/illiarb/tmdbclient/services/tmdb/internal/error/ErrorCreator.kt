@@ -5,6 +5,7 @@ import com.illiarb.tmdbclient.services.tmdb.R
 import com.illiarb.tmdbclient.services.tmdb.error.NetworkException
 import com.illiarb.tmdbclient.services.tmdb.error.NetworkException.Kind
 import com.illiarb.tmdbclient.services.tmdb.error.TmdbException
+import com.illiarb.tmdbclient.services.tmdb.error.UnknownException
 import com.squareup.moshi.Moshi
 import okhttp3.ResponseBody
 import retrofit2.HttpException
@@ -27,16 +28,16 @@ class ErrorCreator @Inject constructor(
       is SocketTimeoutException ->
         NetworkException(Kind.Timeout, resourceResolver.getString(R.string.error_bad_connection))
       is HttpException -> createHttpError(throwable)
-      else -> UnknownError(resourceResolver.getString(R.string.error_unknown))
+      else -> UnknownException(resourceResolver.getString(R.string.error_unknown))
     }
 
   fun createFromErrorBody(body: ResponseBody?): Throwable =
     if (body == null) {
-      UnknownError(resourceResolver.getString(R.string.error_unknown))
+      UnknownException(resourceResolver.getString(R.string.error_unknown))
     } else {
       val error = moshi.adapter(TmdbError::class.java).fromJson(body.toString())
       if (error == null) {
-        UnknownError(resourceResolver.getString(R.string.error_unknown))
+        UnknownException(resourceResolver.getString(R.string.error_unknown))
       } else {
         TmdbException(error.statusMessage)
       }
@@ -46,7 +47,7 @@ class ErrorCreator @Inject constructor(
     val errorBody = error.response()?.errorBody()
 
     return if (errorBody == null) {
-      UnknownError(resourceResolver.getString(R.string.error_unknown))
+      UnknownException(resourceResolver.getString(R.string.error_unknown))
     } else {
       createFromErrorBody(errorBody)
     }
