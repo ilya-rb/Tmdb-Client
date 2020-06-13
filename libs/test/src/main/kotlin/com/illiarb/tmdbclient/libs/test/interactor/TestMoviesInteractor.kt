@@ -44,4 +44,8 @@ class TestMoviesInteractor : MoviesInteractor {
     }
     return Result.Ok(PagedList(movieList, page = 1, totalPages = 1))
   }
+
+  override suspend fun searchMovies(query: String): Result<PagedList<Movie>> {
+    return Result.Ok(PagedList(emptyList(), 1, 1))
+  }
 }

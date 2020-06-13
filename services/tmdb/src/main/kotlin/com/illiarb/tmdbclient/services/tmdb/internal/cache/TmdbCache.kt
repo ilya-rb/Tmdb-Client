@@ -47,7 +47,7 @@ internal class TmdbCache(context: Context) {
     tmdbStore.putValue(KEY_CONFIGURATION, configuration)
 
   fun updateConfigurationTimestamp(time: Long) {
-    tmdbStore.edit().putLong(KEY_CONFIGURATION_LAST_UPDATE, time)
+    tmdbStore.edit().putLong(KEY_CONFIGURATION_LAST_UPDATE, time).commit()
   }
 
   fun getConfiguration(): Configuration =

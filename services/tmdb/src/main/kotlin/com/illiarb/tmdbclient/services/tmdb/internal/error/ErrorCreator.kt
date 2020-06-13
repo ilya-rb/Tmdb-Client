@@ -35,7 +35,7 @@ class ErrorCreator @Inject constructor(
     if (body == null) {
       UnknownException(resourceResolver.getString(R.string.error_unknown))
     } else {
-      val error = moshi.adapter(TmdbError::class.java).fromJson(body.toString())
+      val error = moshi.adapter(TmdbError::class.java).fromJson(body.string())
       if (error == null) {
         UnknownException(resourceResolver.getString(R.string.error_unknown))
       } else {

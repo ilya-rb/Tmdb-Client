@@ -23,4 +23,6 @@ interface MoviesInteractor {
   suspend fun getSimilarMovies(movieId: Int): Result<List<Movie>>
 
   suspend fun discoverMovies(filter: Filter, page: Int): Result<PagedList<Movie>>
+
+  suspend fun searchMovies(query: String) : Result<PagedList<Movie>>
 }

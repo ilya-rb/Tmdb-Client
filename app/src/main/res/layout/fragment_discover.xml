@@ -14,51 +14,52 @@
             android:id="@+id/appBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:liftOnScroll="true"
-            app:liftOnScrollTargetViewId="@id/discoverList">
+            app:liftOnScroll="true">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:navigationIcon="@drawable/ic_arrow_back"
-                app:title="@string/discover_title">
+                android:animateLayoutChanges="true"
+                app:contentInsetStartWithNavigation="0dp"
+                app:titleTextColor="?attr/colorOnPrimary">
 
-                <FrameLayout
+                <EditText
+                    android:id="@+id/discoverSearchQuery"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/spacing_normal"
+                    android:autofillHints="@null"
+                    android:background="@null"
+                    android:hint="@string/discover_search_query"
+                    android:inputType="text"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/discoverIcons"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end">
+                    android:layout_gravity="end"
+                    android:animateLayoutChanges="true"
+                    android:orientation="horizontal">
 
-                    <ImageView
+                    <com.illiarb.tmdbclient.ui.BadgeImageView
                         android:id="@+id/discoverFilter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@null"
-                        android:padding="@dimen/spacing_normal"
-                        android:src="@drawable/ic_filter_list"
-                        android:tint="?attr/colorOnBackground" />
+                        app:bivIcon="@drawable/ic_filter_list"
+                        app:bivIconTint="?attr/colorOnPrimary" />
 
-                    <TextView
-                        android:id="@+id/discoverFilterCount"
+                    <ImageView
+                        android:id="@+id/discoverSearch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="@dimen/spacing_small"
-                        android:layout_marginEnd="@dimen/spacing_small"
-                        android:background="@drawable/bg_filter_badge"
-                        android:gravity="center"
-                        android:scaleX="0"
-                        android:scaleY="0"
-                        android:textColor="?attr/colorOnSecondary"
-                        android:textSize="12sp"
-                        android:visibility="gone"
-                        tools:scaleX="1"
-                        tools:scaleY="1"
-                        tools:text="1"
-                        tools:visibility="visible" />
+                        android:contentDescription="@null"
+                        android:padding="@dimen/spacing_normal"
+                        android:src="@drawable/ic_search"
+                        android:tint="?attr/colorOnPrimary" />
 
-                </FrameLayout>
+                </LinearLayout>
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -78,6 +79,20 @@
             tools:layoutManager="GridLayoutManager"
             tools:layout_marginTop="?attr/actionBarSize"
             tools:listitem="@layout/item_movie"
+            tools:spanCount="3" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/discoverSearchResults"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:visibility="gone"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:itemCount="10"
+            tools:layoutManager="LinearLayoutManager"
+            tools:layout_marginTop="?attr/actionBarSize"
+            tools:listitem="@layout/item_search_result"
             tools:spanCount="3" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
