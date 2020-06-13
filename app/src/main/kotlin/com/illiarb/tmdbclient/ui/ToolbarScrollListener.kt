@@ -26,8 +26,10 @@ class ToolbarScrollListener(
     onUpdate(Elevation(elevation), Color(color))
   }
 
+  @Suppress("MagicNumber")
   private fun Int.toPercentOf(max: Int): Int = this * 100 / max
 
+  @Suppress("MagicNumber")
   private fun calculateFraction(start: Int, end: Int): Float {
     return start.coerceAtMost(end).toPercentOf(end) / 100f
   }
