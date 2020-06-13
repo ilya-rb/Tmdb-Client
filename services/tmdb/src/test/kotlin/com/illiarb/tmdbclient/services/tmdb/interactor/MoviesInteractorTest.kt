@@ -39,7 +39,8 @@ class MoviesInteractorTest {
       ImageUrlCreator(),
       TmdbDateFormatter()
     ),
-    TestConfigurationRepository()
+    TestConfigurationRepository(),
+    TmdbDateFormatter()
   )
 
   @Test
@@ -51,7 +52,7 @@ class MoviesInteractorTest {
     interactor.discoverMovies(Filter.create(), 1)
 
     coVerify {
-      discoverApi.discoverMovies(null, 1)
+      discoverApi.discoverMovies(mapOf(), 1)
     }
 
     confirmVerified(discoverApi)

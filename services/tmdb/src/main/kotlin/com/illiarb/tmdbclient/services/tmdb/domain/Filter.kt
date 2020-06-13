@@ -56,8 +56,8 @@ sealed class YearConstraints {
       for (i in 0 until SHOW_LAST_DECADES_COUNT) {
         constraints.add(
           YearRange(
-            startYear = startYear - i - step,
-            endYear = startYear - i - step - YEARS_RANGE_STEP
+            startYear = startYear - i - step - YEARS_RANGE_STEP,
+            endYear = startYear - i - step
           )
         )
         step += YEARS_RANGE_STEP

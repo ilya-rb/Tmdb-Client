@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.network.api
 
-import com.illiarb.tmdbclient.services.tmdb.domain.Video
 import com.illiarb.tmdbclient.libs.util.Result
+import com.illiarb.tmdbclient.services.tmdb.domain.Video
 import com.illiarb.tmdbclient.services.tmdb.internal.model.MovieModel
 import com.illiarb.tmdbclient.services.tmdb.internal.model.ResultsModel
 import com.illiarb.tmdbclient.services.tmdb.internal.model.ReviewModel
@@ -28,4 +28,7 @@ internal interface MovieApi {
 
   @GET("movie/{id}/videos")
   suspend fun getMovieVideos(@Path("id") id: Int): Result<ResultsModel<Video>>
+
+  @GET("search/movie")
+  suspend fun searchMovies(@Query("query") query: String) : Result<ResultsModel<MovieModel>>
 }

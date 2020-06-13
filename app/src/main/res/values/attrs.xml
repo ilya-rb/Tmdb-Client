@@ -2,7 +2,12 @@
 <resources>
 
     <declare-styleable name="CurvedImageView">
-        <attr name="cvCurveOffset" format="integer"/>
+        <attr name="cvCurveOffset" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="BadgeImageView">
+        <attr name="bivIcon" format="reference" />
+        <attr name="bivIconTint" format="color"/>
     </declare-styleable>
 
 </resources>

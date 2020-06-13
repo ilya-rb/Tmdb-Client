@@ -1,5 +1,6 @@
 package com.illiarb.tmdbclient.services.tmdb.di
 
+import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
 import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.ConfigurationApi
 import com.illiarb.tmdbclient.services.tmdb.internal.network.interceptor.ApiKeyInterceptor
@@ -45,13 +46,15 @@ object ConfigurationModule {
   @ConfigurationClient
   @JvmStatic
   internal fun provideConfigurationApiOkHttpClient(
-    apiKeyInterceptor: ApiKeyInterceptor
+    apiKeyInterceptor: ApiKeyInterceptor,
+    flipperOkHttpInterceptor: FlipperOkhttpInterceptor
   ): OkHttpClient {
     return OkHttpClient.Builder()
       .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
       .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
       .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
       .addInterceptor(apiKeyInterceptor)
+      .addNetworkInterceptor(flipperOkHttpInterceptor)
       .build()
   }
 

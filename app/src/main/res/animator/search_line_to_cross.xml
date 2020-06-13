@@ -1,0 +1,20 @@
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:ordering="sequentially">
+
+    <!-- first we need to immediately reset state -->
+    <objectAnimator
+        android:duration="0"
+        android:propertyName="trimPathStart"
+        android:valueFrom="0.45"
+        android:valueTo="0.45" />
+
+    <!-- then run the animation after a delay -->
+    <objectAnimator
+        android:duration="300"
+        android:interpolator="@android:interpolator/fast_out_slow_in"
+        android:propertyName="trimPathStart"
+        android:startOffset="250"
+        android:valueFrom="0.45"
+        android:valueTo="0" />
+
+</set>

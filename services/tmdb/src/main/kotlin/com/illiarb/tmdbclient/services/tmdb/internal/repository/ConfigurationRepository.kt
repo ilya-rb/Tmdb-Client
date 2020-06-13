@@ -4,9 +4,9 @@ import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.domain.Country
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
-import com.illiarb.tmdbclient.services.tmdb.internal.network.api.ConfigurationApi
 import com.illiarb.tmdbclient.services.tmdb.internal.mappers.CountryMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.model.Configuration
+import com.illiarb.tmdbclient.services.tmdb.internal.network.api.ConfigurationApi
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -30,20 +30,19 @@ internal class DefaultConfigurationRepository @Inject constructor(
   }
 
   override suspend fun getConfiguration(refresh: Boolean): Result<Configuration> = Result.create {
-    if (refresh || isConfigurationExpired()) {
-      val configuration = api.getConfiguration().unwrap()
-      cache.storeConfiguration(configuration)
-      cache.updateConfigurationTimestamp(System.currentTimeMillis())
-      return@create cache.getConfiguration()
-    }
+    withContext(dispatcherProvider.io) {
+      if (refresh || isConfigurationExpired()) {
+        fetchConfigurationAndStore()
+        return@withContext cache.getConfiguration()
+      }
 
-    val cached = withContext(dispatcherProvider.io) { cache.getConfiguration() }
-    if (cached.isNotEmpty()) {
-      cached
-    } else {
-      val configuration = api.getConfiguration().unwrap()
-      cache.storeConfiguration(configuration)
-      withContext(dispatcherProvider.io) { cache.getConfiguration() }
+      val cached = cache.getConfiguration()
+      if (cached.isNotEmpty()) {
+        cached
+      } else {
+        fetchConfigurationAndStore()
+        cache.getConfiguration()
+      }
     }
   }
 
@@ -55,15 +54,19 @@ internal class DefaultConfigurationRepository @Inject constructor(
       val countries = api.getCountries().unwrap()
       cache.storeCountries(countries)
 
-      val result = withContext(dispatcherProvider.io) {
-        cache.getCountries()
-      }
+      val result = withContext(dispatcherProvider.io) { cache.getCountries() }
       countryMapper.mapList(result)
     }
   }
 
+  private suspend fun fetchConfigurationAndStore() {
+    val configuration = api.getConfiguration().unwrap()
+    cache.storeConfiguration(configuration)
+    cache.updateConfigurationTimestamp(System.currentTimeMillis())
+  }
+
   private fun isConfigurationExpired(): Boolean {
-    val configurationLastUpdated = cache.getConfigurationLastUpdateTimestamp()
-    return TimeUnit.MILLISECONDS.toDays(configurationLastUpdated) > CONFIGURATION_EXPIRY_DAYS
+    val diff = System.currentTimeMillis() - cache.getConfigurationLastUpdateTimestamp()
+    return TimeUnit.MILLISECONDS.toDays(diff) > CONFIGURATION_EXPIRY_DAYS
   }
 }

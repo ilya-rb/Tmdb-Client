@@ -9,10 +9,10 @@ import com.illiarb.tmdbclient.navigation.NavigationAction
 import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
 import com.illiarb.tmdbclient.services.tmdb.domain.Filter
-import com.illiarb.tmdbclient.services.tmdb.domain.Genre
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,12 +24,15 @@ class DiscoverViewModel @Inject constructor(
   private val filtersInteractor: FiltersInteractor
 ) : BaseViewModel<DiscoverViewModel.State, DiscoverViewModel.Event>(initialState()) {
 
+  private var searchJob: Job? = null
+
   companion object {
 
     private fun initialState(): State =
       State(
         results = emptyList(),
-        availableGenres = emptyList(),
+        searchResults = emptyList(),
+        userMode = State.UserMode.Default,
         filter = Filter.create(),
         isLoading = false,
         isLoadingAdditionalPage = false,
@@ -37,14 +40,6 @@ class DiscoverViewModel @Inject constructor(
         totalPages = 0,
         errorMessage = null
       )
-  }
-
-  override fun onUiEvent(event: Event) {
-    when (event) {
-      is Event.MovieClick -> processMovieClick(event.movie)
-      is Event.PageEndReached -> fetchLoadNextPageIfExists()
-      is Event.FilterClicked -> router.executeAction(NavigationAction.Discover.GoToFilters)
-    }
   }
 
   init {
@@ -55,21 +50,42 @@ class DiscoverViewModel @Inject constructor(
     }
   }
 
+  override fun onUiEvent(event: Event) {
+    when (event) {
+      is Event.MovieClick -> processMovieClick(event.movie)
+      is Event.PageEndReached -> fetchLoadNextPageIfExists()
+      is Event.FilterClicked -> router.executeAction(NavigationAction.Discover.GoToFilters)
+      is Event.QueryTextChanged -> onQueryTextChanged(event.query)
+      is Event.SearchClosed -> switchToUserMode(State.UserMode.Default)
+      is Event.SearchClicked -> switchToUserMode(State.UserMode.Search)
+      is Event.BackClicked -> {
+        if (currentState.userMode == State.UserMode.Search) {
+          switchToUserMode(State.UserMode.Default)
+        } else {
+          router.executeAction(NavigationAction.Exit)
+        }
+      }
+    }
+  }
+
   private fun processMovieClick(movie: Movie) {
     router.executeAction(NavigationAction.Discover.GoToMovieDetails(movie.id))
   }
 
+  private fun switchToUserMode(mode: State.UserMode) {
+    searchJob?.cancel()
+    setState {
+      copy(isLoading = false, userMode = mode)
+    }
+  }
+
   private fun applyFilter(filter: Filter) {
     viewModelScope.launch {
-      if (currentState.filter == filter) {
-        return@launch
-      }
-
       setState {
         copy(isLoading = true)
       }
 
-      val results = moviesInteractor.discoverMovies(filter, 1)
+      val results = moviesInteractor.discoverMovies(filter, page = 1)
 
       setState {
         when (results) {
@@ -131,19 +147,55 @@ class DiscoverViewModel @Inject constructor(
     }
   }
 
+  private fun onQueryTextChanged(query: String) {
+    searchJob?.cancel()
+    searchJob = viewModelScope.launch {
+      setState {
+        copy(isLoading = true)
+      }
+
+      when (val results = moviesInteractor.searchMovies(query)) {
+        is Result.Ok -> {
+          setState {
+            copy(isLoading = false, searchResults = results.data.items)
+          }
+        }
+        is Result.Err -> {
+          setState {
+            copy(
+              isLoading = false,
+              errorMessage = ViewStateEvent(ErrorMessage(results.error.message ?: ""))
+            )
+          }
+        }
+      }
+    }
+  }
+
   data class State(
     val results: List<Movie>,
-    val availableGenres: List<Genre>,
+    val searchResults: List<Movie>,
+    val userMode: UserMode,
     val filter: Filter,
     val isLoading: Boolean,
     val currentPage: Int,
     val totalPages: Int,
     val isLoadingAdditionalPage: Boolean,
     val errorMessage: ViewStateEvent<ErrorMessage>?
-  )
+  ) {
+
+    enum class UserMode {
+      Default,
+      Search
+    }
+  }
 
   sealed class Event {
     class MovieClick(val movie: Movie) : Event()
+    class QueryTextChanged(val query: String) : Event()
+    object SearchClosed : Event()
+    object SearchClicked : Event()
+    object BackClicked : Event()
     object PageEndReached : Event()
     object FilterClicked : Event()
   }

@@ -48,7 +48,7 @@ object Deps {
     private const val kotlinCoroutinesVersion = "1.3.6"
     private const val kotlinSerializationVersion = "0.20.0"
 
-    const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72-release-Studio4.1-4"
     const val std = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesVersion"
@@ -63,7 +63,7 @@ object Deps {
       const val compileSdkVersion = 29
       const val targetSdkVersion = 29
       const val minSdkVersion = 21
-      const val gradlePlugin = "com.android.tools.build:gradle:4.0.0"
+      const val gradlePlugin = "com.android.tools.build:gradle:4.1.0-beta01"
     }
 
     object AndroidX {

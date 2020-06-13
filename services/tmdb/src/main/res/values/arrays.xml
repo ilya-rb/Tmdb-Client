@@ -8,4 +8,11 @@
         <item>Top Rated</item>
     </string-array>
 
+    <string-array name="movie_filters_codes" translatable="false">
+        <item>now_playing</item>
+        <item>upcoming</item>
+        <item>popular</item>
+        <item>top_rated</item>
+    </string-array>
+
 </resources>
