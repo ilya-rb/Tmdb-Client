@@ -9,6 +9,5 @@
     <dimen name="discover_item_movie_height">200dp</dimen>
     <dimen name="discover_item_search_result_width">40dp</dimen>
     <dimen name="discover_item_search_result_height">60dp</dimen>
-    <dimen name="discover_item_search_view_size_collapsed">52dp</dimen>
 
 </resources>

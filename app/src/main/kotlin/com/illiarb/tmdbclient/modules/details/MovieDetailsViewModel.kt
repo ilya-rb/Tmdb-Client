@@ -46,7 +46,9 @@ class MovieDetailsViewModel @Inject constructor(
 
               val similar = moviesInteractor.getSimilarMovies(movieId)
               similar.doIfOk {
-                add(MovieDetailsSection.MovieSimilar(it))
+                if (it.isNotEmpty()) {
+                  add(MovieDetailsSection.MovieSimilar(it))
+                }
               }
             }
 

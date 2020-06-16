@@ -8,7 +8,6 @@
     <string name="menu_home_discover">Discover</string>
     <string name="menu_home_debug">Debug</string>
 
-    <dimen name="item_movie_spacing">@dimen/spacing_normal</dimen>
     <dimen name="item_movie_height">150dp</dimen>
     <dimen name="item_movie_width">100dp</dimen>
     <dimen name="item_trending_image_size">80dp</dimen>
