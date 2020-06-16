@@ -8,12 +8,11 @@ import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.services.tmdb.domain.MovieFilter
 import com.illiarb.tmdbclient.services.tmdb.domain.Review
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
-import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
 import com.illiarb.tmdbclient.services.tmdb.internal.mappers.MovieMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.mappers.ReviewMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.model.MovieModel
+import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
 import kotlinx.coroutines.withContext
-import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -50,10 +49,10 @@ internal class DefaultMoviesRepository @Inject constructor(
         }
 
         val cached = cache.getMoviesByType(type)
-        if (cached.isEmpty()) {
+        if (cached.isExpired() || cached.movies.isEmpty()) {
           movieMapper.mapList(configuration, fetchFromNetworkAndStore(type))
         } else {
-          movieMapper.mapList(configuration, cached)
+          movieMapper.mapList(configuration, cached.movies)
         }
       }
     }
@@ -77,9 +76,10 @@ internal class DefaultMoviesRepository @Inject constructor(
 
   override suspend fun getMovieFilters(): Result<List<MovieFilter>> = Result.create {
     withContext(dispatcherProvider.io) {
-      resourceResolver
-        .getStringArray(R.array.movie_filters)
-        .map { MovieFilter(it, it.toLowerCase(Locale.getDefault()).replace(" ", "_")) }
+      resourceResolver.getStringArray(R.array.movie_filters_codes)
+        .zip(resourceResolver.getStringArray(R.array.movie_filters)) { filter, code ->
+          MovieFilter(code, filter)
+        }
     }
   }
 

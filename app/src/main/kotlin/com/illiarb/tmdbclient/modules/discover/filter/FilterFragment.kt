@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.forEach
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +20,7 @@ import com.illiarb.tmdbclient.libs.ui.common.SnackbarController
 import com.illiarb.tmdbclient.libs.ui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbclient.libs.ui.ext.getColorAttr
 import com.illiarb.tmdbclient.libs.ui.ext.getTintedDrawable
+import com.illiarb.tmdbclient.libs.ui.ext.tintMenuItemsWithColor
 import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
 import com.illiarb.tmdbclient.modules.discover.filter.FilterViewModel.Event
 import com.illiarb.tmdbclient.modules.discover.filter.FilterViewModel.State
@@ -31,6 +32,10 @@ import javax.inject.Inject
 import com.google.android.material.R as MaterialR
 
 class FilterFragment : BaseFragment(R.layout.fragment_filter), Injectable {
+
+  companion object {
+    private const val CHIP_REVEAL_DURATION = 200L
+  }
 
   private val snackbarController = SnackbarController()
   private val chipRevealInterpolator = AccelerateDecelerateInterpolator()
@@ -53,19 +58,22 @@ class FilterFragment : BaseFragment(R.layout.fragment_filter), Injectable {
     super.onViewCreated(view, savedInstanceState)
 
     viewBinding.filterYears.apply {
-      val dropdown = ContextCompat.getDrawable(view.context, R.drawable.ic_arrow_drop_down)
-      dropdown?.let {
-        setCompoundDrawablesRelativeWithIntrinsicBounds(
-          /* start */ null,
-          /* top */ null,
-          /* end */ it.getTintedDrawable(view.getColorAttr(MaterialR.attr.colorOnBackground)),
-          /* bottom */ null
-        )
-      }
+      setCompoundDrawablesRelativeWithIntrinsicBounds(
+        null, // start
+        null, // top
+        view.context.getTintedDrawable(
+          drawableRes = R.drawable.ic_arrow_drop_down,
+          color = view.getColorAttr(MaterialR.attr.colorOnBackground)
+        ), // end
+        null // bottom
+      )
       setOnClickListener {
         viewModel.events.offer(Event.YearFilterClicked)
       }
     }
+
+    viewBinding.toolbar.menu
+      .tintMenuItemsWithColor(viewBinding.root.getColorAttr(MaterialR.attr.colorOnPrimary))
 
     viewBinding.toolbar.setNavigationOnClickListener {
       activity?.onBackPressed()
@@ -164,7 +172,7 @@ class FilterFragment : BaseFragment(R.layout.fragment_filter), Injectable {
     chip.animate()
       .scaleX(1f)
       .scaleY(1f)
-      .setDuration(200L)
+      .setDuration(CHIP_REVEAL_DURATION)
       .setInterpolator(chipRevealInterpolator)
       .setStartDelay(20L * position)
       .start()

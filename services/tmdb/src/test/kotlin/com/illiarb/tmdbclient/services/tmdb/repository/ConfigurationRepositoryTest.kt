@@ -4,9 +4,9 @@ import com.illiarb.tmdbclient.libs.test.tools.TestDispatcherProvider
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageConfig
-import com.illiarb.tmdbclient.services.tmdb.internal.network.api.ConfigurationApi
 import com.illiarb.tmdbclient.services.tmdb.internal.mappers.CountryMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.model.Configuration
+import com.illiarb.tmdbclient.services.tmdb.internal.network.api.ConfigurationApi
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.DefaultConfigurationRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -41,7 +41,7 @@ class ConfigurationRepositoryTest {
           )
         )
 
-    every { cache.getConfigurationLastUpdateTimestamp() } returns 0L
+    every { cache.getConfigurationLastUpdateTimestamp() } returns System.currentTimeMillis()
 
     repository.getConfiguration()
 
@@ -55,7 +55,7 @@ class ConfigurationRepositoryTest {
   @Test
   fun `it should check cache and if it is empty fetch from api`() = runBlockingTest {
     every { cache.getConfiguration() } returns Configuration()
-    every { cache.getConfigurationLastUpdateTimestamp() } returns 0L
+    every { cache.getConfigurationLastUpdateTimestamp() } returns System.currentTimeMillis()
 
     repository.getConfiguration()
 
@@ -72,7 +72,7 @@ class ConfigurationRepositoryTest {
       Configuration()
 
     every { cache.getConfiguration() } returns Configuration()
-    every { cache.getConfigurationLastUpdateTimestamp() } returns 0L
+    every { cache.getConfigurationLastUpdateTimestamp() } returns System.currentTimeMillis()
 
     coEvery { api.getConfiguration() } returns Result.Ok(configToStore)
 

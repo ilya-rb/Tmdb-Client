@@ -31,8 +31,8 @@ internal class TmdbCache(context: Context) {
     .registerPersistables(getPersistablesMap())
     .build()
 
-  fun getMoviesByType(type: String): List<MovieModel> =
-    tmdbStore.getValue(type, MovieListModel()).movies
+  fun getMoviesByType(type: String): MovieListModel =
+    tmdbStore.getValue(type, MovieListModel())
 
   fun getGenres(): List<GenreModel> =
     tmdbStore.getValue(KEY_GENRES, GenreListModel()).genres
@@ -47,7 +47,7 @@ internal class TmdbCache(context: Context) {
     tmdbStore.putValue(KEY_CONFIGURATION, configuration)
 
   fun updateConfigurationTimestamp(time: Long) {
-    tmdbStore.edit().putLong(KEY_CONFIGURATION_LAST_UPDATE, time)
+    tmdbStore.edit().putLong(KEY_CONFIGURATION_LAST_UPDATE, time).commit()
   }
 
   fun getConfiguration(): Configuration =

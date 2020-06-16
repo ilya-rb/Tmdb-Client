@@ -105,6 +105,19 @@ internal class DefaultMoviesInteractor @Inject constructor(
     return movieApi.getMovieVideos(movieId).mapOnSuccess { it.results }
   }
 
+  override suspend fun searchMovies(query: String): Result<PagedList<Movie>> {
+    val config = configurationRepository.getConfiguration()
+    if (config.isError()) {
+      return Result.Err(config.error())
+    }
+
+    val searchResult = movieApi.searchMovies(query)
+
+    return searchResult.mapOnSuccess {
+      PagedList(movieMapper.mapList(config.unwrap(), it.results), it.page, it.totalPages)
+    }
+  }
+
   private suspend fun getMoviesByType(filter: MovieFilter): Result<List<Movie>> =
     repository.getMoviesByType(filter.code)
 }
