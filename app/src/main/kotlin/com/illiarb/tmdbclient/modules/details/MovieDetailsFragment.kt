@@ -92,6 +92,9 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
           spacingBottom = dimen(UiR.dimen.spacing_small)
         )
       )
+      doOnApplyWindowInsets { v, windowInsets, initialPadding ->
+        v.updatePadding(bottom = initialPadding.top + windowInsets.systemWindowInsetBottom)
+      }
     }
   }
 

@@ -10,12 +10,13 @@
     <application
         android:name=".App"
         android:allowBackup="true"
+        android:extractNativeLibs="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Tmdb"
-        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning,UnusedAttribute">
 
         <activity
             android:name="com.illiarb.tmdbclient.modules.main.MainActivity"
@@ -23,7 +24,8 @@
 
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
 

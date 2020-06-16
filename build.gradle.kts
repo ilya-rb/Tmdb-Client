@@ -114,25 +114,19 @@ subprojects {
       lintOptions {
         isWarningsAsErrors = true
         isAbortOnError = false
+        isCheckAllWarnings = true
+        isShowAll = true
+        isExplainIssues = true
+        lintConfig = rootProject.file("lint.xml")
+        xmlReport = false
+        htmlOutput = file("reports/${project.name}_lint_report.html")
 
         // App does not have deep linking
         disable("GoogleAppIndexingWarning")
         // Okio references java.nio that does not presented in Android SDK
         disable("InvalidPackage")
-        // Warning for kotlin flows
-        disable("UnsafeExperimentalUsageError", "UnsafeExperimentalUsageWarning")
-
         // View binding issues for unused resources and ids
-        // disable('UnusedResources')
-        // disable('UnusedIds')
-
-        isCheckAllWarnings = true
-        isShowAll = true
-        isExplainIssues = true
-
-        xmlReport = false
-
-        htmlOutput = file("reports/${project.name}_lint_report.html")
+        disable("UnusedIds")
       }
     }
   }
