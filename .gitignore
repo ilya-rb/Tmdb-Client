@@ -9,7 +9,7 @@ keystore.properties
 /captures
 .externalNativeBuild
 app/google-services.json
-/reports
+**/reports/*
 buildSrc/.gradle
 buildSrc/build
 /ci-config/upload-config.sh

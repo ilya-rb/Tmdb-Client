@@ -9,9 +9,7 @@
     <string name="movie_details_duration">%1$d min</string>
 
     <dimen name="movie_details_curve_offset">80dp</dimen>
-    <dimen name="movie_details_curve_offset_end">0dp</dimen>
     <dimen name="movie_details_poster_height">250dp</dimen>
-    <dimen name="movie_details_poster_height_translation">-250dp</dimen>
     <dimen name="movie_details_item_photo_height">100dp</dimen>
     <dimen name="movie_details_item_photo_width">150dp</dimen>
 

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/colorBackground"
     tools:ignore="HardcodedText">
 
     <LinearLayout
@@ -196,6 +195,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginEnd="@dimen/spacing_normal"
+            android:contentDescription="@null"
             android:src="@drawable/abc_vector_test"
             tools:ignore="PrivateResource" />
 
