@@ -30,7 +30,8 @@ object Modules {
   }
 
   object Services {
-    const val tmdb = ":services:tmdb"
+    const val tmdb = ":services:tmdb:impl"
+    const val tmdbApi = ":services:tmdb:api"
     const val analytics = ":services:analytics"
   }
 }
@@ -222,6 +223,7 @@ object Deps {
       const val espressoIntents = "androidx.test.espresso:espresso-intents:$espressoVersion"
       const val extJunit = "androidx.test.ext:junit:1.1.2-beta01"
       const val uiAutomator = "androidx.test.uiautomator:uiautomator:2.2.0"
+      const val benchmark = "androidx.benchmark:benchmark-junit4:1.0.0"
     }
   }
 }

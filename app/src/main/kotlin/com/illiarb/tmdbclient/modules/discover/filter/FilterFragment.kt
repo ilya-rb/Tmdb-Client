@@ -5,7 +5,6 @@ import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
-import androidx.core.view.forEach
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -25,7 +24,7 @@ import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
 import com.illiarb.tmdbclient.modules.discover.filter.FilterViewModel.Event
 import com.illiarb.tmdbclient.modules.discover.filter.FilterViewModel.State
 import com.illiarb.tmdbclient.modules.discover.filter.di.DaggerFilterComponent
-import com.illiarb.tmdbclient.services.tmdb.domain.Genre
+import com.illiarb.tmdbclient.services.tmdb.api.domain.Genre
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject

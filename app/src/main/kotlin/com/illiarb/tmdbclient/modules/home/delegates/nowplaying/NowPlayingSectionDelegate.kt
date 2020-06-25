@@ -7,9 +7,9 @@ import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import com.illiarb.tmdbclient.databinding.ItemNowPlayingSectionBinding
 import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
 import com.illiarb.tmdbclient.libs.ui.common.SimpleBundleStore
-import com.illiarb.tmdbclient.services.tmdb.domain.Movie
-import com.illiarb.tmdbclient.services.tmdb.domain.MovieSection
-import com.illiarb.tmdbclient.services.tmdb.domain.NowPlayingSection
+import com.illiarb.tmdbclient.services.tmdb.api.domain.Movie
+import com.illiarb.tmdbclient.services.tmdb.api.domain.MovieSection
+import com.illiarb.tmdbclient.services.tmdb.api.domain.NowPlayingSection
 import java.util.Timer
 import kotlin.concurrent.fixedRateTimer
 

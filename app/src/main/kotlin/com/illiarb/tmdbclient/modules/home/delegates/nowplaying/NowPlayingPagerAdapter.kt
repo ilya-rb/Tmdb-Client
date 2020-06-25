@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.LoopingPagerAdapter
-import com.illiarb.tmdbclient.services.tmdb.domain.Movie
+import com.illiarb.tmdbclient.services.tmdb.api.domain.Movie
 
 class NowPlayingPagerAdapter(clickListener: OnClickListener<Movie>) :
   ListDelegationAdapter<List<Movie>>(), LoopingPagerAdapter {

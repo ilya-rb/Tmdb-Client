@@ -6,8 +6,8 @@ import com.illiarb.tmdbclient.libs.imageloader.Image
 import com.illiarb.tmdbclient.libs.imageloader.RequestOptions
 import com.illiarb.tmdbclient.libs.imageloader.loadImage
 import com.illiarb.tmdbclient.libs.ui.ext.doOnLayout
-import com.illiarb.tmdbclient.services.tmdb.util.TmdbImageSizeSelector
-import com.illiarb.tmdbclient.services.tmdb.domain.Image as TmdbImage
+import com.illiarb.tmdbclient.services.tmdb.api.util.TmdbImageSizeSelector
+import com.illiarb.tmdbclient.services.tmdb.api.domain.Image as TmdbImage
 
 fun ImageView.loadTmdbImage(
   image: TmdbImage?,

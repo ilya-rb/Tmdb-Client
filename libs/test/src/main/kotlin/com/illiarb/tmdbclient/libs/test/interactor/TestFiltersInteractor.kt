@@ -1,8 +1,8 @@
 package com.illiarb.tmdbclient.libs.test.interactor
 
 import com.illiarb.tmdbclient.libs.util.Result
-import com.illiarb.tmdbclient.services.tmdb.domain.Filter
-import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
+import com.illiarb.tmdbclient.services.tmdb.api.domain.Filter
+import com.illiarb.tmdbclient.services.tmdb.api.interactor.FiltersInteractor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

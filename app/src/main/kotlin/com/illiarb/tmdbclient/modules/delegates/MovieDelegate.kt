@@ -10,7 +10,7 @@ import com.illiarb.tmdbclient.libs.ui.common.SizeSpec
 import com.illiarb.tmdbclient.libs.ui.ext.dimen
 import com.illiarb.tmdbclient.libs.ui.ext.setInvisible
 import com.illiarb.tmdbclient.libs.ui.ext.setSize
-import com.illiarb.tmdbclient.services.tmdb.domain.Movie
+import com.illiarb.tmdbclient.services.tmdb.api.domain.Movie
 import com.illiarb.tmdbclient.ui.loadTmdbImage
 import com.illiarb.tmdbclient.libs.ui.R as UiR
 

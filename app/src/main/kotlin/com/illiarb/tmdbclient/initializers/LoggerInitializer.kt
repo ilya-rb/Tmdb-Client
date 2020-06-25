@@ -2,10 +2,10 @@ package com.illiarb.tmdbclient.initializers
 
 import android.app.Application
 import com.illiarb.tmdbclient.BuildConfig
-import com.illiarb.tmdbclient.libs.tools.AppInitializer
 import com.illiarb.tmdbclient.libs.logger.Logger
 import com.illiarb.tmdbclient.libs.logger.LoggerPriority
 import com.illiarb.tmdbclient.libs.logger.LoggingStrategy
+import com.illiarb.tmdbclient.libs.tools.AppInitializer
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -24,10 +24,10 @@ class LoggerInitializer @Inject constructor() : AppInitializer {
         throwable: Throwable?
       ) {
         when (priority) {
-          LoggerPriority.Warn -> Timber.tag(tag).w(throwable, message)
-          LoggerPriority.Debug -> Timber.tag(tag).d(throwable, message)
-          LoggerPriority.Info -> Timber.tag(tag).i(throwable, message)
-          LoggerPriority.Error -> Timber.tag(tag).e(throwable, message)
+          LoggerPriority.Warn -> Timber.w(throwable, message)
+          LoggerPriority.Debug -> Timber.d(throwable, message)
+          LoggerPriority.Info -> Timber.i(throwable, message)
+          LoggerPriority.Error -> Timber.e(throwable, message)
         }
       }
     })

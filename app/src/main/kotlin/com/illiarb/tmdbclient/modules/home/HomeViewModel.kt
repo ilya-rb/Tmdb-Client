@@ -11,14 +11,14 @@ import com.illiarb.tmdbclient.navigation.NavigationAction.Home
 import com.illiarb.tmdbclient.navigation.NavigationAction.WebViewAction
 import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
-import com.illiarb.tmdbclient.services.tmdb.domain.Filter
-import com.illiarb.tmdbclient.services.tmdb.domain.Genre
-import com.illiarb.tmdbclient.services.tmdb.domain.Movie
-import com.illiarb.tmdbclient.services.tmdb.domain.MovieSection
-import com.illiarb.tmdbclient.services.tmdb.domain.TrendingSection
-import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
-import com.illiarb.tmdbclient.services.tmdb.interactor.HomeInteractor
-import com.illiarb.tmdbclient.services.tmdb.interactor.TrendingInteractor
+import com.illiarb.tmdbclient.services.tmdb.api.domain.Filter
+import com.illiarb.tmdbclient.services.tmdb.api.domain.Genre
+import com.illiarb.tmdbclient.services.tmdb.api.domain.Movie
+import com.illiarb.tmdbclient.services.tmdb.api.domain.MovieSection
+import com.illiarb.tmdbclient.services.tmdb.api.domain.TrendingSection
+import com.illiarb.tmdbclient.services.tmdb.api.interactor.FiltersInteractor
+import com.illiarb.tmdbclient.services.tmdb.api.interactor.HomeInteractor
+import com.illiarb.tmdbclient.services.tmdb.api.interactor.TrendingInteractor
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

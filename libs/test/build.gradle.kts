@@ -29,6 +29,7 @@ android {
 dependencies {
 
   implementation(project(Modules.Services.tmdb))
+  implementation(project(Modules.Services.tmdbApi))
   implementation(project(Modules.Services.analytics))
   implementation(project(Modules.Core.logger))
   implementation(project(Modules.Core.util))

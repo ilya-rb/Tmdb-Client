@@ -2,7 +2,7 @@ package com.illiarb.tmdbclient.modules.video.di
 
 import com.illiarb.tmdbclient.modules.video.VideoListFragment
 import com.illiarb.tmdbclient.libs.ui.di.ViewModelModule
-import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
+import com.illiarb.tmdbclient.services.tmdb.api.interactor.MoviesInteractor
 import dagger.BindsInstance
 import dagger.Component
 

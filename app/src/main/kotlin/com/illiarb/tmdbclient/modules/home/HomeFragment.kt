@@ -11,6 +11,7 @@ import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.databinding.FragmentMoviesBinding
 import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable
+import com.illiarb.tmdbclient.libs.logger.Logger
 import com.illiarb.tmdbclient.libs.ui.base.BaseFragment
 import com.illiarb.tmdbclient.libs.ui.common.SimpleBundleStore
 import com.illiarb.tmdbclient.libs.ui.common.SnackbarController
@@ -83,6 +84,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_movies), Injectable {
     viewBinding.imageTmdb.setOnClickListener {
       viewModel.events.offer(Event.TmdbIconClick)
     }
+
+    Logger.d("dasda", "HomeFragment on view created")
 
     bundleStore.onRestoreInstanceState(savedInstanceState = savedInstanceState)
 

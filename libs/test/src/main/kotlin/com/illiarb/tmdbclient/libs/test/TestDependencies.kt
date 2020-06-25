@@ -19,11 +19,11 @@ import com.illiarb.tmdbclient.libs.tools.di.ToolsProvider
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
 import com.illiarb.tmdbclient.services.analytics.di.AnalyticsProvider
 import com.illiarb.tmdbclient.services.tmdb.di.TmdbProvider
-import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
-import com.illiarb.tmdbclient.services.tmdb.interactor.GenresInteractor
-import com.illiarb.tmdbclient.services.tmdb.interactor.HomeInteractor
-import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
-import com.illiarb.tmdbclient.services.tmdb.interactor.TrendingInteractor
+import com.illiarb.tmdbclient.services.tmdb.api.interactor.FiltersInteractor
+import com.illiarb.tmdbclient.services.tmdb.api.interactor.GenresInteractor
+import com.illiarb.tmdbclient.services.tmdb.api.interactor.HomeInteractor
+import com.illiarb.tmdbclient.services.tmdb.api.interactor.MoviesInteractor
+import com.illiarb.tmdbclient.services.tmdb.api.interactor.TrendingInteractor
 
 @Suppress("TooManyFunctions")
 object TestDependencies : ToolsProvider, AnalyticsProvider, TmdbProvider {

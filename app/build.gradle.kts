@@ -74,6 +74,7 @@ dependencies {
   implementation(project(Modules.Core.buildConfig))
   implementation(project(Modules.Core.customTabs))
   implementation(project(Modules.Services.tmdb))
+  implementation(project(Modules.Services.tmdbApi))
   implementation(project(Modules.Services.analytics))
 
   implementation(Deps.Kotlin.std)
@@ -100,6 +101,7 @@ dependencies {
   androidTestImplementation(Deps.Test.AndroidX.runner)
   androidTestImplementation(Deps.Test.AndroidX.uiAutomator)
   androidTestImplementation(Deps.Test.AndroidX.extJunit)
+  androidTestImplementation(Deps.Test.AndroidX.benchmark)
   androidTestImplementation(Deps.Test.kakao)
   androidTestImplementation(Deps.Test.kaspresso)
 }

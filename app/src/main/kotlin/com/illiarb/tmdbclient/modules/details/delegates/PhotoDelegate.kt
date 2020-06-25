@@ -5,7 +5,7 @@ import com.illiarb.tmdbclient.databinding.ItemPhotoBinding
 import com.illiarb.tmdbclient.libs.imageloader.CropOptions
 import com.illiarb.tmdbclient.libs.ui.R
 import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
-import com.illiarb.tmdbclient.services.tmdb.domain.Image
+import com.illiarb.tmdbclient.services.tmdb.api.domain.Image
 import com.illiarb.tmdbclient.ui.loadTmdbImage
 
 fun photoDelegate(
