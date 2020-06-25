@@ -128,6 +128,23 @@ subprojects {
         // View binding issues for unused resources and ids
         disable("UnusedIds")
       }
+
+      packagingOptions {
+        exclude("META-INF/DEPENDENCIES")
+        exclude("META-INF/LICENSE")
+        exclude("META-INF/LICENSE.txt")
+        exclude("META-INF/LICENSE.md")
+        exclude("META-INF/license.txt")
+        exclude("META-INF/NOTICE")
+        exclude("META-INF/LICENSE-notice.md")
+        exclude("META-INF/NOTICE.txt")
+        exclude("META-INF/notice.txt")
+        exclude("META-INF/AL2.0")
+        exclude("META-INF/LGPL2.1")
+        exclude("META-INF/licenses/**")
+        exclude("META-INF/*.kotlin_module")
+        exclude("**/attach_hotspot_windows.dll")
+      }
     }
   }
 }
