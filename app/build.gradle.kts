@@ -7,23 +7,16 @@ plugins {
   kotlin("kapt")
 }
 
-apply {
-  from(rootProject.file("gradle/configure-kotlin-sources.gradle"))
-}
+apply(from = rootProject.file("gradle/configure-kotlin-sources.gradle"))
 
 android {
-  compileSdkVersion(Deps.Android.Build.compileSdkVersion)
-
   defaultConfig {
-    minSdkVersion(Deps.Android.Build.minSdkVersion)
-    targetSdkVersion(Deps.Android.Build.targetSdkVersion)
-
-    versionCode = 1
-    versionName = "1.0"
-
     vectorDrawables.useSupportLibrary = true
-
     testInstrumentationRunner = "com.illiarb.tmdbexplorer.functional.AppRunner"
+  }
+
+  buildFeatures {
+    buildConfig = true
   }
 
   buildTypes {
@@ -41,10 +34,6 @@ android {
       proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
       signingConfig = signingConfigs.getByName("debug")
     }
-  }
-
-  buildFeatures {
-    viewBinding = true
   }
 
   signingConfigs {
@@ -74,7 +63,6 @@ dependencies {
   implementation(project(Modules.Core.buildConfig))
   implementation(project(Modules.Core.customTabs))
   implementation(project(Modules.Services.tmdb))
-  implementation(project(Modules.Services.tmdbApi))
   implementation(project(Modules.Services.analytics))
 
   implementation(Deps.Kotlin.std)
@@ -84,9 +72,6 @@ dependencies {
   implementation(Deps.Misc.viewBindingPropertyDelegate)
   implementation(Deps.Android.Firebase.core)
   implementation(Deps.Android.AndroidX.navigation)
-
-  // Play core lib for downloading dynamic features
-  //implementation deps.playCore
 
   debugImplementation(Deps.Tools.Debug.LeakCanary.android)
   debugImplementation(Deps.Tools.Debug.LeakCanary.objectWatcher)

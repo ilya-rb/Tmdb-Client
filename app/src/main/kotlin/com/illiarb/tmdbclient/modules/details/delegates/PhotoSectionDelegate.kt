@@ -10,7 +10,7 @@ import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.MovieDetailsSection
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.MovieDetailsSection.MoviePhotos
-import com.illiarb.tmdbclient.services.tmdb.api.domain.Image
+import com.illiarb.tmdbclient.services.tmdb.domain.Image
 
 fun photoSectionDelegate(
   clickListener: OnClickListener<Image>

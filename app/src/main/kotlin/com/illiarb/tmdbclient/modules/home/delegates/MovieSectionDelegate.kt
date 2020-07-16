@@ -14,9 +14,9 @@ import com.illiarb.tmdbclient.libs.ui.common.SizeSpec
 import com.illiarb.tmdbclient.libs.ui.ext.dimen
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdbclient.modules.delegates.movieDelegate
-import com.illiarb.tmdbclient.services.tmdb.api.domain.ListSection
-import com.illiarb.tmdbclient.services.tmdb.api.domain.Movie
-import com.illiarb.tmdbclient.services.tmdb.api.domain.MovieSection
+import com.illiarb.tmdbclient.services.tmdb.domain.ListSection
+import com.illiarb.tmdbclient.services.tmdb.domain.Movie
+import com.illiarb.tmdbclient.services.tmdb.domain.MovieSection
 import com.illiarb.tmdbclient.libs.ui.R as UiR
 
 class MovieSectionDelegate(

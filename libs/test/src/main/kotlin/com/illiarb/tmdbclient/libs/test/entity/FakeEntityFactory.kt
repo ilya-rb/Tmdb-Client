@@ -2,11 +2,11 @@ package com.illiarb.tmdbclient.libs.test.entity
 
 import com.illiarb.tmdbclient.libs.util.DisplayFormattedDate
 import com.illiarb.tmdbclient.libs.util.Result
-import com.illiarb.tmdbclient.services.tmdb.api.domain.Genre
-import com.illiarb.tmdbclient.services.tmdb.api.domain.Image
-import com.illiarb.tmdbclient.services.tmdb.api.domain.Movie
-import com.illiarb.tmdbclient.services.tmdb.api.domain.MovieFilter
-import com.illiarb.tmdbclient.services.tmdb.api.interactor.MoviesInteractor
+import com.illiarb.tmdbclient.services.tmdb.domain.Genre
+import com.illiarb.tmdbclient.services.tmdb.domain.Image
+import com.illiarb.tmdbclient.services.tmdb.domain.Movie
+import com.illiarb.tmdbclient.services.tmdb.domain.MovieFilter
+import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
 
 /**
  * Factory class to create entities for tests

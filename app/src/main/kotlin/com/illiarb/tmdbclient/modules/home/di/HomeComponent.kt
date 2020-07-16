@@ -4,9 +4,9 @@ import com.illiarb.tmdbclient.libs.ui.di.ViewModelModule
 import com.illiarb.tmdbclient.modules.home.HomeFragment
 import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
-import com.illiarb.tmdbclient.services.tmdb.api.interactor.FiltersInteractor
-import com.illiarb.tmdbclient.services.tmdb.api.interactor.HomeInteractor
-import com.illiarb.tmdbclient.services.tmdb.api.interactor.TrendingInteractor
+import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
+import com.illiarb.tmdbclient.services.tmdb.interactor.HomeInteractor
+import com.illiarb.tmdbclient.services.tmdb.interactor.TrendingInteractor
 import dagger.Component
 
 @Component(

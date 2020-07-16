@@ -8,10 +8,10 @@ import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.navigation.NavigationAction
 import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
-import com.illiarb.tmdbclient.services.tmdb.api.domain.Filter
-import com.illiarb.tmdbclient.services.tmdb.api.domain.Movie
-import com.illiarb.tmdbclient.services.tmdb.api.interactor.FiltersInteractor
-import com.illiarb.tmdbclient.services.tmdb.api.interactor.MoviesInteractor
+import com.illiarb.tmdbclient.services.tmdb.domain.Filter
+import com.illiarb.tmdbclient.services.tmdb.domain.Movie
+import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
+import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

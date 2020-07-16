@@ -5,7 +5,7 @@ import com.illiarb.tmdbclient.databinding.ItemNowPlayingItemBinding
 import com.illiarb.tmdbclient.libs.imageloader.clear
 import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
 import com.illiarb.tmdbclient.libs.ui.ext.setVisible
-import com.illiarb.tmdbclient.services.tmdb.api.domain.Movie
+import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.ui.loadTmdbImage
 
 fun nowPlayingItemDelegate(

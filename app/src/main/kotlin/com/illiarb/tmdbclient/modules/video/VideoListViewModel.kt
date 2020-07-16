@@ -2,8 +2,8 @@ package com.illiarb.tmdbclient.modules.video
 
 import androidx.lifecycle.viewModelScope
 import com.illiarb.tmdbclient.libs.ui.base.viewmodel.BaseViewModel
-import com.illiarb.tmdbclient.services.tmdb.api.domain.Video
-import com.illiarb.tmdbclient.services.tmdb.api.interactor.MoviesInteractor
+import com.illiarb.tmdbclient.services.tmdb.domain.Video
+import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
 import kotlinx.coroutines.launch
 import com.illiarb.tmdbclient.libs.util.Result
 import javax.inject.Inject

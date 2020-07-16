@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity(), Injectable {
   @Inject
   lateinit var buildConfig: BuildConfig
 
-  private val viewBinding by viewBinding<ActivityMainBinding>(R.id.root)
+  private val viewBinding: com.illiarb.tmdbclient.databinding.ActivityMainBinding by viewBinding(R.id.root)
 
   private var connectionSnackbar: Snackbar? = null
 

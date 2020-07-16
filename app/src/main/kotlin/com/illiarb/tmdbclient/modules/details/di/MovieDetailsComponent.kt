@@ -4,7 +4,7 @@ import com.illiarb.tmdbclient.libs.ui.di.ViewModelModule
 import com.illiarb.tmdbclient.modules.details.MovieDetailsFragment
 import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
-import com.illiarb.tmdbclient.services.tmdb.api.interactor.MoviesInteractor
+import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
 import dagger.BindsInstance
 import dagger.Component
 

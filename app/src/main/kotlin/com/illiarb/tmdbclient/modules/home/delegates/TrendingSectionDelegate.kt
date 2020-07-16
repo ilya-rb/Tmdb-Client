@@ -13,10 +13,10 @@ import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
 import com.illiarb.tmdbclient.libs.ui.common.SimpleBundleStore
 import com.illiarb.tmdbclient.libs.ui.ext.dimen
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
-import com.illiarb.tmdbclient.services.tmdb.api.domain.Movie
-import com.illiarb.tmdbclient.services.tmdb.api.domain.MovieSection
-import com.illiarb.tmdbclient.services.tmdb.api.domain.TrendingSection
-import com.illiarb.tmdbclient.services.tmdb.api.domain.TrendingSection.TrendingItem
+import com.illiarb.tmdbclient.services.tmdb.domain.Movie
+import com.illiarb.tmdbclient.services.tmdb.domain.MovieSection
+import com.illiarb.tmdbclient.services.tmdb.domain.TrendingSection
+import com.illiarb.tmdbclient.services.tmdb.domain.TrendingSection.TrendingItem
 import com.illiarb.tmdbclient.ui.loadTmdbImage
 
 private const val KEY_TRENDING_STATE = "trending_state"

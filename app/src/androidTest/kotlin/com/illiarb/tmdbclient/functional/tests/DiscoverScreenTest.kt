@@ -8,7 +8,7 @@ import com.illiarb.tmdbclient.functional.screens.DiscoverScreen
 import com.illiarb.tmdbclient.functional.screens.HomeScreen
 import com.illiarb.tmdbclient.functional.screens.MovieDetailsScreen
 import com.illiarb.tmdbclient.modules.main.MainActivity
-import com.illiarb.tmdbclient.services.tmdb.api.domain.Genre
+import com.illiarb.tmdbclient.services.tmdb.domain.Genre
 import com.kaspersky.kaspresso.kaspresso.Kaspresso
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import org.junit.Rule

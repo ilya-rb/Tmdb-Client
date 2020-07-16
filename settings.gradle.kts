@@ -11,8 +11,7 @@ gradleEnterprise {
 
 include(
   ":app",
-  ":services:tmdb:api",
-  ":services:tmdb:impl",
+  ":services:tmdb",
   ":services:analytics",
   ":libs:ui",
   ":libs:image-loader",

@@ -5,9 +5,9 @@ import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import com.illiarb.tmdbclient.databinding.ItemGenresSectionBinding
 import com.illiarb.tmdbclient.libs.ui.R
 import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
-import com.illiarb.tmdbclient.services.tmdb.api.domain.Genre
-import com.illiarb.tmdbclient.services.tmdb.api.domain.GenresSection
-import com.illiarb.tmdbclient.services.tmdb.api.domain.MovieSection
+import com.illiarb.tmdbclient.services.tmdb.domain.Genre
+import com.illiarb.tmdbclient.services.tmdb.domain.GenresSection
+import com.illiarb.tmdbclient.services.tmdb.domain.MovieSection
 
 fun genresSection(clickListener: OnClickListener<Genre>) =
   adapterDelegateViewBinding<GenresSection, MovieSection, ItemGenresSectionBinding>(

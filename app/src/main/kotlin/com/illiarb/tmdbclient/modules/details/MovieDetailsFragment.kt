@@ -30,7 +30,7 @@ import com.illiarb.tmdbclient.modules.details.delegates.movieSimilarDelegate
 import com.illiarb.tmdbclient.modules.details.delegates.photoSectionDelegate
 import com.illiarb.tmdbclient.modules.details.di.DaggerMovieDetailsComponent
 import com.illiarb.tmdbclient.navigation.NavigationAction
-import com.illiarb.tmdbclient.services.tmdb.api.domain.Movie
+import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.ui.loadTmdbImage
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

@@ -2,12 +2,12 @@ package com.illiarb.tmdbclient.libs.test.interactor
 
 import com.illiarb.tmdbclient.libs.test.entity.FakeEntityFactory
 import com.illiarb.tmdbclient.libs.util.Result
-import com.illiarb.tmdbclient.services.tmdb.api.domain.Filter
-import com.illiarb.tmdbclient.services.tmdb.api.domain.Movie
-import com.illiarb.tmdbclient.services.tmdb.api.domain.MovieBlock
-import com.illiarb.tmdbclient.services.tmdb.api.domain.PagedList
-import com.illiarb.tmdbclient.services.tmdb.api.domain.Video
-import com.illiarb.tmdbclient.services.tmdb.api.interactor.MoviesInteractor
+import com.illiarb.tmdbclient.services.tmdb.domain.Filter
+import com.illiarb.tmdbclient.services.tmdb.domain.Movie
+import com.illiarb.tmdbclient.services.tmdb.domain.MovieBlock
+import com.illiarb.tmdbclient.services.tmdb.domain.PagedList
+import com.illiarb.tmdbclient.services.tmdb.domain.Video
+import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
 
 class TestMoviesInteractor : MoviesInteractor {
 

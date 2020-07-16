@@ -12,7 +12,7 @@ import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdbclient.modules.delegates.movieDelegate
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.MovieDetailsSection
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.MovieDetailsSection.MovieSimilar
-import com.illiarb.tmdbclient.services.tmdb.api.domain.Movie
+import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.libs.ui.R as UiR
 
 fun movieSimilarDelegate(

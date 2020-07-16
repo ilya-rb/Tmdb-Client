@@ -3,8 +3,8 @@ package com.illiarb.tmdbclient.modules.discover.filter.di
 import com.illiarb.tmdbclient.libs.ui.di.ViewModelModule
 import com.illiarb.tmdbclient.modules.discover.filter.FilterFragment
 import com.illiarb.tmdbclient.navigation.Router
-import com.illiarb.tmdbclient.services.tmdb.api.interactor.FiltersInteractor
-import com.illiarb.tmdbclient.services.tmdb.api.interactor.GenresInteractor
+import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
+import com.illiarb.tmdbclient.services.tmdb.interactor.GenresInteractor
 import dagger.Component
 
 @Component(
