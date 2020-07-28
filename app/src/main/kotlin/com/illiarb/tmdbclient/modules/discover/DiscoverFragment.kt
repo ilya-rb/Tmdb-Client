@@ -28,7 +28,7 @@ import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.GridDecoration
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.pagination.InfiniteScrollListener
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.pagination.PaginalAdapter
-import com.illiarb.tmdbclient.modules.delegates.movieDelegate
+import com.illiarb.tmdbclient.common.delegates.movieDelegate
 import com.illiarb.tmdbclient.modules.discover.DiscoverViewModel.Event
 import com.illiarb.tmdbclient.modules.discover.DiscoverViewModel.State
 import com.illiarb.tmdbclient.modules.discover.di.DaggerDiscoverComponent
@@ -71,9 +71,8 @@ class DiscoverFragment : BaseFragment(R.layout.fragment_discover), Injectable {
   )
 
   override fun inject(appProvider: AppProvider) =
-    DaggerDiscoverComponent.builder()
-      .dependencies(appProvider)
-      .build()
+    DaggerDiscoverComponent.factory()
+      .create(dependencies = appProvider)
       .inject(this)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

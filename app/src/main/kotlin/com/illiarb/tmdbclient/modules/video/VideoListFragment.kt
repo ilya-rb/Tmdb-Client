@@ -63,10 +63,11 @@ class VideoListFragment : BaseFragment(R.layout.fragment_video_list), Injectable
   }
 
   override fun inject(appProvider: AppProvider) =
-    DaggerVideoListComponent.builder()
-      .dependencies(appProvider)
-      .movieId(requireArguments().getInt(NavigationAction.EXTRA_VIDEOS_MOVIE_ID))
-      .build()
+    DaggerVideoListComponent.factory()
+      .create(
+        movieId = requireArguments().getInt(NavigationAction.EXTRA_VIDEOS_MOVIE_ID),
+        dependencies = appProvider
+      )
       .inject(this)
 
   private fun setupVideoPlayer() {

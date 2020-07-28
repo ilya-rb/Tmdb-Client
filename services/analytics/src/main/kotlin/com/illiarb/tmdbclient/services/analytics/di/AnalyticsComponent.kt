@@ -21,12 +21,9 @@ interface AnalyticsComponent : AnalyticsProvider {
     fun buildConfig(): BuildConfig
   }
 
-  @Component.Builder
-  interface Builder {
-    @BindsInstance
-    fun application(app: Application): Builder
-    fun dependencies(dependencies: Dependencies): Builder
-    fun build(): AnalyticsComponent
+  @Component.Factory
+  interface Factory {
+    fun create(@BindsInstance app: Application, dependencies: Dependencies): AnalyticsComponent
   }
 }
 

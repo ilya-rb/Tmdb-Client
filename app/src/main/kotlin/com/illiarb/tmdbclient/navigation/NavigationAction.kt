@@ -7,7 +7,6 @@ sealed class NavigationAction(@IdRes val destinationId: Int) {
 
   companion object {
     const val NO_ID = 0
-
     const val EXTRA_MOVIE_DETAILS_MOVIE_ID = "movie_id"
     const val EXTRA_VIDEOS_MOVIE_ID = "movie_id"
   }

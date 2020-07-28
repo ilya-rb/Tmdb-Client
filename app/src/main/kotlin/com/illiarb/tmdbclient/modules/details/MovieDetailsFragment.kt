@@ -31,7 +31,7 @@ import com.illiarb.tmdbclient.modules.details.delegates.photoSectionDelegate
 import com.illiarb.tmdbclient.modules.details.di.DaggerMovieDetailsComponent
 import com.illiarb.tmdbclient.navigation.NavigationAction
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
-import com.illiarb.tmdbclient.ui.loadTmdbImage
+import com.illiarb.tmdbclient.util.loadTmdbImage
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -57,10 +57,11 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
   }
 
   override fun inject(appProvider: AppProvider) =
-    DaggerMovieDetailsComponent.builder()
-      .dependencies(appProvider)
-      .movieId(requireArguments().getInt(NavigationAction.EXTRA_MOVIE_DETAILS_MOVIE_ID))
-      .build()
+    DaggerMovieDetailsComponent.factory()
+      .create(
+        movieId = requireArguments().getInt(NavigationAction.EXTRA_MOVIE_DETAILS_MOVIE_ID),
+        dependencies = appProvider
+      )
       .inject(this)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

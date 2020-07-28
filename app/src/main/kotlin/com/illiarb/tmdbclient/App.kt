@@ -18,27 +18,23 @@ import javax.inject.Inject
 
 class App : Application() {
 
-  private val appBuildConfig = AppBuildConfig(this)
+  private val appBuildConfig = AppBuildConfig(context = this)
   private val appTmdbConfig = AppTmdbConfig()
 
   private val appComponent: AppComponent by lazy {
-    val toolsComponent = DaggerToolsComponent.builder()
-      .application(this)
-      .build()
-
-    val analyticsComponent = DaggerAnalyticsComponent.builder()
-      .application(this)
-      .dependencies(
-        object : AnalyticsComponent.Dependencies {
+    val toolsComponent = DaggerToolsComponent.factory().create(app = this)
+    val analyticsComponent = DaggerAnalyticsComponent.factory()
+      .create(
+        app = this,
+        dependencies = object : AnalyticsComponent.Dependencies {
           override fun buildConfig(): BuildConfig = appBuildConfig
         }
       )
-      .build()
 
-    val tmdbComponent = DaggerTmdbComponent.builder()
-      .application(this)
-      .dependencies(
-        object : TmdbComponent.Dependencies {
+    val tmdbComponent = DaggerTmdbComponent.factory()
+      .create(
+        app = this,
+        dependencies = object : TmdbComponent.Dependencies {
           override fun buildConfig(): BuildConfig = appBuildConfig
           override fun tmdbConfig(): TmdbConfig = appTmdbConfig
           override fun resourceResolver(): ResourceResolver = toolsComponent.resourceResolver()
@@ -46,29 +42,28 @@ class App : Application() {
             toolsComponent.dispatcherProvider()
         }
       )
-      .build()
 
-    DaggerAppComponent.builder()
-      .application(this)
-      .analyticsProvider(analyticsComponent)
-      .toolsProvider(toolsComponent)
-      .tmdbProvider(tmdbComponent)
-      .build()
+    DaggerAppComponent.factory().create(
+      app = this,
+      analyticsProvider = analyticsComponent,
+      toolsProvider = toolsComponent,
+      tmdbProvider = tmdbComponent
+    )
   }
 
   override fun onCreate() {
     super.onCreate()
 
-    AppInjector(this, appComponent).registerLifecycleCallbacks()
+    AppInjector(application = this, provider = appComponent).registerLifecycleCallbacks()
 
-    appComponent.inject(this)
+    appComponent.inject(app = this)
   }
 
   @Inject
   @Suppress("unused", "ProtectedInFinal")
   protected fun runInitializers(initializers: Set<@JvmSuppressWildcards AppInitializer>) {
     initializers.forEach {
-      it.initialize(this)
+      it.initialize(app = this)
     }
   }
 }

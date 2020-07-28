@@ -6,10 +6,12 @@ import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
 import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
 import com.illiarb.tmdbclient.libs.tools.ResourceResolver
+import com.illiarb.tmdbclient.services.tmdb.interactor.DiscoverInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.GenresInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.HomeInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
+import com.illiarb.tmdbclient.services.tmdb.interactor.SearchInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.TrendingInteractor
 import dagger.BindsInstance
 import dagger.Component
@@ -37,12 +39,9 @@ interface TmdbComponent : TmdbProvider {
     fun tmdbConfig(): TmdbConfig
   }
 
-  @Component.Builder
-  interface Builder {
-    @BindsInstance
-    fun application(app: Application): Builder
-    fun dependencies(dependencies: Dependencies): Builder
-    fun build(): TmdbComponent
+  @Component.Factory
+  interface Factory {
+    fun create(@BindsInstance app: Application, dependencies: Dependencies): TmdbComponent
   }
 }
 
@@ -50,6 +49,8 @@ interface TmdbProvider {
   fun homeInteractor(): HomeInteractor
   fun genresInteractor(): GenresInteractor
   fun moviesInteractor(): MoviesInteractor
+  fun discoverInteractor(): DiscoverInteractor
+  fun searchInteractor(): SearchInteractor
   fun trendingInteractor(): TrendingInteractor
   fun filtersInteractor(): FiltersInteractor
   fun networkFlipperPlugin(): NetworkFlipperPlugin

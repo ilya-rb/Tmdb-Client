@@ -22,12 +22,13 @@ interface MainComponent {
     fun buildConfig(): BuildConfig
   }
 
-  @Component.Builder
-  interface Builder {
-    @BindsInstance
-    fun activity(activity: FragmentActivity): Builder
-    fun dependencies(dependencies: Dependencies): Builder
-    fun build(): MainComponent
+  @Component.Factory
+  interface Factory {
+
+    fun create(
+      @BindsInstance activity: FragmentActivity,
+      dependencies: Dependencies
+    ): MainComponent
   }
 
   fun inject(activity: MainActivity)

@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.modules.delegates
+package com.illiarb.tmdbclient.common.delegates
 
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import com.illiarb.tmdbclient.R
@@ -11,7 +11,7 @@ import com.illiarb.tmdbclient.libs.ui.ext.dimen
 import com.illiarb.tmdbclient.libs.ui.ext.setInvisible
 import com.illiarb.tmdbclient.libs.ui.ext.setSize
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
-import com.illiarb.tmdbclient.ui.loadTmdbImage
+import com.illiarb.tmdbclient.util.loadTmdbImage
 import com.illiarb.tmdbclient.libs.ui.R as UiR
 
 fun movieDelegate(

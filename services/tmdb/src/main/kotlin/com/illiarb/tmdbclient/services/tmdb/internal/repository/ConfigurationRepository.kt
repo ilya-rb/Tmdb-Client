@@ -4,8 +4,8 @@ import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.domain.Country
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.ConfigurationDto
 import com.illiarb.tmdbclient.services.tmdb.internal.mappers.CountryMapper
-import com.illiarb.tmdbclient.services.tmdb.internal.model.Configuration
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.ConfigurationApi
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 internal interface ConfigurationRepository {
 
-  suspend fun getConfiguration(refresh: Boolean = false): Result<Configuration>
+  suspend fun getConfiguration(refresh: Boolean = false): Result<ConfigurationDto>
 
   suspend fun getCountries(): Result<List<Country>>
 }
@@ -29,7 +29,7 @@ internal class DefaultConfigurationRepository @Inject constructor(
     const val CONFIGURATION_EXPIRY_DAYS = 2
   }
 
-  override suspend fun getConfiguration(refresh: Boolean): Result<Configuration> = Result.create {
+  override suspend fun getConfiguration(refresh: Boolean): Result<ConfigurationDto> = Result.create {
     withContext(dispatcherProvider.io) {
       if (refresh || isConfigurationExpired()) {
         fetchConfigurationAndStore()

@@ -13,11 +13,9 @@ import javax.inject.Singleton
 @Singleton
 interface ToolsComponent : ToolsProvider {
 
-  @Component.Builder
-  interface Builder {
-    @BindsInstance
-    fun application(app: Application): Builder
-    fun build(): ToolsComponent
+  @Component.Factory
+  interface Factory {
+    fun create(@BindsInstance app: Application): ToolsComponent
   }
 }
 

@@ -7,7 +7,7 @@ internal class ImageUrlCreator @Inject constructor() {
 
   fun createImage(imageConfig: ImageConfig, path: String?, imageType: ImageType): Image {
     if (path == null) {
-      return Image("", "", emptyList())
+      return Image(baseUrl = "", path = "", sizes = emptyList())
     }
 
     val sizes = when (imageType) {
@@ -16,7 +16,11 @@ internal class ImageUrlCreator @Inject constructor() {
       ImageType.Profile -> imageConfig.profileSizes
     }
 
-    return Image(imageConfig.secureBaseUrl.ensureEndingSlash(), path, sizes)
+    return Image(
+      imageConfig.secureBaseUrl.ensureEndingSlash(),
+      path,
+      sizes
+    )
   }
 
   private fun String.ensureEndingSlash(): String = if (endsWith('/')) this else this.plus('/')

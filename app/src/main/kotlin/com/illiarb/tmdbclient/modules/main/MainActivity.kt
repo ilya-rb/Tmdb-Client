@@ -36,15 +36,13 @@ class MainActivity : AppCompatActivity(), Injectable {
   @Inject
   lateinit var buildConfig: BuildConfig
 
-  private val viewBinding: com.illiarb.tmdbclient.databinding.ActivityMainBinding by viewBinding(R.id.root)
+  private val viewBinding: ActivityMainBinding by viewBinding(R.id.root)
 
   private var connectionSnackbar: Snackbar? = null
 
   override fun inject(appProvider: AppProvider) =
-    DaggerMainComponent.builder()
-      .activity(this)
-      .dependencies(appProvider)
-      .build()
+    DaggerMainComponent.factory()
+      .create(activity = this, dependencies = appProvider)
       .inject(this)
 
   override fun onCreate(savedInstanceState: Bundle?) {

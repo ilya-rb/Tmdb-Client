@@ -15,10 +15,4 @@ internal class DefaultAnalyticsService(
       it.sendEvent(event)
     }
   }
-
-  override fun trackRouterAction(action: String) {
-    eventTrackers.forEach {
-      it.sendEvent(AnalyticEvent.RouterAction(action))
-    }
-  }
 }

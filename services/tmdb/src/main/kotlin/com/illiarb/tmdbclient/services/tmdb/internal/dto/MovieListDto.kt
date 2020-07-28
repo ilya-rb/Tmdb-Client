@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.services.tmdb.internal.model
+package com.illiarb.tmdbclient.services.tmdb.internal.dto
 
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.readPersistableList
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.writePersistableList
@@ -10,8 +10,8 @@ import java.util.concurrent.TimeUnit
 /**
  * @author ilya-rb on 16.11.18.
  */
-internal data class MovieListModel(
-  var movies: List<MovieModel>,
+internal data class MovieListDto(
+  var movies: List<MovieDto>,
   var createdAt: Long = System.currentTimeMillis()
 ) : Persistable {
 
@@ -23,8 +23,8 @@ internal data class MovieListModel(
 
   override fun readExternal(input: DataInput) {
     createdAt = input.readLong()
-    movies = mutableListOf<MovieModel>().also {
-      input.readPersistableList(it) { MovieModel() }
+    movies = mutableListOf<MovieDto>().also {
+      input.readPersistableList(it) { MovieDto() }
     }
   }
 

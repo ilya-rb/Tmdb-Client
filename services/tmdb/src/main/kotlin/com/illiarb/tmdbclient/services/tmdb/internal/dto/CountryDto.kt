@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.services.tmdb.internal.model
+package com.illiarb.tmdbclient.services.tmdb.internal.dto
 
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.readPersistableList
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.writePersistableList
@@ -9,7 +9,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-internal data class CountryModel(
+internal data class CountryDto(
   @Json(name = "iso_3166_1") var code: String = "",
   @Json(name = "english_name") var name: String = ""
 ) : Persistable {
@@ -27,11 +27,11 @@ internal data class CountryModel(
   }
 }
 
-internal data class CountryList(var countries: List<CountryModel> = emptyList()) : Persistable {
+internal data class CountryList(var countries: List<CountryDto> = emptyList()) : Persistable {
 
   override fun readExternal(input: DataInput) {
-    countries = mutableListOf<CountryModel>().also {
-      input.readPersistableList(it) { CountryModel() }
+    countries = mutableListOf<CountryDto>().also {
+      input.readPersistableList(it) { CountryDto() }
     }
   }
 

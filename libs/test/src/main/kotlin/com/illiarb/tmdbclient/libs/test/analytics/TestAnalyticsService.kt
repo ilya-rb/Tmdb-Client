@@ -9,6 +9,4 @@ import com.illiarb.tmdbclient.services.analytics.AnalyticsService
 class TestAnalyticsService : AnalyticsService {
 
   override fun trackEvent(event: AnalyticEvent) = Unit
-
-  override fun trackRouterAction(action: String) = Unit
 }

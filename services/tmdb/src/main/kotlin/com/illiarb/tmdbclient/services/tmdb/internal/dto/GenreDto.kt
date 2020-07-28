@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.services.tmdb.internal.model
+package com.illiarb.tmdbclient.services.tmdb.internal.dto
 
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.readPersistableList
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.writePersistableList
@@ -10,7 +10,7 @@ import com.squareup.moshi.JsonClass
 import java.util.Collections
 
 @JsonClass(generateAdapter = true)
-internal data class GenreModel(
+internal data class GenreDto(
   @Json(name = "id") var id: Int,
   @Json(name = "name") var name: String
 ) : Persistable {
@@ -31,14 +31,15 @@ internal data class GenreModel(
 }
 
 @JsonClass(generateAdapter = true)
-internal data class GenreListModel(@Json(name = "genres") var genres: List<GenreModel>) :
-  Persistable {
+internal data class GenreListDto(
+  @Json(name = "genres") var genres: List<GenreDto>
+) : Persistable {
 
   constructor() : this(Collections.emptyList())
 
   override fun readExternal(input: DataInput) {
-    genres = mutableListOf<GenreModel>().also {
-      input.readPersistableList(it) { GenreModel() }
+    genres = mutableListOf<GenreDto>().also {
+      input.readPersistableList(it) { GenreDto() }
     }
   }
 

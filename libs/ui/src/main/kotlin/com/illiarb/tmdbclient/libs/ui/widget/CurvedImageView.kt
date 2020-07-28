@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.modules.details.widget
+package com.illiarb.tmdbclient.libs.ui.widget
 
 import android.content.Context
 import android.content.res.TypedArray
@@ -7,8 +7,7 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
-import com.illiarb.tmdbclient.R
-import com.illiarb.tmdbclient.libs.ui.ext.dimen
+import com.illiarb.tmdbclient.libs.ui.R
 
 class CurvedImageView @JvmOverloads constructor(
   context: Context,
@@ -25,10 +24,7 @@ class CurvedImageView @JvmOverloads constructor(
     try {
       attributes = context.obtainStyledAttributes(attrs, R.styleable.CurvedImageView)
 
-      curveOffset = attributes.getInt(
-        R.styleable.CurvedImageView_cvCurveOffset,
-        dimen(R.dimen.movie_details_curve_offset)
-      ).toFloat()
+      curveOffset = attributes.getInt(R.styleable.CurvedImageView_cvCurveOffset, 0).toFloat()
 
     } finally {
       attributes?.recycle()

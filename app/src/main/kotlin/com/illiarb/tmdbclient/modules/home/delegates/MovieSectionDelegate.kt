@@ -13,7 +13,7 @@ import com.illiarb.tmdbclient.libs.ui.common.SimpleBundleStore
 import com.illiarb.tmdbclient.libs.ui.common.SizeSpec
 import com.illiarb.tmdbclient.libs.ui.ext.dimen
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
-import com.illiarb.tmdbclient.modules.delegates.movieDelegate
+import com.illiarb.tmdbclient.common.delegates.movieDelegate
 import com.illiarb.tmdbclient.services.tmdb.domain.ListSection
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.services.tmdb.domain.MovieSection

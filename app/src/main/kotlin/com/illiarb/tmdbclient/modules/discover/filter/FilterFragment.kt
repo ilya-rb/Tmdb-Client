@@ -47,9 +47,8 @@ class FilterFragment : BaseFragment(R.layout.fragment_filter), Injectable {
   lateinit var viewModelFactory: ViewModelProvider.Factory
 
   override fun inject(appProvider: AppProvider) {
-    DaggerFilterComponent.builder()
-      .dependencies(appProvider)
-      .build()
+    DaggerFilterComponent.factory()
+      .create(dependencies = appProvider)
       .inject(this)
   }
 

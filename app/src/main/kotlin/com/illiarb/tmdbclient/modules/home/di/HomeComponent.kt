@@ -26,10 +26,9 @@ interface HomeComponent {
     fun analyticsService(): AnalyticsService
   }
 
-  @Component.Builder
-  interface Builder {
-    fun dependencies(dependencies: Dependencies): Builder
-    fun build(): HomeComponent
+  @Component.Factory
+  interface Factory {
+    fun create(dependencies: Dependencies): HomeComponent
   }
 
   fun inject(fragment: HomeFragment)

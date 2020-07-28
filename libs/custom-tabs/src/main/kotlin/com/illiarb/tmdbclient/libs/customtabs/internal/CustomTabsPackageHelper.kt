@@ -49,9 +49,9 @@ internal object CustomTabsPackageHelper {
       supportedApps.isEmpty() -> null
       supportedApps.size == 1 -> supportedApps[0]
       !defaultHandlerPackageName.isNullOrEmpty()
-          && !defaultHandlerPackageName.isNullOrEmpty()
-          && !hasSpecializedHandlerIntents(context, activityIntent)
-          && supportedApps.contains(defaultHandlerPackageName) -> defaultHandlerPackageName
+        && !defaultHandlerPackageName.isNullOrEmpty()
+        && !hasSpecializedHandlerIntents(context, activityIntent)
+        && supportedApps.contains(defaultHandlerPackageName) -> defaultHandlerPackageName
       supportedApps.contains(STABLE_PACKAGE) -> STABLE_PACKAGE
       else -> null
     }

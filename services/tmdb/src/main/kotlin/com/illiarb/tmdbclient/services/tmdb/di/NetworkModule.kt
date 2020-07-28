@@ -5,14 +5,13 @@ import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
 import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
 import com.illiarb.tmdbclient.libs.tools.ResourceResolver
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.MovieDto
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.TrendingDto
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.TvShowDto
 import com.illiarb.tmdbclient.services.tmdb.internal.error.ErrorCreator
 import com.illiarb.tmdbclient.services.tmdb.internal.network.CallAdapterFactory
 import com.illiarb.tmdbclient.services.tmdb.internal.network.interceptor.ApiKeyInterceptor
 import com.illiarb.tmdbclient.services.tmdb.internal.network.interceptor.RegionInterceptor
-import com.illiarb.tmdbclient.services.tmdb.internal.model.MovieModel
-import com.illiarb.tmdbclient.services.tmdb.internal.model.PersonModel
-import com.illiarb.tmdbclient.services.tmdb.internal.model.TrendingModel
-import com.illiarb.tmdbclient.services.tmdb.internal.model.TvShowModel
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.ConfigurationRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
@@ -51,10 +50,9 @@ object NetworkModule {
   internal fun provideMoshi(): Moshi {
     return Moshi.Builder()
       .add(
-        PolymorphicJsonAdapterFactory.of(TrendingModel::class.java, "media_type")
-          .withSubtype(MovieModel::class.java, "movie")
-          .withSubtype(TvShowModel::class.java, "tv")
-          .withSubtype(PersonModel::class.java, "person")
+        PolymorphicJsonAdapterFactory.of(TrendingDto::class.java, "media_type")
+          .withSubtype(MovieDto::class.java, "movie")
+          .withSubtype(TvShowDto::class.java, "tv")
       )
       .add(KotlinJsonAdapterFactory())
       .build()

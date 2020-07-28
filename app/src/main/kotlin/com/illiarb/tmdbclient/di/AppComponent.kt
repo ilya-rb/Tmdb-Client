@@ -33,16 +33,15 @@ import javax.inject.Singleton
 @Singleton
 interface AppComponent : AppProvider {
 
-  @Component.Builder
-  interface Builder {
+  @Component.Factory
+  interface Factory {
 
-    @BindsInstance
-    fun application(app: Application): Builder
-    fun toolsProvider(provider: ToolsProvider): Builder
-    fun tmdbProvider(provider: TmdbProvider): Builder
-    fun analyticsProvider(provider: AnalyticsProvider): Builder
-    fun appModule(module: AppModule): Builder
-    fun build(): AppComponent
+    fun create(
+      @BindsInstance app: Application,
+      analyticsProvider: AnalyticsProvider,
+      toolsProvider: ToolsProvider,
+      tmdbProvider: TmdbProvider
+    ): AppComponent
   }
 
   fun inject(app: App)

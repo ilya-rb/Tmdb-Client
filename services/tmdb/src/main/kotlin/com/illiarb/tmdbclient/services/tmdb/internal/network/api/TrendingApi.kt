@@ -1,8 +1,8 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.network.api
 
 import com.illiarb.tmdbclient.libs.util.Result
-import com.illiarb.tmdbclient.services.tmdb.internal.model.ResultsModel
-import com.illiarb.tmdbclient.services.tmdb.internal.model.TrendingModel
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.ResultsDto
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.TrendingDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -17,5 +17,5 @@ internal interface TrendingApi {
   suspend fun getTrendingAsync(
     @Path("media_type") mediaType: String,
     @Path("time_window") timeWindow: String
-  ): Result<ResultsModel<TrendingModel>>
+  ): Result<ResultsDto<TrendingDto>>
 }

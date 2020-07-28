@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.ui
+package com.illiarb.tmdbclient.util
 
 import android.widget.ImageView
 import com.illiarb.tmdbclient.R

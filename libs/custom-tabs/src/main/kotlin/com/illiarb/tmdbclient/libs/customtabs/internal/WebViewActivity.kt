@@ -60,15 +60,7 @@ internal class WebViewActivity : AppCompatActivity() {
   }
 
   companion object {
-
-    /**
-     * Optional title resource for the actionbar / toolbar.
-     */
-    val EXTRA_TITLE = "${WebViewActivity::class.java.name}.EXTRA_TITLE"
-
-    /**
-     * Mandatory file to load and display.
-     */
-    val EXTRA_URL = "${WebViewActivity::class.java.name}.EXTRA_URL"
+    const val EXTRA_TITLE = "EXTRA_TITLE"
+    const val EXTRA_URL = "EXTRA_URL"
   }
 }

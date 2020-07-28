@@ -5,8 +5,8 @@ import com.illiarb.tmdbclient.libs.test.tools.TestDispatcherProvider
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
 import com.illiarb.tmdbclient.services.tmdb.internal.mappers.GenreMapper
-import com.illiarb.tmdbclient.services.tmdb.internal.model.GenreListModel
-import com.illiarb.tmdbclient.services.tmdb.internal.model.GenreModel
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.GenreListModel
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.GenreModel
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.GenreApi
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.DefaultGenresRepository
 import io.mockk.coEvery

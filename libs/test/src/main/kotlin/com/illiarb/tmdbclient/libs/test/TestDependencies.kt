@@ -2,10 +2,12 @@ package com.illiarb.tmdbclient.libs.test
 
 import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import com.illiarb.tmdbclient.libs.test.analytics.TestAnalyticsService
+import com.illiarb.tmdbclient.libs.test.interactor.TestDiscoverInteractor
 import com.illiarb.tmdbclient.libs.test.interactor.TestFiltersInteractor
 import com.illiarb.tmdbclient.libs.test.interactor.TestGenresInteractor
 import com.illiarb.tmdbclient.libs.test.interactor.TestHomeInteractor
 import com.illiarb.tmdbclient.libs.test.interactor.TestMoviesInteractor
+import com.illiarb.tmdbclient.libs.test.interactor.TestSearchInteractor
 import com.illiarb.tmdbclient.libs.test.interactor.TestTrendingInteractor
 import com.illiarb.tmdbclient.libs.test.tools.TestConnectivityStatus
 import com.illiarb.tmdbclient.libs.test.tools.TestDispatcherProvider
@@ -19,10 +21,12 @@ import com.illiarb.tmdbclient.libs.tools.di.ToolsProvider
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
 import com.illiarb.tmdbclient.services.analytics.di.AnalyticsProvider
 import com.illiarb.tmdbclient.services.tmdb.di.TmdbProvider
+import com.illiarb.tmdbclient.services.tmdb.interactor.DiscoverInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.GenresInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.HomeInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
+import com.illiarb.tmdbclient.services.tmdb.interactor.SearchInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.TrendingInteractor
 
 @Suppress("TooManyFunctions")
@@ -38,4 +42,6 @@ object TestDependencies : ToolsProvider, AnalyticsProvider, TmdbProvider {
   override fun trendingInteractor(): TrendingInteractor = TestTrendingInteractor()
   override fun networkFlipperPlugin(): NetworkFlipperPlugin = NetworkFlipperPlugin()
   override fun filtersInteractor(): FiltersInteractor = TestFiltersInteractor()
+  override fun searchInteractor(): SearchInteractor = TestSearchInteractor()
+  override fun discoverInteractor(): DiscoverInteractor = TestDiscoverInteractor()
 }

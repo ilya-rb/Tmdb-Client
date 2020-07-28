@@ -39,7 +39,7 @@ object Deps {
 
   object GradlePlugins {
     const val jacoco = "org.jacoco:org.jacoco.core:0.8.5"
-    const val versionsCheck = "com.github.ben-manes:gradle-versions-plugin:0.28.0"
+    const val versionsCheck = "com.github.ben-manes:gradle-versions-plugin:0.29.0"
     const val junit5 = "de.mannodermaus.gradle.plugins:android-junit5:1.6.2.0"
   }
 
@@ -63,15 +63,14 @@ object Deps {
       const val compileSdkVersion = 29
       const val targetSdkVersion = 29
       const val minSdkVersion = 21
-      const val gradlePlugin = "com.android.tools.build:gradle:4.1.0-beta01"
+      const val gradlePlugin = "com.android.tools.build:gradle:4.1.0-beta04"
     }
 
     object AndroidX {
       private const val archComponentsVersion = "2.2.0"
 
       object ViewModel {
-        const val core = "androidx.lifecycle:lifecycle-viewmodel:$archComponentsVersion"
-        const val ktx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$archComponentsVersion"
+        const val core = "androidx.lifecycle:lifecycle-viewmodel-ktx:$archComponentsVersion"
         const val ext = "androidx.lifecycle:lifecycle-extensions:$archComponentsVersion"
       }
 
@@ -80,17 +79,17 @@ object Deps {
       }
 
       object Room {
-        private const val roomVersion = "2.3.0-alpha01"
+        private const val roomVersion = "2.3.0-alpha02"
 
         const val core = "androidx.room:room-ktx:$roomVersion"
         const val compiler = "androidx.room:room-compiler:$roomVersion"
       }
 
-      const val fragment = "androidx.fragment:fragment-ktx:1.3.0-alpha06"
+      const val fragment = "androidx.fragment:fragment-ktx:1.3.0-alpha07"
       const val navigation = "androidx.navigation:navigation-fragment:2.3.0"
-      const val material = "com.google.android.material:material:1.3.0-alpha01"
-      const val recyclerView = "androidx.recyclerview:recyclerview:1.2.0-alpha04"
-      const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+      const val material = "com.google.android.material:material:1.3.0-alpha02"
+      const val recyclerView = "androidx.recyclerview:recyclerview:1.2.0-alpha05"
+      const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
       const val emoji = "androidx.emoji:emoji:1.1.0"
       const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta8"
       const val browserHelper = "com.google.androidbrowserhelper:androidbrowserhelper:1.4.0-alpha01"
@@ -123,7 +122,7 @@ object Deps {
     private const val retrofitVersion = "2.9.0"
 
     const val core = "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    const val okHttp = "com.squareup.okhttp3:okhttp:4.7.2"
+    const val okHttp = "com.squareup.okhttp3:okhttp:4.8.0"
     const val converterMoshi = "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
     const val coroutinesAdapter =
       "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
@@ -147,7 +146,7 @@ object Deps {
   }
 
   object Dagger {
-    private const val daggerVersion = "2.28.1"
+    private const val daggerVersion = "2.28.3"
 
     const val core = "com.google.dagger:dagger:$daggerVersion"
     const val compiler = "com.google.dagger:dagger-compiler:$daggerVersion"
@@ -158,7 +157,7 @@ object Deps {
     object Debug {
 
       object Flipper {
-        private const val flipperVersion = "0.49.0"
+        private const val flipperVersion = "0.51.0"
 
         const val flipper = "com.facebook.flipper:flipper:$flipperVersion"
         const val flipperNetwork = "com.facebook.flipper:flipper-network-plugin:$flipperVersion"
@@ -188,7 +187,7 @@ object Deps {
     const val lottie = "com.airbnb.android:lottie:3.0.7"
     const val binaryPrefs = "com.github.yandextaxitech:binaryprefs:1.0.1"
     const val javax = "javax.inject:javax.inject:1"
-    const val viewBindingPropertyDelegate = "com.github.kirich1409:ViewBindingPropertyDelegate:1.0.0-beta1"
+    const val viewBindingPropertyDelegate = "com.github.kirich1409:ViewBindingPropertyDelegate:1.0.0"
   }
 
   object Test {

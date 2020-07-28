@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.ui
+package com.illiarb.tmdbclient.libs.ui.widget
 
 import android.animation.ArgbEvaluator
 import android.animation.FloatEvaluator

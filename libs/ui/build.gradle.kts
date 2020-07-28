@@ -22,7 +22,6 @@ dependencies {
   api(Deps.Android.AndroidX.Lifecycle.ktx)
   api(Deps.Android.AndroidX.ViewModel.core)
   api(Deps.Android.AndroidX.ViewModel.ext)
-  api(Deps.Android.AndroidX.ViewModel.ktx)
   api(Deps.AdapterDelegates.core)
   api(Deps.AdapterDelegates.dsl)
 }

@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.services.tmdb.internal.model
+package com.illiarb.tmdbclient.services.tmdb.internal.dto
 
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.readStringList
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.writeStringList
@@ -14,7 +14,7 @@ import java.util.Collections
  * @author ilya-rb on 30.11.18.
  */
 @JsonClass(generateAdapter = true)
-internal data class Configuration(
+internal data class ConfigurationDto(
   @Json(name = "images") var images: ImageConfig = ImageConfig(),
   @Json(name = "change_keys") var changeKeys: List<String> = Collections.emptyList()
 ) : Persistable {

@@ -21,6 +21,7 @@ import com.illiarb.tmdbclient.libs.ui.ext.getColorAttr
 import com.illiarb.tmdbclient.libs.ui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbclient.libs.ui.ext.tintMenuItemsWithColor
 import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
+import com.illiarb.tmdbclient.libs.ui.widget.ToolbarScrollListener
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdbclient.modules.home.HomeViewModel.Event
@@ -30,7 +31,6 @@ import com.illiarb.tmdbclient.modules.home.delegates.genresSection
 import com.illiarb.tmdbclient.modules.home.delegates.nowplaying.nowPlayingSection
 import com.illiarb.tmdbclient.modules.home.delegates.trendingSection
 import com.illiarb.tmdbclient.modules.home.di.DaggerHomeComponent
-import com.illiarb.tmdbclient.ui.ToolbarScrollListener
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -71,9 +71,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_movies), Injectable {
   )
 
   override fun inject(appProvider: AppProvider) =
-    DaggerHomeComponent.builder()
-      .dependencies(appProvider)
-      .build()
+    DaggerHomeComponent.factory()
+      .create(dependencies = appProvider)
       .inject(this)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
