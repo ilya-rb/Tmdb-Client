@@ -23,6 +23,7 @@ import com.illiarb.tmdbclient.libs.ui.ext.setVisible
 import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
+import com.illiarb.tmdbclient.libs.util.Async
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.Event
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.State
 import com.illiarb.tmdbclient.modules.details.delegates.movieInfoDelegate
@@ -86,13 +87,15 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
       adapter = sectionsAdapter
       layoutManager = LinearLayoutManager(context)
       isNestedScrollingEnabled = false
-      removeAdapterOnDetach()
       addItemDecoration(
         SpaceDecoration(
           spacingTop = dimen(UiR.dimen.spacing_small),
           spacingBottom = dimen(UiR.dimen.spacing_small)
         )
       )
+
+      removeAdapterOnDetach()
+
       doOnApplyWindowInsets { v, windowInsets, initialPadding ->
         v.updatePadding(bottom = initialPadding.top + windowInsets.systemWindowInsetBottom)
       }
@@ -114,13 +117,11 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
   }
 
   private fun render(newState: State) {
-    viewBinding.swipeRefresh.isRefreshing = newState.isLoading
+    viewBinding.swipeRefresh.isRefreshing = newState.movie is Async.Loading
+
+    newState.movie.doOnSuccess(::showMovieDetails)
 
     sectionsAdapter.submitList(newState.movieSections)
-
-    newState.movie?.let {
-      showMovieDetails(it)
-    }
 
     newState.error?.consume { message ->
       snackbarController.showMessage(viewBinding.root, message.message)

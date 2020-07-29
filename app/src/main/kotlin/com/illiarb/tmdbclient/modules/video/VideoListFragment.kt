@@ -3,6 +3,7 @@ package com.illiarb.tmdbclient.modules.video
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,12 +37,9 @@ class VideoListFragment : BaseFragment(R.layout.fragment_video_list), Injectable
     }
   )
 
+  private val viewModel by viewModels<VideoListViewModel>(factoryProducer = { viewModelFactory })
   private val viewBinding by viewBinding { fragment ->
     FragmentVideoListBinding.bind(fragment.requireView())
-  }
-
-  private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
-    ViewModelProvider(this, viewModelFactory).get(VideoListViewModel::class.java)
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

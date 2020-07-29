@@ -16,17 +16,12 @@ fun genresSection(clickListener: OnClickListener<Genre>) =
 
     bind {
       item.genres.forEach { genre ->
-        val chip = Chip(
-          itemView.context,
-          null,
-          R.attr.materialChipAction
-        )
-
-        chip.text = genre.name
-        chip.setOnClickListener {
-          clickListener(genre)
+        val chip = Chip(itemView.context, null, R.attr.materialChipAction).apply {
+          text = genre.name
+          setOnClickListener {
+            clickListener(genre)
+          }
         }
-
         binding.genresChipGroup.addView(chip)
       }
     }
