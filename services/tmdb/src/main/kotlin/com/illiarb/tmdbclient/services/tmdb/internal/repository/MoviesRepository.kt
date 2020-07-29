@@ -12,7 +12,6 @@ import com.illiarb.tmdbclient.services.tmdb.internal.mappers.MovieMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import javax.inject.Singleton
 
 internal interface MoviesRepository {
 
@@ -24,7 +23,6 @@ internal interface MoviesRepository {
 
 }
 
-@Singleton
 internal class DefaultMoviesRepository @Inject constructor(
   private val moviesService: MovieApi,
   private val dispatcherProvider: DispatcherProvider,

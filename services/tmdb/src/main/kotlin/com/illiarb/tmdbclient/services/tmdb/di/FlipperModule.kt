@@ -16,7 +16,6 @@ object FlipperModule {
 
   @Provides
   @JvmStatic
-  @Singleton
   fun provideFlipperInterceptor(plugin: NetworkFlipperPlugin): FlipperOkhttpInterceptor {
     return FlipperOkhttpInterceptor(plugin)
   }

@@ -8,6 +8,7 @@ import com.illiarb.tmdbclient.services.tmdb.internal.network.api.TrendingApi
 import dagger.Lazy
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import okhttp3.OkHttpClient
 import retrofit2.CallAdapter
 import retrofit2.Converter
@@ -38,6 +39,7 @@ object ApiModule {
 
   @Provides
   @JvmStatic
+  @Reusable
   internal fun provideTmdbRetrofit(
     okHttpClient: Lazy<OkHttpClient>,
     callAdapterFactory: CallAdapter.Factory,

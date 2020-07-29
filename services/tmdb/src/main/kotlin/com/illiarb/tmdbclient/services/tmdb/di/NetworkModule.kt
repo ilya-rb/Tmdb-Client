@@ -46,7 +46,6 @@ object NetworkModule {
 
   @Provides
   @JvmStatic
-  @Singleton
   internal fun provideMoshi(): Moshi {
     return Moshi.Builder()
       .add(

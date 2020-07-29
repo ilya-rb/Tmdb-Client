@@ -5,9 +5,7 @@ import com.illiarb.tmdbclient.libs.logger.Logger
 import com.illiarb.tmdbclient.libs.tools.FeatureFlagStore
 import com.illiarb.tmdbclient.libs.tools.R
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 internal class FirebaseFeatureFlagStore @Inject constructor() : FeatureFlagStore {
 
   companion object {
