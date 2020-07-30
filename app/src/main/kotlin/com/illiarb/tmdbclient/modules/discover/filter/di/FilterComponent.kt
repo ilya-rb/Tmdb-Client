@@ -23,7 +23,7 @@ interface FilterComponent {
   }
 
   @Component.Factory
-  interface Builder {
+  interface Factory {
     fun create(dependencies: Dependencies): FilterComponent
   }
 

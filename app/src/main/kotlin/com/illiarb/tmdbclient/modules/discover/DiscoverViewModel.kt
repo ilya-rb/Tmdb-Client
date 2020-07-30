@@ -26,8 +26,6 @@ class DiscoverViewModel @Inject constructor(
   private val discoverInteractor: DiscoverInteractor
 ) : BaseViewModel<DiscoverViewModel.State, DiscoverViewModel.Event>(initialState()) {
 
-  private var searchJob: Job? = null
-
   companion object {
 
     private fun initialState(): State =
@@ -43,6 +41,8 @@ class DiscoverViewModel @Inject constructor(
         errorMessage = null
       )
   }
+
+  private var searchJob: Job? = null
 
   init {
     viewModelScope.launch {

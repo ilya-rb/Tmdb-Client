@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.illiarb.tmdbclient.R
+import com.illiarb.tmdbclient.common.delegates.movieDelegate
 import com.illiarb.tmdbclient.databinding.FragmentDiscoverBinding
 import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable
@@ -28,7 +29,6 @@ import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.GridDecoration
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.pagination.InfiniteScrollListener
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.pagination.PaginalAdapter
-import com.illiarb.tmdbclient.common.delegates.movieDelegate
 import com.illiarb.tmdbclient.modules.discover.DiscoverViewModel.Event
 import com.illiarb.tmdbclient.modules.discover.DiscoverViewModel.State
 import com.illiarb.tmdbclient.modules.discover.di.DaggerDiscoverComponent
@@ -141,11 +141,13 @@ class DiscoverFragment : BaseFragment(R.layout.fragment_discover), Injectable {
       removeAdapterOnDetach()
       setHasFixedSize(true)
       addItemDecoration(GridDecoration(dimen(UiR.dimen.spacing_normal), GRID_SIZE))
+
       addOnScrollListener(object : InfiniteScrollListener(gridLayoutManager) {
         override fun onLoadMore() {
           viewModel.events.offer(Event.PageEndReached)
         }
       })
+
       doOnApplyWindowInsets { v, insets, initialPadding ->
         v.updatePadding(bottom = initialPadding.bottom + insets.systemWindowInsetBottom)
       }
@@ -158,12 +160,14 @@ class DiscoverFragment : BaseFragment(R.layout.fragment_discover), Injectable {
       layoutManager = LinearLayoutManager(requireContext())
       removeAdapterOnDetach()
       setHasFixedSize(true)
+
       addItemDecoration(
         SpaceDecoration.edgeInnerSpaceVertical(
           edgeSpace = dimen(UiR.dimen.spacing_normal),
           innerSpace = dimen(UiR.dimen.spacing_small)
         )
       )
+
       doOnApplyWindowInsets { v, insets, initialPadding ->
         v.updatePadding(bottom = initialPadding.bottom + insets.systemWindowInsetBottom)
       }
