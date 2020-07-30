@@ -23,8 +23,6 @@ class MoviesInteractorTest {
     movieApi,
     MovieMapper(
       GenreMapper(),
-      PersonMapper(),
-      ReviewMapper(),
       ImageUrlCreator(),
       TmdbDateFormatter()
     ),

@@ -2,11 +2,11 @@ package com.illiarb.tmdbclient.services.tmdb.interactor
 
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.domain.Filter
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.ResultsDto
 import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageUrlCreator
 import com.illiarb.tmdbclient.services.tmdb.internal.interactor.DefaultDiscoverInteractor
 import com.illiarb.tmdbclient.services.tmdb.internal.mappers.GenreMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.mappers.MovieMapper
-import com.illiarb.tmdbclient.services.tmdb.internal.dto.ResultsDto
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.DiscoverApi
 import com.illiarb.tmdbclient.services.tmdb.internal.util.TmdbDateFormatter
 import com.illiarb.tmdbclient.services.tmdb.repository.TestConfigurationRepository
@@ -26,8 +26,6 @@ class DiscoverInteractorTest {
     discoverApi,
     MovieMapper(
       GenreMapper(),
-      PersonMapper(),
-      ReviewMapper(),
       ImageUrlCreator(),
       TmdbDateFormatter()
     )

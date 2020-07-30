@@ -4,11 +4,11 @@ import com.illiarb.tmdbclient.libs.test.tools.TestResourceResolver
 import com.illiarb.tmdbclient.libs.tools.DispatcherProvider
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.ConfigurationDto
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.MovieDto
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.MovieListDto
 import com.illiarb.tmdbclient.services.tmdb.internal.mappers.GenreMapper
 import com.illiarb.tmdbclient.services.tmdb.internal.mappers.MovieMapper
-import com.illiarb.tmdbclient.services.tmdb.internal.dto.ConfigurationDto
-import com.illiarb.tmdbclient.services.tmdb.internal.dto.MovieListDto
-import com.illiarb.tmdbclient.services.tmdb.internal.dto.MovieDto
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.ConfigurationRepository
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.DefaultMoviesRepository
@@ -42,12 +42,9 @@ class MoviesRepositoryTest {
     cache,
     MovieMapper(
       GenreMapper(),
-      PersonMapper(),
-      ReviewMapper(),
       mockk(),
       TmdbDateFormatter()
     ),
-    ReviewMapper(),
     TestResourceResolver()
   )
 
