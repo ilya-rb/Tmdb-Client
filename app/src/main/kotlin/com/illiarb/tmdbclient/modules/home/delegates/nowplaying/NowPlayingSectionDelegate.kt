@@ -10,12 +10,11 @@ import com.illiarb.tmdbclient.libs.ui.common.SimpleBundleStore
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.services.tmdb.domain.MovieSection
 import com.illiarb.tmdbclient.services.tmdb.domain.NowPlayingSection
-import java.util.Timer
-import kotlin.concurrent.fixedRateTimer
 
 // 10 seconds
-private const val IMAGE_CHANGE_UPDATE_INTERVAL = 10000L
+private const val PAGE_UPDATE_INTERVAL = 10000
 private const val KEY_NOW_PLAYING_STATE = "now_playing_state"
+private const val KEY_NOW_PLAYING_PROGRESS = "now_playing_progress"
 
 fun nowPlayingSection(
   bundleStore: SimpleBundleStore,
@@ -29,8 +28,22 @@ fun nowPlayingSection(
     stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
   }
 
-  var imagesTimer: Timer? = null
   var currentPosition = 0
+  val progressUpdateTimer = ProgressUpdateTimer(
+    context = binding.root.context,
+    max = PAGE_UPDATE_INTERVAL
+  ) {
+    binding.nowPlayingProgress.incrementProgressBy(it)
+
+    if (binding.nowPlayingProgress.progress == binding.nowPlayingProgress.max) {
+      if (adapter.realCount == 0) {
+        return@ProgressUpdateTimer
+      }
+      cancelTimer()
+      currentPosition++
+      binding.nowPlayingPager.smoothScrollToPosition(currentPosition)
+    }
+  }
 
   val recyclerScrollListener = object : RecyclerView.OnScrollListener() {
     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -42,6 +55,8 @@ fun nowPlayingSection(
           val snapPosition = binding.nowPlayingPager.getChildAdapterPosition(it)
           if (snapPosition != RecyclerView.NO_POSITION) {
             currentPosition = snapPosition
+            binding.nowPlayingProgress.progress = 0
+            progressUpdateTimer.resetTimer()
           }
         }
       }
@@ -50,6 +65,7 @@ fun nowPlayingSection(
 
   snapHelper.attachToRecyclerView(binding.nowPlayingPager)
 
+  binding.nowPlayingProgress.max = PAGE_UPDATE_INTERVAL
   binding.nowPlayingPager.adapter = adapter
   binding.nowPlayingPager.layoutManager =
     LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
@@ -58,6 +74,7 @@ fun nowPlayingSection(
     adapter.items = item.movies
     adapter.notifyDataSetChanged()
 
+    binding.nowPlayingProgress.progress = bundleStore.getInt(KEY_NOW_PLAYING_PROGRESS)
     binding.nowPlayingPager.layoutManager?.onRestoreInstanceState(
       bundleStore.getParcelable(KEY_NOW_PLAYING_STATE)
     )
@@ -65,22 +82,15 @@ fun nowPlayingSection(
 
   onViewAttachedToWindow {
     binding.nowPlayingPager.addOnScrollListener(recyclerScrollListener)
-
-    imagesTimer = fixedRateTimer(
-      initialDelay = IMAGE_CHANGE_UPDATE_INTERVAL,
-      period = IMAGE_CHANGE_UPDATE_INTERVAL
-    ) {
-      if (adapter.realCount == 0) {
-        return@fixedRateTimer
-      }
-      currentPosition++
-      binding.nowPlayingPager.smoothScrollToPosition(currentPosition)
-    }
+    progressUpdateTimer.resetTimer()
   }
 
   onViewDetachedFromWindow {
     binding.nowPlayingPager.removeOnScrollListener(recyclerScrollListener)
-    imagesTimer?.cancel()
+
+    progressUpdateTimer.cancelTimer()
+
+    bundleStore.putInt(KEY_NOW_PLAYING_PROGRESS, binding.nowPlayingProgress.progress)
     bundleStore.putParcelable(
       KEY_NOW_PLAYING_STATE,
       binding.nowPlayingPager.layoutManager?.onSaveInstanceState()

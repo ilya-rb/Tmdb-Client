@@ -27,6 +27,14 @@ class SimpleBundleStore {
     bundle.putParcelable(key, parcelable)
   }
 
+  fun putInt(key: String, value: Int) {
+    bundle.putInt(key, value)
+  }
+
+  fun getInt(key: String, fallback: Int = 0): Int {
+    return bundle.getInt(key, fallback)
+  }
+
   fun getParcelable(key: String?): Parcelable? {
     val value = bundle.getParcelable<Parcelable?>(key)
     bundle.remove(key)
