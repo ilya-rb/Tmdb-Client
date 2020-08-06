@@ -70,8 +70,12 @@ dependencies {
   implementation(Deps.Dagger.core)
   implementation(Deps.Misc.timber)
   implementation(Deps.Misc.viewBindingPropertyDelegate)
+  implementation(Deps.Misc.binaryPrefs)
   implementation(Deps.Android.Firebase.core)
   implementation(Deps.Android.AndroidX.navigation)
+  implementation(Deps.Android.AndroidX.Room.core)
+  implementation(Deps.Retrofit.core)
+  implementation(Deps.Moshi.core)
 
   debugImplementation(Deps.Tools.Debug.LeakCanary.android)
   debugImplementation(Deps.Tools.Debug.LeakCanary.objectWatcher)

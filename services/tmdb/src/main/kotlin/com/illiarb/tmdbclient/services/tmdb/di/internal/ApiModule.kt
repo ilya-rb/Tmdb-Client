@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.services.tmdb.di
+package com.illiarb.tmdbclient.services.tmdb.di.internal
 
 import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.DiscoverApi
@@ -15,32 +15,32 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 
 @Module
-object ApiModule {
+internal object ApiModule {
 
   @Provides
   @JvmStatic
-  internal fun provideMoviesApi(retrofit: Retrofit): MovieApi =
+  fun provideMoviesApi(retrofit: Retrofit): MovieApi =
     retrofit.create(MovieApi::class.java)
 
   @Provides
   @JvmStatic
-  internal fun provideTrendingApi(retrofit: Retrofit): TrendingApi =
+  fun provideTrendingApi(retrofit: Retrofit): TrendingApi =
     retrofit.create(TrendingApi::class.java)
 
   @Provides
   @JvmStatic
-  internal fun provideDiscoverApi(retrofit: Retrofit): DiscoverApi =
+  fun provideDiscoverApi(retrofit: Retrofit): DiscoverApi =
     retrofit.create(DiscoverApi::class.java)
 
   @Provides
   @JvmStatic
-  internal fun provideGenresApi(retrofit: Retrofit): GenreApi =
+  fun provideGenresApi(retrofit: Retrofit): GenreApi =
     retrofit.create(GenreApi::class.java)
 
   @Provides
   @JvmStatic
   @Reusable
-  internal fun provideTmdbRetrofit(
+  fun provideTmdbRetrofit(
     okHttpClient: Lazy<OkHttpClient>,
     callAdapterFactory: CallAdapter.Factory,
     converterFactory: Converter.Factory,

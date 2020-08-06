@@ -63,7 +63,7 @@ object Deps {
       const val compileSdkVersion = 29
       const val targetSdkVersion = 29
       const val minSdkVersion = 21
-      const val gradlePlugin = "com.android.tools.build:gradle:4.1.0-beta04"
+      const val gradlePlugin = "com.android.tools.build:gradle:4.1.0-beta05"
     }
 
     object AndroidX {

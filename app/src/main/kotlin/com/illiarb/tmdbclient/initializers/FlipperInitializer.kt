@@ -3,14 +3,12 @@ package com.illiarb.tmdbclient.initializers
 import android.app.Application
 import com.facebook.flipper.android.AndroidFlipperClient
 import com.facebook.flipper.core.FlipperPlugin
-import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import com.facebook.soloader.SoLoader
 import com.illiarb.tmdbclient.libs.tools.AppInitializer
 import javax.inject.Inject
 
 class FlipperInitializer @Inject constructor(
-  private val plugins: Set<@JvmSuppressWildcards FlipperPlugin>,
-  private val networkPlugin: NetworkFlipperPlugin
+  private val plugins: Set<@JvmSuppressWildcards FlipperPlugin>
 ) : AppInitializer {
 
   override fun initialize(app: Application) {
@@ -20,7 +18,6 @@ class FlipperInitializer @Inject constructor(
 
     plugins.forEach(client::addPlugin)
 
-    client.addPlugin(networkPlugin)
     client.start()
   }
 }

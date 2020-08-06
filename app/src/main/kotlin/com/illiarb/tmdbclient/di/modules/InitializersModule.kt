@@ -15,10 +15,6 @@ interface InitializersModule {
 
   @Binds
   @IntoSet
-  fun bindFlipperInitializer(initializer: FlipperInitializer): AppInitializer
-
-  @Binds
-  @IntoSet
   fun bindLoggerInitializer(initializer: LoggerInitializer): AppInitializer
 
   @Binds
@@ -28,8 +24,4 @@ interface InitializersModule {
   @Binds
   @IntoSet
   fun bindFirebaseInitializer(initializer: FirebaseInitializer): AppInitializer
-
-  @Binds
-  @IntoSet
-  fun bindStrictModeInitializer(initializer: StrictModeInitializer): AppInitializer
 }

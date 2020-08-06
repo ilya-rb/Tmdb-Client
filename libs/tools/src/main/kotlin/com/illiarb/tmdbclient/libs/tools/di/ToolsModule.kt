@@ -12,17 +12,25 @@ import dagger.Binds
 import dagger.Module
 
 @Module
-internal interface ToolsModule {
+abstract class ToolsModule {
 
   @Binds
-  fun bindConnectivityStatus(connectivityStatus: AndroidConnectivityStatus): ConnectivityStatus
+  internal abstract fun bindConnectivityStatus(
+      connectivityStatus: AndroidConnectivityStatus
+  ): ConnectivityStatus
 
   @Binds
-  fun bindDispatcherProvider(dispatcherProvider: CoroutineDispatcherProvider): DispatcherProvider
+  internal abstract fun bindDispatcherProvider(
+      dispatcherProvider: CoroutineDispatcherProvider
+  ): DispatcherProvider
 
   @Binds
-  fun bindResourceResolver(resourceResolver: AndroidResourceResolver): ResourceResolver
+  internal abstract fun bindResourceResolver(
+      resourceResolver: AndroidResourceResolver
+  ): ResourceResolver
 
   @Binds
-  fun bindFeatureFlagStore(featureFlagStore: FirebaseFeatureFlagStore): FeatureFlagStore
+  internal abstract fun bindFeatureFlagStore(
+      featureFlagStore: FirebaseFeatureFlagStore
+  ): FeatureFlagStore
 }

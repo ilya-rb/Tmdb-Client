@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.services.tmdb.di
+package com.illiarb.tmdbclient.services.tmdb.di.internal
 
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.ConfigurationRepository
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.DefaultConfigurationRepository

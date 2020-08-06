@@ -1,9 +1,9 @@
-package com.illiarb.tmdbclient.services.tmdb.di
+package com.illiarb.tmdbclient.services.tmdb.di.internal
 
 import android.app.Application
-import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
 import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
 import com.illiarb.tmdbclient.libs.tools.ResourceResolver
+import com.illiarb.tmdbclient.services.tmdb.di.NetworkInterceptor
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
 import com.illiarb.tmdbclient.services.tmdb.internal.dto.MovieDto
 import com.illiarb.tmdbclient.services.tmdb.internal.dto.TrendingDto
@@ -18,7 +18,9 @@ import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
+import dagger.multibindings.IntoSet
 import okhttp3.Cache
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.CallAdapter
 import retrofit2.Converter
@@ -27,26 +29,28 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
-object NetworkModule {
+internal object NetworkModule {
 
   private const val CACHE_SIZE_BYTES = 20 * 1024L
   private const val TIMEOUT_SECONDS = 10L
 
   @Provides
+  @IntoSet
   @JvmStatic
-  internal fun provideApiKeyInterceptor(tmdbConfig: TmdbConfig): ApiKeyInterceptor =
+  fun provideApiKeyInterceptor(tmdbConfig: TmdbConfig): Interceptor =
     ApiKeyInterceptor(tmdbConfig)
 
   @Provides
+  @IntoSet
   @JvmStatic
-  internal fun provideRegionInterceptor(
+  fun provideRegionInterceptor(
     configurationRepository: ConfigurationRepository,
     resourceResolver: ResourceResolver
-  ): RegionInterceptor = RegionInterceptor(configurationRepository, resourceResolver)
+  ): Interceptor = RegionInterceptor(configurationRepository, resourceResolver)
 
   @Provides
   @JvmStatic
-  internal fun provideMoshi(): Moshi {
+  fun provideMoshi(): Moshi {
     return Moshi.Builder()
       .add(
         PolymorphicJsonAdapterFactory.of(TrendingDto::class.java, "media_type")
@@ -59,35 +63,40 @@ object NetworkModule {
 
   @Provides
   @JvmStatic
-  internal fun provideCallAdapterFactory(errorCreator: ErrorCreator): CallAdapter.Factory {
+  fun provideCallAdapterFactory(errorCreator: ErrorCreator): CallAdapter.Factory {
     return CallAdapterFactory(errorCreator)
   }
 
   @Provides
   @JvmStatic
-  internal fun provideApiConverterFactory(moshi: Moshi): Converter.Factory =
+  fun provideApiConverterFactory(moshi: Moshi): Converter.Factory =
     MoshiConverterFactory.create(moshi)
 
   @Provides
   @Singleton
   @JvmStatic
-  internal fun provideTmdbCache(app: Application): TmdbCache = TmdbCache(app)
+  fun provideTmdbCache(app: Application): TmdbCache = TmdbCache(app)
 
   @Provides
   @JvmStatic
-  internal fun provideTmdbOkHttpClient(
+  fun provideTmdbOkHttpClient(
     app: Application,
-    apiKeyInterceptor: ApiKeyInterceptor,
-    regionInterceptor: RegionInterceptor,
-    flipperOkHttpInterceptor: FlipperOkhttpInterceptor
+    interceptors: Set<@JvmSuppressWildcards Interceptor>,
+    @NetworkInterceptor networkInterceptors: Set<@JvmSuppressWildcards Interceptor>
   ): OkHttpClient =
     OkHttpClient.Builder()
       .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
       .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
       .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-      .addInterceptor(apiKeyInterceptor)
-      .addInterceptor(regionInterceptor)
-      .addNetworkInterceptor(flipperOkHttpInterceptor)
+      .apply {
+        interceptors.forEach {
+          addInterceptor(it)
+        }
+
+        networkInterceptors.forEach {
+          addNetworkInterceptor(it)
+        }
+      }
       .retryOnConnectionFailure(true)
       .cache(Cache(app.filesDir, CACHE_SIZE_BYTES))
       .build()

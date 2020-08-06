@@ -1,12 +1,12 @@
-package com.illiarb.tmdbclient.services.tmdb.di
+package com.illiarb.tmdbclient.services.tmdb.di.internal
 
-import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
 import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
+import com.illiarb.tmdbclient.services.tmdb.di.NetworkInterceptor
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.ConfigurationApi
-import com.illiarb.tmdbclient.services.tmdb.internal.network.interceptor.ApiKeyInterceptor
 import dagger.Lazy
 import dagger.Module
 import dagger.Provides
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.CallAdapter
 import retrofit2.Converter
@@ -15,19 +15,19 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Qualifier
 
 @Module
-object ConfigurationModule {
+internal object ConfigurationModule {
 
   private const val TIMEOUT_SECONDS = 10L
 
   @Provides
   @JvmStatic
-  internal fun provideConfigurationApi(@ConfigurationClient retrofit: Retrofit): ConfigurationApi =
+  fun provideConfigurationApi(@ConfigurationClient retrofit: Retrofit): ConfigurationApi =
     retrofit.create(ConfigurationApi::class.java)
 
   @Provides
   @ConfigurationClient
   @JvmStatic
-  internal fun provideConfigurationApiRetrofit(
+  fun provideConfigurationApiRetrofit(
     @ConfigurationClient
     okHttpClient: Lazy<OkHttpClient>,
     callAdapterFactory: CallAdapter.Factory,
@@ -45,16 +45,23 @@ object ConfigurationModule {
   @Provides
   @ConfigurationClient
   @JvmStatic
-  internal fun provideConfigurationApiOkHttpClient(
-    apiKeyInterceptor: ApiKeyInterceptor,
-    flipperOkHttpInterceptor: FlipperOkhttpInterceptor
+  fun provideConfigurationApiOkHttpClient(
+    interceptors: Set<@JvmSuppressWildcards Interceptor>,
+    @NetworkInterceptor networkInterceptors: Set<@JvmSuppressWildcards Interceptor>
   ): OkHttpClient {
     return OkHttpClient.Builder()
       .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
       .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
       .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-      .addInterceptor(apiKeyInterceptor)
-      .addNetworkInterceptor(flipperOkHttpInterceptor)
+      .apply {
+        interceptors.forEach {
+          addInterceptor(it)
+        }
+
+        networkInterceptors.forEach {
+          addNetworkInterceptor(it)
+        }
+      }
       .build()
   }
 
