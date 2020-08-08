@@ -16,6 +16,7 @@ private const val PAGE_UPDATE_INTERVAL = 10000
 private const val KEY_NOW_PLAYING_STATE = "now_playing_state"
 private const val KEY_NOW_PLAYING_PROGRESS = "now_playing_progress"
 
+@Suppress("LongMethod")
 fun nowPlayingSection(
   bundleStore: SimpleBundleStore,
   clickListener: OnClickListener<Movie>
