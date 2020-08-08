@@ -23,6 +23,7 @@ import com.illiarb.tmdbclient.libs.ui.ext.setVisible
 import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
+import com.illiarb.tmdbclient.libs.util.Async
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.Event
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.State
 import com.illiarb.tmdbclient.modules.details.delegates.movieInfoDelegate
@@ -31,7 +32,7 @@ import com.illiarb.tmdbclient.modules.details.delegates.photoSectionDelegate
 import com.illiarb.tmdbclient.modules.details.di.DaggerMovieDetailsComponent
 import com.illiarb.tmdbclient.navigation.NavigationAction
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
-import com.illiarb.tmdbclient.ui.loadTmdbImage
+import com.illiarb.tmdbclient.util.loadTmdbImage
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -43,6 +44,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
   lateinit var viewModelFactory: ViewModelProvider.Factory
 
   private val viewModel by viewModels<MovieDetailsViewModel>(factoryProducer = { viewModelFactory })
+
   private val viewBinding by viewBinding { fragment ->
     FragmentMovieDetailsBinding.bind(fragment.requireView())
   }
@@ -52,15 +54,16 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
     DelegatesAdapter(
       movieInfoDelegate(),
       movieSimilarDelegate { viewModel.events.offer(Event.MovieClicked(it)) },
-      photoSectionDelegate { }
+      photoSectionDelegate { /* TODO */ }
     )
   }
 
   override fun inject(appProvider: AppProvider) =
-    DaggerMovieDetailsComponent.builder()
-      .dependencies(appProvider)
-      .movieId(requireArguments().getInt(NavigationAction.EXTRA_MOVIE_DETAILS_MOVIE_ID))
-      .build()
+    DaggerMovieDetailsComponent.factory()
+      .create(
+        movieId = requireArguments().getInt(NavigationAction.EXTRA_MOVIE_DETAILS_MOVIE_ID),
+        dependencies = appProvider
+      )
       .inject(this)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -85,13 +88,15 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
       adapter = sectionsAdapter
       layoutManager = LinearLayoutManager(context)
       isNestedScrollingEnabled = false
-      removeAdapterOnDetach()
       addItemDecoration(
         SpaceDecoration(
           spacingTop = dimen(UiR.dimen.spacing_small),
           spacingBottom = dimen(UiR.dimen.spacing_small)
         )
       )
+
+      removeAdapterOnDetach()
+
       doOnApplyWindowInsets { v, windowInsets, initialPadding ->
         v.updatePadding(bottom = initialPadding.top + windowInsets.systemWindowInsetBottom)
       }
@@ -113,13 +118,11 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
   }
 
   private fun render(newState: State) {
-    viewBinding.swipeRefresh.isRefreshing = newState.isLoading
+    viewBinding.swipeRefresh.isRefreshing = newState.movie is Async.Loading
+
+    newState.movie.doOnSuccess(::showMovieDetails)
 
     sectionsAdapter.submitList(newState.movieSections)
-
-    newState.movie?.let {
-      showMovieDetails(it)
-    }
 
     newState.error?.consume { message ->
       snackbarController.showMessage(viewBinding.root, message.message)

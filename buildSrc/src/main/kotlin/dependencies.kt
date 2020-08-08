@@ -39,13 +39,13 @@ object Deps {
 
   object GradlePlugins {
     const val jacoco = "org.jacoco:org.jacoco.core:0.8.5"
-    const val versionsCheck = "com.github.ben-manes:gradle-versions-plugin:0.28.0"
+    const val versionsCheck = "com.github.ben-manes:gradle-versions-plugin:0.29.0"
     const val junit5 = "de.mannodermaus.gradle.plugins:android-junit5:1.6.2.0"
   }
 
   object Kotlin {
     private const val kotlinVersion = "1.3.72"
-    private const val kotlinCoroutinesVersion = "1.3.6"
+    private const val kotlinCoroutinesVersion = "1.3.7"
     private const val kotlinSerializationVersion = "0.20.0"
 
     const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72-release-Studio4.1-4"
@@ -63,15 +63,14 @@ object Deps {
       const val compileSdkVersion = 29
       const val targetSdkVersion = 29
       const val minSdkVersion = 21
-      const val gradlePlugin = "com.android.tools.build:gradle:4.1.0-beta01"
+      const val gradlePlugin = "com.android.tools.build:gradle:4.1.0-beta05"
     }
 
     object AndroidX {
-      private const val archComponentsVersion = "2.2.0-alpha02"
+      private const val archComponentsVersion = "2.2.0"
 
       object ViewModel {
-        const val core = "androidx.lifecycle:lifecycle-viewmodel:$archComponentsVersion"
-        const val ktx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$archComponentsVersion"
+        const val core = "androidx.lifecycle:lifecycle-viewmodel-ktx:$archComponentsVersion"
         const val ext = "androidx.lifecycle:lifecycle-extensions:$archComponentsVersion"
       }
 
@@ -80,20 +79,20 @@ object Deps {
       }
 
       object Room {
-        private const val roomVersion = "2.2.5"
+        private const val roomVersion = "2.3.0-alpha02"
 
         const val core = "androidx.room:room-ktx:$roomVersion"
         const val compiler = "androidx.room:room-compiler:$roomVersion"
       }
 
-      const val fragment = "androidx.fragment:fragment-ktx:1.2.4"
-      const val navigation = "androidx.navigation:navigation-fragment:2.3.0-alpha06"
-      const val material = "com.google.android.material:material:1.2.0-alpha06"
-      const val recyclerView = "androidx.recyclerview:recyclerview:1.2.0-alpha03"
-      const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-rc01"
-      const val emoji = "androidx.emoji:emoji:1.1.0-rc01"
-      const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta4"
-      const val browserHelper = "com.google.androidbrowserhelper:androidbrowserhelper:1.2.0"
+      const val fragment = "androidx.fragment:fragment-ktx:1.3.0-alpha07"
+      const val navigation = "androidx.navigation:navigation-fragment:2.3.0"
+      const val material = "com.google.android.material:material:1.3.0-alpha02"
+      const val recyclerView = "androidx.recyclerview:recyclerview:1.2.0-alpha05"
+      const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
+      const val emoji = "androidx.emoji:emoji:1.1.0"
+      const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta8"
+      const val browserHelper = "com.google.androidbrowserhelper:androidbrowserhelper:1.4.0-alpha01"
     }
 
     object Compose {
@@ -107,8 +106,8 @@ object Deps {
 
     object Firebase {
       const val gradlePlugin = "com.google.gms:google-services:4.3.3"
-      const val core = "com.google.firebase:firebase-core:17.4.1"
-      const val remoteConfig = "com.google.firebase:firebase-config:19.1.4"
+      const val core = "com.google.firebase:firebase-core:17.4.4"
+      const val remoteConfig = "com.google.firebase:firebase-config:19.2.0"
     }
   }
 
@@ -120,17 +119,17 @@ object Deps {
   }
 
   object Retrofit {
-    private const val retrofitVersion = "2.8.1"
+    private const val retrofitVersion = "2.9.0"
 
     const val core = "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    const val okHttp = "com.squareup.okhttp3:okhttp:4.6.0"
+    const val okHttp = "com.squareup.okhttp3:okhttp:4.8.0"
     const val converterMoshi = "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
     const val coroutinesAdapter =
       "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
   }
 
   object Moshi {
-    private const val moshiVersion = "1.9.2"
+    private const val moshiVersion = "1.9.3"
 
     const val core = "com.squareup.moshi:moshi:$moshiVersion"
     const val kotlin = "com.squareup.moshi:moshi-kotlin:$moshiVersion"
@@ -147,7 +146,7 @@ object Deps {
   }
 
   object Dagger {
-    private const val daggerVersion = "2.27"
+    private const val daggerVersion = "2.28.3"
 
     const val core = "com.google.dagger:dagger:$daggerVersion"
     const val compiler = "com.google.dagger:dagger-compiler:$daggerVersion"
@@ -158,7 +157,7 @@ object Deps {
     object Debug {
 
       object Flipper {
-        private const val flipperVersion = "0.41.0"
+        private const val flipperVersion = "0.51.0"
 
         const val flipper = "com.facebook.flipper:flipper:$flipperVersion"
         const val flipperNetwork = "com.facebook.flipper:flipper-network-plugin:$flipperVersion"
@@ -166,7 +165,7 @@ object Deps {
       }
 
       object LeakCanary {
-        private const val leakCanaryVersion = "2.3"
+        private const val leakCanaryVersion = "2.4"
 
         const val android = "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
         const val objectWatcher =
@@ -188,7 +187,7 @@ object Deps {
     const val lottie = "com.airbnb.android:lottie:3.0.7"
     const val binaryPrefs = "com.github.yandextaxitech:binaryprefs:1.0.1"
     const val javax = "javax.inject:javax.inject:1"
-    const val viewBindingPropertyDelegate = "com.github.kirich1409:ViewBindingPropertyDelegate:0.3"
+    const val viewBindingPropertyDelegate = "com.github.kirich1409:ViewBindingPropertyDelegate:1.0.0"
   }
 
   object Test {
@@ -196,7 +195,7 @@ object Deps {
     const val junit = "junit:junit:4.13"
     const val truth = "com.google.truth:truth:1.0.1"
     const val kaspresso = "com.kaspersky.android-components:kaspresso:1.1.0"
-    const val kakao = "com.agoda.kakao:kakao:2.3.1"
+    const val kakao = "com.agoda.kakao:kakao:2.3.3"
     const val mockk = "io.mockk:mockk:1.10.0"
 
     object JUnit5 {
@@ -213,15 +212,16 @@ object Deps {
     }
 
     object AndroidX {
-      private const val espressoVersion = "3.3.0-beta01"
+      private const val espressoVersion = "3.3.0-rc01"
 
       const val core = "androidx.arch.core:core-testing:2.1.0"
-      const val rules = "androidx.test:rules:1.3.0-beta01"
-      const val runner = "androidx.test:runner:1.3.0-beta01"
+      const val rules = "androidx.test:rules:1.3.0-rc01"
+      const val runner = "androidx.test:runner:1.3.0-rc01"
       const val espresso = "androidx.test.espresso:espresso-core:$espressoVersion"
       const val espressoIntents = "androidx.test.espresso:espresso-intents:$espressoVersion"
-      const val extJunit = "androidx.test.ext:junit:1.1.2-beta01"
+      const val extJunit = "androidx.test.ext:junit:1.1.2-rc01"
       const val uiAutomator = "androidx.test.uiautomator:uiautomator:2.2.0"
+      const val benchmark = "androidx.benchmark:benchmark-junit4:1.0.0"
     }
   }
 }

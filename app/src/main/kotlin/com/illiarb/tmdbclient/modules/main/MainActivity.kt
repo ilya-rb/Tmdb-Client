@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.snackbar.Snackbar
@@ -16,6 +17,7 @@ import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable
 import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.libs.tools.ConnectivityStatus
+import com.illiarb.tmdbclient.navigation.DeepLinkHandler
 import com.illiarb.tmdbclient.navigation.Navigator
 import com.illiarb.tmdbclient.navigation.NavigatorHolder
 import kotlinx.coroutines.flow.collect
@@ -36,19 +38,35 @@ class MainActivity : AppCompatActivity(), Injectable {
   @Inject
   lateinit var buildConfig: BuildConfig
 
-  private val viewBinding by viewBinding<ActivityMainBinding>(R.id.root)
+  @Inject
+  lateinit var fragmentFactory: FragmentFactory
+
+  @Inject
+  lateinit var deepLinkHandler: DeepLinkHandler
+
+  private val viewBinding: ActivityMainBinding by viewBinding(R.id.root)
 
   private var connectionSnackbar: Snackbar? = null
 
-  override fun inject(appProvider: AppProvider) =
-    DaggerMainComponent.builder()
-      .activity(this)
-      .dependencies(appProvider)
-      .build()
+  override fun inject(appProvider: AppProvider) {
+    DaggerMainComponent.factory()
+      .create(activity = this, dependencies = appProvider)
       .inject(this)
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    supportFragmentManager.registerFragmentLifecycleCallbacks(
+      NavHostFragmentLifecycleCallbacks(
+        fragmentFactory = fragmentFactory,
+        onFactoryAttached = {
+          supportFragmentManager.unregisterFragmentLifecycleCallbacks(it)
+        }
+      ),
+      /* recursive */ false
+    )
+
     setContentView(R.layout.activity_main)
 
     lifecycleScope.launch {
@@ -56,6 +74,8 @@ class MainActivity : AppCompatActivity(), Injectable {
         updateConnectionStateLabel(it)
       }
     }
+
+    maybeHandleDeepLink(intent)
   }
 
   override fun onResumeFragments() {
@@ -66,6 +86,17 @@ class MainActivity : AppCompatActivity(), Injectable {
   override fun onPause() {
     super.onPause()
     actionsBuffer.removeNavigator()
+  }
+
+  override fun onNewIntent(intent: Intent?) {
+    super.onNewIntent(intent)
+    maybeHandleDeepLink(intent)
+  }
+
+  private fun maybeHandleDeepLink(intent: Intent?) {
+    intent?.action?.let {
+      deepLinkHandler.handleShortcut(it)
+    }
   }
 
   private fun updateConnectionStateLabel(state: ConnectivityStatus.ConnectionState) {

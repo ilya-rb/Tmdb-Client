@@ -4,9 +4,9 @@ import com.google.common.truth.Truth.assertThat
 import com.illiarb.tmdbclient.libs.test.tools.TestDispatcherProvider
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.GenreDto
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.GenreListDto
 import com.illiarb.tmdbclient.services.tmdb.internal.mappers.GenreMapper
-import com.illiarb.tmdbclient.services.tmdb.internal.model.GenreListModel
-import com.illiarb.tmdbclient.services.tmdb.internal.model.GenreModel
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.GenreApi
 import com.illiarb.tmdbclient.services.tmdb.internal.repository.DefaultGenresRepository
 import io.mockk.coEvery
@@ -31,7 +31,7 @@ class GenresRepositoryTest {
 
   @Test
   fun `should check cache first and return cached data if not empty`() = runBlockingTest {
-    every { cache.getGenres() } returns listOf(GenreModel(), GenreModel())
+    every { cache.getGenres() } returns listOf(GenreDto(), GenreDto())
 
     val result = repository.getGenres()
     verify(exactly = 1) { cache.getGenres() }
@@ -58,7 +58,7 @@ class GenresRepositoryTest {
 
   @Test
   fun `should store genres in cache after successful fetch from api`() = runBlockingTest {
-    val apiGenres = GenreListModel()
+    val apiGenres = GenreListDto()
 
     every { cache.getGenres() } returns emptyList()
     coEvery { genresApi.getGenres() } returns Result.Ok(apiGenres)

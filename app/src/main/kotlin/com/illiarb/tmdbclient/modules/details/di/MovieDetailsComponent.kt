@@ -10,7 +10,10 @@ import dagger.Component
 
 @Component(
   dependencies = [MovieDetailsComponent.Dependencies::class],
-  modules = [MovieDetailsModule::class, ViewModelModule::class]
+  modules = [
+    MovieDetailsModule::class,
+    ViewModelModule::class
+  ]
 )
 interface MovieDetailsComponent {
 
@@ -20,12 +23,9 @@ interface MovieDetailsComponent {
     fun analyticsService(): AnalyticsService
   }
 
-  @Component.Builder
-  interface Builder {
-    @BindsInstance
-    fun movieId(id: Int): Builder
-    fun dependencies(dependencies: Dependencies): Builder
-    fun build(): MovieDetailsComponent
+  @Component.Factory
+  interface Factory {
+    fun create(@BindsInstance movieId: Int, dependencies: Dependencies): MovieDetailsComponent
   }
 
   fun inject(fragment: MovieDetailsFragment)

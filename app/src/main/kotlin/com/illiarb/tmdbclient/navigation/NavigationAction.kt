@@ -7,7 +7,6 @@ sealed class NavigationAction(@IdRes val destinationId: Int) {
 
   companion object {
     const val NO_ID = 0
-
     const val EXTRA_MOVIE_DETAILS_MOVIE_ID = "movie_id"
     const val EXTRA_VIDEOS_MOVIE_ID = "movie_id"
   }
@@ -40,5 +39,10 @@ sealed class NavigationAction(@IdRes val destinationId: Int) {
   sealed class WebViewAction(val url: String) : NavigationAction(NO_ID) {
 
     object GoToTmdbPage : WebViewAction("https://www.themoviedb.org")
+  }
+
+  sealed class DeepLink(@IdRes destinationId: Int) : NavigationAction(destinationId) {
+
+    object Discover : DeepLink(R.id.deep_link_discover)
   }
 }

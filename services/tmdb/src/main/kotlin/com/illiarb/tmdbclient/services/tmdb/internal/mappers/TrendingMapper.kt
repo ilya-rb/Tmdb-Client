@@ -1,24 +1,23 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.mappers
 
 import com.illiarb.tmdbclient.services.tmdb.domain.TrendingSection.TrendingItem
-import com.illiarb.tmdbclient.services.tmdb.internal.model.Configuration
-import com.illiarb.tmdbclient.services.tmdb.internal.model.MovieModel
-import com.illiarb.tmdbclient.services.tmdb.internal.model.PersonModel
-import com.illiarb.tmdbclient.services.tmdb.internal.model.TrendingModel
-import com.illiarb.tmdbclient.services.tmdb.internal.model.TvShowModel
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.ConfigurationDto
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.MovieDto
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.TrendingDto
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.TvShowDto
 import java.util.Collections
 import javax.inject.Inject
 
 internal class TrendingMapper @Inject constructor(private val movieMapper: MovieMapper) {
 
-  fun map(configuration: Configuration, from: TrendingModel): TrendingItem {
+  fun map(configuration: ConfigurationDto, from: TrendingDto): TrendingItem {
     return when (from) {
-      is MovieModel -> TrendingItem(movieMapper.map(configuration, from))
+      is MovieDto -> TrendingItem(movieMapper.map(configuration, from))
       else -> throw IllegalArgumentException("Unknown trending type")
     }
   }
 
-  fun mapList(configuration: Configuration, collection: List<TrendingModel>?): List<TrendingItem> {
+  fun mapList(configuration: ConfigurationDto, collection: List<TrendingDto>?): List<TrendingItem> {
     if (collection == null) return Collections.emptyList()
     val supported = collection.filter {
       isTypeSupported(it)
@@ -28,6 +27,5 @@ internal class TrendingMapper @Inject constructor(private val movieMapper: Movie
     }
   }
 
-  private fun isTypeSupported(item: TrendingModel): Boolean =
-    item is MovieModel || item is PersonModel || item is TvShowModel
+  private fun isTypeSupported(item: TrendingDto): Boolean = item is MovieDto || item is TvShowDto
 }

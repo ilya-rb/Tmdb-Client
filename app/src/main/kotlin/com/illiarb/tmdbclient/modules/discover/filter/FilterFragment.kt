@@ -5,7 +5,6 @@ import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
-import androidx.core.view.forEach
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -48,9 +47,8 @@ class FilterFragment : BaseFragment(R.layout.fragment_filter), Injectable {
   lateinit var viewModelFactory: ViewModelProvider.Factory
 
   override fun inject(appProvider: AppProvider) {
-    DaggerFilterComponent.builder()
-      .dependencies(appProvider)
-      .build()
+    DaggerFilterComponent.factory()
+      .create(dependencies = appProvider)
       .inject(this)
   }
 

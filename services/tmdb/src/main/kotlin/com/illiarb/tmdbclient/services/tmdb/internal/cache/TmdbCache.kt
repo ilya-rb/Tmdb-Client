@@ -1,13 +1,13 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.cache
 
 import android.content.Context
-import com.illiarb.tmdbclient.services.tmdb.internal.model.Configuration
-import com.illiarb.tmdbclient.services.tmdb.internal.model.CountryList
-import com.illiarb.tmdbclient.services.tmdb.internal.model.CountryModel
-import com.illiarb.tmdbclient.services.tmdb.internal.model.GenreListModel
-import com.illiarb.tmdbclient.services.tmdb.internal.model.GenreModel
-import com.illiarb.tmdbclient.services.tmdb.internal.model.MovieListModel
-import com.illiarb.tmdbclient.services.tmdb.internal.model.MovieModel
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.ConfigurationDto
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.CountryDto
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.CountryList
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.GenreDto
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.GenreListDto
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.MovieDto
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.MovieListDto
 import com.ironz.binaryprefs.BinaryPreferencesBuilder
 import com.ironz.binaryprefs.serialization.serializer.persistable.Persistable
 
@@ -31,35 +31,35 @@ internal class TmdbCache(context: Context) {
     .registerPersistables(getPersistablesMap())
     .build()
 
-  fun getMoviesByType(type: String): MovieListModel =
-    tmdbStore.getValue(type, MovieListModel())
+  fun getMoviesByType(type: String): MovieListDto =
+    tmdbStore.getValue(type, MovieListDto())
 
-  fun getGenres(): List<GenreModel> =
-    tmdbStore.getValue(KEY_GENRES, GenreListModel()).genres
+  fun getGenres(): List<GenreDto> =
+    tmdbStore.getValue(KEY_GENRES, GenreListDto()).genres
 
-  fun storeMovies(type: String, movies: List<MovieModel>) =
-    tmdbStore.putValue(type, MovieListModel(movies))
+  fun storeMovies(type: String, movies: List<MovieDto>) =
+    tmdbStore.putValue(type, MovieListDto(movies))
 
-  fun storeGenres(genres: List<GenreModel>) =
-    tmdbStore.putValue(KEY_GENRES, GenreListModel(genres))
+  fun storeGenres(genres: List<GenreDto>) =
+    tmdbStore.putValue(KEY_GENRES, GenreListDto(genres))
 
-  fun storeConfiguration(configuration: Configuration) =
+  fun storeConfiguration(configuration: ConfigurationDto) =
     tmdbStore.putValue(KEY_CONFIGURATION, configuration)
 
   fun updateConfigurationTimestamp(time: Long) {
     tmdbStore.edit().putLong(KEY_CONFIGURATION_LAST_UPDATE, time).commit()
   }
 
-  fun getConfiguration(): Configuration =
-    tmdbStore.getPersistable(KEY_CONFIGURATION, Configuration())
+  fun getConfiguration(): ConfigurationDto =
+    tmdbStore.getPersistable(KEY_CONFIGURATION, ConfigurationDto())
 
   fun getConfigurationLastUpdateTimestamp(): Long =
     tmdbStore.getLong(KEY_CONFIGURATION_LAST_UPDATE, 0)
 
-  fun getCountries(): List<CountryModel> =
+  fun getCountries(): List<CountryDto> =
     tmdbStore.getPersistable(KEY_COUNTRIES, CountryList()).countries
 
-  fun storeCountries(countries: List<CountryModel>) =
+  fun storeCountries(countries: List<CountryDto>) =
     tmdbStore.putValue(KEY_COUNTRIES, CountryList(countries))
 
   fun clear() {
@@ -70,12 +70,12 @@ internal class TmdbCache(context: Context) {
 
   private fun getPersistablesMap(): Map<String, Class<out Persistable>> =
     mapOf(
-      KEY_POPULAR to MovieListModel::class.java,
-      KEY_TOP_RATED to MovieListModel::class.java,
-      KEY_UPCOMING to MovieListModel::class.java,
-      KEY_NOW_PLAYING to MovieListModel::class.java,
-      KEY_CONFIGURATION to Configuration::class.java,
-      KEY_GENRES to GenreListModel::class.java,
+      KEY_POPULAR to MovieListDto::class.java,
+      KEY_TOP_RATED to MovieListDto::class.java,
+      KEY_UPCOMING to MovieListDto::class.java,
+      KEY_NOW_PLAYING to MovieListDto::class.java,
+      KEY_CONFIGURATION to ConfigurationDto::class.java,
+      KEY_GENRES to GenreListDto::class.java,
       KEY_COUNTRIES to CountryList::class.java
     )
 }

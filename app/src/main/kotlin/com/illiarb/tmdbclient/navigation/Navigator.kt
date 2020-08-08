@@ -59,7 +59,6 @@ interface Navigator {
         activity,
         CustomTabsIntent.Builder()
           .setShowTitle(true)
-          .enableUrlBarHiding()
           .build(),
         Uri.parse(action.url),
         WebViewFallback()

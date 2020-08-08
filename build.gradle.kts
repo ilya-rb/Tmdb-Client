@@ -1,3 +1,7 @@
+import com.android.build.gradle.AppPlugin
+import com.android.build.gradle.BaseExtension
+import com.android.build.gradle.LibraryExtension
+import com.android.build.gradle.LibraryPlugin
 import groovy.lang.Closure
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
@@ -29,7 +33,7 @@ buildscript {
 
 plugins {
   id("io.gitlab.arturbosch.detekt") version "1.8.0" apply false
-  id("com.github.ben-manes.versions") version "0.28.0"
+  id("com.github.ben-manes.versions") version "0.29.0"
 }
 
 allprojects {
@@ -40,6 +44,9 @@ allprojects {
     maven("https://oss.sonatype.org/content/repositories/snapshots/")
     jcenter()
   }
+}
+
+subprojects {
 
   apply {
     from(rootProject.file("code-quality-tools/detekt.gradle"))
@@ -57,35 +64,38 @@ allprojects {
     }
   }
 
-  afterEvaluate {
-    extensions.findByName("kapt")?.let {
-      configure<org.jetbrains.kotlin.gradle.plugin.KaptExtension> {
-        arguments {
-          arg("dagger.formatGeneratedSource", "disabled")
-        }
+  extensions.findByName("kapt")?.let {
+    configure<org.jetbrains.kotlin.gradle.plugin.KaptExtension> {
+      arguments {
+        arg("dagger.formatGeneratedSource", "disabled")
       }
     }
   }
-}
 
-subprojects {
+  plugins.matching { it is AppPlugin || it is LibraryPlugin }.whenPluginAdded {
+    configure<BaseExtension> {
+      apply(from = file("$rootDir/code-quality-tools/jacoco.gradle"))
 
-  afterEvaluate {
-    // Disable build config generation for libraries
-    extensions.findByType<com.android.build.gradle.LibraryExtension>()?.apply {
-      libraryVariants.all {
-        generateBuildConfigProvider?.let {
-          it {
-            enabled = false
-          }
+      setCompileSdkVersion(Deps.Android.Build.compileSdkVersion)
+      buildToolsVersion("30.0.0")
+
+      defaultConfig {
+        minSdkVersion(Deps.Android.Build.minSdkVersion)
+        targetSdkVersion(Deps.Android.Build.targetSdkVersion)
+        versionCode = 1
+        versionName = "1.0"
+      }
+
+      buildTypes {
+        getByName("release") {
+          isMinifyEnabled = false
+          proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
       }
-    }
 
-    // Base extension for com.android.library and com.android.application
-    extensions.findByType<com.android.build.gradle.BaseExtension>()?.apply {
-      project.apply {
-        from(file("$rootDir/code-quality-tools/jacoco.gradle"))
+      compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
       }
 
       testOptions.unitTests.all(closureOf<Test> {
@@ -106,11 +116,6 @@ subprojects {
         }
       } as Closure<Test>)
 
-      compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-      }
-
       lintOptions {
         isWarningsAsErrors = true
         isAbortOnError = false
@@ -127,6 +132,36 @@ subprojects {
         disable("InvalidPackage")
         // View binding issues for unused resources and ids
         disable("UnusedIds")
+      }
+
+      packagingOptions {
+        exclude("META-INF/DEPENDENCIES")
+        exclude("META-INF/LICENSE")
+        exclude("META-INF/LICENSE.txt")
+        exclude("META-INF/LICENSE.md")
+        exclude("META-INF/license.txt")
+        exclude("META-INF/NOTICE")
+        exclude("META-INF/LICENSE-notice.md")
+        exclude("META-INF/NOTICE.txt")
+        exclude("META-INF/notice.txt")
+        exclude("META-INF/AL2.0")
+        exclude("META-INF/LGPL2.1")
+        exclude("META-INF/licenses/**")
+        exclude("META-INF/*.kotlin_module")
+        exclude("**/attach_hotspot_windows.dll")
+      }
+    }
+  }
+
+  plugins.withType<LibraryPlugin> {
+    configure<LibraryExtension> {
+      // Disable build config generation for libraries
+      libraryVariants.all {
+        generateBuildConfigProvider?.let {
+          it {
+            enabled = false
+          }
+        }
       }
     }
   }

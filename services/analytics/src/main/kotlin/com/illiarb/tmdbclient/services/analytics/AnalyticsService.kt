@@ -6,6 +6,4 @@ package com.illiarb.tmdbclient.services.analytics
 interface AnalyticsService {
 
   fun trackEvent(event: AnalyticEvent)
-
-  fun trackRouterAction(action: String)
 }

@@ -6,7 +6,7 @@ import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.domain.Filter
 import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
 import com.illiarb.tmdbclient.services.tmdb.internal.db.TmdbDatabase
-import com.illiarb.tmdbclient.services.tmdb.internal.db.entity.FilterEntity
+import com.illiarb.tmdbclient.services.tmdb.internal.db.dto.FilterDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -26,7 +26,7 @@ internal class DefaultFiltersInteractor @Inject constructor(
     return Result.create {
       withContext(dispatcherProvider.io) {
         db.withTransaction {
-          filtersDao.storeFilter(FilterEntity(filter = filter))
+          filtersDao.storeFilter(FilterDto(filter = filter))
         }
       }
     }

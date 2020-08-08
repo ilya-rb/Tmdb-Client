@@ -6,7 +6,7 @@ import com.illiarb.tmdbclient.libs.imageloader.clear
 import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
 import com.illiarb.tmdbclient.libs.ui.ext.setVisible
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
-import com.illiarb.tmdbclient.ui.loadTmdbImage
+import com.illiarb.tmdbclient.util.loadTmdbImage
 
 fun nowPlayingItemDelegate(
   clickListener: OnClickListener<Movie>

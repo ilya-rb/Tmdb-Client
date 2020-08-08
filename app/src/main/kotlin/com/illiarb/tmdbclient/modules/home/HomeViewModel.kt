@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.illiarb.tmdbclient.libs.ui.base.viewmodel.BaseViewModel
 import com.illiarb.tmdbclient.libs.ui.common.ErrorMessage
 import com.illiarb.tmdbclient.libs.ui.common.ViewStateEvent
+import com.illiarb.tmdbclient.libs.util.Async
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.modules.home.HomeViewModel.Event
 import com.illiarb.tmdbclient.modules.home.HomeViewModel.State
@@ -31,45 +32,35 @@ class HomeViewModel @Inject constructor(
 ) : BaseViewModel<State, Event>(initialState()) {
 
   companion object {
-    private fun initialState() = State(
-      isLoadingSections = true,
-      sections = emptyList(),
-      error = null
-    )
+    private fun initialState() = State(sections = Async.Loading(), error = null)
   }
 
   init {
     viewModelScope.launch {
-      when (val sections = homeInteractor.getHomeSections()) {
-        is Result.Ok -> {
-          setState {
-            copy(
-              isLoadingSections = false,
-              sections = sections.data
-            )
+      val sections = homeInteractor.getHomeSections().asAsync()
+
+      setState {
+        copy(
+          sections = sections,
+          error = sections.errorOrNull()?.let {
+            ViewStateEvent(ErrorMessage(it.message ?: ""))
           }
-        }
-        is Result.Err -> {
-          setState {
-            copy(
-              isLoadingSections = false,
-              error = ViewStateEvent(ErrorMessage(sections.error.message ?: ""))
-            )
-          }
-        }
+        )
       }
 
-      trendingInteractor.getTrending().doIfOk {
-        val sectionsList = currentState.sections.toMutableList()
+      trendingInteractor.getTrending().doIfOk { response ->
+        currentState.sections.doOnSuccess {
+          val sectionsList = it.toMutableList()
 
-        if (sectionsList.isEmpty()) {
-          sectionsList.add(TrendingSection(it))
-        } else {
-          sectionsList.add(1, TrendingSection(it))
-        }
+          if (sectionsList.isEmpty()) {
+            sectionsList.add(TrendingSection(response))
+          } else {
+            sectionsList.add(1, TrendingSection(response))
+          }
 
-        setState {
-          copy(sections = sectionsList)
+          setState {
+            copy(sections = Async.Success(sectionsList))
+          }
         }
       }
     }
@@ -108,8 +99,7 @@ class HomeViewModel @Inject constructor(
   }
 
   data class State(
-    val isLoadingSections: Boolean,
-    val sections: List<MovieSection>,
+    val sections: Async<List<MovieSection>>,
     val error: ViewStateEvent<ErrorMessage>?
   )
 

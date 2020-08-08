@@ -22,10 +22,9 @@ interface FilterComponent {
     fun router(): Router
   }
 
-  @Component.Builder
-  interface Builder {
-    fun dependencies(dependencies: Dependencies): Builder
-    fun build(): FilterComponent
+  @Component.Factory
+  interface Factory {
+    fun create(dependencies: Dependencies): FilterComponent
   }
 
   fun inject(fragment: FilterFragment)

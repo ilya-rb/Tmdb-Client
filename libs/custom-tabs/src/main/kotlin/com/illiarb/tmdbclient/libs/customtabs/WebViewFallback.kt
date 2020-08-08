@@ -10,10 +10,11 @@ import android.net.Uri
 import com.illiarb.tmdbclient.libs.customtabs.internal.WebViewActivity
 
 /**
- * Default [CustomTabsHelper.CustomTabFallback] implementation
+ * Default [CustomTabFallback] implementation
  * that uses [WebViewActivity] to display the requested [Uri].
  */
-class WebViewFallback : CustomTabsHelper.CustomTabFallback {
+class WebViewFallback : CustomTabFallback {
+
   /**
    * @param context The [Context] that wants to open the Uri
    * @param uri The [Uri] to be opened by the fallback

@@ -6,15 +6,12 @@ import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.R
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.services.tmdb.domain.MovieFilter
-import com.illiarb.tmdbclient.services.tmdb.domain.Review
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.MovieDto
 import com.illiarb.tmdbclient.services.tmdb.internal.mappers.MovieMapper
-import com.illiarb.tmdbclient.services.tmdb.internal.mappers.ReviewMapper
-import com.illiarb.tmdbclient.services.tmdb.internal.model.MovieModel
 import com.illiarb.tmdbclient.services.tmdb.internal.network.api.MovieApi
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import javax.inject.Singleton
 
 internal interface MoviesRepository {
 
@@ -22,20 +19,16 @@ internal interface MoviesRepository {
 
   suspend fun getMovieDetails(id: Int, appendToResponse: String): Result<Movie>
 
-  suspend fun getMovieReviews(id: Int): Result<List<Review>>
-
   suspend fun getMovieFilters(): Result<List<MovieFilter>>
 
 }
 
-@Singleton
 internal class DefaultMoviesRepository @Inject constructor(
   private val moviesService: MovieApi,
   private val dispatcherProvider: DispatcherProvider,
   private val configurationRepository: ConfigurationRepository,
   private val cache: TmdbCache,
   private val movieMapper: MovieMapper,
-  private val reviewMapper: ReviewMapper,
   private val resourceResolver: ResourceResolver
 ) : MoviesRepository {
 
@@ -66,14 +59,6 @@ internal class DefaultMoviesRepository @Inject constructor(
       }
     }
 
-  override suspend fun getMovieReviews(id: Int): Result<List<Review>> =
-    Result.create {
-      withContext(dispatcherProvider.io) {
-        val reviews = moviesService.getMovieReviews(id).unwrap()
-        reviewMapper.mapList(reviews.results)
-      }
-    }
-
   override suspend fun getMovieFilters(): Result<List<MovieFilter>> = Result.create {
     withContext(dispatcherProvider.io) {
       resourceResolver.getStringArray(R.array.movie_filters_codes)
@@ -83,7 +68,7 @@ internal class DefaultMoviesRepository @Inject constructor(
     }
   }
 
-  private suspend fun fetchFromNetworkAndStore(type: String): List<MovieModel> {
+  private suspend fun fetchFromNetworkAndStore(type: String): List<MovieDto> {
     val result = moviesService.getMoviesByType(type).unwrap().results
     cache.storeMovies(type, result)
     return result

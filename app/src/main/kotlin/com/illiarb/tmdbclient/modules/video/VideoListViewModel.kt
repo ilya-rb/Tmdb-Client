@@ -2,10 +2,12 @@ package com.illiarb.tmdbclient.modules.video
 
 import androidx.lifecycle.viewModelScope
 import com.illiarb.tmdbclient.libs.ui.base.viewmodel.BaseViewModel
+import com.illiarb.tmdbclient.libs.ui.common.ErrorMessage
+import com.illiarb.tmdbclient.libs.ui.common.ViewStateEvent
+import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.services.tmdb.domain.Video
 import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
 import kotlinx.coroutines.launch
-import com.illiarb.tmdbclient.libs.util.Result
 import javax.inject.Inject
 
 class VideoListViewModel @Inject constructor(
@@ -14,7 +16,11 @@ class VideoListViewModel @Inject constructor(
 ) : BaseViewModel<VideoListViewModel.State, VideoListViewModel.Event>(initialState()) {
 
   companion object {
-    private fun initialState() = State(videos = emptyList(), selected = null)
+    private fun initialState() = State(
+      videos = emptyList(),
+      selected = null,
+      error = null
+    )
   }
 
   init {
@@ -45,7 +51,10 @@ class VideoListViewModel @Inject constructor(
           }
         }
         is Result.Err -> setState {
-          copy(videos = emptyList())
+          copy(
+            videos = emptyList(),
+            error = ViewStateEvent(ErrorMessage(result.error.message ?: ""))
+          )
         }
       }
     }
@@ -77,7 +86,11 @@ class VideoListViewModel @Inject constructor(
     }
   }
 
-  data class State(val videos: List<Any> = emptyList(), val selected: UiVideo?)
+  data class State(
+    val videos: List<Any> = emptyList(),
+    val selected: UiVideo?,
+    val error: ViewStateEvent<ErrorMessage>?
+  )
 
   data class UiVideo(val video: Video, val isSelected: Boolean)
 

@@ -17,7 +17,7 @@ import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.services.tmdb.domain.MovieSection
 import com.illiarb.tmdbclient.services.tmdb.domain.TrendingSection
 import com.illiarb.tmdbclient.services.tmdb.domain.TrendingSection.TrendingItem
-import com.illiarb.tmdbclient.ui.loadTmdbImage
+import com.illiarb.tmdbclient.util.loadTmdbImage
 
 private const val KEY_TRENDING_STATE = "trending_state"
 

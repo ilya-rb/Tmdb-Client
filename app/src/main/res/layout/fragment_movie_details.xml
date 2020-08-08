@@ -15,12 +15,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.illiarb.tmdbclient.modules.details.widget.CurvedImageView
+            <com.illiarb.tmdbclient.libs.ui.widget.CurvedImageView
                 android:id="@+id/movieDetailsPoster"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/movie_details_poster_height"
                 android:background="@android:color/transparent"
                 android:contentDescription="@null"
+                app:cvCurveOffset="120"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

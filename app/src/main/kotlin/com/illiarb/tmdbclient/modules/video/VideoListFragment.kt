@@ -1,8 +1,10 @@
 package com.illiarb.tmdbclient.modules.video
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +14,7 @@ import com.illiarb.tmdbclient.databinding.FragmentVideoListBinding
 import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable
 import com.illiarb.tmdbclient.libs.ui.base.BaseFragment
+import com.illiarb.tmdbclient.libs.ui.common.TranslucentStatusBarColorChanger
 import com.illiarb.tmdbclient.libs.ui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbclient.libs.ui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
@@ -36,12 +39,9 @@ class VideoListFragment : BaseFragment(R.layout.fragment_video_list), Injectable
     }
   )
 
+  private val viewModel by viewModels<VideoListViewModel>(factoryProducer = { viewModelFactory })
   private val viewBinding by viewBinding { fragment ->
     FragmentVideoListBinding.bind(fragment.requireView())
-  }
-
-  private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
-    ViewModelProvider(this, viewModelFactory).get(VideoListViewModel::class.java)
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,6 +49,8 @@ class VideoListFragment : BaseFragment(R.layout.fragment_video_list), Injectable
 
     setupVideoPlayer()
     setupVideoList()
+
+    TranslucentStatusBarColorChanger(this, requireActivity().window, Color.BLACK)
 
     viewLifecycleOwner.lifecycleScope.launch {
       var oldModel: State? = null
@@ -63,10 +65,11 @@ class VideoListFragment : BaseFragment(R.layout.fragment_video_list), Injectable
   }
 
   override fun inject(appProvider: AppProvider) =
-    DaggerVideoListComponent.builder()
-      .dependencies(appProvider)
-      .movieId(requireArguments().getInt(NavigationAction.EXTRA_VIDEOS_MOVIE_ID))
-      .build()
+    DaggerVideoListComponent.factory()
+      .create(
+        movieId = requireArguments().getInt(NavigationAction.EXTRA_VIDEOS_MOVIE_ID),
+        dependencies = appProvider
+      )
       .inject(this)
 
   private fun setupVideoPlayer() {

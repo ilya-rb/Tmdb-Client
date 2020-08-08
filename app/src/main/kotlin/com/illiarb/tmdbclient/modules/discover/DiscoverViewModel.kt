@@ -10,8 +10,9 @@ import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
 import com.illiarb.tmdbclient.services.tmdb.domain.Filter
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
+import com.illiarb.tmdbclient.services.tmdb.interactor.DiscoverInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
-import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
+import com.illiarb.tmdbclient.services.tmdb.interactor.SearchInteractor
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -19,12 +20,11 @@ import javax.inject.Inject
 
 class DiscoverViewModel @Inject constructor(
   private val router: Router,
-  private val moviesInteractor: MoviesInteractor,
   private val analyticsService: AnalyticsService,
-  private val filtersInteractor: FiltersInteractor
+  private val filtersInteractor: FiltersInteractor,
+  private val searchInteractor: SearchInteractor,
+  private val discoverInteractor: DiscoverInteractor
 ) : BaseViewModel<DiscoverViewModel.State, DiscoverViewModel.Event>(initialState()) {
-
-  private var searchJob: Job? = null
 
   companion object {
 
@@ -41,6 +41,8 @@ class DiscoverViewModel @Inject constructor(
         errorMessage = null
       )
   }
+
+  private var searchJob: Job? = null
 
   init {
     viewModelScope.launch {
@@ -85,7 +87,7 @@ class DiscoverViewModel @Inject constructor(
         copy(isLoading = true)
       }
 
-      val results = moviesInteractor.discoverMovies(filter, page = 1)
+      val results = discoverInteractor.discoverMovies(filter, page = 1)
 
       setState {
         when (results) {
@@ -121,7 +123,7 @@ class DiscoverViewModel @Inject constructor(
         copy(isLoadingAdditionalPage = true)
       }
 
-      val results = moviesInteractor.discoverMovies(
+      val results = discoverInteractor.discoverMovies(
         filter = currentState.filter,
         page = currentState.currentPage + 1
       )
@@ -154,7 +156,7 @@ class DiscoverViewModel @Inject constructor(
         copy(isLoading = true)
       }
 
-      when (val results = moviesInteractor.searchMovies(query)) {
+      when (val results = searchInteractor.searchMovies(query)) {
         is Result.Ok -> {
           setState {
             copy(isLoading = false, searchResults = results.data.items)

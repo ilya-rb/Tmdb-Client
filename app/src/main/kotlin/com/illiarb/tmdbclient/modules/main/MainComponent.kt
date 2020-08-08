@@ -1,8 +1,10 @@
 package com.illiarb.tmdbclient.modules.main
 
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentFactory
 import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.libs.tools.ConnectivityStatus
+import com.illiarb.tmdbclient.navigation.DeepLinkHandler
 import com.illiarb.tmdbclient.navigation.NavigatorHolder
 import dagger.BindsInstance
 import dagger.Component
@@ -20,14 +22,17 @@ interface MainComponent {
     fun connectivityStatus(): ConnectivityStatus
     fun navigatorHolder(): NavigatorHolder
     fun buildConfig(): BuildConfig
+    fun fragmentFactory(): FragmentFactory
+    fun deepLinkHandler(): DeepLinkHandler
   }
 
-  @Component.Builder
-  interface Builder {
-    @BindsInstance
-    fun activity(activity: FragmentActivity): Builder
-    fun dependencies(dependencies: Dependencies): Builder
-    fun build(): MainComponent
+  @Component.Factory
+  interface Factory {
+
+    fun create(
+      @BindsInstance activity: FragmentActivity,
+      dependencies: Dependencies
+    ): MainComponent
   }
 
   fun inject(activity: MainActivity)

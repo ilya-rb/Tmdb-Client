@@ -3,31 +3,9 @@ plugins {
   kotlin("android")
 }
 
-apply {
-  from(rootProject.file("gradle/configure-kotlin-sources.gradle"))
-}
-
-android {
-  compileSdkVersion(Deps.Android.Build.compileSdkVersion)
-
-  defaultConfig {
-    minSdkVersion(Deps.Android.Build.minSdkVersion)
-    targetSdkVersion(Deps.Android.Build.targetSdkVersion)
-
-    versionCode = 1
-    versionName = "1.0"
-  }
-
-  buildTypes {
-    getByName("release") {
-      isMinifyEnabled = false
-      proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-    }
-  }
-}
+apply(from = rootProject.file("gradle/configure-kotlin-sources.gradle"))
 
 dependencies {
-
   implementation(project(Modules.Services.tmdb))
   implementation(project(Modules.Services.analytics))
   implementation(project(Modules.Core.logger))

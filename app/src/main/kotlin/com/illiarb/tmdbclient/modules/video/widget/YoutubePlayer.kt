@@ -8,6 +8,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import com.illiarb.tmdbclient.R
+import com.illiarb.tmdbclient.databinding.WidgetYoutubePlayerBinding
 
 class YoutubePlayer @JvmOverloads constructor(
   context: Context,
@@ -15,17 +16,20 @@ class YoutubePlayer @JvmOverloads constructor(
   defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-  private val youtubePlayerView: WebView
+  private val binding: WidgetYoutubePlayerBinding =
+    WidgetYoutubePlayerBinding.bind(inflate(context, R.layout.widget_youtube_player, this))
 
   init {
-    val view = inflate(context, R.layout.widget_youtube_player, this)
-
-    youtubePlayerView = view.findViewById(R.id.playerView)
-    youtubePlayerView.webViewClient = object : WebViewClient() {
-      override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean = false
+    binding.playerView.webViewClient = object : WebViewClient() {
+      override fun shouldOverrideUrlLoading(
+        view: WebView?,
+        request: WebResourceRequest?
+      ): Boolean {
+        return false
+      }
     }
 
-    youtubePlayerView.settings.apply {
+    binding.playerView.settings.apply {
       @SuppressLint("SetJavaScriptEnabled")
       // Videos are playing only from the Youtube
       javaScriptEnabled = true
@@ -34,10 +38,8 @@ class YoutubePlayer @JvmOverloads constructor(
   }
 
   fun playVideo(videoId: String) {
-    youtubePlayerView.loadUrl(buildYoutubeUrl(videoId))
+    binding.playerView.loadUrl(buildYoutubeUrl(videoId))
   }
 
-  private fun buildYoutubeUrl(id: String): String {
-    return "https://www.youtube.com/embed/$id"
-  }
+  private fun buildYoutubeUrl(id: String): String = "https://www.youtube.com/embed/$id"
 }

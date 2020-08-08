@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.databinding.FragmentMoviesBinding
-import com.illiarb.tmdbclient.di.AppProvider
-import com.illiarb.tmdbclient.di.Injectable
 import com.illiarb.tmdbclient.libs.ui.base.BaseFragment
 import com.illiarb.tmdbclient.libs.ui.common.SimpleBundleStore
 import com.illiarb.tmdbclient.libs.ui.common.SnackbarController
@@ -20,26 +18,25 @@ import com.illiarb.tmdbclient.libs.ui.ext.getColorAttr
 import com.illiarb.tmdbclient.libs.ui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbclient.libs.ui.ext.tintMenuItemsWithColor
 import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
+import com.illiarb.tmdbclient.libs.ui.widget.ToolbarScrollListener
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.DelegatesAdapter
 import com.illiarb.tmdbclient.libs.ui.widget.recyclerview.SpaceDecoration
+import com.illiarb.tmdbclient.libs.util.Async
 import com.illiarb.tmdbclient.modules.home.HomeViewModel.Event
 import com.illiarb.tmdbclient.modules.home.HomeViewModel.State
 import com.illiarb.tmdbclient.modules.home.delegates.MovieSectionDelegate
 import com.illiarb.tmdbclient.modules.home.delegates.genresSection
 import com.illiarb.tmdbclient.modules.home.delegates.nowplaying.nowPlayingSection
 import com.illiarb.tmdbclient.modules.home.delegates.trendingSection
-import com.illiarb.tmdbclient.modules.home.di.DaggerHomeComponent
-import com.illiarb.tmdbclient.ui.ToolbarScrollListener
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.google.android.material.R as MaterialR
 import com.illiarb.tmdbclient.libs.ui.R as UiR
 
-class HomeFragment : BaseFragment(R.layout.fragment_movies), Injectable {
-
-  @Inject
-  lateinit var viewModelFactory: ViewModelProvider.Factory
+class HomeFragment @Inject constructor(
+  private val viewModelFactory: ViewModelProvider.Factory
+) : BaseFragment(R.layout.fragment_movies) {
 
   private val viewModel by viewModels<HomeViewModel>(factoryProducer = { viewModelFactory })
   private val viewBinding by viewBinding { fragment ->
@@ -69,17 +66,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_movies), Injectable {
     }
   )
 
-  override fun inject(appProvider: AppProvider) =
-    DaggerHomeComponent.builder()
-      .dependencies(appProvider)
-      .build()
-      .inject(this)
-
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
     viewBinding.moviesSwipeRefresh.isEnabled = false
-
     viewBinding.imageTmdb.setOnClickListener {
       viewModel.events.offer(Event.TmdbIconClick)
     }
@@ -105,6 +95,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_movies), Injectable {
     viewBinding.moviesList.apply {
       adapter = this@HomeFragment.adapter
       layoutManager = LinearLayoutManager(requireContext())
+      isNestedScrollingEnabled = false
       setHasFixedSize(true)
       addItemDecoration(
         SpaceDecoration(
@@ -114,11 +105,13 @@ class HomeFragment : BaseFragment(R.layout.fragment_movies), Injectable {
           spacingBottomLast = dimen(UiR.dimen.spacing_normal)
         )
       )
-      isNestedScrollingEnabled = false
+
       removeAdapterOnDetach()
+
       doOnApplyWindowInsets { v, insets, initialPadding ->
         v.updatePadding(bottom = initialPadding.bottom + insets.systemWindowInsetBottom)
       }
+
       addOnScrollListener(ToolbarScrollListener(
         endColor = requireView().getColorAttr(MaterialR.attr.colorPrimary),
         distance = requireView().dimen(R.dimen.app_bar_end_state_height),
@@ -130,17 +123,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_movies), Injectable {
     }
   }
 
-  private fun render(state: State) {
-    viewBinding.moviesSwipeRefresh.isRefreshing = state.isLoadingSections
-
-    adapter.submitList(state.sections)
-
-    state.error?.consume { message ->
-      snackbarController.showMessage(viewBinding.root, message.message)
-    }
-  }
-
-  @Suppress("MagicNumber")
   private fun setupToolbar() {
     viewBinding.toolbar.apply {
       setOnMenuItemClickListener {
@@ -154,9 +136,22 @@ class HomeFragment : BaseFragment(R.layout.fragment_movies), Injectable {
       doOnApplyWindowInsets { v, insets, padding ->
         v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
       }
+
+      menu.tintMenuItemsWithColor(
+        viewBinding.root.getColorAttr(MaterialR.attr.colorOnPrimary)
+      )
+    }
+  }
+
+  private fun render(state: State) {
+    viewBinding.moviesSwipeRefresh.isRefreshing = state.sections is Async.Loading
+
+    state.sections.doOnSuccess {
+      adapter.submitList(it)
     }
 
-    viewBinding.toolbar.menu
-      .tintMenuItemsWithColor(viewBinding.root.getColorAttr(MaterialR.attr.colorOnPrimary))
+    state.error?.consume { message ->
+      snackbarController.showMessage(viewBinding.root, message.message)
+    }
   }
 }

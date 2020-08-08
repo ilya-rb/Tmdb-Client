@@ -1,17 +1,12 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.image
 
-internal enum class ImageType {
+internal enum class ImageType(val code: String) {
 
-  Backdrop,
+  Backdrop("backdrop"),
 
-  Poster,
+  Poster("poster"),
 
-  Profile;
+  Profile("profile");
 
-  override fun toString(): String =
-    when (this) {
-      Backdrop -> "backdrop"
-      Poster -> "poster"
-      Profile -> "profile"
-    }
+  override fun toString(): String = code
 }

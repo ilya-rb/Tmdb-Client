@@ -4,35 +4,9 @@ plugins {
   kotlin("kapt")
 }
 
-apply {
-  from(rootProject.file("gradle/configure-kotlin-sources.gradle"))
-}
-
-android {
-  compileSdkVersion(Deps.Android.Build.compileSdkVersion)
-
-  defaultConfig {
-    minSdkVersion(Deps.Android.Build.minSdkVersion)
-    targetSdkVersion(Deps.Android.Build.targetSdkVersion)
-
-    versionCode = 1
-    versionName = "1.0"
-  }
-
-  buildTypes {
-    getByName("release") {
-      isMinifyEnabled = false
-      proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-    }
-  }
-
-  buildFeatures {
-    viewBinding = true
-  }
-}
+apply(from = rootProject.file("gradle/configure-kotlin-sources.gradle"))
 
 dependencies {
-
   kapt(Deps.Dagger.compiler)
 
   implementation(Deps.Dagger.core)
@@ -48,7 +22,6 @@ dependencies {
   api(Deps.Android.AndroidX.Lifecycle.ktx)
   api(Deps.Android.AndroidX.ViewModel.core)
   api(Deps.Android.AndroidX.ViewModel.ext)
-  api(Deps.Android.AndroidX.ViewModel.ktx)
   api(Deps.AdapterDelegates.core)
   api(Deps.AdapterDelegates.dsl)
 }

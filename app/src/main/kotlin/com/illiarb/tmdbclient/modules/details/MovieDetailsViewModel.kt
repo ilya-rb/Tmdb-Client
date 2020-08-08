@@ -4,10 +4,11 @@ import androidx.lifecycle.viewModelScope
 import com.illiarb.tmdbclient.libs.ui.base.viewmodel.BaseViewModel
 import com.illiarb.tmdbclient.libs.ui.common.ErrorMessage
 import com.illiarb.tmdbclient.libs.ui.common.ViewStateEvent
-import com.illiarb.tmdbclient.libs.util.Result
+import com.illiarb.tmdbclient.libs.util.Async
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.Event
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.State
-import com.illiarb.tmdbclient.navigation.NavigationAction.MovieDetails
+import com.illiarb.tmdbclient.navigation.NavigationAction.MovieDetails.GoToMovieDetails
+import com.illiarb.tmdbclient.navigation.NavigationAction.MovieDetails.GoToVideos
 import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
@@ -24,8 +25,7 @@ class MovieDetailsViewModel @Inject constructor(
 
   companion object {
     private fun initialState() = State(
-      isLoading = true,
-      movie = null,
+      movie = Async.Loading(),
       movieSections = emptyList(),
       error = null
     )
@@ -33,38 +33,35 @@ class MovieDetailsViewModel @Inject constructor(
 
   init {
     viewModelScope.launch {
-      when (val movieDetails = moviesInteractor.getMovieDetails(movieId)) {
-        is Result.Ok -> {
-          val movie = movieDetails.data
-          val sections = mutableListOf<MovieDetailsSection>()
-            .apply {
-              add(MovieDetailsSection.MovieInfo(movie))
+      when (val result = moviesInteractor.getMovieDetails(movieId).asAsync()) {
+        is Async.Success -> {
+          val movie = result()
+          val sections = mutableListOf<MovieDetailsSection>().apply {
+            add(MovieDetailsSection.MovieInfo(movie))
 
-              if (movie.images.isNotEmpty()) {
-                add(MovieDetailsSection.MoviePhotos(movie))
-              }
-
-              val similar = moviesInteractor.getSimilarMovies(movieId)
-              similar.doIfOk {
-                if (it.isNotEmpty()) {
-                  add(MovieDetailsSection.MovieSimilar(it))
-                }
-              }
+            if (movie.images.isNotEmpty()) {
+              add(MovieDetailsSection.MoviePhotos(movie))
             }
 
+            val similar = moviesInteractor.getSimilarMovies(movieId)
+            similar.doIfOk {
+              if (it.isNotEmpty()) {
+                add(MovieDetailsSection.MovieSimilar(it))
+              }
+            }
+          }
+
           setState {
-            copy(
-              isLoading = false,
-              movie = movie,
-              movieSections = sections
-            )
+            copy(movie = result, movieSections = sections)
           }
         }
-        is Result.Err -> {
+        is Async.Fail -> {
           setState {
             copy(
-              isLoading = false,
-              error = ViewStateEvent(ErrorMessage(movieDetails.error.message ?: ""))
+              movie = result,
+              error = result.errorOrNull()?.let { error ->
+                ViewStateEvent(ErrorMessage(error.message ?: ""))
+              }
             )
           }
         }
@@ -74,14 +71,13 @@ class MovieDetailsViewModel @Inject constructor(
 
   override fun onUiEvent(event: Event) {
     when (event) {
-      is Event.MovieClicked -> router.executeAction(MovieDetails.GoToMovieDetails(event.movie.id))
-      is Event.PlayClicked -> router.executeAction(MovieDetails.GoToVideos(movieId))
+      is Event.MovieClicked -> router.executeAction(GoToMovieDetails(event.movie.id))
+      is Event.PlayClicked -> router.executeAction(GoToVideos(movieId))
     }
   }
 
   data class State(
-    val isLoading: Boolean,
-    val movie: Movie?,
+    val movie: Async<Movie>,
     val movieSections: List<MovieDetailsSection>,
     val error: ViewStateEvent<ErrorMessage>?
   )

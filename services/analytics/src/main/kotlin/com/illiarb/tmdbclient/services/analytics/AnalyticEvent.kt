@@ -5,5 +5,5 @@ package com.illiarb.tmdbclient.services.analytics
  */
 sealed class AnalyticEvent(val eventName: String) {
 
-  class RouterAction(val action: String) : AnalyticEvent("screen_opened")
+  class RouterAction(val action: String) : AnalyticEvent("navigation_action")
 }

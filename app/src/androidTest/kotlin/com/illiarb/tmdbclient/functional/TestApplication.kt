@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.core.provider.FontRequest
 import androidx.emoji.text.EmojiCompat
 import androidx.emoji.text.FontRequestEmojiCompatConfig
-import com.illiarb.tmdbclient.di.AppInjector
+import com.illiarb.tmdbclient.di.AppActivityLifecycleCallbacks
 import com.illiarb.tmdbclient.libs.ui.R
 
 class TestApplication : Application() {
@@ -13,7 +13,8 @@ class TestApplication : Application() {
 
   override fun onCreate() {
     super.onCreate()
-    AppInjector(this, testAppComponent).registerLifecycleCallbacks()
+
+    registerActivityLifecycleCallbacks(AppActivityLifecycleCallbacks(testAppComponent))
 
     val config = FontRequestEmojiCompatConfig(
       this,

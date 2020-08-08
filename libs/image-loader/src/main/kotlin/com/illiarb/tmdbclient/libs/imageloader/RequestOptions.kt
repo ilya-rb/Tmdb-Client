@@ -6,7 +6,6 @@ import androidx.annotation.FloatRange
 /**
  * @author ilya-rb on 29.12.18.
  */
-@Suppress("unused")
 data class RequestOptions(
   var cropOptions: CropOptions? = null,
   var cornerRadius: Int = 0,
@@ -15,11 +14,6 @@ data class RequestOptions(
   var useCrossFade: Boolean = true,
   var onImageReady: () -> Unit = {}
 ) {
-
-  companion object {
-    private const val DEFAULT_RADIUS = 3
-    private const val DEFAULT_DOWN_SAMPLING = 15
-  }
 
   fun errorRes(@DrawableRes idRes: Int) = apply {
     errorRes = idRes

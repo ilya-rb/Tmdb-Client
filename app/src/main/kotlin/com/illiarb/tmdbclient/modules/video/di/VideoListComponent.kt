@@ -1,7 +1,7 @@
 package com.illiarb.tmdbclient.modules.video.di
 
-import com.illiarb.tmdbclient.modules.video.VideoListFragment
 import com.illiarb.tmdbclient.libs.ui.di.ViewModelModule
+import com.illiarb.tmdbclient.modules.video.VideoListFragment
 import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
 import dagger.BindsInstance
 import dagger.Component
@@ -19,12 +19,9 @@ interface VideoListComponent {
     fun moviesInteractor(): MoviesInteractor
   }
 
-  @Component.Builder
-  interface Builder {
-    @BindsInstance
-    fun movieId(movieId: Int): Builder
-    fun dependencies(dependencies: Dependencies): Builder
-    fun build(): VideoListComponent
+  @Component.Factory
+  interface Factory {
+    fun create(@BindsInstance movieId: Int, dependencies: Dependencies): VideoListComponent
   }
 
   fun inject(fragment: VideoListFragment)

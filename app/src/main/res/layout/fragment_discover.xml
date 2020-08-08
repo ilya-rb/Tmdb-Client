@@ -43,7 +43,7 @@
                     android:animateLayoutChanges="true"
                     android:orientation="horizontal">
 
-                    <com.illiarb.tmdbclient.ui.BadgeImageView
+                    <com.illiarb.tmdbclient.libs.ui.widget.BadgeImageView
                         android:id="@+id/discoverFilter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

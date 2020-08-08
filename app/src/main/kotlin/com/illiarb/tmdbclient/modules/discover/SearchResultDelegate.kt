@@ -7,7 +7,7 @@ import com.illiarb.tmdbclient.libs.ui.R
 import com.illiarb.tmdbclient.libs.ui.common.OnClickListener
 import com.illiarb.tmdbclient.libs.ui.ext.dimen
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
-import com.illiarb.tmdbclient.ui.loadTmdbImage
+import com.illiarb.tmdbclient.util.loadTmdbImage
 
 fun searchResultDelegate(
   clickListener: OnClickListener<Movie>

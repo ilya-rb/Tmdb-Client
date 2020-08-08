@@ -23,7 +23,11 @@ data class Filter(
     var count = 0
 
     count += selectedGenreIds.size
-    count += if (yearConstraints == YearConstraints.AllYears) 0 else 1
+    count += if (yearConstraints == YearConstraints.AllYears) {
+      0
+    } else {
+      1
+    }
 
     return count
   }
