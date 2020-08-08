@@ -4,6 +4,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
 import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.libs.tools.ConnectivityStatus
+import com.illiarb.tmdbclient.navigation.DeepLinkHandler
 import com.illiarb.tmdbclient.navigation.NavigatorHolder
 import dagger.BindsInstance
 import dagger.Component
@@ -22,6 +23,7 @@ interface MainComponent {
     fun navigatorHolder(): NavigatorHolder
     fun buildConfig(): BuildConfig
     fun fragmentFactory(): FragmentFactory
+    fun deepLinkHandler(): DeepLinkHandler
   }
 
   @Component.Factory

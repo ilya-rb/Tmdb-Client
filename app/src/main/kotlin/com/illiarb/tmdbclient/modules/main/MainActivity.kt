@@ -17,6 +17,7 @@ import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable
 import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.libs.tools.ConnectivityStatus
+import com.illiarb.tmdbclient.navigation.DeepLinkHandler
 import com.illiarb.tmdbclient.navigation.Navigator
 import com.illiarb.tmdbclient.navigation.NavigatorHolder
 import kotlinx.coroutines.flow.collect
@@ -39,6 +40,9 @@ class MainActivity : AppCompatActivity(), Injectable {
 
   @Inject
   lateinit var fragmentFactory: FragmentFactory
+
+  @Inject
+  lateinit var deepLinkHandler: DeepLinkHandler
 
   private val viewBinding: ActivityMainBinding by viewBinding(R.id.root)
 
@@ -70,6 +74,8 @@ class MainActivity : AppCompatActivity(), Injectable {
         updateConnectionStateLabel(it)
       }
     }
+
+    maybeHandleDeepLink(intent)
   }
 
   override fun onResumeFragments() {
@@ -80,6 +86,17 @@ class MainActivity : AppCompatActivity(), Injectable {
   override fun onPause() {
     super.onPause()
     actionsBuffer.removeNavigator()
+  }
+
+  override fun onNewIntent(intent: Intent?) {
+    super.onNewIntent(intent)
+    maybeHandleDeepLink(intent)
+  }
+
+  private fun maybeHandleDeepLink(intent: Intent?) {
+    intent?.action?.let {
+      deepLinkHandler.handleShortcut(it)
+    }
   }
 
   private fun updateConnectionStateLabel(state: ConnectivityStatus.ConnectionState) {

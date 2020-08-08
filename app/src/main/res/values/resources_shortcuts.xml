@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="shortcut_action_discover_short_label">Search</string>
+
+    <string name="deep_link_discover">https://www.themoviedb.org/search</string>
+
+</resources>

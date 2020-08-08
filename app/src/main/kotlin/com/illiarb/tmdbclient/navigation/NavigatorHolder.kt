@@ -20,11 +20,11 @@ interface NavigatorHolder {
     private var navigator: Navigator? = null
 
     override fun setNavigator(navigator: Navigator) {
-      this.navigator = navigator.also {
-        while (actionsBuffer.isNotEmpty()) {
-          actionsBuffer.poll()?.let {
-            executeAction(it)
-          }
+      this.navigator = navigator
+
+      while (actionsBuffer.isNotEmpty()) {
+        actionsBuffer.poll()?.let {
+          executeAction(it)
         }
       }
     }

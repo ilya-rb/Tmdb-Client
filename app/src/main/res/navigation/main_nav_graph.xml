@@ -12,8 +12,8 @@
         <action
             android:id="@+id/action_discover_to_filters"
             app:destination="@id/filtersFragment" />
-        <action
 
+        <action
             android:id="@+id/action_discover_to_movie_details"
             app:destination="@id/movieDetailsFragment" />
 
@@ -71,5 +71,10 @@
             app:destination="@id/uiComponentsFragment" />
 
     </fragment>
+
+    <action
+        android:id="@+id/deep_link_discover"
+        app:destination="@id/discoverFragment"
+        app:launchSingleTop="true" />
 
 </navigation>

@@ -40,4 +40,9 @@ sealed class NavigationAction(@IdRes val destinationId: Int) {
 
     object GoToTmdbPage : WebViewAction("https://www.themoviedb.org")
   }
+
+  sealed class DeepLink(@IdRes destinationId: Int) : NavigationAction(destinationId) {
+
+    object Discover : DeepLink(R.id.deep_link_discover)
+  }
 }
