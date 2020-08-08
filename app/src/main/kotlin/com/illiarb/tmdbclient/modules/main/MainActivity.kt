@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.snackbar.Snackbar
@@ -36,17 +37,32 @@ class MainActivity : AppCompatActivity(), Injectable {
   @Inject
   lateinit var buildConfig: BuildConfig
 
+  @Inject
+  lateinit var fragmentFactory: FragmentFactory
+
   private val viewBinding: ActivityMainBinding by viewBinding(R.id.root)
 
   private var connectionSnackbar: Snackbar? = null
 
-  override fun inject(appProvider: AppProvider) =
+  override fun inject(appProvider: AppProvider) {
     DaggerMainComponent.factory()
       .create(activity = this, dependencies = appProvider)
       .inject(this)
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    supportFragmentManager.registerFragmentLifecycleCallbacks(
+      NavHostFragmentLifecycleCallbacks(
+        fragmentFactory = fragmentFactory,
+        onFactoryAttached = {
+          supportFragmentManager.unregisterFragmentLifecycleCallbacks(it)
+        }
+      ),
+      /* recursive */ false
+    )
+
     setContentView(R.layout.activity_main)
 
     lifecycleScope.launch {

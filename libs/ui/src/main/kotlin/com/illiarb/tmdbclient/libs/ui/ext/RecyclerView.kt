@@ -9,6 +9,7 @@ fun RecyclerView.removeAdapterOnDetach() {
     override fun onViewDetachedFromWindow(v: View?) {
       // Find the better way to not leak the adapter
       adapter = null
+      removeOnAttachStateChangeListener(this)
     }
   })
 }

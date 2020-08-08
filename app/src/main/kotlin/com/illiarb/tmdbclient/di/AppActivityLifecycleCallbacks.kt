@@ -11,8 +11,7 @@ import androidx.fragment.app.FragmentManager
 /**
  * @author ilya-rb on 24.12.18.
  */
-class AppInjector(
-  private val application: Application,
+class AppActivityLifecycleCallbacks(
   private val provider: AppProvider
 ) : Application.ActivityLifecycleCallbacks {
 
@@ -24,7 +23,7 @@ class AppInjector(
     if (activity is FragmentActivity) {
       activity.supportFragmentManager.registerFragmentLifecycleCallbacks(
         fragmentLifecycleCallbacks(),
-        true
+        /* recursive */true
       )
     }
   }
@@ -35,10 +34,6 @@ class AppInjector(
   override fun onActivityDestroyed(activity: Activity?) = Unit
   override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) = Unit
   override fun onActivityStopped(activity: Activity?) = Unit
-
-  fun registerLifecycleCallbacks() {
-    application.registerActivityLifecycleCallbacks(this)
-  }
 
   private fun fragmentLifecycleCallbacks(): FragmentManager.FragmentLifecycleCallbacks {
     return object : FragmentManager.FragmentLifecycleCallbacks() {

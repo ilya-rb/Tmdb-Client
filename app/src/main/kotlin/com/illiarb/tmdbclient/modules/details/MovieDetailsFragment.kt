@@ -44,6 +44,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details), Inje
   lateinit var viewModelFactory: ViewModelProvider.Factory
 
   private val viewModel by viewModels<MovieDetailsViewModel>(factoryProducer = { viewModelFactory })
+
   private val viewBinding by viewBinding { fragment ->
     FragmentMovieDetailsBinding.bind(fragment.requireView())
   }

@@ -15,7 +15,7 @@ interface ViewModelModule {
   @Binds
   @IntoMap
   @ViewModelKey(HomeViewModel::class)
-  fun bindHomeModel(impl: HomeViewModel): ViewModel
+  fun bindHomeModel(viewModel: HomeViewModel): ViewModel
 
   @Binds
   fun bindViewModelFactory(factory: DaggerViewModelFactory): ViewModelProvider.Factory

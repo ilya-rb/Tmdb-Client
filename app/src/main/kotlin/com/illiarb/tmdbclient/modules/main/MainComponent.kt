@@ -1,6 +1,7 @@
 package com.illiarb.tmdbclient.modules.main
 
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentFactory
 import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.libs.tools.ConnectivityStatus
 import com.illiarb.tmdbclient.navigation.NavigatorHolder
@@ -20,6 +21,7 @@ interface MainComponent {
     fun connectivityStatus(): ConnectivityStatus
     fun navigatorHolder(): NavigatorHolder
     fun buildConfig(): BuildConfig
+    fun fragmentFactory(): FragmentFactory
   }
 
   @Component.Factory

@@ -1,5 +1,6 @@
 package com.illiarb.tmdbclient.modules.video
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.ViewCompat
@@ -13,6 +14,7 @@ import com.illiarb.tmdbclient.databinding.FragmentVideoListBinding
 import com.illiarb.tmdbclient.di.AppProvider
 import com.illiarb.tmdbclient.di.Injectable
 import com.illiarb.tmdbclient.libs.ui.base.BaseFragment
+import com.illiarb.tmdbclient.libs.ui.common.TranslucentStatusBarColorChanger
 import com.illiarb.tmdbclient.libs.ui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbclient.libs.ui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
@@ -47,6 +49,8 @@ class VideoListFragment : BaseFragment(R.layout.fragment_video_list), Injectable
 
     setupVideoPlayer()
     setupVideoList()
+
+    TranslucentStatusBarColorChanger(this, requireActivity().window, Color.BLACK)
 
     viewLifecycleOwner.lifecycleScope.launch {
       var oldModel: State? = null

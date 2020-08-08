@@ -6,14 +6,9 @@ import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.libs.tools.AppInitializer
 import javax.inject.Inject
 
-class StrictModeInitializer @Inject constructor(
-  private val buildConfig: BuildConfig
-) : AppInitializer {
+class StrictModeInitializer @Inject constructor() : AppInitializer {
 
   override fun initialize(app: Application) {
-    // TODO: Maybe move this into debug source set
-    if (buildConfig.isDebug) return
-
     StrictMode.setThreadPolicy(
       StrictMode.ThreadPolicy.Builder()
         .detectDiskWrites()
@@ -29,7 +24,6 @@ class StrictModeInitializer @Inject constructor(
         .detectLeakedClosableObjects()
         .detectActivityLeaks()
         .penaltyLog()
-        .penaltyDeath()
         .build()
     )
   }

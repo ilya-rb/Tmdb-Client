@@ -2,7 +2,7 @@ package com.illiarb.tmdbclient
 
 import android.app.Application
 import com.illiarb.tmdbclient.di.AppComponent
-import com.illiarb.tmdbclient.di.AppInjector
+import com.illiarb.tmdbclient.di.AppActivityLifecycleCallbacks
 import com.illiarb.tmdbclient.di.DaggerAppComponent
 import com.illiarb.tmdbclient.libs.tools.AppInitializer
 import javax.inject.Inject
@@ -16,7 +16,7 @@ class App : Application() {
   override fun onCreate() {
     super.onCreate()
 
-    AppInjector(application = this, provider = appComponent).registerLifecycleCallbacks()
+    registerActivityLifecycleCallbacks(AppActivityLifecycleCallbacks(provider = appComponent))
 
     appComponent.inject(app = this)
   }
