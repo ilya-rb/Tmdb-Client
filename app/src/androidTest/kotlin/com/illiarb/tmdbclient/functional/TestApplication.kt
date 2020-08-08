@@ -13,7 +13,8 @@ class TestApplication : Application() {
 
   override fun onCreate() {
     super.onCreate()
-    AppActivityLifecycleCallbacks(this, testAppComponent).registerLifecycleCallbacks()
+
+    registerActivityLifecycleCallbacks(AppActivityLifecycleCallbacks(testAppComponent))
 
     val config = FontRequestEmojiCompatConfig(
       this,

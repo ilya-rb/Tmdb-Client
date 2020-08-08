@@ -12,7 +12,7 @@ apply(from = rootProject.file("gradle/configure-kotlin-sources.gradle"))
 android {
   defaultConfig {
     vectorDrawables.useSupportLibrary = true
-    testInstrumentationRunner = "com.illiarb.tmdbexplorer.functional.AppRunner"
+    testInstrumentationRunner = "com.illiarb.tmdbclient.functional.AppRunner"
   }
 
   buildFeatures {
