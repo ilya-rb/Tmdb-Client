@@ -157,6 +157,10 @@ class HomeFragment @Inject constructor(
       snackbarController.showMessage(viewBinding.root, message.message)
     }
 
+    viewBinding.toolbar.menu?.findItem(R.id.menu_home_debug)?.let { menuItem ->
+      menuItem.isVisible = state.uiComponentsIconVisible
+    }
+
     viewBinding.toolbar.menu?.findItem(R.id.menu_home_day_night)?.let { menuItem ->
       menuItem.icon = requireContext().getTintedDrawable(
         state.dayNightModeIconRes,
