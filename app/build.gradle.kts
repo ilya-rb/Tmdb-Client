@@ -11,12 +11,29 @@ apply(from = rootProject.file("gradle/configure-kotlin-sources.gradle"))
 
 android {
   defaultConfig {
+    applicationId = "com.illiarb.tmdbclient"
     vectorDrawables.useSupportLibrary = true
     testInstrumentationRunner = "com.illiarb.tmdbclient.functional.AppRunner"
   }
 
   buildFeatures {
     buildConfig = true
+  }
+
+  signingConfigs {
+    val propsFile = rootProject.file("keystore.properties")
+    if (propsFile.exists()) {
+      create("release") {
+        val props = Properties().also { it.load(FileInputStream(propsFile)) }
+
+        storeFile = file(props.getProperty("releaseStoreFile"))
+        storePassword = props.getProperty("releaseStorePassword")
+        keyAlias = props.getProperty("releaseKeyAlias")
+        keyPassword = props.getProperty("releaseKeyPassword")
+      }
+    } else {
+      create("release").initWith(getByName("debug"))
+    }
   }
 
   buildTypes {
@@ -27,26 +44,16 @@ android {
       buildConfigField("String", "API_KEY", properties.getProperty("api.key"))
     }
 
+    getByName("debug") {
+      applicationIdSuffix = ".debug"
+    }
+
     getByName("release") {
       isMinifyEnabled = true
-      isDebuggable = false
+      isDebuggable = true
       isZipAlignEnabled = true
       proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-      signingConfig = signingConfigs.getByName("debug")
-    }
-  }
-
-  signingConfigs {
-    getByName("debug") {
-      val propsFile = rootProject.file("keystore.properties")
-      if (propsFile.exists()) {
-        val props = Properties().also { it.load(FileInputStream(propsFile)) }
-
-        storeFile = file(props.getProperty("storeFile"))
-        storePassword = props.getProperty("storePassword")
-        keyAlias = props.getProperty("keyAlias")
-        keyPassword = props.getProperty("keyPassword")
-      }
+      signingConfig = signingConfigs.getByName("release")
     }
   }
 }

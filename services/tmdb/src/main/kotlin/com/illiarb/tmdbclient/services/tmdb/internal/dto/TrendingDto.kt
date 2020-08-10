@@ -1,3 +1,6 @@
 package com.illiarb.tmdbclient.services.tmdb.internal.dto
 
-internal interface TrendingDto
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
+open class TrendingDto

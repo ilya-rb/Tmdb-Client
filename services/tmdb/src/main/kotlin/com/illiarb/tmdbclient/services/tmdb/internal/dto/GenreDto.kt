@@ -7,15 +7,15 @@ import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataInput
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataOutput
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import java.util.Collections
 
 @JsonClass(generateAdapter = true)
 internal data class GenreDto(
-  @Json(name = "id") var id: Int,
-  @Json(name = "name") var name: String
+  @Json(name = "id") var id: Int = 0,
+  @Json(name = "name") var name: String = ""
 ) : Persistable {
 
-  constructor() : this(0, "")
+  @Suppress("unused")
+  constructor()
 
   override fun readExternal(input: DataInput) {
     id = input.readInt()
@@ -32,10 +32,11 @@ internal data class GenreDto(
 
 @JsonClass(generateAdapter = true)
 internal data class GenreListDto(
-  @Json(name = "genres") var genres: List<GenreDto>
+  @Json(name = "genres") var genres: List<GenreDto> = emptyList()
 ) : Persistable {
 
-  constructor() : this(Collections.emptyList())
+  @Suppress("unused")
+  constructor()
 
   override fun readExternal(input: DataInput) {
     genres = mutableListOf<GenreDto>().also {

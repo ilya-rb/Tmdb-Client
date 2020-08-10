@@ -8,8 +8,11 @@ keystore.properties
 .DS_Store
 /captures
 .externalNativeBuild
+app/debug
 app/google-services.json
+app/src/debug/google-services.json
 **/reports/*
 buildSrc/.gradle
 buildSrc/build
 /ci-config/upload-config.sh
+signing

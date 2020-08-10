@@ -19,3 +19,44 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-allowaccessmodification
+-dontusemixedcaseclassnames
+-verbose
+
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keepclassmembers class **.R$* {
+    public static <fields>;
+}
+
+# Okio
+-dontwarn okio.**
+-dontwarn javax.annotation.Nullable
+-dontwarn javax.annotation.ParametersAreNonnullByDefault
+
+# Kotlin
+-dontwarn kotlin.**
+
+# Some unsafe classfactory stuff
+-keep class sun.misc.Unsafe { *; }
+
+# Ensure the custom, fast service loader implementation is removed. R8 will fold these for us
+-assumenosideeffects class kotlinx.coroutines.internal.MainDispatcherLoader {
+    boolean FAST_SERVICE_LOADER_ENABLED return false;
+}
+
+# Moshi
+-dontwarn org.jetbrains.annotations.**
+-keep class kotlin.Metadata { *; }
+
+-keepclassmembers class * {
+    @com.squareup.moshi.FromJson <methods>;
+    @com.squareup.moshi.ToJson <methods>;
+}
+
+-keepclassmembers class com.illiarb.tmdbclient.services.tmdb.internal.dto.* {
+    <init>();
+}

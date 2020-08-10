@@ -1,6 +1,5 @@
 package com.illiarb.tmdbclient.libs.test
 
-import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import com.illiarb.tmdbclient.libs.test.analytics.TestAnalyticsService
 import com.illiarb.tmdbclient.libs.test.interactor.TestDiscoverInteractor
 import com.illiarb.tmdbclient.libs.test.interactor.TestFiltersInteractor
@@ -37,7 +36,6 @@ object TestDependencies  {
   fun genresInteractor(): GenresInteractor = TestGenresInteractor()
   fun moviesInteractor(): MoviesInteractor = TestMoviesInteractor()
   fun trendingInteractor(): TrendingInteractor = TestTrendingInteractor()
-  fun networkFlipperPlugin(): NetworkFlipperPlugin = NetworkFlipperPlugin()
   fun filtersInteractor(): FiltersInteractor = TestFiltersInteractor()
   fun searchInteractor(): SearchInteractor = TestSearchInteractor()
   fun discoverInteractor(): DiscoverInteractor = TestDiscoverInteractor()

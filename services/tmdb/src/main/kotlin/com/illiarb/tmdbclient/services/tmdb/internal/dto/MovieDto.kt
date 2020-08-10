@@ -24,7 +24,10 @@ internal data class MovieDto(
   @Json(name = "images") val images: BackdropListDto? = null,
   @Json(name = "videos") val videos: ResultsDto<Video>? = null,
   @Json(name = "production_countries") val productionCountries: List<ProductionCountryDto> = emptyList()
-) : Persistable, TrendingDto {
+) : TrendingDto(), Persistable {
+
+  @Suppress("unused")
+  constructor()
 
   override fun readExternal(input: DataInput) =
     with(input) {

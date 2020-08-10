@@ -19,6 +19,9 @@ internal data class ConfigurationDto(
   @Json(name = "change_keys") var changeKeys: List<String> = Collections.emptyList()
 ) : Persistable {
 
+  @Suppress("unused")
+  constructor()
+
   override fun readExternal(input: DataInput) {
     images.readExternal(input)
     changeKeys = mutableListOf<String>().also { input.readStringList(it) }
