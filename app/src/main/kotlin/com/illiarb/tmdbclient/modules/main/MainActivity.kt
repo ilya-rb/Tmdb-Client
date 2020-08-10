@@ -21,7 +21,7 @@ import com.illiarb.tmdbclient.libs.ui.ext.isNightModeEnabled
 import com.illiarb.tmdbclient.navigation.DeepLinkHandler
 import com.illiarb.tmdbclient.navigation.Navigator
 import com.illiarb.tmdbclient.navigation.NavigatorHolder
-import com.illiarb.tmdbclient.system.DayNightModePreferences
+import com.illiarb.tmdbclient.system.DayNightModeChangeNotifier
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), Injectable {
   lateinit var deepLinkHandler: DeepLinkHandler
 
   @Inject
-  lateinit var dayNightModePreferences: DayNightModePreferences
+  lateinit var dayNightModeChangeNotifier: DayNightModeChangeNotifier
 
   private val viewBinding: ActivityMainBinding by viewBinding(R.id.root)
 
@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity(), Injectable {
 
     maybeHandleDeepLink(intent)
 
-    dayNightModePreferences.notifySystemNightModeChanged(isNightModeEnabled())
+    dayNightModeChangeNotifier.notifySystemNightModeChanged(isNightModeEnabled())
   }
 
   override fun onResumeFragments() {

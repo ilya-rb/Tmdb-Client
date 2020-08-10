@@ -1,7 +1,13 @@
 package com.illiarb.tmdbclient.system
 
 import android.app.Application
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.os.PowerManager
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.getSystemService
 import com.illiarb.tmdbclient.libs.ui.ext.isNightModeEnabled
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
@@ -11,35 +17,71 @@ import javax.inject.Singleton
 
 interface DayNightModePreferences {
 
+  /**
+   * Get user preference of night mode synchronously
+   */
   val isNightModeEnabled: Boolean
 
+  /**
+   * Flow for observing updates of user preference of night mode
+   */
   val nightModeChanged: Flow<Boolean>
 
+  /**
+   * Change app day night mode
+   */
   fun toggleDayNightMode()
+}
 
+interface DayNightModeChangeNotifier {
+
+  /**
+   * Interface for notifying day night preference when dark theme
+   * is applied system-wide
+   */
   fun notifySystemNightModeChanged(isEnabled: Boolean)
 }
 
 @Singleton
-class InMemoryDayNightModePreferences @Inject constructor(app: Application)
-  : DayNightModePreferences {
+class InMemoryDayNightModePreferences @Inject constructor(
+  private val app: Application
+) : DayNightModePreferences, DayNightModeChangeNotifier {
 
-  private val nightModeChanges = ConflatedBroadcastChannel(app.isNightModeEnabled())
+  companion object {
+    const val ACTION_POWER_SAVE_MODE_CHANGED = "android.os.action.POWER_SAVE_MODE_CHANGED"
+  }
+
+  private val nightModeEnabled = ConflatedBroadcastChannel(app.isNightModeEnabled())
 
   override val isNightModeEnabled: Boolean
-    get() = nightModeChanges.value
+    get() = nightModeEnabled.value
 
   override val nightModeChanged: Flow<Boolean>
-    get() = nightModeChanges.openSubscription().consumeAsFlow()
+    get() = nightModeEnabled.openSubscription().consumeAsFlow()
+
+  init {
+    app.registerReceiver(
+      object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+          val isPowerSaveMode = app.getSystemService<PowerManager>()?.isPowerSaveMode == true
+          if (isPowerSaveMode) {
+            nightModeEnabled.offer(true)
+            setDefaultNightMode(true)
+          }
+        }
+      },
+      IntentFilter(ACTION_POWER_SAVE_MODE_CHANGED)
+    )
+  }
 
   override fun toggleDayNightMode() {
-    val isEnabled = !nightModeChanges.value
+    val isEnabled = !nightModeEnabled.value
     setDefaultNightMode(isEnabled)
-    nightModeChanges.offer(isEnabled)
+    nightModeEnabled.offer(isEnabled)
   }
 
   override fun notifySystemNightModeChanged(isEnabled: Boolean) {
-    nightModeChanges.offer(isEnabled)
+    nightModeEnabled.offer(isEnabled)
   }
 
   private fun setDefaultNightMode(enableNightMode: Boolean) {

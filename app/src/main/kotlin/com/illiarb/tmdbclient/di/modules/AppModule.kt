@@ -5,6 +5,7 @@ import com.illiarb.tmdbclient.AppBuildConfig
 import com.illiarb.tmdbclient.AppTmdbConfig
 import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
+import com.illiarb.tmdbclient.system.DayNightModeChangeNotifier
 import com.illiarb.tmdbclient.system.DayNightModePreferences
 import com.illiarb.tmdbclient.system.InMemoryDayNightModePreferences
 import dagger.Binds
@@ -21,6 +22,11 @@ interface AppModule {
   fun bindDayNightModePreferences(
     preferences: InMemoryDayNightModePreferences
   ): DayNightModePreferences
+
+  @Binds
+  fun bindDayNightChangeNotifier(
+    notifier: InMemoryDayNightModePreferences
+  ): DayNightModeChangeNotifier
 
   @Module
   companion object {
