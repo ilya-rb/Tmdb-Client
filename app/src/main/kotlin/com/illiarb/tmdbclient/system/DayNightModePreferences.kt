@@ -15,7 +15,7 @@ interface DayNightModePreferences {
 }
 
 @Singleton
-class DefaultDayNightModePreferences @Inject constructor(
+class InMemoryDayNightModePreferences @Inject constructor(
   private val app: Application
 ) : DayNightModePreferences {
 

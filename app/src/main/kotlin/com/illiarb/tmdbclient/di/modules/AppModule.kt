@@ -6,7 +6,7 @@ import com.illiarb.tmdbclient.AppTmdbConfig
 import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.libs.buildconfig.TmdbConfig
 import com.illiarb.tmdbclient.system.DayNightModePreferences
-import com.illiarb.tmdbclient.system.DefaultDayNightModePreferences
+import com.illiarb.tmdbclient.system.InMemoryDayNightModePreferences
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -19,7 +19,7 @@ interface AppModule {
 
   @Binds
   fun bindDayNightModePreferences(
-    preferences: DefaultDayNightModePreferences
+    preferences: InMemoryDayNightModePreferences
   ): DayNightModePreferences
 
   @Module
