@@ -24,10 +24,10 @@ class LoggerInitializer @Inject constructor() : AppInitializer {
         throwable: Throwable?
       ) {
         when (priority) {
-          LoggerPriority.Warn -> Timber.w(throwable, message)
-          LoggerPriority.Debug -> Timber.d(throwable, message)
-          LoggerPriority.Info -> Timber.i(throwable, message)
-          LoggerPriority.Error -> Timber.e(throwable, message)
+          LoggerPriority.Warn -> Timber.tag(tag).w(throwable, message)
+          LoggerPriority.Debug -> Timber.tag(tag).d(throwable, message)
+          LoggerPriority.Info -> Timber.tag(tag).i(throwable, message)
+          LoggerPriority.Error -> Timber.tag(tag).e(throwable, message)
         }
       }
     })

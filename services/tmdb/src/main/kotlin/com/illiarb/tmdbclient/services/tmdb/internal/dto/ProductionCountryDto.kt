@@ -8,5 +8,5 @@ internal data class ProductionCountryDto(
   @Json(name = "name") val name: String = ""
 ) {
   @Suppress("unused")
-  constructor()
+  constructor() : this(name = "")
 }

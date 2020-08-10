@@ -15,7 +15,7 @@ internal data class GenreDto(
 ) : Persistable {
 
   @Suppress("unused")
-  constructor()
+  constructor() : this(id = 0, name = "")
 
   override fun readExternal(input: DataInput) {
     id = input.readInt()
@@ -36,7 +36,7 @@ internal data class GenreListDto(
 ) : Persistable {
 
   @Suppress("unused")
-  constructor()
+  constructor() : this(genres = emptyList())
 
   override fun readExternal(input: DataInput) {
     genres = mutableListOf<GenreDto>().also {

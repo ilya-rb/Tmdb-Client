@@ -10,5 +10,5 @@ internal data class ResultsDto<T>(
   @Json(name = "total_pages") val totalPages: Int = 1
 ) {
   @Suppress("unused")
-  constructor()
+  constructor() : this(results = emptyList(), page = 1, totalPages = 1)
 }

@@ -8,7 +8,6 @@ import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataInput
 import com.ironz.binaryprefs.serialization.serializer.persistable.io.DataOutput
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import java.util.Collections
 
 /**
  * @author ilya-rb on 30.11.18.
@@ -16,11 +15,11 @@ import java.util.Collections
 @JsonClass(generateAdapter = true)
 internal data class ConfigurationDto(
   @Json(name = "images") var images: ImageConfig = ImageConfig(),
-  @Json(name = "change_keys") var changeKeys: List<String> = Collections.emptyList()
+  @Json(name = "change_keys") var changeKeys: List<String> = emptyList()
 ) : Persistable {
 
   @Suppress("unused")
-  constructor()
+  constructor() : this(ImageConfig(), emptyList())
 
   override fun readExternal(input: DataInput) {
     images.readExternal(input)

@@ -15,7 +15,7 @@ internal data class CountryDto(
 ) : Persistable {
 
   @Suppress("unused")
-  constructor()
+  constructor() : this(code = "", name = "")
 
   override fun readExternal(input: DataInput) {
     code = input.readString()

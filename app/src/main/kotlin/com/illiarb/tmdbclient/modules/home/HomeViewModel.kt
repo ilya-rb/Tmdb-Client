@@ -44,9 +44,9 @@ class HomeViewModel @Inject constructor(
 
     private fun getDayNightModeDrawableRes(isNightModeEnabled: Boolean): Int {
       return if (isNightModeEnabled) {
-        R.drawable.ic_night_mode_on
-      } else {
         R.drawable.ic_night_mode_off
+      } else {
+        R.drawable.ic_night_mode_on
       }
     }
   }
@@ -118,9 +118,11 @@ class HomeViewModel @Inject constructor(
   private fun toggleDayNightMode() {
     dayNightModePreferences.toggleDayNightMode()
 
+    val isNightModeEnabled = dayNightModePreferences.isNightModeEnabled
+
     setState {
       copy(
-        dayNightModeIconRes = getDayNightModeDrawableRes(dayNightModePreferences.isNightModeEnabled)
+        dayNightModeIconRes = getDayNightModeDrawableRes(isNightModeEnabled)
       )
     }
   }

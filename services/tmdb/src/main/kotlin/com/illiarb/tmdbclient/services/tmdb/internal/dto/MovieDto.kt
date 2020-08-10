@@ -27,7 +27,23 @@ internal data class MovieDto(
 ) : TrendingDto(), Persistable {
 
   @Suppress("unused")
-  constructor()
+  constructor() : this(
+    id = 0,
+    posterPath = null,
+    backdropPath = null,
+    releaseDate = "",
+    overview = null,
+    title = "",
+    voteAverage = 0f,
+    budget = 0,
+    genres = emptyList(),
+    homepage = null,
+    runtime = 0,
+    status = null,
+    images = null,
+    videos = null,
+    productionCountries = emptyList()
+  )
 
   override fun readExternal(input: DataInput) =
     with(input) {

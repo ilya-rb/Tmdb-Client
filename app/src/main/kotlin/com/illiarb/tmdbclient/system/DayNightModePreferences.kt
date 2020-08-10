@@ -1,7 +1,11 @@
 package com.illiarb.tmdbclient.system
 
+import android.app.Application
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
+import com.illiarb.tmdbclient.libs.logger.Logger
 import javax.inject.Inject
+import javax.inject.Singleton
 
 interface DayNightModePreferences {
 
@@ -10,13 +14,22 @@ interface DayNightModePreferences {
   fun toggleDayNightMode()
 }
 
-class DefaultDayNightModePreferences @Inject constructor() : DayNightModePreferences {
+@Singleton
+class DefaultDayNightModePreferences @Inject constructor(
+  private val app: Application
+) : DayNightModePreferences {
 
   private var _isNightModeEnabled = false
 
-  override val isNightModeEnabled: Boolean = _isNightModeEnabled
+  override val isNightModeEnabled: Boolean
+    get() = _isNightModeEnabled || app.resources
+      ?.configuration
+      ?.uiMode
+      ?.and(Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
 
   override fun toggleDayNightMode() {
+    Logger.i("Night mode enabled: $_isNightModeEnabled")
+
     _isNightModeEnabled = !_isNightModeEnabled
 
     if (_isNightModeEnabled) {

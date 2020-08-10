@@ -10,5 +10,5 @@ internal data class TvShowDto(
 ) : TrendingDto() {
 
   @Suppress("unused")
-  constructor()
+  constructor() : this(posterPath = "", name = "")
 }
