@@ -23,6 +23,7 @@ import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.HomeInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.TrendingInteractor
 import com.illiarb.tmdbclient.system.DayNightModePreferences
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -55,9 +56,9 @@ class HomeViewModel @Inject constructor(
 
     private fun getDayNightModeDrawableRes(isNightModeEnabled: Boolean): Int {
       return if (isNightModeEnabled) {
-        R.drawable.ic_night_mode_off
-      } else {
         R.drawable.ic_night_mode_on
+      } else {
+        R.drawable.ic_night_mode_off
       }
     }
   }
@@ -88,6 +89,14 @@ class HomeViewModel @Inject constructor(
           setState {
             copy(sections = Async.Success(sectionsList))
           }
+        }
+      }
+    }
+
+    viewModelScope.launch {
+      dayNightModePreferences.nightModeChanged.collect { isNightModeEnabled ->
+        setState {
+          copy(dayNightModeIconRes = getDayNightModeDrawableRes(isNightModeEnabled))
         }
       }
     }
@@ -128,14 +137,6 @@ class HomeViewModel @Inject constructor(
 
   private fun toggleDayNightMode() {
     dayNightModePreferences.toggleDayNightMode()
-
-    val isNightModeEnabled = dayNightModePreferences.isNightModeEnabled
-
-    setState {
-      copy(
-        dayNightModeIconRes = getDayNightModeDrawableRes(isNightModeEnabled)
-      )
-    }
   }
 
   data class State(

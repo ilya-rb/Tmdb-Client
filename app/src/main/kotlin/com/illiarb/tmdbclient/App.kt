@@ -1,6 +1,7 @@
 package com.illiarb.tmdbclient
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import com.illiarb.tmdbclient.di.AppComponent
 import com.illiarb.tmdbclient.di.AppActivityLifecycleCallbacks
 import com.illiarb.tmdbclient.di.DaggerAppComponent

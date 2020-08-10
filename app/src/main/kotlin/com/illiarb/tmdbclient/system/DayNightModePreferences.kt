@@ -1,9 +1,11 @@
 package com.illiarb.tmdbclient.system
 
 import android.app.Application
-import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
-import com.illiarb.tmdbclient.libs.logger.Logger
+import com.illiarb.tmdbclient.libs.ui.ext.isNightModeEnabled
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.consumeAsFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -11,37 +13,44 @@ interface DayNightModePreferences {
 
   val isNightModeEnabled: Boolean
 
+  val nightModeChanged: Flow<Boolean>
+
   fun toggleDayNightMode()
+
+  fun notifySystemNightModeChanged(isEnabled: Boolean)
 }
 
 @Singleton
-class InMemoryDayNightModePreferences @Inject constructor(
-  private val app: Application
-) : DayNightModePreferences {
+class InMemoryDayNightModePreferences @Inject constructor(app: Application)
+  : DayNightModePreferences {
 
-  private var _isNightModeEnabled = false
+  private val nightModeChanges = ConflatedBroadcastChannel(app.isNightModeEnabled())
 
   override val isNightModeEnabled: Boolean
-    get() = _isNightModeEnabled || isSystemNightModeEnabled()
+    get() = nightModeChanges.value
+
+  override val nightModeChanged: Flow<Boolean>
+    get() = nightModeChanges.openSubscription().consumeAsFlow()
 
   override fun toggleDayNightMode() {
-    Logger.i("Night mode enabled: $_isNightModeEnabled")
-
-    _isNightModeEnabled = !_isNightModeEnabled
-
-    if (_isNightModeEnabled) {
-      AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-    } else {
-      AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-    }
+    val isEnabled = !nightModeChanges.value
+    setDefaultNightMode(isEnabled)
+    nightModeChanges.offer(isEnabled)
   }
 
-  private fun isSystemNightModeEnabled(): Boolean {
-    return when (app.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
-      Configuration.UI_MODE_NIGHT_YES -> true
-      else -> {
-        AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
-      }
+  override fun notifySystemNightModeChanged(isEnabled: Boolean) {
+    nightModeChanges.offer(isEnabled)
+  }
+
+  private fun setDefaultNightMode(enableNightMode: Boolean) {
+    val defaultNightMode = if (enableNightMode) {
+      AppCompatDelegate.MODE_NIGHT_YES
+    } else {
+      AppCompatDelegate.MODE_NIGHT_NO
+    }
+
+    if (AppCompatDelegate.getDefaultNightMode() != defaultNightMode) {
+      AppCompatDelegate.setDefaultNightMode(defaultNightMode)
     }
   }
 }
