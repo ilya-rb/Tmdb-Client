@@ -2,6 +2,7 @@ package com.illiarb.tmdbclient.modules.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -15,6 +16,7 @@ import com.illiarb.tmdbclient.libs.ui.common.SnackbarController
 import com.illiarb.tmdbclient.libs.ui.ext.dimen
 import com.illiarb.tmdbclient.libs.ui.ext.doOnApplyWindowInsets
 import com.illiarb.tmdbclient.libs.ui.ext.getColorAttr
+import com.illiarb.tmdbclient.libs.ui.ext.getTintedDrawable
 import com.illiarb.tmdbclient.libs.ui.ext.removeAdapterOnDetach
 import com.illiarb.tmdbclient.libs.ui.ext.tintMenuItemsWithColor
 import com.illiarb.tmdbclient.libs.ui.ext.updatePadding
@@ -129,6 +131,7 @@ class HomeFragment @Inject constructor(
         when (it.itemId) {
           R.id.menu_home_debug -> viewModel.events.offer(Event.DebugClick)
           R.id.menu_home_discover -> viewModel.events.offer(Event.DiscoverClick)
+          R.id.menu_home_day_night -> viewModel.events.offer(Event.DayNightClick)
         }
         true
       }
@@ -152,6 +155,13 @@ class HomeFragment @Inject constructor(
 
     state.error?.consume { message ->
       snackbarController.showMessage(viewBinding.root, message.message)
+    }
+
+    viewBinding.toolbar.menu?.findItem(R.id.menu_home_day_night)?.let { menuItem ->
+      menuItem.icon = requireContext().getTintedDrawable(
+        state.dayNightModeIconRes,
+        viewBinding.root.getColorAttr(MaterialR.attr.colorOnPrimary)
+      )
     }
   }
 }

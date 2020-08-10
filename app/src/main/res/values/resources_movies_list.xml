@@ -6,6 +6,7 @@
     <string name="trending_section_title">Trending</string>
     <string name="now_playing_section_title">Now playing</string>
     <string name="menu_home_discover">Discover</string>
+    <string name="menu_home_day_night">Night mode</string>
     <string name="menu_home_debug">Debug</string>
 
     <dimen name="item_movie_height">150dp</dimen>
