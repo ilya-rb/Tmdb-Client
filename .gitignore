@@ -12,6 +12,7 @@ app/debug
 app/google-services.json
 app/src/debug/google-services.json
 **/reports/*
+**/build/*
 buildSrc/.gradle
 buildSrc/build
 /ci-config/upload-config.sh
