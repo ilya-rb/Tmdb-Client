@@ -7,4 +7,8 @@ import com.squareup.moshi.JsonClass
 internal data class TvShowDto(
   @Json(name = "poster_path") val posterPath: String,
   @Json(name = "name") val name: String
-) : TrendingDto
+) : TrendingDto() {
+
+  @Suppress("unused")
+  constructor() : this(posterPath = "", name = "")
+}

@@ -14,4 +14,9 @@
         android:title="@string/menu_home_discover"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/menu_home_day_night"
+        android:title="@string/menu_home_day_night"
+        app:showAsAction="ifRoom" />
+
 </menu>

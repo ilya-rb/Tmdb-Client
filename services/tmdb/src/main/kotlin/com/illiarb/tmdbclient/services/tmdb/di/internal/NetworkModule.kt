@@ -19,6 +19,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
+import dagger.multibindings.Multibinds
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -29,75 +30,83 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
-internal object NetworkModule {
+internal interface NetworkModule {
 
-  private const val CACHE_SIZE_BYTES = 20 * 1024L
-  private const val TIMEOUT_SECONDS = 10L
+  @Multibinds
+  @NetworkInterceptor
+  fun bindNetworkInterceptors(): Set<Interceptor>
 
-  @Provides
-  @IntoSet
-  @JvmStatic
-  fun provideApiKeyInterceptor(tmdbConfig: TmdbConfig): Interceptor =
-    ApiKeyInterceptor(tmdbConfig)
+  @Module
+  companion object {
 
-  @Provides
-  @IntoSet
-  @JvmStatic
-  fun provideRegionInterceptor(
-    configurationRepository: ConfigurationRepository,
-    resourceResolver: ResourceResolver
-  ): Interceptor = RegionInterceptor(configurationRepository, resourceResolver)
+    private const val CACHE_SIZE_BYTES = 20 * 1024L
+    private const val TIMEOUT_SECONDS = 10L
 
-  @Provides
-  @JvmStatic
-  fun provideMoshi(): Moshi {
-    return Moshi.Builder()
-      .add(
-        PolymorphicJsonAdapterFactory.of(TrendingDto::class.java, "media_type")
-          .withSubtype(MovieDto::class.java, "movie")
-          .withSubtype(TvShowDto::class.java, "tv")
-      )
-      .add(KotlinJsonAdapterFactory())
-      .build()
-  }
+    @Provides
+    @IntoSet
+    @JvmStatic
+    fun provideApiKeyInterceptor(tmdbConfig: TmdbConfig): Interceptor =
+      ApiKeyInterceptor(tmdbConfig)
 
-  @Provides
-  @JvmStatic
-  fun provideCallAdapterFactory(errorCreator: ErrorCreator): CallAdapter.Factory {
-    return CallAdapterFactory(errorCreator)
-  }
+    @Provides
+    @IntoSet
+    @JvmStatic
+    fun provideRegionInterceptor(
+      configurationRepository: ConfigurationRepository,
+      resourceResolver: ResourceResolver
+    ): Interceptor = RegionInterceptor(configurationRepository, resourceResolver)
 
-  @Provides
-  @JvmStatic
-  fun provideApiConverterFactory(moshi: Moshi): Converter.Factory =
-    MoshiConverterFactory.create(moshi)
+    @Provides
+    @JvmStatic
+    fun provideMoshi(): Moshi {
+      return Moshi.Builder()
+        .add(
+          PolymorphicJsonAdapterFactory.of(TrendingDto::class.java, "media_type")
+            .withSubtype(MovieDto::class.java, "movie")
+            .withSubtype(TvShowDto::class.java, "tv")
+        )
+        .add(KotlinJsonAdapterFactory())
+        .build()
+    }
 
-  @Provides
-  @Singleton
-  @JvmStatic
-  fun provideTmdbCache(app: Application): TmdbCache = TmdbCache(app)
+    @Provides
+    @JvmStatic
+    fun provideCallAdapterFactory(errorCreator: ErrorCreator): CallAdapter.Factory {
+      return CallAdapterFactory(errorCreator)
+    }
 
-  @Provides
-  @JvmStatic
-  fun provideTmdbOkHttpClient(
-    app: Application,
-    interceptors: Set<@JvmSuppressWildcards Interceptor>,
-    @NetworkInterceptor networkInterceptors: Set<@JvmSuppressWildcards Interceptor>
-  ): OkHttpClient =
-    OkHttpClient.Builder()
-      .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-      .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-      .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-      .apply {
-        interceptors.forEach {
-          addInterceptor(it)
+    @Provides
+    @JvmStatic
+    fun provideApiConverterFactory(moshi: Moshi): Converter.Factory =
+      MoshiConverterFactory.create(moshi)
+
+    @Provides
+    @Singleton
+    @JvmStatic
+    fun provideTmdbCache(app: Application): TmdbCache = TmdbCache(app)
+
+    @Provides
+    @JvmStatic
+    fun provideTmdbOkHttpClient(
+      app: Application,
+      interceptors: Set<@JvmSuppressWildcards Interceptor>,
+      @NetworkInterceptor networkInterceptors: Set<@JvmSuppressWildcards Interceptor>
+    ): OkHttpClient =
+      OkHttpClient.Builder()
+        .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        .apply {
+          interceptors.forEach {
+            addInterceptor(it)
+          }
+
+          networkInterceptors.forEach {
+            addNetworkInterceptor(it)
+          }
         }
-
-        networkInterceptors.forEach {
-          addNetworkInterceptor(it)
-        }
-      }
-      .retryOnConnectionFailure(true)
-      .cache(Cache(app.filesDir, CACHE_SIZE_BYTES))
-      .build()
+        .retryOnConnectionFailure(true)
+        .cache(Cache(app.filesDir, CACHE_SIZE_BYTES))
+        .build()
+  }
 }

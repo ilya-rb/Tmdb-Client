@@ -6,6 +6,7 @@ import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.libs.tools.ConnectivityStatus
 import com.illiarb.tmdbclient.navigation.DeepLinkHandler
 import com.illiarb.tmdbclient.navigation.NavigatorHolder
+import com.illiarb.tmdbclient.system.DayNightModeChangeNotifier
 import dagger.BindsInstance
 import dagger.Component
 
@@ -24,6 +25,7 @@ interface MainComponent {
     fun buildConfig(): BuildConfig
     fun fragmentFactory(): FragmentFactory
     fun deepLinkHandler(): DeepLinkHandler
+    fun systemChangesNotifier(): DayNightModeChangeNotifier
   }
 
   @Component.Factory

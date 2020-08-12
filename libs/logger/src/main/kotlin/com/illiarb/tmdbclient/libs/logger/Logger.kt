@@ -5,7 +5,7 @@ package com.illiarb.tmdbclient.libs.logger
  */
 object Logger {
 
-  private const val TAG_DEFAULT = "[Logger]"
+  private const val TAG_DEFAULT = "[LOGGER]"
 
   private val strategies = mutableSetOf<LoggingStrategy>()
 
@@ -13,19 +13,19 @@ object Logger {
     strategies.add(printer)
   }
 
-  fun d(tag: String = TAG_DEFAULT, message: String, t: Throwable? = null) {
+  fun d(message: String, t: Throwable? = null, tag: String = TAG_DEFAULT) {
     logWithPriority(tag, LoggerPriority.Debug, message, t)
   }
 
-  fun i(tag: String = TAG_DEFAULT, message: String, t: Throwable? = null) {
+  fun i(message: String, t: Throwable? = null, tag: String = TAG_DEFAULT) {
     logWithPriority(tag, LoggerPriority.Info, message, t)
   }
 
-  fun w(tag: String = TAG_DEFAULT, message: String, t: Throwable? = null) {
+  fun w(message: String, t: Throwable? = null, tag: String = TAG_DEFAULT) {
     logWithPriority(tag, LoggerPriority.Warn, message, t)
   }
 
-  fun e(tag: String = TAG_DEFAULT, message: String, t: Throwable? = null) {
+  fun e(message: String, t: Throwable? = null, tag: String = TAG_DEFAULT) {
     logWithPriority(tag, LoggerPriority.Error, message, t)
   }
 

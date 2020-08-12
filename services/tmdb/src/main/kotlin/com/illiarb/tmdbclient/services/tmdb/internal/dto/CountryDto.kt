@@ -14,6 +14,9 @@ internal data class CountryDto(
   @Json(name = "english_name") var name: String = ""
 ) : Persistable {
 
+  @Suppress("unused")
+  constructor() : this(code = "", name = "")
+
   override fun readExternal(input: DataInput) {
     code = input.readString()
     name = input.readString()

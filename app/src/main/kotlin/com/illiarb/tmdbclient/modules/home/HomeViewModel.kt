@@ -1,6 +1,8 @@
 package com.illiarb.tmdbclient.modules.home
 
 import androidx.lifecycle.viewModelScope
+import com.illiarb.tmdbclient.R
+import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.libs.ui.base.viewmodel.BaseViewModel
 import com.illiarb.tmdbclient.libs.ui.common.ErrorMessage
 import com.illiarb.tmdbclient.libs.ui.common.ViewStateEvent
@@ -20,6 +22,8 @@ import com.illiarb.tmdbclient.services.tmdb.domain.TrendingSection
 import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.HomeInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.TrendingInteractor
+import com.illiarb.tmdbclient.system.DayNightModePreferences
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,11 +32,35 @@ class HomeViewModel @Inject constructor(
   private val trendingInteractor: TrendingInteractor,
   private val filtersInteractor: FiltersInteractor,
   private val router: Router,
-  private val analyticsService: AnalyticsService
-) : BaseViewModel<State, Event>(initialState()) {
+  private val analyticsService: AnalyticsService,
+  private val dayNightModePreferences: DayNightModePreferences,
+  buildConfig: BuildConfig
+) : BaseViewModel<State, Event>(
+  initialState(
+    isNightModeEnabled = dayNightModePreferences.isNightModeEnabled,
+    uiComponentsIconVisible = buildConfig.isDebug
+  )
+) {
 
   companion object {
-    private fun initialState() = State(sections = Async.Loading(), error = null)
+
+    private fun initialState(
+      isNightModeEnabled: Boolean,
+      uiComponentsIconVisible: Boolean
+    ) = State(
+      sections = Async.Loading(),
+      error = null,
+      dayNightModeIconRes = getDayNightModeDrawableRes(isNightModeEnabled),
+      uiComponentsIconVisible = uiComponentsIconVisible
+    )
+
+    private fun getDayNightModeDrawableRes(isNightModeEnabled: Boolean): Int {
+      return if (isNightModeEnabled) {
+        R.drawable.ic_night_mode_on
+      } else {
+        R.drawable.ic_night_mode_off
+      }
+    }
   }
 
   init {
@@ -64,6 +92,14 @@ class HomeViewModel @Inject constructor(
         }
       }
     }
+
+    viewModelScope.launch {
+      dayNightModePreferences.nightModeChanged.collect { isNightModeEnabled ->
+        setState {
+          copy(dayNightModeIconRes = getDayNightModeDrawableRes(isNightModeEnabled))
+        }
+      }
+    }
   }
 
   override fun onUiEvent(event: Event) {
@@ -74,6 +110,7 @@ class HomeViewModel @Inject constructor(
       is Event.DebugClick -> router.executeAction(Home.GoToUiComponents)
       is Event.DiscoverClick -> router.executeAction(Home.GoToDiscover)
       is Event.GenreClick -> onGenreClicked(event.genre)
+      is Event.DayNightClick -> toggleDayNightMode()
     }
   }
 
@@ -98,9 +135,15 @@ class HomeViewModel @Inject constructor(
     }
   }
 
+  private fun toggleDayNightMode() {
+    dayNightModePreferences.toggleDayNightMode()
+  }
+
   data class State(
     val sections: Async<List<MovieSection>>,
-    val error: ViewStateEvent<ErrorMessage>?
+    val error: ViewStateEvent<ErrorMessage>?,
+    val dayNightModeIconRes: Int,
+    val uiComponentsIconVisible: Boolean
   )
 
   sealed class Event {
@@ -108,6 +151,7 @@ class HomeViewModel @Inject constructor(
     data class SeeAllClick(val code: String) : Event()
     data class GenreClick(val genre: Genre) : Event()
     object DiscoverClick : Event()
+    object DayNightClick : Event()
     object TmdbIconClick : Event()
     object DebugClick : Event()
   }
