@@ -3,9 +3,9 @@ package com.illiarb.tmdbclient.services.tmdb
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import com.illiarb.tmdbclient.services.tmdb.internal.cache.TmdbCache
-import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageConfig
 import com.illiarb.tmdbclient.services.tmdb.internal.dto.ConfigurationDto
-import com.illiarb.tmdbclient.services.tmdb.internal.dto.GenreModel
+import com.illiarb.tmdbclient.services.tmdb.internal.dto.GenreDto
+import com.illiarb.tmdbclient.services.tmdb.internal.image.ImageConfig
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -19,8 +19,12 @@ class TmdbCacheTest {
 
   @BeforeEach
   fun beforeEach() {
-    val context = InstrumentationRegistry.getInstrumentation().context
-    cache = TmdbCache(context)
+    with(InstrumentationRegistry.getInstrumentation()) {
+      // Preferences should be initialized on the main thread
+      runOnMainSync {
+        cache = TmdbCache(context)
+      }
+    }
   }
 
   @AfterEach
@@ -42,7 +46,7 @@ class TmdbCacheTest {
   @DisplayName("it should clear the storage")
   fun clearStorageTest() {
     val config = createConfiguration()
-    val genres = listOf(GenreModel(), GenreModel())
+    val genres = listOf(GenreDto(), GenreDto())
 
     cache.storeConfiguration(config)
     cache.storeGenres(genres)
@@ -57,7 +61,7 @@ class TmdbCacheTest {
   @DisplayName("it should return all keys")
   fun returnKeysTest() {
     val config = createConfiguration()
-    val genres = listOf(GenreModel(), GenreModel())
+    val genres = listOf(GenreDto(), GenreDto())
 
     cache.storeConfiguration(config)
     cache.storeGenres(genres)

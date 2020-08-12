@@ -5,11 +5,14 @@ import androidx.core.provider.FontRequest
 import androidx.emoji.text.EmojiCompat
 import androidx.emoji.text.FontRequestEmojiCompatConfig
 import com.illiarb.tmdbclient.di.AppActivityLifecycleCallbacks
+import com.illiarb.tmdbclient.di.DaggerAppComponent
 import com.illiarb.tmdbclient.libs.ui.R
 
 class TestApplication : Application() {
 
-  private val testAppComponent = TestAppComponent(this)
+  private val testAppComponent by lazy {
+    DaggerAppComponent.factory().create(this)
+  }
 
   override fun onCreate() {
     super.onCreate()

@@ -1,9 +1,8 @@
 package com.illiarb.tmdbclient.functional.tests
 
 import android.Manifest
-import androidx.test.rule.ActivityTestRule
+import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.rule.GrantPermissionRule
-import com.illiarb.tmdbclient.modules.main.MainActivity
 import com.illiarb.tmdbclient.functional.screens.DiscoverScreen
 import com.illiarb.tmdbclient.functional.screens.HomeScreen
 import com.illiarb.tmdbclient.functional.screens.HomeScreen.GenreSectionItem
@@ -11,8 +10,10 @@ import com.illiarb.tmdbclient.functional.screens.HomeScreen.NowPlayingSectionIte
 import com.illiarb.tmdbclient.functional.screens.HomeScreen.NowPlayingSectionItem.NowPlayingItem
 import com.illiarb.tmdbclient.functional.screens.HomeScreen.TrendingSectionItem
 import com.illiarb.tmdbclient.functional.screens.MovieDetailsScreen
+import com.illiarb.tmdbclient.modules.main.MainActivity
 import com.kaspersky.kaspresso.kaspresso.Kaspresso
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
+import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 
@@ -25,14 +26,16 @@ class HomeScreenTest : TestCase(Kaspresso.Builder.simple()) {
   )
 
   @get:Rule
-  val activityTestRule = ActivityTestRule(MainActivity::class.java, true, false)
+  val activityTestRule = activityScenarioRule<MainActivity>()
+
+  @After
+  fun cleanup() {
+    activityTestRule.scenario.close()
+  }
 
   @Test
   fun testHomeSectionsAreDisplayed() = run {
-    before {
-      activityTestRule.launchActivity(null)
-    }.after {
-    }.run {
+    before {}.after {}.run {
       step("Check home screen is visible") {
         HomeScreen {
           checkIsVisible()
@@ -51,10 +54,7 @@ class HomeScreenTest : TestCase(Kaspresso.Builder.simple()) {
 
   @Test
   fun testNowPlayingSectionMovieClickOpensMovieDetailsScreen() = run {
-    before {
-      activityTestRule.launchActivity(null)
-    }.after {
-    }.run {
+    before {}.after {}.run {
       step("click now playing section first item and check movie details screen is visible") {
         HomeScreen {
           moviesList.firstChild<NowPlayingSectionItem> {
@@ -74,10 +74,7 @@ class HomeScreenTest : TestCase(Kaspresso.Builder.simple()) {
 
   @Test
   fun testGenreClickOpensDiscoverScreen() = run {
-    before {
-      activityTestRule.launchActivity(null)
-    }.after {
-    }.run {
+    before {}.after {}.run {
       step("Open home screen click first genre chip and check discover screen is displayed") {
         HomeScreen {
           moviesList.firstChild<GenreSectionItem> {
