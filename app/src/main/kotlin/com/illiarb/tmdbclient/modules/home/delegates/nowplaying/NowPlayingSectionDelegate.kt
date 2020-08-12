@@ -13,8 +13,8 @@ import com.illiarb.tmdbclient.services.tmdb.domain.NowPlayingSection
 
 // 10 seconds
 private const val PAGE_UPDATE_INTERVAL = 10000
-private const val KEY_NOW_PLAYING_STATE = "now_playing_state"
 private const val KEY_NOW_PLAYING_PROGRESS = "now_playing_progress"
+private const val KEY_NOW_PLAYING_POSITION = "now_playing_position"
 
 @Suppress("LongMethod")
 fun nowPlayingSection(
@@ -25,9 +25,7 @@ fun nowPlayingSection(
 ) {
 
   val snapHelper = PagerSnapHelper()
-  val adapter = NowPlayingPagerAdapter(clickListener).apply {
-    stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-  }
+  val adapter = NowPlayingPagerAdapter(clickListener)
 
   var currentPosition = 0
   val progressUpdateTimer = ProgressUpdateTimer(
@@ -40,9 +38,15 @@ fun nowPlayingSection(
       if (adapter.realCount == 0) {
         return@ProgressUpdateTimer
       }
+
       cancelTimer()
-      currentPosition++
-      binding.nowPlayingPager.smoothScrollToPosition(currentPosition)
+
+      if (currentPosition == adapter.realCount - 1) {
+        currentPosition = 0
+      } else {
+        currentPosition++
+        binding.nowPlayingPager.smoothScrollToPosition(currentPosition)
+      }
     }
   }
 
@@ -75,15 +79,15 @@ fun nowPlayingSection(
     adapter.items = item.movies
     adapter.notifyDataSetChanged()
 
+    currentPosition = bundleStore.getInt(KEY_NOW_PLAYING_POSITION)
+
+    binding.nowPlayingPager.scrollToPosition(currentPosition)
     binding.nowPlayingProgress.progress = bundleStore.getInt(KEY_NOW_PLAYING_PROGRESS)
-    binding.nowPlayingPager.layoutManager?.onRestoreInstanceState(
-      bundleStore.getParcelable(KEY_NOW_PLAYING_STATE)
-    )
   }
 
   onViewAttachedToWindow {
-    binding.nowPlayingPager.addOnScrollListener(recyclerScrollListener)
     progressUpdateTimer.resetTimer()
+    binding.nowPlayingPager.addOnScrollListener(recyclerScrollListener)
   }
 
   onViewDetachedFromWindow {
@@ -91,10 +95,7 @@ fun nowPlayingSection(
 
     progressUpdateTimer.cancelTimer()
 
+    bundleStore.putInt(KEY_NOW_PLAYING_POSITION, currentPosition)
     bundleStore.putInt(KEY_NOW_PLAYING_PROGRESS, binding.nowPlayingProgress.progress)
-    bundleStore.putParcelable(
-      KEY_NOW_PLAYING_STATE,
-      binding.nowPlayingPager.layoutManager?.onSaveInstanceState()
-    )
   }
 }
