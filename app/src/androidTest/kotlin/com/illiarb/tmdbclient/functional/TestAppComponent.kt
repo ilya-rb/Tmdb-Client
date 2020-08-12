@@ -17,6 +17,7 @@ import com.illiarb.tmdbclient.services.tmdb.interactor.FiltersInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.GenresInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
 import com.illiarb.tmdbclient.services.tmdb.interactor.SearchInteractor
+import com.illiarb.tmdbclient.system.DayNightModeChangeNotifier
 
 class TestAppComponent(private val app: Application) : AppComponent {
 
@@ -36,4 +37,10 @@ class TestAppComponent(private val app: Application) : AppComponent {
   override fun buildConfig(): BuildConfig = AppBuildConfig(app)
   override fun fragmentFactory(): FragmentFactory = object : FragmentFactory() {}
   override fun deepLinkHandler(): DeepLinkHandler = DeepLinkHandler(router)
+  override fun systemChangesNotifier(): DayNightModeChangeNotifier {
+    return object : DayNightModeChangeNotifier {
+      override fun notifySystemNightModeChanged(isEnabled: Boolean) {
+      }
+    }
+  }
 }

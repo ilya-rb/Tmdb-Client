@@ -63,7 +63,7 @@ internal class TmdbCache(context: Context) {
     tmdbStore.putValue(KEY_COUNTRIES, CountryList(countries))
 
   fun clear() {
-    tmdbStore.edit().clear()
+    tmdbStore.edit().clear().commit()
   }
 
   fun keys(): Set<String> = tmdbStore.keys()

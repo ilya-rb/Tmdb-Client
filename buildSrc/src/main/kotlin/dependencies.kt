@@ -219,7 +219,7 @@ object Deps {
       const val runner = "androidx.test:runner:1.3.0-rc01"
       const val espresso = "androidx.test.espresso:espresso-core:$espressoVersion"
       const val espressoIntents = "androidx.test.espresso:espresso-intents:$espressoVersion"
-      const val extJunit = "androidx.test.ext:junit:1.1.2-rc01"
+      const val extJunit = "androidx.test.ext:junit-ktx:1.1.2-rc01"
       const val uiAutomator = "androidx.test.uiautomator:uiautomator:2.2.0"
       const val benchmark = "androidx.benchmark:benchmark-junit4:1.0.0"
     }

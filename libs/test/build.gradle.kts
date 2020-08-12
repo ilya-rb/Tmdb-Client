@@ -23,6 +23,10 @@ dependencies {
   api(Deps.Test.JUnit5.jupiterApi)
   api(Deps.Test.JUnit5.jupiterParams)
   api(Deps.Test.truth)
-  api(Deps.Test.mockk)
   api(Deps.Test.junit)
+
+  // https://github.com/mockk/mockk/issues/281
+  api(Deps.Test.mockk) { exclude(module = "objenesis") }
+  api("org.objenesis:objenesis:2.6")
+  // =========================================
 }
