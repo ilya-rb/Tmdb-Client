@@ -46,6 +46,7 @@ class VideoListViewModel @Inject constructor(
 
           val selectedPos = videos.indexOfFirst { it is UiVideo && it.isSelected }
           val selected = videos[selectedPos] as UiVideo
+
           setState {
             copy(videos = videos, selected = selected)
           }
