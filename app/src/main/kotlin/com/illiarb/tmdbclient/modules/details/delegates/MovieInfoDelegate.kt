@@ -8,6 +8,8 @@ import com.illiarb.tmdbclient.libs.ui.widget.ExpandableTextView
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.MovieDetailsSection
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.MovieDetailsSection.MovieInfo
 
+private const val OVERVIEW_TEXT_MAX_LINES = 3
+
 fun movieInfoDelegate() =
   adapterDelegateViewBinding<MovieInfo, MovieDetailsSection, ItemMovieInfoBinding>(
     { inflater, root -> ItemMovieInfoBinding.inflate(inflater, root, false) }
@@ -24,7 +26,7 @@ fun movieInfoDelegate() =
       binding.movieDetailsOverview.text = item.movie.overview
       binding.movieDetailsExpandOverview.setVisible(true)
       binding.movieDetailsOverview.post {
-        val needExpansion = binding.movieDetailsOverview.setTextMaxLines(3)
+        val needExpansion = binding.movieDetailsOverview.setTextMaxLines(OVERVIEW_TEXT_MAX_LINES)
         binding.movieDetailsExpandOverview.setVisible(needExpansion)
       }
 
