@@ -91,7 +91,7 @@ object Deps {
       const val recyclerView = "androidx.recyclerview:recyclerview:1.2.0-alpha05"
       const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
       const val emoji = "androidx.emoji:emoji:1.1.0"
-      const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta8"
+      const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-rc1"
       const val browserHelper = "com.google.androidbrowserhelper:androidbrowserhelper:1.4.0-alpha01"
     }
 

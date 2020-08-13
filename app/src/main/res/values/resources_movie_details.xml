@@ -6,6 +6,8 @@
     <string name="movie_details_length">Length</string>
     <string name="movie_details_photos">Photos</string>
     <string name="movie_details_similar">More like this</string>
+    <string name="movie_details_expand_overview">More</string>
+    <string name="movie_details_collapse_overview">Less</string>
     <string name="movie_details_duration">%1$d min</string>
 
     <dimen name="movie_details_curve_offset">80dp</dimen>

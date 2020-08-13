@@ -46,6 +46,7 @@ interface Navigator {
           is Home.GoToMovieDetails -> putInt(EXTRA_MOVIE_DETAILS_MOVIE_ID, action.id)
           is Discover.GoToMovieDetails -> putInt(EXTRA_MOVIE_DETAILS_MOVIE_ID, action.id)
           is MovieDetails.GoToVideos -> putInt(EXTRA_VIDEOS_MOVIE_ID, action.id)
+          is MovieDetails.GoToMovieDetails -> putInt(EXTRA_MOVIE_DETAILS_MOVIE_ID, action.id)
         }
       }
     }

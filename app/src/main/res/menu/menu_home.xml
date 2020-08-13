@@ -3,20 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_home_debug"
-        android:icon="@drawable/ic_developer_board"
-        android:title="@string/menu_home_debug"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/menu_home_discover"
         android:icon="@drawable/ic_search"
         android:title="@string/menu_home_discover"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/menu_home_day_night"
         android:title="@string/menu_home_day_night"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_home_debug"
+        android:icon="@drawable/ic_developer_board"
+        android:title="@string/menu_home_debug"
         app:showAsAction="ifRoom" />
 
 </menu>
