@@ -38,15 +38,8 @@ fun nowPlayingSection(
       if (adapter.realCount == 0) {
         return@ProgressUpdateTimer
       }
-
       cancelTimer()
-
-      if (currentPosition == adapter.realCount - 1) {
-        currentPosition = 0
-      } else {
-        currentPosition++
-        binding.nowPlayingPager.smoothScrollToPosition(currentPosition)
-      }
+      binding.nowPlayingPager.smoothScrollToPosition(++currentPosition)
     }
   }
 
@@ -95,7 +88,7 @@ fun nowPlayingSection(
 
     progressUpdateTimer.cancelTimer()
 
-    bundleStore.putInt(KEY_NOW_PLAYING_POSITION, currentPosition)
+    bundleStore.putInt(KEY_NOW_PLAYING_POSITION, adapter.getRealPosition(currentPosition))
     bundleStore.putInt(KEY_NOW_PLAYING_PROGRESS, binding.nowPlayingProgress.progress)
   }
 }
