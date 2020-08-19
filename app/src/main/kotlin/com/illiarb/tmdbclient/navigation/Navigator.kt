@@ -9,6 +9,7 @@ import androidx.navigation.Navigation
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.libs.customtabs.CustomTabsHelper
 import com.illiarb.tmdbclient.libs.customtabs.WebViewFallback
+import com.illiarb.tmdbclient.navigation.NavigationAction.Companion.EXTRA_ADD_ON_TOP
 import com.illiarb.tmdbclient.navigation.NavigationAction.Companion.EXTRA_MOVIE_DETAILS_MOVIE_ID
 import com.illiarb.tmdbclient.navigation.NavigationAction.Companion.EXTRA_VIDEOS_MOVIE_ID
 import com.illiarb.tmdbclient.navigation.NavigationAction.Discover
@@ -42,11 +43,13 @@ interface Navigator {
 
     private fun setDestinationArgs(action: NavigationAction): Bundle {
       return Bundle().apply {
+        putBoolean(EXTRA_ADD_ON_TOP, action.addOnTop)
+
         when (action) {
           is Home.GoToMovieDetails -> putInt(EXTRA_MOVIE_DETAILS_MOVIE_ID, action.id)
           is Discover.GoToMovieDetails -> putInt(EXTRA_MOVIE_DETAILS_MOVIE_ID, action.id)
-          is MovieDetails.GoToVideos -> putInt(EXTRA_VIDEOS_MOVIE_ID, action.id)
           is MovieDetails.GoToMovieDetails -> putInt(EXTRA_MOVIE_DETAILS_MOVIE_ID, action.id)
+          is MovieDetails.GoToVideos -> putInt(EXTRA_VIDEOS_MOVIE_ID, action.id)
         }
       }
     }

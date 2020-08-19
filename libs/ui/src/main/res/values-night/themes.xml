@@ -9,7 +9,6 @@
         <item name="colorSecondary">@color/tmdb_deep_orange_500</item>
         <item name="colorOnSecondary">@color/tmdb_white</item>
         <item name="colorSecondaryVariant">@color/tmdb_deep_orange_800</item>
-        <item name="colorSurface">@color/tmdb_black</item>
         <item name="colorOnSurface">@color/tmdb_white</item>
         <item name="colorError">@color/tmdb_red</item>
         <item name="colorOnError">@color/tmdb_white</item>

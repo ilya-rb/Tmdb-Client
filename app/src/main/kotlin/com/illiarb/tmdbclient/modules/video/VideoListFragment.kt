@@ -47,6 +47,16 @@ class VideoListFragment : BaseFragment(R.layout.fragment_video_list), Injectable
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
+    viewBinding.root.setSkipTouchEventOnState(
+      R.id.end,
+      skip = true,
+      excludeViewIds = listOf(R.id.videoListClose)
+    )
+
+    viewBinding.videoListClose.setOnClickListener {
+      viewModel.events.offer(Event.CloseClicked)
+    }
+
     setupVideoPlayer()
     setupVideoList()
 

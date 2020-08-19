@@ -1,6 +1,8 @@
 @file:Suppress("unused")
 
 object Build {
+  const val coreLibraryDesugaring = "com.android.tools:desugar_jdk_libs:1.0.9"
+
   val kotlinStandardFreeCompilerArgs = listOf(
     "-Xinline-classes",
     "-Xuse-experimental=kotlinx.coroutines.FlowPreview",
@@ -44,16 +46,16 @@ object Deps {
   }
 
   object Kotlin {
-    private const val kotlinVersion = "1.3.72"
-    private const val kotlinCoroutinesVersion = "1.3.7"
-    private const val kotlinSerializationVersion = "0.20.0"
+    private const val kotlinVersion = "1.4.0"
+    private const val kotlinCoroutinesVersion = "1.3.9"
+    private const val kotlinSerializationVersion = "1.0.0-RC"
 
     const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72-release-Studio4.1-4"
     const val std = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesVersion"
     const val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion"
-    const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlinSerializationVersion"
+    const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinSerializationVersion"
     const val serializationCbor = "org.jetbrains.kotlinx:kotlinx-serialization-cbor:$kotlinSerializationVersion"
   }
 
@@ -91,7 +93,7 @@ object Deps {
       const val recyclerView = "androidx.recyclerview:recyclerview:1.2.0-alpha05"
       const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
       const val emoji = "androidx.emoji:emoji:1.1.0"
-      const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-rc1"
+      const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta3"
       const val browserHelper = "com.google.androidbrowserhelper:androidbrowserhelper:1.4.0-alpha01"
     }
 

@@ -5,6 +5,8 @@ import com.illiarb.tmdbclient.libs.ui.base.viewmodel.BaseViewModel
 import com.illiarb.tmdbclient.libs.ui.common.ErrorMessage
 import com.illiarb.tmdbclient.libs.ui.common.ViewStateEvent
 import com.illiarb.tmdbclient.libs.util.Result
+import com.illiarb.tmdbclient.navigation.NavigationAction
+import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.services.tmdb.domain.Video
 import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
 import kotlinx.coroutines.launch
@@ -12,7 +14,8 @@ import javax.inject.Inject
 
 class VideoListViewModel @Inject constructor(
   private val movieId: Int,
-  private val moviesInteractor: MoviesInteractor
+  private val moviesInteractor: MoviesInteractor,
+  private val router: Router
 ) : BaseViewModel<VideoListViewModel.State, VideoListViewModel.Event>(initialState()) {
 
   companion object {
@@ -63,6 +66,7 @@ class VideoListViewModel @Inject constructor(
 
   override fun onUiEvent(event: Event) {
     when (event) {
+      is Event.CloseClicked -> router.executeAction(NavigationAction.Exit)
       is Event.VideoClicked -> {
         setState {
           copy(videos = selectVideo(currentState.videos, event.video), selected = event.video)
@@ -99,5 +103,6 @@ class VideoListViewModel @Inject constructor(
 
   sealed class Event {
     data class VideoClicked(val video: UiVideo) : Event()
+    object CloseClicked : Event()
   }
 }

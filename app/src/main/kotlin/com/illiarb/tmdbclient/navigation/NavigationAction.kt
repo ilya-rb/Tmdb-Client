@@ -3,12 +3,16 @@ package com.illiarb.tmdbclient.navigation
 import androidx.annotation.IdRes
 import com.illiarb.tmdbclient.R
 
-sealed class NavigationAction(@IdRes val destinationId: Int) {
+sealed class NavigationAction(
+  @IdRes val destinationId: Int,
+  val addOnTop: Boolean = false
+) {
 
   companion object {
     const val NO_ID = 0
     const val EXTRA_MOVIE_DETAILS_MOVIE_ID = "movie_id"
     const val EXTRA_VIDEOS_MOVIE_ID = "movie_id"
+    const val EXTRA_ADD_ON_TOP = "add_on_top"
   }
 
   object Exit : NavigationAction(NO_ID)
@@ -22,9 +26,12 @@ sealed class NavigationAction(@IdRes val destinationId: Int) {
     object GoToUiComponents : Home(R.id.action_home_to_ui_components)
   }
 
-  sealed class MovieDetails(@IdRes destinationId: Int) : NavigationAction(destinationId) {
+  sealed class MovieDetails(
+    @IdRes destinationId: Int,
+    addOnTop: Boolean = false
+  ) : NavigationAction(destinationId, addOnTop) {
 
-    class GoToVideos(val id: Int) : MovieDetails(R.id.action_details_to_videos)
+    class GoToVideos(val id: Int) : MovieDetails(R.id.action_details_to_videos, addOnTop = true)
 
     class GoToMovieDetails(val id: Int) : MovieDetails(R.id.action_details_to_details)
   }

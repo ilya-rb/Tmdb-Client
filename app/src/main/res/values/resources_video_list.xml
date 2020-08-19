@@ -2,6 +2,8 @@
 <resources>
 
     <dimen name="youtube_player_height">250dp</dimen>
+    <dimen name="youtube_player_height_collapsed">50dp</dimen>
+    <dimen name="youtube_player_width_collapsed">150dp</dimen>
     <dimen name="selected_view_width">4dp</dimen>
 
 </resources>
