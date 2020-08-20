@@ -56,6 +56,10 @@ private fun Project.configureKotlin() {
 
       arguments {
         arg("dagger.formatGeneratedSource", "disabled")
+        arg("dagger.experimentalDaggerErrorMessages", "enabled")
+        arg("room.schemaLocation", "$projectDir/schemas")
+        arg("room.incremental", true)
+        arg("moshi.generated", "javax.annotation.Generated")
       }
     }
   }

@@ -1,5 +1,6 @@
 package com.illiarb.tmdbclient.libs.ui.widget
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.util.AttributeSet
@@ -29,19 +30,20 @@ class MotionLayout @JvmOverloads constructor(
   }
 
   @Suppress("ReturnCount")
-  override fun onInterceptHoverEvent(event: MotionEvent): Boolean {
+  @SuppressLint("ClickableViewAccessibility")
+  override fun onTouchEvent(event: MotionEvent): Boolean {
     val entry = skipTouchEventsOnStateRegistry[currentState]
     if (entry?.skip == true) {
       for (i in 0 until childCount) {
         val view = getChildAt(i)
 
         if (view.isTouchEventOnView(event) && entry.excludeViewIds.contains(view.id)) {
-          return super.onInterceptTouchEvent(event)
+          return super.onTouchEvent(event)
         }
       }
       return false
     }
-    return super.onInterceptTouchEvent(event)
+    return super.onTouchEvent(event)
   }
 
   fun setSkipTouchEventOnState(

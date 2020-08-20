@@ -20,13 +20,13 @@ class YoutubePlayer @JvmOverloads constructor(
   defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-  private val isPlaying: Boolean
-    get() = playerState.value == PlayerConstants.PlayerState.PLAYING
-
   private val binding: WidgetYoutubePlayerBinding =
     WidgetYoutubePlayerBinding.bind(inflate(context, R.layout.widget_youtube_player, this))
 
   private val playerState = MutableStateFlow(PlayerConstants.PlayerState.UNKNOWN)
+
+  private val isPlaying: Boolean
+    get() = playerState.value == PlayerConstants.PlayerState.PLAYING
 
   init {
     binding.playerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {

@@ -5,7 +5,7 @@
     <Transition
         app:constraintSetEnd="@id/end"
         app:constraintSetStart="@id/start"
-        app:duration="1000"
+        app:duration="700"
         app:motionInterpolator="easeOut">
 
         <OnSwipe

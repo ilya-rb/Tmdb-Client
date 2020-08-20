@@ -4,10 +4,13 @@ object Build {
   const val coreLibraryDesugaring = "com.android.tools:desugar_jdk_libs:1.0.9"
 
   val kotlinStandardFreeCompilerArgs = listOf(
+    "-progressive",
     "-Xinline-classes",
     "-Xuse-experimental=kotlinx.coroutines.FlowPreview",
     "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
-    "-Xuse-experimental=kotlin.RequiresOptIn"
+    "-Xuse-experimental=kotlin.RequiresOptIn",
+    // Generate nullability assertions for non-null Java expressions
+    "-Xstrict-java-nullability-assertions"
   )
 
   val daggerJavaCompilerArgs = listOf(
