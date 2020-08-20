@@ -16,7 +16,7 @@
         tools:layout="@layout/fragment_movies" />
 
     <FrameLayout
-        android:id="@+id/videoListFragmentContainer"
+        android:id="@+id/videoFragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

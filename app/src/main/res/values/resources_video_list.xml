@@ -4,6 +4,7 @@
     <dimen name="youtube_player_height">250dp</dimen>
     <dimen name="youtube_player_height_collapsed">70dp</dimen>
     <dimen name="youtube_player_width_collapsed">150dp</dimen>
+    <dimen name="youtube_player_elevation_collapsed">@dimen/elevation_normal</dimen>
     <dimen name="selected_view_width">4dp</dimen>
     <dimen name="video_list_title_margin">@dimen/spacing_small</dimen>
 

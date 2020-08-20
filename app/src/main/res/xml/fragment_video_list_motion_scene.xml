@@ -14,7 +14,7 @@
             app:touchAnchorSide="top" />
 
         <OnClick
-            app:clickAction="jumpToStart"
+            app:clickAction="transitionToStart"
             app:targetId="@id/videoListCollapsedBackground" />
 
         <KeyFrameSet>
@@ -36,6 +36,7 @@
             android:id="@+id/youtubePlayer"
             android:layout_width="0dp"
             android:layout_height="@dimen/youtube_player_height"
+            android:elevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -53,14 +54,26 @@
             android:id="@+id/videoListClose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:elevation="0dp"
             app:layout_constraintBottom_toBottomOf="@id/youtubePlayer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/youtubePlayer" />
 
         <Constraint
+            android:id="@+id/videoListPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_small"
+            android:elevation="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/youtubePlayer"
+            app:layout_constraintEnd_toStartOf="@id/videoListClose"
+            app:layout_constraintTop_toTopOf="@id/youtubePlayer" />
+
+        <Constraint
             android:id="@+id/videoListCollapsedBackground"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:elevation="0dp"
             app:layout_constraintBottom_toBottomOf="@id/youtubePlayer"
             app:layout_constraintEnd_toEndOf="@id/youtubePlayer"
             app:layout_constraintStart_toStartOf="@id/youtubePlayer"
@@ -73,7 +86,6 @@
             android:layout_marginStart="@dimen/video_list_title_margin"
             android:layout_marginTop="@dimen/video_list_title_margin"
             android:layout_marginEnd="@dimen/video_list_title_margin"
-            android:alpha="0"
             app:layout_constraintBottom_toBottomOf="@id/youtubePlayer"
             app:layout_constraintEnd_toStartOf="@id/videoListPlay"
             app:layout_constraintStart_toEndOf="@id/youtubePlayer"
@@ -90,6 +102,7 @@
             android:layout_marginStart="@dimen/spacing_small"
             android:layout_marginEnd="@dimen/spacing_small"
             android:layout_marginBottom="@dimen/spacing_small"
+            android:elevation="@dimen/youtube_player_elevation_collapsed"
             app:layout_constraintBottom_toTopOf="@id/youtubeVideosList"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -109,7 +122,7 @@
             android:layout_marginStart="@dimen/video_list_title_margin"
             android:layout_marginTop="@dimen/video_list_title_margin"
             android:layout_marginEnd="@dimen/video_list_title_margin"
-            android:alpha="1"
+            android:elevation="@dimen/youtube_player_elevation_collapsed"
             app:layout_constraintBottom_toBottomOf="@id/youtubePlayer"
             app:layout_constraintEnd_toStartOf="@id/videoListPlay"
             app:layout_constraintStart_toEndOf="@id/youtubePlayer"
@@ -120,8 +133,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/spacing_small"
+            android:elevation="@dimen/youtube_player_elevation_collapsed"
             app:layout_constraintBottom_toBottomOf="@id/youtubePlayer"
             app:layout_constraintEnd_toEndOf="@id/videoListCollapsedBackground"
+            app:layout_constraintTop_toTopOf="@id/youtubePlayer" />
+
+        <Constraint
+            android:id="@+id/videoListPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_small"
+            android:elevation="@dimen/youtube_player_elevation_collapsed"
+            app:layout_constraintBottom_toBottomOf="@id/youtubePlayer"
+            app:layout_constraintEnd_toStartOf="@id/videoListClose"
             app:layout_constraintTop_toTopOf="@id/youtubePlayer" />
 
         <Constraint
@@ -129,6 +153,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="@dimen/spacing_small"
+            android:elevation="@dimen/youtube_player_elevation_collapsed"
             app:layout_constraintBottom_toBottomOf="@id/youtubePlayer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/youtubePlayer"

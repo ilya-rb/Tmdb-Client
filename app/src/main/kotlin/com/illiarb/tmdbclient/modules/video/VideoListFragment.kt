@@ -4,8 +4,9 @@ import android.graphics.Color
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.view.View
-import androidx.activity.addCallback
+import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -27,11 +28,14 @@ import com.illiarb.tmdbclient.modules.video.VideoListViewModel.Event
 import com.illiarb.tmdbclient.modules.video.VideoListViewModel.State
 import com.illiarb.tmdbclient.modules.video.di.DaggerVideoListComponent
 import com.illiarb.tmdbclient.navigation.NavigationAction
+import com.illiarb.tmdbclient.navigation.video.CanPlayMovieVideos
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class VideoListFragment : BaseFragment(R.layout.fragment_video_list), Injectable {
+class VideoListFragment : BaseFragment(R.layout.fragment_video_list),
+  Injectable,
+  CanPlayMovieVideos {
 
   @Inject
   lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -46,6 +50,12 @@ class VideoListFragment : BaseFragment(R.layout.fragment_video_list), Injectable
   private val viewModel by viewModels<VideoListViewModel>(factoryProducer = { viewModelFactory })
   private val viewBinding by viewBinding { fragment ->
     FragmentVideoListBinding.bind(fragment.requireView())
+  }
+
+  private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+    override fun handleOnBackPressed() {
+      viewBinding.root.transitionToEnd()
+    }
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,24 +91,18 @@ class VideoListFragment : BaseFragment(R.layout.fragment_video_list), Injectable
 
     TranslucentStatusBarColorChanger(this, requireActivity().window, Color.BLACK)
 
-    requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, enabled = true) {
-      if (viewBinding.root.currentState == R.id.start) {
-        viewBinding.root.transitionToEnd()
-      } else {
-        viewModel.events.offer(Event.CloseClicked)
-      }
-    }
+    requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
 
     viewLifecycleOwner.lifecycleScope.launch {
       viewBinding.youtubePlayer.playingStateChanges().collect { isPlaying ->
-        val icon = viewBinding.videoListPlay.drawable as? AnimatedVectorDrawable
-        icon?.let {
-          if (isPlaying) {
-            it.start()
-          } else {
-            it.reset()
-          }
-        }
+        val drawable = if (isPlaying) {
+          ContextCompat.getDrawable(requireContext(), R.drawable.avd_play_to_pause)
+        } else {
+          ContextCompat.getDrawable(requireContext(), R.drawable.avd_pause_to_play)
+        } as AnimatedVectorDrawable
+
+        viewBinding.videoListPlay.setImageDrawable(drawable)
+        drawable.start()
       }
     }
 
@@ -122,6 +126,13 @@ class VideoListFragment : BaseFragment(R.layout.fragment_video_list), Injectable
       )
       .inject(this)
 
+  override fun loadVideos(movieId: Int) {
+    if (viewBinding.videoListRoot.currentState == R.id.end) {
+      viewBinding.videoListRoot.transitionToStart()
+    }
+    viewModel.events.offer(Event.NewMovieSelected(movieId))
+  }
+
   private fun setupVideoPlayer() {
     viewBinding.youtubePlayer.setLifecycleOwner(viewLifecycleOwner)
     viewBinding.youtubePlayer.doOnApplyWindowInsets { view, windowInsets, _ ->
@@ -134,6 +145,7 @@ class VideoListFragment : BaseFragment(R.layout.fragment_video_list), Injectable
       override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) = Unit
       override fun onTransitionCompleted(motionLayout: MotionLayout?, state: Int) {
         viewBinding.youtubePlayer.setShowControls(state == R.id.start)
+        onBackPressedCallback.isEnabled = state == R.id.start
       }
     })
   }

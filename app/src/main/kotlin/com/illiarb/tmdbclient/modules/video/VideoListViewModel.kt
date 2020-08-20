@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class VideoListViewModel @Inject constructor(
-  private val movieId: Int,
+  private var movieId: Int,
   private val moviesInteractor: MoviesInteractor,
   private val router: Router
 ) : BaseViewModel<VideoListViewModel.State, VideoListViewModel.Event>(initialState()) {
@@ -27,6 +27,25 @@ class VideoListViewModel @Inject constructor(
   }
 
   init {
+    init(movieId)
+  }
+
+  override fun onUiEvent(event: Event) {
+    when (event) {
+      is Event.CloseClicked -> router.executeAction(NavigationAction.CloseVideoList)
+      is Event.NewMovieSelected -> {
+        movieId = event.movieId
+        init(movieId)
+      }
+      is Event.VideoClicked -> {
+        setState {
+          copy(videos = selectVideo(currentState.videos, event.video), selected = event.video)
+        }
+      }
+    }
+  }
+
+  private fun init(movieId: Int) {
     viewModelScope.launch {
       when (val result = moviesInteractor.getMovieVideos(movieId)) {
         is Result.Ok -> {
@@ -64,17 +83,6 @@ class VideoListViewModel @Inject constructor(
     }
   }
 
-  override fun onUiEvent(event: Event) {
-    when (event) {
-      is Event.CloseClicked -> router.executeAction(NavigationAction.CloseVideoList)
-      is Event.VideoClicked -> {
-        setState {
-          copy(videos = selectVideo(currentState.videos, event.video), selected = event.video)
-        }
-      }
-    }
-  }
-
   private fun selectVideo(videos: List<Any>, video: UiVideo): List<Any> {
     val position = videos.indexOf(video).takeIf { pos -> pos != -1 } ?: return videos
 
@@ -103,6 +111,7 @@ class VideoListViewModel @Inject constructor(
 
   sealed class Event {
     data class VideoClicked(val video: UiVideo) : Event()
+    data class NewMovieSelected(val movieId: Int) : Event()
     object CloseClicked : Event()
   }
 }
