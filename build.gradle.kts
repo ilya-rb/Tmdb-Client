@@ -36,6 +36,20 @@ allprojects {
     maven("https://oss.sonatype.org/content/repositories/snapshots/")
     jcenter()
   }
+
+  configurations.all {
+    resolutionStrategy.eachDependency {
+      when {
+        requested.name.startsWith("kotlin-stdlib") -> {
+          useTarget(
+            "${requested.group}:${requested.name.replace("jre", "jdk")}:${requested.version}")
+        }
+        else -> when (requested.group) {
+          "org.jetbrains.kotlin" -> useVersion(Deps.Kotlin.kotlinVersion)
+        }
+      }
+    }
+  }
 }
 
 subprojects {

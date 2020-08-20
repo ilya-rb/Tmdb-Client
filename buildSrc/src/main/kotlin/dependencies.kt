@@ -49,7 +49,8 @@ object Deps {
   }
 
   object Kotlin {
-    private const val kotlinVersion = "1.4.0"
+    const val kotlinVersion = "1.4.0"
+
     private const val kotlinCoroutinesVersion = "1.3.9"
     private const val kotlinSerializationVersion = "1.0.0-RC"
 

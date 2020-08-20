@@ -7,7 +7,6 @@ repositories {
 }
 
 plugins {
-  kotlin("jvm") version "1.4.0"
   `kotlin-dsl`
   `java-gradle-plugin`
 }
@@ -34,5 +33,10 @@ dependencies {
   // Explicitly declare all the kotlin bits to avoid mismatched versions
   implementation(kotlin("gradle-plugin", version = SharedBuildVersions.kotlinVersion))
   implementation(kotlin("stdlib", version = SharedBuildVersions.kotlinVersion))
+  implementation(kotlin("stdlib-common", version = SharedBuildVersions.kotlinVersion))
+  implementation(kotlin("stdlib-jdk7", version = SharedBuildVersions.kotlinVersion))
+  implementation(kotlin("stdlib-jdk8", version = SharedBuildVersions.kotlinVersion))
+  implementation(kotlin("reflect", version = SharedBuildVersions.kotlinVersion))
+
   implementation("com.android.tools.build:gradle:${SharedBuildVersions.agpVersion}")
 }
