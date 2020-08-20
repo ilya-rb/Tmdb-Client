@@ -25,10 +25,9 @@ interface Navigator {
   fun executeAction(action: NavigationAction)
 
   class DefaultNavigator @Inject constructor(
-    private val activity: FragmentActivity
+    private val activity: FragmentActivity,
+    private val movieVideosNavigator: MovieVideosNavigator
   ) : Navigator {
-
-    private val movieVideosNavigator = MovieVideosNavigator(activity)
 
     override fun executeAction(action: NavigationAction) {
       val controller = Navigation.findNavController(activity, R.id.nav_host_fragment)

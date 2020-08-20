@@ -1,7 +1,9 @@
 package com.illiarb.tmdbclient.modules.main
 
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
+import com.illiarb.tmdbclient.di.modules.NavigationModule.DefaultVideosFragmentClassName
 import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.libs.tools.ConnectivityStatus
 import com.illiarb.tmdbclient.navigation.DeepLinkHandler
@@ -26,6 +28,9 @@ interface MainComponent {
     fun fragmentFactory(): FragmentFactory
     fun deepLinkHandler(): DeepLinkHandler
     fun systemChangesNotifier(): DayNightModeChangeNotifier
+
+    @DefaultVideosFragmentClassName
+    fun defaultVideoFragmentClassName(): Class<out Fragment>
   }
 
   @Component.Factory
