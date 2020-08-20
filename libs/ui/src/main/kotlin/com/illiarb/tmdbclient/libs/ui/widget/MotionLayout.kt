@@ -1,6 +1,5 @@
 package com.illiarb.tmdbclient.libs.ui.widget
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.util.AttributeSet
@@ -29,23 +28,20 @@ class MotionLayout @JvmOverloads constructor(
     }
   }
 
-  @SuppressLint("ClickableViewAccessibility")
-  override fun onTouchEvent(event: MotionEvent): Boolean {
+  @Suppress("ReturnCount")
+  override fun onInterceptHoverEvent(event: MotionEvent): Boolean {
     val entry = skipTouchEventsOnStateRegistry[currentState]
     if (entry?.skip == true) {
       for (i in 0 until childCount) {
         val view = getChildAt(i)
-        val viewRect = Rect().also { view.getHitRect(it) }
 
-        if (viewRect.contains(event.x.toInt(), event.y.toInt()) &&
-          entry.excludeViewIds.contains(view.id)
-        ) {
-          return super.onTouchEvent(event)
+        if (view.isTouchEventOnView(event) && entry.excludeViewIds.contains(view.id)) {
+          return super.onInterceptTouchEvent(event)
         }
       }
       return false
     }
-    return super.onTouchEvent(event)
+    return super.onInterceptTouchEvent(event)
   }
 
   fun setSkipTouchEventOnState(
@@ -54,6 +50,11 @@ class MotionLayout @JvmOverloads constructor(
     excludeViewIds: List<Int> = emptyList()
   ) {
     skipTouchEventsOnStateRegistry[stateId] = SkipTouchEventEntry(skip, excludeViewIds)
+  }
+
+  private fun View.isTouchEventOnView(event: MotionEvent): Boolean {
+    val viewRect = Rect().also { getHitRect(it) }
+    return viewRect.contains(event.x.toInt(), event.y.toInt())
   }
 
   private data class SkipTouchEventEntry(
