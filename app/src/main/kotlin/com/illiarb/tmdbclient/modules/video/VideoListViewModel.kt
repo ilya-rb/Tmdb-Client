@@ -66,7 +66,7 @@ class VideoListViewModel @Inject constructor(
 
   override fun onUiEvent(event: Event) {
     when (event) {
-      is Event.CloseClicked -> router.executeAction(NavigationAction.Exit)
+      is Event.CloseClicked -> router.executeAction(NavigationAction.CloseVideoList)
       is Event.VideoClicked -> {
         setState {
           copy(videos = selectVideo(currentState.videos, event.video), selected = event.video)

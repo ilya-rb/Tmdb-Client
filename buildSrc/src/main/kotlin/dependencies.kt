@@ -190,6 +190,7 @@ object Deps {
     const val binaryPrefs = "com.github.yandextaxitech:binaryprefs:1.0.1"
     const val javax = "javax.inject:javax.inject:1"
     const val viewBindingPropertyDelegate = "com.github.kirich1409:ViewBindingPropertyDelegate:1.0.0"
+    const val youtubePlayer = "com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5"
   }
 
   object Test {

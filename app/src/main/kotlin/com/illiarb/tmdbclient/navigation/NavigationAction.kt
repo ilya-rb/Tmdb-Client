@@ -15,8 +15,6 @@ sealed class NavigationAction(
     const val EXTRA_ADD_ON_TOP = "add_on_top"
   }
 
-  object Exit : NavigationAction(NO_ID)
-
   sealed class Home(@IdRes destinationId: Int) : NavigationAction(destinationId) {
 
     class GoToMovieDetails(val id: Int) : Home(R.id.action_home_to_movie_details)
@@ -26,12 +24,7 @@ sealed class NavigationAction(
     object GoToUiComponents : Home(R.id.action_home_to_ui_components)
   }
 
-  sealed class MovieDetails(
-    @IdRes destinationId: Int,
-    addOnTop: Boolean = false
-  ) : NavigationAction(destinationId, addOnTop) {
-
-    class GoToVideos(val id: Int) : MovieDetails(R.id.action_details_to_videos, addOnTop = true)
+  sealed class MovieDetails(@IdRes destinationId: Int) : NavigationAction(destinationId) {
 
     class GoToMovieDetails(val id: Int) : MovieDetails(R.id.action_details_to_details)
   }
@@ -52,4 +45,10 @@ sealed class NavigationAction(
 
     object Discover : DeepLink(R.id.deep_link_discover)
   }
+
+  data class VideoList(val movieId: Int) : NavigationAction(NO_ID)
+
+  object CloseVideoList : NavigationAction(NO_ID)
+
+  object Exit : NavigationAction(NO_ID)
 }

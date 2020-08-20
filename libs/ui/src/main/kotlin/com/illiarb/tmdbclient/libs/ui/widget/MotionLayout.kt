@@ -40,12 +40,12 @@ class MotionLayout @JvmOverloads constructor(
         if (viewRect.contains(event.x.toInt(), event.y.toInt()) &&
           entry.excludeViewIds.contains(view.id)
         ) {
-          return super.onInterceptTouchEvent(event)
+          return super.onTouchEvent(event)
         }
       }
       return false
     }
-    return super.onInterceptTouchEvent(event)
+    return super.onTouchEvent(event)
   }
 
   fun setSkipTouchEventOnState(
