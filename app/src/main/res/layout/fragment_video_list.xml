@@ -1,22 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.illiarb.tmdbclient.libs.ui.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root"
+    android:id="@+id/videoListRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <com.illiarb.tmdbclient.modules.video.widget.YoutubePlayer
-        android:id="@+id/youtubePlayer"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/youtube_player_height" />
+    app:layoutDescription="@xml/fragment_video_list_motion_scene">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/youtubeVideosList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/colorSurface"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/youtubePlayer"
         tools:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/item_video"
         tools:orientation="vertical" />
 
-</LinearLayout>
+    <View
+        android:id="@+id/videoListCollapsedBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/colorSurface"
+        app:layout_constraintBottom_toBottomOf="@id/youtubePlayer"
+        app:layout_constraintEnd_toEndOf="@id/youtubePlayer"
+        app:layout_constraintStart_toStartOf="@id/youtubePlayer"
+        app:layout_constraintTop_toTopOf="@id/youtubePlayer" />
+
+    <TextView
+        android:id="@+id/videoListTitle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:textAppearance="?attr/textAppearanceCaption"
+        app:layout_constraintBottom_toBottomOf="@id/youtubePlayer"
+        app:layout_constraintEnd_toStartOf="@id/videoListPlay"
+        app:layout_constraintStart_toEndOf="@id/youtubePlayer"
+        app:layout_constraintTop_toTopOf="@id/youtubePlayer" />
+
+    <ImageView
+        android:id="@+id/videoListPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_small"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@null"
+        android:src="@drawable/avd_play_to_pause"
+        app:layout_constraintBottom_toBottomOf="@id/youtubePlayer"
+        app:layout_constraintEnd_toStartOf="@id/videoListClose"
+        app:layout_constraintTop_toTopOf="@id/youtubePlayer"
+        app:tint="?attr/colorOnSurface" />
+
+    <ImageView
+        android:id="@+id/videoListClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_close"
+        app:layout_constraintBottom_toBottomOf="@id/youtubePlayer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/youtubePlayer"
+        app:tint="?attr/colorOnSurface" />
+
+    <com.illiarb.tmdbclient.modules.video.widget.YoutubePlayer
+        android:id="@+id/youtubePlayer"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/youtube_player_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</com.illiarb.tmdbclient.libs.ui.widget.MotionLayout>

@@ -31,10 +31,6 @@
         tools:layout="@layout/fragment_movie_details">
 
         <action
-            android:id="@+id/action_details_to_videos"
-            app:destination="@+id/videoListFragment" />
-
-        <action
             android:id="@+id/action_details_to_details"
             app:destination="@id/movieDetailsFragment" />
 
@@ -71,6 +67,10 @@
             app:destination="@id/uiComponentsFragment" />
 
     </fragment>
+
+    <action
+        android:id="@+id/action_show_video_list"
+        app:destination="@id/videoListFragment" />
 
     <action
         android:id="@+id/deep_link_discover"

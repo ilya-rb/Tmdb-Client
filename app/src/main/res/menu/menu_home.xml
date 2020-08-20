@@ -6,17 +6,18 @@
         android:id="@+id/menu_home_discover"
         android:icon="@drawable/ic_search"
         android:title="@string/menu_home_discover"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_home_day_night"
         android:title="@string/menu_home_day_night"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_home_debug"
         android:icon="@drawable/ic_developer_board"
         android:title="@string/menu_home_debug"
+        android:visible="false"
         app:showAsAction="ifRoom" />
 
 </menu>

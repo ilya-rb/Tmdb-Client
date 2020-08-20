@@ -8,7 +8,7 @@ import com.illiarb.tmdbclient.libs.util.Async
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.Event
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.State
 import com.illiarb.tmdbclient.navigation.NavigationAction.MovieDetails.GoToMovieDetails
-import com.illiarb.tmdbclient.navigation.NavigationAction.MovieDetails.GoToVideos
+import com.illiarb.tmdbclient.navigation.NavigationAction.VideoList
 import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
@@ -72,7 +72,7 @@ class MovieDetailsViewModel @Inject constructor(
   override fun onUiEvent(event: Event) {
     when (event) {
       is Event.MovieClicked -> router.executeAction(GoToMovieDetails(event.movie.id))
-      is Event.PlayClicked -> router.executeAction(GoToVideos(movieId))
+      is Event.PlayClicked -> router.executeAction(VideoList(movieId))
     }
   }
 

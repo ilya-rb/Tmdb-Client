@@ -1,6 +1,7 @@
 package com.illiarb.tmdbclient.modules.home
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -44,6 +45,17 @@ class HomeFragment @Inject constructor(
     FragmentMoviesBinding.bind(fragment.requireView())
   }
 
+  private val toolbarColorScrollListener by lazy(LazyThreadSafetyMode.NONE) {
+    ToolbarScrollListener(
+      endColor = requireView().getColorAttr(MaterialR.attr.colorPrimary),
+      distance = requireView().dimen(R.dimen.app_bar_end_state_height),
+      endElevation = requireView().dimen(UiR.dimen.elevation_normal).toFloat()
+    ) { elevation, color ->
+      viewBinding.toolbar.setBackgroundColor(color.value)
+      viewBinding.toolbar.elevation = elevation.value
+    }
+  }
+
   private val snackbarController = SnackbarController()
   private val bundleStore = SimpleBundleStore()
   private val adapter = DelegatesAdapter(
@@ -79,12 +91,23 @@ class HomeFragment @Inject constructor(
 
     setupToolbar()
     setupMoviesList()
+    setupViewInsets()
 
     viewLifecycleOwner.lifecycleScope.launch {
       viewModel.state.collect {
         render(it)
       }
     }
+  }
+
+  override fun onResume() {
+    super.onResume()
+    viewBinding.moviesList.addOnScrollListener(toolbarColorScrollListener)
+  }
+
+  override fun onPause() {
+    super.onPause()
+    viewBinding.moviesList.removeOnScrollListener(toolbarColorScrollListener)
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
@@ -98,6 +121,7 @@ class HomeFragment @Inject constructor(
       layoutManager = LinearLayoutManager(requireContext())
       isNestedScrollingEnabled = false
       setHasFixedSize(true)
+      removeAdapterOnDetach()
       addItemDecoration(
         SpaceDecoration(
           spacingTopFirst = 0,
@@ -106,21 +130,16 @@ class HomeFragment @Inject constructor(
           spacingBottomLast = dimen(UiR.dimen.spacing_normal)
         )
       )
+    }
+  }
 
-      removeAdapterOnDetach()
+  private fun setupViewInsets() {
+    viewBinding.toolbar.doOnApplyWindowInsets { v, insets, padding ->
+      v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
+    }
 
-      doOnApplyWindowInsets { v, insets, initialPadding ->
-        v.updatePadding(bottom = initialPadding.bottom + insets.systemWindowInsetBottom)
-      }
-
-      addOnScrollListener(ToolbarScrollListener(
-        endColor = requireView().getColorAttr(MaterialR.attr.colorPrimary),
-        distance = requireView().dimen(R.dimen.app_bar_end_state_height),
-        endElevation = requireView().dimen(UiR.dimen.elevation_normal).toFloat()
-      ) { elevation, color ->
-        viewBinding.toolbar.setBackgroundColor(color.value)
-        viewBinding.toolbar.elevation = elevation.value
-      })
+    viewBinding.moviesList.doOnApplyWindowInsets { v, insets, initialPadding ->
+      v.updatePadding(bottom = initialPadding.bottom + insets.systemWindowInsetBottom)
     }
   }
 
@@ -134,14 +153,7 @@ class HomeFragment @Inject constructor(
         }
         true
       }
-
-      doOnApplyWindowInsets { v, insets, padding ->
-        v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
-      }
-
-      menu.tintMenuItemsWithColor(
-        viewBinding.root.getColorAttr(MaterialR.attr.colorOnPrimary)
-      )
+      menu.tintMenuItemsWithColor(viewBinding.root.getColorAttr(MaterialR.attr.colorOnPrimary))
     }
   }
 
@@ -157,6 +169,7 @@ class HomeFragment @Inject constructor(
     }
 
     viewBinding.toolbar.menu?.findItem(R.id.menu_home_debug)?.let { menuItem ->
+      menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
       menuItem.isVisible = state.uiComponentsIconVisible
     }
 
