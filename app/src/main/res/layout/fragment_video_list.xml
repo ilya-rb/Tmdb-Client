@@ -53,9 +53,9 @@
         android:contentDescription="@null"
         android:src="@drawable/avd_play_to_pause"
         android:theme="@style/ThemeOverlay.MaterialComponents.Light"
-        app:layout_constraintBottom_toBottomOf="@id/youtubePlayer"
+        app:layout_constraintBottom_toBottomOf="@id/videoListTitle"
         app:layout_constraintEnd_toStartOf="@id/videoListClose"
-        app:layout_constraintTop_toTopOf="@id/youtubePlayer"
+        app:layout_constraintTop_toTopOf="@id/videoListTitle"
         app:tint="?attr/colorOnSurface" />
 
     <ImageView
@@ -66,9 +66,9 @@
         android:contentDescription="@null"
         android:src="@drawable/ic_close"
         android:theme="@style/ThemeOverlay.MaterialComponents.Light"
-        app:layout_constraintBottom_toBottomOf="@id/youtubePlayer"
+        app:layout_constraintBottom_toBottomOf="@id/videoListTitle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/youtubePlayer"
+        app:layout_constraintStart_toEndOf="@id/videoListTitle"
         app:tint="?attr/colorOnSurface" />
 
     <com.illiarb.tmdbclient.modules.video.widget.YoutubePlayer
