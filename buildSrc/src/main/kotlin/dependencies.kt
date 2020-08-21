@@ -6,9 +6,10 @@ object Build {
   val kotlinStandardFreeCompilerArgs = listOf(
     "-progressive",
     "-Xinline-classes",
-    "-Xuse-experimental=kotlinx.coroutines.FlowPreview",
-    "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
-    "-Xuse-experimental=kotlin.RequiresOptIn",
+    "-Xopt-in=kotlin.RequiresOptIn",
+    "-Xopt-in=kotlinx.coroutines.FlowPreview",
+    "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+    "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
     // Generate nullability assertions for non-null Java expressions
     "-Xstrict-java-nullability-assertions"
   )
@@ -49,6 +50,7 @@ object Deps {
   }
 
   object Kotlin {
+    @Suppress("MemberVisibilityCanBePrivate")
     const val kotlinVersion = "1.4.0"
 
     private const val kotlinCoroutinesVersion = "1.3.9"

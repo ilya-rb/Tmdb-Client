@@ -5,8 +5,8 @@
     <Transition
         app:constraintSetEnd="@id/end"
         app:constraintSetStart="@id/start"
-        app:duration="700"
-        app:motionInterpolator="easeOut">
+        app:duration="500"
+        app:motionInterpolator="easeInOut">
 
         <OnSwipe
             app:dragDirection="dragUp"
