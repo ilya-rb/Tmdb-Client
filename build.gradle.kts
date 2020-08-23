@@ -23,7 +23,7 @@ buildscript {
 }
 
 plugins {
-  id("io.gitlab.arturbosch.detekt") version "1.8.0" apply false
+  id("io.gitlab.arturbosch.detekt") version "1.12.0-RC1"
   id("com.github.ben-manes.versions") version "0.29.0"
   id("tmdbclient")
 }
@@ -42,7 +42,8 @@ allprojects {
       when {
         requested.name.startsWith("kotlin-stdlib") -> {
           useTarget(
-            "${requested.group}:${requested.name.replace("jre", "jdk")}:${requested.version}")
+            "${requested.group}:${requested.name.replace("jre", "jdk")}:${requested.version}"
+          )
         }
         else -> when (requested.group) {
           "org.jetbrains.kotlin" -> useVersion(Deps.Kotlin.kotlinVersion)
@@ -56,6 +57,10 @@ subprojects {
   apply {
     from(rootProject.file("code-quality-tools/detekt.gradle"))
   }
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt> {
+  this.jvmTarget = "1.8"
 }
 
 tasks.register(name = "clean", type = Delete::class) {

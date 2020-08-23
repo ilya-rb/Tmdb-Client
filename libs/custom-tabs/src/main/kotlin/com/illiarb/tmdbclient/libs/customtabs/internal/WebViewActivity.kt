@@ -20,7 +20,7 @@ internal class WebViewActivity : AppCompatActivity() {
     setContentView(R.layout.activity_web_view_fallback)
 
     val title = intent.getStringExtra(EXTRA_TITLE)
-    val url = intent.getStringExtra(EXTRA_URL)
+    val url = intent.getStringExtra(EXTRA_URL) ?: ""
 
     val actionBar = supportActionBar
     if (actionBar != null) {

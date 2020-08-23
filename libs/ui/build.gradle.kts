@@ -21,7 +21,6 @@ dependencies {
   api(Deps.Android.AndroidX.constraintLayout)
   api(Deps.Android.AndroidX.Lifecycle.ktx)
   api(Deps.Android.AndroidX.ViewModel.core)
-  api(Deps.Android.AndroidX.ViewModel.ext)
   api(Deps.AdapterDelegates.core)
   api(Deps.AdapterDelegates.dsl)
 }

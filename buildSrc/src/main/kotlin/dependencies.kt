@@ -51,35 +51,34 @@ object Deps {
 
   object Kotlin {
     @Suppress("MemberVisibilityCanBePrivate")
-    const val kotlinVersion = "1.3.72"
+    const val kotlinVersion = "1.4.0"
 
-    private const val kotlinCoroutinesVersion = "1.3.7"
-    private const val kotlinSerializationVersion = "0.20.0"
+    private const val kotlinCoroutinesVersion = "1.3.9"
+    private const val kotlinSerializationVersion = "1.0.0-RC"
 
-    const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72-release-Studio4.1-4"
+    const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.0"
     const val std = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesVersion"
     const val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion"
-    const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlinSerializationVersion"
+    const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinSerializationVersion"
     const val serializationCbor = "org.jetbrains.kotlinx:kotlinx-serialization-cbor:$kotlinSerializationVersion"
   }
 
   object Android {
 
     object Build {
-      const val compileSdkVersion = 29
-      const val targetSdkVersion = 29
+      const val compileSdkVersion = 30
+      const val targetSdkVersion = 30
       const val minSdkVersion = 21
       const val gradlePlugin = "com.android.tools.build:gradle:4.2.0-alpha07"
     }
 
     object AndroidX {
-      private const val archComponentsVersion = "2.2.0"
+      private const val archComponentsVersion = "2.3.0-alpha07"
 
       object ViewModel {
         const val core = "androidx.lifecycle:lifecycle-viewmodel-ktx:$archComponentsVersion"
-        const val ext = "androidx.lifecycle:lifecycle-extensions:$archComponentsVersion"
       }
 
       object Lifecycle {
@@ -93,14 +92,14 @@ object Deps {
         const val compiler = "androidx.room:room-compiler:$roomVersion"
       }
 
-      const val fragment = "androidx.fragment:fragment-ktx:1.3.0-alpha07"
+      const val fragment = "androidx.fragment:fragment-ktx:1.3.0-alpha08"
       const val navigation = "androidx.navigation:navigation-fragment:2.3.0"
       const val material = "com.google.android.material:material:1.3.0-alpha02"
       const val recyclerView = "androidx.recyclerview:recyclerview:1.2.0-alpha05"
       const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
-      const val emoji = "androidx.emoji:emoji:1.1.0"
-      const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta3"
-      const val browserHelper = "com.google.androidbrowserhelper:androidbrowserhelper:1.4.0-alpha01"
+      const val emoji = "androidx.emoji:emoji:1.2.0-alpha01"
+      const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0"
+      const val browserHelper = "com.google.androidbrowserhelper:androidbrowserhelper:1.4.0"
     }
 
     object Compose {
@@ -114,7 +113,7 @@ object Deps {
 
     object Firebase {
       const val gradlePlugin = "com.google.gms:google-services:4.3.3"
-      const val core = "com.google.firebase:firebase-core:17.4.4"
+      const val core = "com.google.firebase:firebase-core:17.5.0"
       const val remoteConfig = "com.google.firebase:firebase-config:19.2.0"
     }
   }
@@ -130,7 +129,7 @@ object Deps {
     private const val retrofitVersion = "2.9.0"
 
     const val core = "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    const val okHttp = "com.squareup.okhttp3:okhttp:4.8.0"
+    const val okHttp = "com.squareup.okhttp3:okhttp:4.8.1"
     const val converterMoshi = "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
     const val coroutinesAdapter =
       "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
@@ -165,7 +164,7 @@ object Deps {
     object Debug {
 
       object Flipper {
-        private const val flipperVersion = "0.51.0"
+        private const val flipperVersion = "0.52.1"
 
         const val flipper = "com.facebook.flipper:flipper:$flipperVersion"
         const val flipperNetwork = "com.facebook.flipper:flipper-network-plugin:$flipperVersion"
@@ -204,11 +203,11 @@ object Deps {
     const val junit = "junit:junit:4.13"
     const val truth = "com.google.truth:truth:1.0.1"
     const val kaspresso = "com.kaspersky.android-components:kaspresso:1.1.0"
-    const val kakao = "com.agoda.kakao:kakao:2.3.3"
+    const val kakao = "com.agoda.kakao:kakao:2.3.4"
     const val mockk = "io.mockk:mockk:1.10.0"
 
     object JUnit5 {
-      private const val jUnitVersion = "5.7.0-M1"
+      private const val jUnitVersion = "5.7.0-RC1"
       private const val androidTestVersion = "1.2.0"
 
       const val jupiterApi = "org.junit.jupiter:junit-jupiter-api:$jUnitVersion"
@@ -221,16 +220,16 @@ object Deps {
     }
 
     object AndroidX {
-      private const val espressoVersion = "3.3.0-rc01"
+      private const val espressoVersion = "3.3.0-rc03"
 
       const val core = "androidx.arch.core:core-testing:2.1.0"
-      const val rules = "androidx.test:rules:1.3.0-rc01"
-      const val runner = "androidx.test:runner:1.3.0-rc01"
+      const val rules = "androidx.test:rules:1.3.0-rc03"
+      const val runner = "androidx.test:runner:1.3.0-rc03"
       const val espresso = "androidx.test.espresso:espresso-core:$espressoVersion"
       const val espressoIntents = "androidx.test.espresso:espresso-intents:$espressoVersion"
-      const val extJunit = "androidx.test.ext:junit-ktx:1.1.2-rc01"
+      const val extJunit = "androidx.test.ext:junit-ktx:1.1.2-rc03"
       const val uiAutomator = "androidx.test.uiautomator:uiautomator:2.2.0"
-      const val benchmark = "androidx.benchmark:benchmark-junit4:1.0.0"
+      const val benchmark = "androidx.benchmark:benchmark-junit4:1.1.0-alpha01"
     }
   }
 }
