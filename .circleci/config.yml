@@ -62,7 +62,7 @@ jobs:
 
       - run:
           name: Run Unit Tests
-          command: ./gradlew testDebugUnitTestCoverage
+          command: ./gradlew testDebugUnitTestCoverage --stacktrace
 
       - run:
           name: Upload code coverage report
