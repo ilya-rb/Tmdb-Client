@@ -51,17 +51,17 @@ object Deps {
 
   object Kotlin {
     @Suppress("MemberVisibilityCanBePrivate")
-    const val kotlinVersion = "1.4.0"
+    const val kotlinVersion = "1.3.72"
 
-    private const val kotlinCoroutinesVersion = "1.3.9"
-    private const val kotlinSerializationVersion = "1.0.0-RC"
+    private const val kotlinCoroutinesVersion = "1.3.7"
+    private const val kotlinSerializationVersion = "0.20.0"
 
     const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72-release-Studio4.1-4"
     const val std = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesVersion"
     const val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion"
-    const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinSerializationVersion"
+    const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlinSerializationVersion"
     const val serializationCbor = "org.jetbrains.kotlinx:kotlinx-serialization-cbor:$kotlinSerializationVersion"
   }
 

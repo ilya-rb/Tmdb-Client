@@ -37,7 +37,7 @@ jobs:
 
       - run:
           name: Build Project
-          command: ./gradlew build --scan
+          command: ./gradlew assembleDebug --debug --scan --rerun-tasks --exclude-task test --exclude-task lint
 
       - save_cache:
           paths:
@@ -62,7 +62,7 @@ jobs:
 
       - run:
           name: Run Unit Tests
-          command: ./gradlew testDebugUnitTestCoverage --debug
+          command: ./gradlew testDebugUnitTestCoverage
 
       - run:
           name: Upload code coverage report
@@ -85,7 +85,7 @@ jobs:
 
       - run:
           name: Run detekt
-          command: ./gradlew detekt --refresh-dependencies --debug --scan --rerun-tasks
+          command: ./gradlew detekt --refresh-dependencies --scan --rerun-tasks
 
       - run:
           name: Run Android lint
@@ -106,10 +106,10 @@ workflows:
     jobs:
       - debug-build
 
-#      - unit-tests:
-#          requires:
-#            - debug-build
-#
-#      - lint:
-#          requires:
-#            - debug-build
+      - unit-tests:
+          requires:
+            - debug-build
+
+      - lint:
+          requires:
+            - debug-build

@@ -11,7 +11,7 @@ internal class Converters {
     if (data == null) {
       return null
     }
-    return Cbor.decodeFromByteArray(Filter.serializer(), data)
+    return Cbor.load(Filter.serializer(), data)
   }
 
   @TypeConverter
@@ -19,6 +19,6 @@ internal class Converters {
     if (filter == null) {
       return null
     }
-    return Cbor.encodeToByteArray(Filter.serializer(), filter)
+    return Cbor.dump(Filter.serializer(), filter)
   }
 }

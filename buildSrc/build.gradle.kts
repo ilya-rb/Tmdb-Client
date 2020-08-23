@@ -25,7 +25,7 @@ gradlePlugin {
 }
 
 object SharedBuildVersions {
-  const val kotlinVersion = "1.4.0"
+  const val kotlinVersion = "1.3.72"
   const val agpVersion = "4.2.0-alpha07"
 }
 

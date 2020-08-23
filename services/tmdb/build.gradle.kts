@@ -3,7 +3,7 @@ plugins {
   id("de.mannodermaus.android-junit5")
   kotlin("android")
   kotlin("kapt")
-  kotlin("plugin.serialization") version "1.4.0"
+  kotlin("plugin.serialization") version "1.3.70"
 }
 
 apply(from = rootProject.file("gradle/configure-kotlin-sources.gradle"))
