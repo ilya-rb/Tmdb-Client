@@ -23,7 +23,7 @@ buildscript {
 }
 
 plugins {
-  id("io.gitlab.arturbosch.detekt") version "1.12.0-RC1"
+  id("io.gitlab.arturbosch.detekt") version "1.12.0"
   id("com.github.ben-manes.versions") version "0.29.0"
   id("tmdbclient")
 }

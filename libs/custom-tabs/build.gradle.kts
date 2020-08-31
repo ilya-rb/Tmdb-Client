@@ -7,7 +7,10 @@ apply(from = rootProject.file("gradle/configure-kotlin-sources.gradle"))
 
 dependencies {
   api(Deps.Android.AndroidX.browserHelper)
-
-  implementation(Deps.Kotlin.std)
+  
   implementation(project(Modules.Core.logger))
+
+  implementation(Deps.Android.AndroidX.activity)
+  implementation(Deps.Android.AndroidX.appcompat)
+  implementation(Deps.Kotlin.std)
 }

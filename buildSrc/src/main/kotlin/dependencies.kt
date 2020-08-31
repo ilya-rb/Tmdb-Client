@@ -92,14 +92,16 @@ object Deps {
         const val compiler = "androidx.room:room-compiler:$roomVersion"
       }
 
+      const val activity = "androidx.activity:activity-ktx:1.2.0-alpha08"
+      const val appcompat = "androidx.appcompat:appcompat:1.3.0-alpha02"
       const val fragment = "androidx.fragment:fragment-ktx:1.3.0-alpha08"
       const val navigation = "androidx.navigation:navigation-fragment:2.3.0"
       const val material = "com.google.android.material:material:1.3.0-alpha02"
       const val recyclerView = "androidx.recyclerview:recyclerview:1.2.0-alpha05"
       const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
       const val emoji = "androidx.emoji:emoji:1.2.0-alpha01"
-      const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0"
-      const val browserHelper = "com.google.androidbrowserhelper:androidbrowserhelper:1.4.0"
+      const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.1"
+      const val browserHelper = "com.google.androidbrowserhelper:androidbrowserhelper:2.0.0"
     }
 
     object Compose {
@@ -164,7 +166,7 @@ object Deps {
     object Debug {
 
       object Flipper {
-        private const val flipperVersion = "0.52.1"
+        private const val flipperVersion = "0.54.0"
 
         const val flipper = "com.facebook.flipper:flipper:$flipperVersion"
         const val flipperNetwork = "com.facebook.flipper:flipper-network-plugin:$flipperVersion"
@@ -220,14 +222,14 @@ object Deps {
     }
 
     object AndroidX {
-      private const val espressoVersion = "3.3.0-rc03"
+      private const val espressoVersion = "3.3.0"
 
       const val core = "androidx.arch.core:core-testing:2.1.0"
-      const val rules = "androidx.test:rules:1.3.0-rc03"
-      const val runner = "androidx.test:runner:1.3.0-rc03"
+      const val rules = "androidx.test:rules:1.3.0-"
+      const val runner = "androidx.test:runner:1.3.0"
       const val espresso = "androidx.test.espresso:espresso-core:$espressoVersion"
       const val espressoIntents = "androidx.test.espresso:espresso-intents:$espressoVersion"
-      const val extJunit = "androidx.test.ext:junit-ktx:1.1.2-rc03"
+      const val extJunit = "androidx.test.ext:junit-ktx:1.1.2"
       const val uiAutomator = "androidx.test.uiautomator:uiautomator:2.2.0"
       const val benchmark = "androidx.benchmark:benchmark-junit4:1.1.0-alpha01"
     }
