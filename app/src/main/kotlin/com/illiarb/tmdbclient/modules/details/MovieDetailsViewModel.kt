@@ -7,7 +7,9 @@ import com.illiarb.tmdbclient.libs.ui.common.ViewStateEvent
 import com.illiarb.tmdbclient.libs.util.Async
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.Event
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.State
-import com.illiarb.tmdbclient.navigation.NavigationAction.MovieDetails.GoToMovieDetails
+import com.illiarb.tmdbclient.navigation.NavigationAction
+import com.illiarb.tmdbclient.navigation.NavigationAction.Exit
+import com.illiarb.tmdbclient.navigation.NavigationAction.MovieDetails
 import com.illiarb.tmdbclient.navigation.NavigationAction.VideoList
 import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
@@ -71,8 +73,9 @@ class MovieDetailsViewModel @Inject constructor(
 
   override fun onUiEvent(event: Event) {
     when (event) {
-      is Event.MovieClicked -> router.executeAction(GoToMovieDetails(event.movie.id))
+      is Event.MovieClicked -> router.executeAction(MovieDetails(event.movie.id))
       is Event.PlayClicked -> router.executeAction(VideoList(movieId))
+      is Event.BackPressed -> router.executeAction(Exit)
     }
   }
 
@@ -89,6 +92,7 @@ class MovieDetailsViewModel @Inject constructor(
   }
 
   sealed class Event {
+    object BackPressed : Event()
     object PlayClicked : Event()
     class MovieClicked(val movie: Movie) : Event()
   }

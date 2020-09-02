@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentFactory
 import com.illiarb.tmdbclient.di.modules.NavigationModule.DefaultVideosFragmentClassName
 import com.illiarb.tmdbclient.libs.buildconfig.BuildConfig
 import com.illiarb.tmdbclient.libs.tools.ConnectivityStatus
+import com.illiarb.tmdbclient.libs.tools.FeatureFlagStore
 import com.illiarb.tmdbclient.navigation.DeepLinkHandler
 import com.illiarb.tmdbclient.navigation.NavigatorHolder
 import com.illiarb.tmdbclient.system.DayNightModeChangeNotifier
@@ -28,6 +29,7 @@ interface MainComponent {
     fun fragmentFactory(): FragmentFactory
     fun deepLinkHandler(): DeepLinkHandler
     fun systemChangesNotifier(): DayNightModeChangeNotifier
+    fun featureFlagStore(): FeatureFlagStore
 
     @DefaultVideosFragmentClassName
     fun defaultVideoFragmentClassName(): Class<out Fragment>

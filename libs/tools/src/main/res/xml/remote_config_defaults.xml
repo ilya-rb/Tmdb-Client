@@ -6,4 +6,9 @@
         <value>true</value>
     </entry>
 
+    <entry>
+        <key>movie_details_compose</key>
+        <value>true</value>
+    </entry>
+
 </defaultsMap>

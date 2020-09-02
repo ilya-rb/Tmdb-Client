@@ -6,6 +6,13 @@ plugins {
 
 apply(from = rootProject.file("gradle/configure-kotlin-sources.gradle"))
 
+android {
+
+  buildFeatures {
+    compose = true
+  }
+}
+
 dependencies {
   kapt(Deps.Dagger.compiler)
 
@@ -21,6 +28,12 @@ dependencies {
   api(Deps.Android.AndroidX.constraintLayout)
   api(Deps.Android.AndroidX.Lifecycle.ktx)
   api(Deps.Android.AndroidX.ViewModel.core)
+
   api(Deps.AdapterDelegates.core)
   api(Deps.AdapterDelegates.dsl)
+
+  api(Deps.Android.Compose.foundation)
+  api(Deps.Android.Compose.material)
+  api(Deps.Android.Compose.materialIconsExtended)
+  api(Deps.Android.Compose.tooling)
 }

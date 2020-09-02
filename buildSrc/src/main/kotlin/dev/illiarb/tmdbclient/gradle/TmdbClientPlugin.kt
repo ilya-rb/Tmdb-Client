@@ -99,6 +99,11 @@ private fun Project.configureAndroid() {
         }
       }
 
+      composeOptions {
+        kotlinCompilerVersion = Deps.Kotlin.kotlinVersion
+        kotlinCompilerExtensionVersion = "1.0.0-alpha01"
+      }
+
       compileOptions {
         isCoreLibraryDesugaringEnabled = true
       }

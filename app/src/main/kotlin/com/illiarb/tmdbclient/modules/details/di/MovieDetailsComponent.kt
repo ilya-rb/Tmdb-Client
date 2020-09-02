@@ -7,6 +7,7 @@ import com.illiarb.tmdbclient.services.analytics.AnalyticsService
 import com.illiarb.tmdbclient.services.tmdb.interactor.MoviesInteractor
 import dagger.BindsInstance
 import dagger.Component
+import com.illiarb.tmdbclient.modules.details.v2.MovieDetailsFragment as ComposeMovieDetailsFragment
 
 @Component(
   dependencies = [MovieDetailsComponent.Dependencies::class],
@@ -29,4 +30,5 @@ interface MovieDetailsComponent {
   }
 
   fun inject(fragment: MovieDetailsFragment)
+  fun inject(fragment: ComposeMovieDetailsFragment)
 }

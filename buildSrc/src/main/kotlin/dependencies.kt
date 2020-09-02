@@ -11,7 +11,8 @@ object Build {
     "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
     "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
     // Generate nullability assertions for non-null Java expressions
-    "-Xstrict-java-nullability-assertions"
+    "-Xstrict-java-nullability-assertions",
+    "-Xallow-jvm-ir-dependencies"
   )
 
   val daggerJavaCompilerArgs = listOf(
@@ -50,7 +51,6 @@ object Deps {
   }
 
   object Kotlin {
-    @Suppress("MemberVisibilityCanBePrivate")
     const val kotlinVersion = "1.4.0"
 
     private const val kotlinCoroutinesVersion = "1.3.9"
@@ -105,12 +105,18 @@ object Deps {
     }
 
     object Compose {
-      private const val composeVersion = "0.1.0-dev07"
+      private const val composeVersion = "1.0.0-alpha01"
+      private const val accompanistVersion = "0.2.0"
 
+      const val runtime = "androidx.compose.runtime:runtime:$composeVersion"
+      const val foundation = "androidx.compose.foundation:foundation:$composeVersion"
+      const val layout = "androidx.compose.foundation:foundation-layout:$composeVersion"
+      const val ui = "androidx.compose.ui:ui:$composeVersion"
+      const val material = "androidx.compose.material:material:$composeVersion"
+      const val materialIconsExtended = "androidx.compose.material:material-icons-extended:$composeVersion"
       const val tooling = "androidx.ui:ui-tooling:$composeVersion"
-      const val layout = "androidx.ui:ui-layout:$composeVersion"
-      const val material = "androidx.ui:ui-material:$composeVersion"
-      const val foundation = "androidx.ui:ui-foundation:$composeVersion"
+
+      const val accompanistCoil = "dev.chrisbanes.accompanist:accompanist-coil:$accompanistVersion"
     }
 
     object Firebase {

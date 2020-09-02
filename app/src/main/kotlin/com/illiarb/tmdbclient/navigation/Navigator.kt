@@ -9,10 +9,10 @@ import androidx.navigation.Navigation
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.libs.customtabs.CustomTabsHelper
 import com.illiarb.tmdbclient.libs.customtabs.WebViewFallback
+import com.illiarb.tmdbclient.libs.tools.FeatureFlagStore
+import com.illiarb.tmdbclient.libs.tools.FeatureFlagStore.FeatureFlag
 import com.illiarb.tmdbclient.navigation.NavigationAction.Companion.EXTRA_ADD_ON_TOP
 import com.illiarb.tmdbclient.navigation.NavigationAction.Companion.EXTRA_MOVIE_DETAILS_MOVIE_ID
-import com.illiarb.tmdbclient.navigation.NavigationAction.Discover
-import com.illiarb.tmdbclient.navigation.NavigationAction.Home
 import com.illiarb.tmdbclient.navigation.NavigationAction.MovieDetails
 import com.illiarb.tmdbclient.navigation.video.MovieVideosNavigator
 import javax.inject.Inject
@@ -26,11 +26,18 @@ interface Navigator {
 
   class DefaultNavigator @Inject constructor(
     private val activity: FragmentActivity,
-    private val movieVideosNavigator: MovieVideosNavigator
+    private val featureFlagStore: FeatureFlagStore,
+    private val movieVideosNavigator: MovieVideosNavigator,
   ) : Navigator {
 
     override fun executeAction(action: NavigationAction) {
       val controller = Navigation.findNavController(activity, R.id.nav_host_fragment)
+
+      if (action is MovieDetails
+        && featureFlagStore.isFeatureEnabled(FeatureFlag.MOVIE_DETAILS_COMPOSE)
+      ) {
+        action.destinationId = R.id.action_to_movie_details_compose
+      }
 
       when (action) {
         is NavigationAction.WebViewAction -> showWebView(action)
@@ -51,9 +58,7 @@ interface Navigator {
         putBoolean(EXTRA_ADD_ON_TOP, action.addOnTop)
 
         when (action) {
-          is Home.GoToMovieDetails -> putInt(EXTRA_MOVIE_DETAILS_MOVIE_ID, action.id)
-          is Discover.GoToMovieDetails -> putInt(EXTRA_MOVIE_DETAILS_MOVIE_ID, action.id)
-          is MovieDetails.GoToMovieDetails -> putInt(EXTRA_MOVIE_DETAILS_MOVIE_ID, action.id)
+          is MovieDetails -> putInt(EXTRA_MOVIE_DETAILS_MOVIE_ID, action.id)
           else -> {
           }
         }
