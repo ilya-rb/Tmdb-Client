@@ -68,8 +68,8 @@ object Deps {
   object Android {
 
     object Build {
-      const val compileSdkVersion = 30
-      const val targetSdkVersion = 30
+      const val compileSdkVersion = 29
+      const val targetSdkVersion = 29
       const val minSdkVersion = 21
       const val gradlePlugin = "com.android.tools.build:gradle:4.2.0-alpha07"
     }
