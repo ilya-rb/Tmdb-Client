@@ -82,7 +82,6 @@ dependencies {
   implementation(Deps.Misc.viewBindingPropertyDelegate)
   implementation(Deps.Misc.binaryPrefs)
   implementation(Deps.Misc.youtubePlayer)
-
   implementation(Deps.Android.Firebase.core)
   implementation(Deps.Android.AndroidX.navigation)
   implementation(Deps.Android.AndroidX.Room.core)
