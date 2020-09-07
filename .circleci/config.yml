@@ -8,7 +8,7 @@ defaults: &defaults
 
   environment:
     JVM_OPTS: -Xmx3200m
-    GRADLE_OPTS: -Xmx1536m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.daemon=false -Dorg.gradle.caching=true -Dorg.gradle.configureondemand=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
+    GRADLE_OPTS: -Xmx1536m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.daemon=true -Dorg.gradle.caching=true -Dkotlin.incremental=false
 
 cache_key: &cache_key
   key: jars-{{ checksum "build.gradle.kts" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
@@ -37,7 +37,7 @@ jobs:
 
       - run:
           name: Build Project
-          command: ./gradlew assembleDebug --scan --rerun-tasks --exclude-task test --exclude-task lint
+          command: ./gradlew assembleDebug --scan --rerun-tasks
 
       - save_cache:
           paths:
@@ -85,7 +85,7 @@ jobs:
 
       - run:
           name: Run detekt
-          command: ./gradlew detekt --refresh-dependencies --stacktrace --scan --rerun-tasks
+          command: ./gradlew detekt --refresh-dependencies --scan --rerun-tasks
 
       - run:
           name: Run Android lint
@@ -106,10 +106,10 @@ workflows:
     jobs:
       - debug-build
 
-      - unit-tests:
-          requires:
-            - debug-build
-
-      - lint:
-          requires:
-            - debug-build
+#      - unit-tests:
+#          requires:
+#            - debug-build
+#
+#      - lint:
+#          requires:
+#            - debug-build

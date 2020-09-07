@@ -12,15 +12,14 @@ import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import com.illiarb.tmdbclient.libs.customtabs.R
 
-internal class WebViewActivity : AppCompatActivity() {
+internal class WebViewActivity : AppCompatActivity(R.layout.activity_web_view_fallback) {
 
   @SuppressLint("SetJavaScriptEnabled")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_web_view_fallback)
 
     val title = intent.getStringExtra(EXTRA_TITLE)
-    val url = intent.getStringExtra(EXTRA_URL)
+    val url = intent.getStringExtra(EXTRA_URL) ?: ""
 
     val actionBar = supportActionBar
     if (actionBar != null) {

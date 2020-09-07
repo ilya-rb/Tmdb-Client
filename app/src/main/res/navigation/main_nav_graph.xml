@@ -13,10 +13,6 @@
             android:id="@+id/action_discover_to_filters"
             app:destination="@id/filtersFragment" />
 
-        <action
-            android:id="@+id/action_discover_to_movie_details"
-            app:destination="@id/movieDetailsFragment" />
-
     </fragment>
 
     <fragment
@@ -28,13 +24,13 @@
         android:id="@+id/movieDetailsFragment"
         android:name="com.illiarb.tmdbclient.modules.details.MovieDetailsFragment"
         android:label="MovieDetailsFragment"
-        tools:layout="@layout/fragment_movie_details">
+        tools:layout="@layout/fragment_movie_details" />
 
-        <action
-            android:id="@+id/action_details_to_details"
-            app:destination="@id/movieDetailsFragment" />
-
-    </fragment>
+    <fragment
+        android:id="@+id/movieDetailsFragmentCompose"
+        android:name="com.illiarb.tmdbclient.modules.details.v2.MovieDetailsFragment"
+        android:label="MovieDetailsFragmentCompose"
+        tools:layout="@layout/fragment_movie_details_compose" />
 
     <fragment
         android:id="@+id/filtersFragment"
@@ -59,10 +55,6 @@
             app:destination="@id/discoverFragment" />
 
         <action
-            android:id="@+id/action_home_to_movie_details"
-            app:destination="@id/movieDetailsFragment" />
-
-        <action
             android:id="@+id/action_home_to_ui_components"
             app:destination="@id/uiComponentsFragment" />
 
@@ -76,5 +68,13 @@
         android:id="@+id/deep_link_discover"
         app:destination="@id/discoverFragment"
         app:launchSingleTop="true" />
+
+    <action
+        android:id="@+id/action_to_movie_details"
+        app:destination="@id/movieDetailsFragment" />
+
+    <action
+        android:id="@+id/action_to_movie_details_compose"
+        app:destination="@id/movieDetailsFragmentCompose" />
 
 </navigation>

@@ -71,7 +71,7 @@ class DiscoverViewModel @Inject constructor(
   }
 
   private fun processMovieClick(movie: Movie) {
-    router.executeAction(NavigationAction.Discover.GoToMovieDetails(movie.id))
+    router.executeAction(NavigationAction.MovieDetails(movie.id))
   }
 
   private fun switchToUserMode(mode: State.UserMode) {

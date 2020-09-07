@@ -23,7 +23,7 @@ buildscript {
 }
 
 plugins {
-  id("io.gitlab.arturbosch.detekt") version "1.8.0" apply false
+  id("io.gitlab.arturbosch.detekt") version "1.12.0"
   id("com.github.ben-manes.versions") version "0.29.0"
   id("tmdbclient")
 }
@@ -56,6 +56,10 @@ subprojects {
   apply {
     from(rootProject.file("code-quality-tools/detekt.gradle"))
   }
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt> {
+  this.jvmTarget = "1.8"
 }
 
 tasks.register(name = "clean", type = Delete::class) {

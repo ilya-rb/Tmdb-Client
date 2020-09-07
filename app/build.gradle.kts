@@ -18,6 +18,7 @@ android {
 
   buildFeatures {
     buildConfig = true
+    compose = true
   }
 
   signingConfigs {
@@ -74,7 +75,9 @@ dependencies {
 
   implementation(Deps.Kotlin.std)
   implementation(Deps.Kotlin.coroutines)
+
   implementation(Deps.Dagger.core)
+
   implementation(Deps.Misc.timber)
   implementation(Deps.Misc.viewBindingPropertyDelegate)
   implementation(Deps.Misc.binaryPrefs)
@@ -82,6 +85,7 @@ dependencies {
   implementation(Deps.Android.Firebase.core)
   implementation(Deps.Android.AndroidX.navigation)
   implementation(Deps.Android.AndroidX.Room.core)
+
   implementation(Deps.Retrofit.core)
   implementation(Deps.Moshi.core)
 

@@ -9,7 +9,8 @@ interface FeatureFlagStore {
 
   enum class FeatureFlag(val code: String) {
 
-    AUTH("auth_enabled")
+    AUTH("auth_enabled"),
+
+    MOVIE_DETAILS_COMPOSE("movie_details_compose"),
   }
 }
-

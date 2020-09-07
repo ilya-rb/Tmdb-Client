@@ -4,7 +4,7 @@ import androidx.annotation.IdRes
 import com.illiarb.tmdbclient.R
 
 sealed class NavigationAction(
-  @IdRes val destinationId: Int,
+  @IdRes var destinationId: Int,
   val addOnTop: Boolean = false
 ) {
 
@@ -17,23 +17,16 @@ sealed class NavigationAction(
 
   sealed class Home(@IdRes destinationId: Int) : NavigationAction(destinationId) {
 
-    class GoToMovieDetails(val id: Int) : Home(R.id.action_home_to_movie_details)
-
     object GoToDiscover : Home(R.id.action_home_to_discover)
 
     object GoToUiComponents : Home(R.id.action_home_to_ui_components)
   }
 
-  sealed class MovieDetails(@IdRes destinationId: Int) : NavigationAction(destinationId) {
-
-    class GoToMovieDetails(val id: Int) : MovieDetails(R.id.action_details_to_details)
-  }
+  data class MovieDetails(val id: Int) : NavigationAction(R.id.action_to_movie_details)
 
   sealed class Discover(@IdRes destinationId: Int) : NavigationAction(destinationId) {
 
     object GoToFilters : Discover(R.id.action_discover_to_filters)
-
-    class GoToMovieDetails(val id: Int) : Discover(R.id.action_discover_to_movie_details)
   }
 
   sealed class WebViewAction(val url: String) : NavigationAction(NO_ID) {

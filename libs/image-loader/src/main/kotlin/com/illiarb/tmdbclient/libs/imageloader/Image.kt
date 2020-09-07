@@ -14,3 +14,12 @@ sealed class Image {
 
   data class Uri(val uri: AndroidUri) : Image()
 }
+
+internal fun Image.asGlideModel(): Any {
+  return when (this) {
+    is Image.Network -> url
+    is Image.File -> file
+    is Image.Resource -> resId
+    is Image.Uri -> uri
+  }
+}

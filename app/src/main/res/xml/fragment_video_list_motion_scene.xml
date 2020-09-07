@@ -5,8 +5,8 @@
     <Transition
         app:constraintSetEnd="@id/end"
         app:constraintSetStart="@id/start"
-        app:duration="700"
-        app:motionInterpolator="easeOut">
+        app:duration="500"
+        app:motionInterpolator="easeInOut">
 
         <OnSwipe
             app:dragDirection="dragUp"
@@ -55,9 +55,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/youtubePlayer"
+            app:layout_constraintBottom_toBottomOf="@id/videoListTitle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/youtubePlayer" />
+            app:layout_constraintStart_toEndOf="@id/videoListTitle" />
 
         <Constraint
             android:id="@+id/videoListPlay"
@@ -65,9 +65,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/spacing_small"
             android:elevation="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/youtubePlayer"
+            app:layout_constraintBottom_toBottomOf="@id/videoListTitle"
             app:layout_constraintEnd_toStartOf="@id/videoListClose"
-            app:layout_constraintTop_toTopOf="@id/youtubePlayer" />
+            app:layout_constraintTop_toTopOf="@id/videoListTitle" />
 
         <Constraint
             android:id="@+id/videoListCollapsedBackground"
@@ -134,9 +134,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/spacing_small"
             android:elevation="@dimen/youtube_player_elevation_collapsed"
-            app:layout_constraintBottom_toBottomOf="@id/youtubePlayer"
+            app:layout_constraintBottom_toBottomOf="@id/videoListTitle"
             app:layout_constraintEnd_toEndOf="@id/videoListCollapsedBackground"
-            app:layout_constraintTop_toTopOf="@id/youtubePlayer" />
+            app:layout_constraintTop_toTopOf="@id/videoListTitle" />
 
         <Constraint
             android:id="@+id/videoListPlay"
@@ -144,9 +144,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/spacing_small"
             android:elevation="@dimen/youtube_player_elevation_collapsed"
-            app:layout_constraintBottom_toBottomOf="@id/youtubePlayer"
+            app:layout_constraintBottom_toBottomOf="@id/videoListTitle"
             app:layout_constraintEnd_toStartOf="@id/videoListClose"
-            app:layout_constraintTop_toTopOf="@id/youtubePlayer" />
+            app:layout_constraintTop_toTopOf="@id/videoListTitle" />
 
         <Constraint
             android:id="@+id/videoListCollapsedBackground"

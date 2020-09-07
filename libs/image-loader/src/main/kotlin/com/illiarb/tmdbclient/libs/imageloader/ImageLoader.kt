@@ -1,5 +1,6 @@
 package com.illiarb.tmdbclient.libs.imageloader
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
@@ -60,21 +61,35 @@ fun ImageView.loadImage(
     .into(this)
 }
 
+fun loadImageSync(
+  context: Context,
+  image: Image,
+  requestOptions: RequestOptions.() -> RequestOptions = { this }
+) : Drawable {
+  val options = requestOptions(RequestOptions())
+
+  return Glide.with(context)
+    .load(image.asGlideResource())
+    .apply(mapOptions(options))
+    .error(options.errorRes)
+    .also { request ->
+      if (options.useCrossFade) {
+        request.transition(DrawableTransitionOptions.withCrossFade())
+      }
+      if (options.thumbnail != 0f) {
+        request.thumbnail(options.thumbnail)
+      }
+    }
+    .submit()
+    .get()
+}
+
 fun ImageView.clear() {
   Glide.with(this).clear(this)
 }
 
-private fun Image.asGlideResource(): Any {
-  return when (this) {
-    is Image.Network -> this.url
-    is Image.File -> this.file
-    is Image.Resource -> this.resId
-    is Image.Uri -> this.uri
-  }
-}
-
 @Suppress("ComplexMethod")
-private fun mapOptions(options: RequestOptions): com.bumptech.glide.request.RequestOptions {
+internal fun mapOptions(options: RequestOptions): com.bumptech.glide.request.RequestOptions {
   val result = com.bumptech.glide.request.RequestOptions()
   val transformations = mutableListOf<Transformation<Bitmap>>()
 
@@ -103,4 +118,14 @@ private fun mapOptions(options: RequestOptions): com.bumptech.glide.request.Requ
 
   return result
 }
+
+private fun Image.asGlideResource(): Any {
+  return when (this) {
+    is Image.Network -> this.url
+    is Image.File -> this.file
+    is Image.Resource -> this.resId
+    is Image.Uri -> this.uri
+  }
+}
+
 

@@ -10,7 +10,9 @@ import com.illiarb.tmdbclient.libs.util.Async
 import com.illiarb.tmdbclient.libs.util.Result
 import com.illiarb.tmdbclient.modules.home.HomeViewModel.Event
 import com.illiarb.tmdbclient.modules.home.HomeViewModel.State
+import com.illiarb.tmdbclient.navigation.NavigationAction
 import com.illiarb.tmdbclient.navigation.NavigationAction.Home
+import com.illiarb.tmdbclient.navigation.NavigationAction.MovieDetails
 import com.illiarb.tmdbclient.navigation.NavigationAction.WebViewAction
 import com.illiarb.tmdbclient.navigation.Router
 import com.illiarb.tmdbclient.services.analytics.AnalyticsService
@@ -105,7 +107,7 @@ class HomeViewModel @Inject constructor(
   override fun onUiEvent(event: Event) {
     when (event) {
       is Event.SeeAllClick -> router.executeAction(Home.GoToDiscover)
-      is Event.MovieClick -> router.executeAction(Home.GoToMovieDetails(event.movie.id))
+      is Event.MovieClick -> router.executeAction(MovieDetails(event.movie.id))
       is Event.TmdbIconClick -> router.executeAction(WebViewAction.GoToTmdbPage)
       is Event.DebugClick -> router.executeAction(Home.GoToUiComponents)
       is Event.DiscoverClick -> router.executeAction(Home.GoToDiscover)

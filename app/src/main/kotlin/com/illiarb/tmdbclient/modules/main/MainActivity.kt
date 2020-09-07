@@ -8,6 +8,7 @@ import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentFactory
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.snackbar.Snackbar
@@ -59,8 +60,11 @@ class MainActivity : AppCompatActivity(), Injectable {
       .inject(this)
   }
 
+  @SuppressLint("UnsafeExperimentalUsageWarning")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    FragmentManager.enableNewStateManager(true)
 
     supportFragmentManager.registerFragmentLifecycleCallbacks(
       NavHostFragmentLifecycleCallbacks(
