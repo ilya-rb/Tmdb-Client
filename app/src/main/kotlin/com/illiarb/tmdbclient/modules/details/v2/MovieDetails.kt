@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRowFor
+import androidx.compose.foundation.lazy.LazyRowForIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.FloatingActionButton
@@ -36,6 +36,7 @@ import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.libs.ui.v2.theme.Size
 import com.illiarb.tmdbclient.libs.ui.v2.theme.size
 import com.illiarb.tmdbclient.libs.util.Async
+import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.Event
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.MovieDetailsSection.MovieSimilar
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel.State
@@ -60,25 +61,7 @@ fun MovieDetails(
       is Async.Fail -> ErrorState()
       is Async.Success -> {
         ScrollableColumn(modifier = Modifier.fillMaxSize()) {
-          SuccessState(movieState(), eventsSender)
-
-          viewState.value.movieSections.find { it is MovieSimilar }?.let { section ->
-            val similar = section as MovieSimilar
-
-            HorizontalList(
-              items = similar.movies,
-              title = stringResource(id = R.string.movie_details_similar)
-            ) {
-              MovieCard(
-                movie = it,
-                width = dimensionResource(id = R.dimen.item_movie_width),
-                height = dimensionResource(id = R.dimen.item_movie_height),
-                modifier = Modifier.padding(horizontal = size(size = Size.Small)),
-              ) { movie ->
-                eventsSender.offer(Event.MovieClicked(movie))
-              }
-            }
-          }
+          SuccessState(movieState(), viewState.value.movieSections, eventsSender)
         }
       }
     }
@@ -86,7 +69,11 @@ fun MovieDetails(
 }
 
 @Composable
-fun SuccessState(movie: Movie, eventsSender: SendChannel<Event>) {
+fun SuccessState(
+  movie: Movie,
+  movieSections: List<MovieDetailsViewModel.MovieDetailsSection>,
+  eventsSender: SendChannel<Event>
+) {
   ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
     val (poster, backButton, fab) = createRefs()
 
@@ -98,9 +85,9 @@ fun SuccessState(movie: Movie, eventsSender: SendChannel<Event>) {
           .fillMaxWidth()
           .height(dimensionResource(id = R.dimen.movie_details_poster_height))
           .constrainAs(poster) {
+            top.linkTo(parent.top)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
-            top.linkTo(parent.top)
           }
       )
     }
@@ -120,10 +107,10 @@ fun SuccessState(movie: Movie, eventsSender: SendChannel<Event>) {
     FloatingActionButton(
       onClick = { eventsSender.offer(Event.PlayClicked) },
       modifier = Modifier.constrainAs(fab) {
+        bottom.linkTo(parent.bottom)
+        top.linkTo(parent.bottom)
         start.linkTo(parent.start)
         end.linkTo(parent.end)
-        top.linkTo(poster.bottom)
-        bottom.linkTo(poster.bottom)
       },
     ) {
       Icon(asset = Icons.Filled.PlayArrow)
@@ -131,7 +118,6 @@ fun SuccessState(movie: Movie, eventsSender: SendChannel<Event>) {
   }
 
   MovieInfo(
-    modifier = Modifier.padding(top = size(Size.Normal)),
     input = MovieInfoParams(
       title = movie.title,
       description = movie.getGenresString(),
@@ -142,6 +128,7 @@ fun SuccessState(movie: Movie, eventsSender: SendChannel<Event>) {
         formatArgs = arrayOf(movie.runtime)
       )
     ),
+    modifier = Modifier.padding(top = size(Size.Large))
   )
 
   if (!movie.overview.isNullOrEmpty()) {
@@ -151,13 +138,37 @@ fun SuccessState(movie: Movie, eventsSender: SendChannel<Event>) {
   HorizontalList(
     items = movie.images,
     title = stringResource(id = R.string.movie_details_photos)
-  ) {
+  ) { index, item ->
+    val padding = if (index == 0 || index == movie.images.size - 1) 0.dp else size(Size.Small)
+
     MoviePhoto(
-      image = it,
-      modifier = Modifier.padding(
-        horizontal = size(Size.Small)
-      )
+      image = item,
+      modifier = Modifier.padding(horizontal = padding)
     )
+  }
+
+  movieSections.find { it is MovieSimilar }?.let { section ->
+    val similar = section as MovieSimilar
+
+    HorizontalList(
+      items = similar.movies,
+      title = stringResource(id = R.string.movie_details_similar)
+    ) { index, item ->
+      val padding = if (index == 0 || index == similar.movies.size - 1) {
+        0.dp
+      } else {
+        size(size = Size.Small)
+      }
+
+      MovieCard(
+        movie = item,
+        width = dimensionResource(id = R.dimen.item_movie_width),
+        height = dimensionResource(id = R.dimen.item_movie_height),
+        modifier = Modifier.padding(horizontal = padding),
+      ) { movie ->
+        eventsSender.offer(Event.MovieClicked(movie))
+      }
+    }
   }
 }
 
@@ -180,7 +191,7 @@ private fun ErrorState() {
 private fun <T> HorizontalList(
   items: List<T>,
   title: String,
-  itemContent: @Composable (T) -> Unit,
+  itemContent: @Composable (Int, T) -> Unit,
 ) {
   if (items.isEmpty()) return
 
@@ -190,12 +201,13 @@ private fun <T> HorizontalList(
     modifier = Modifier.padding(start = size(Size.Normal)),
   )
 
-  LazyRowFor(
+  LazyRowForIndexed(
     items = items,
     contentPadding = InnerPadding(size(Size.Normal)),
-  ) {
-    itemContent(it)
-  }
+    itemContent = { index, item ->
+      itemContent(index, item)
+    }
+  )
 }
 
 @Composable

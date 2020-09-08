@@ -106,7 +106,7 @@ object Deps {
     }
 
     object Compose {
-      private const val composeVersion = "1.0.0-alpha01"
+      private const val composeVersion = "1.0.0-alpha02"
       private const val accompanistVersion = "0.2.0"
 
       const val runtime = "androidx.compose.runtime:runtime:$composeVersion"
