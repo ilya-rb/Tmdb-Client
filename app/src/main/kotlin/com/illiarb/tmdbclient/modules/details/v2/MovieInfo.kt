@@ -9,11 +9,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.illiarb.tmdbclient.R
+import com.illiarb.tmdbclient.libs.ui.v2.theme.Size
+import com.illiarb.tmdbclient.libs.ui.v2.theme.size
 
 data class MovieInfoParams(
   val title: String,
@@ -41,56 +42,66 @@ fun MovieInfo(
     if (!input.description.isNullOrEmpty()) {
       Text(
         text = input.description,
-        modifier = Modifier.fillMaxWidth()
-          .padding(top = dimensionResource(id = R.dimen.spacing_normal)),
+        modifier = Modifier.fillMaxWidth().padding(top = size(Size.Normal)),
         textAlign = TextAlign.Center,
       )
     }
 
+    val showReleaseDate = !input.releaseDate.isNullOrEmpty()
+    val showCountry = !input.country.isNullOrEmpty()
+    val showLength = !input.runtime.isNullOrEmpty()
+
     Row(
       modifier = Modifier.fillMaxWidth()
-        .padding(top = dimensionResource(id = R.dimen.spacing_normal)),
+        .padding(top = size(Size.Normal)),
       horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
-      Text(
-        text = stringResource(id = R.string.movie_details_year),
-        color = MaterialTheme.colors.secondary,
-        style = MaterialTheme.typography.body1,
-      )
-      Text(
-        text = stringResource(id = R.string.movie_details_country),
-        color = MaterialTheme.colors.secondary,
-        style = MaterialTheme.typography.body1,
-      )
-      Text(
-        text = stringResource(id = R.string.movie_details_length),
-        color = MaterialTheme.colors.secondary,
-        style = MaterialTheme.typography.body1,
-      )
+      if (showReleaseDate) {
+        Text(
+          text = stringResource(id = R.string.movie_details_year),
+          color = MaterialTheme.colors.secondary,
+          style = MaterialTheme.typography.body1,
+        )
+      }
+
+      if (showCountry) {
+        Text(
+          text = stringResource(id = R.string.movie_details_country),
+          color = MaterialTheme.colors.secondary,
+          style = MaterialTheme.typography.body1,
+        )
+      }
+
+      if (showLength) {
+        Text(
+          text = stringResource(id = R.string.movie_details_length),
+          color = MaterialTheme.colors.secondary,
+          style = MaterialTheme.typography.body1,
+        )
+      }
     }
 
     Row(
-      modifier = Modifier.fillMaxWidth()
-        .padding(top = dimensionResource(id = R.dimen.spacing_normal)),
+      modifier = Modifier.fillMaxWidth().padding(top = size(Size.Small)),
       horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
-      if (!input.releaseDate.isNullOrEmpty()) {
+      if (showReleaseDate) {
         Text(
-          text = input.releaseDate,
+          text = input.releaseDate!!,
           style = MaterialTheme.typography.caption,
         )
       }
 
-      if (!input.country.isNullOrEmpty()) {
+      if (showCountry) {
         Text(
-          text = input.country,
+          text = input.country!!,
           style = MaterialTheme.typography.caption,
         )
       }
 
-      if (!input.runtime.isNullOrEmpty()) {
+      if (showLength) {
         Text(
-          text = input.runtime,
+          text = input.runtime!!,
           style = MaterialTheme.typography.caption,
         )
       }
