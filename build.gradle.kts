@@ -19,12 +19,14 @@ buildscript {
     classpath(Deps.GradlePlugins.versionsCheck)
     classpath(Deps.GradlePlugins.jacoco)
     classpath(Deps.GradlePlugins.junit5)
+    classpath(Deps.GradlePlugins.jetifierCheck)
   }
 }
 
 plugins {
   id("io.gitlab.arturbosch.detekt") version "1.12.0"
   id("com.github.ben-manes.versions") version "0.29.0"
+  id("com.github.plnice.canidropjetifier") version "0.5"
   id("tmdbclient")
 }
 
@@ -42,7 +44,8 @@ allprojects {
       when {
         requested.name.startsWith("kotlin-stdlib") -> {
           useTarget(
-            "${requested.group}:${requested.name.replace("jre", "jdk")}:${requested.version}")
+            "${requested.group}:${requested.name.replace("jre", "jdk")}:${requested.version}"
+          )
         }
         else -> when (requested.group) {
           "org.jetbrains.kotlin" -> useVersion(Deps.Kotlin.kotlinVersion)

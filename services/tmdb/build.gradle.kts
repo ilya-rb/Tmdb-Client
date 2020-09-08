@@ -8,13 +8,6 @@ plugins {
 
 apply(from = rootProject.file("gradle/configure-kotlin-sources.gradle"))
 
-android {
-  defaultConfig {
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
-  }
-}
-
 dependencies {
 
   kapt(Deps.Dagger.compiler)
@@ -52,10 +45,7 @@ dependencies {
 
   androidTestImplementation(project(Modules.Core.test))
   androidTestImplementation(Deps.Test.JUnit5.jupiterApi)
-  androidTestImplementation(Deps.Test.JUnit5.androidTestCore)
   androidTestImplementation(Deps.Test.AndroidX.extJunit)
   androidTestImplementation(Deps.Test.AndroidX.runner)
   androidTestImplementation(Deps.Test.truth)
-
-  androidTestRuntimeOnly(Deps.Test.JUnit5.androidTestRunner)
 }

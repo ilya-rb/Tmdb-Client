@@ -45,7 +45,7 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details_compos
           MovieDetails(
             context = viewLifecycleOwner.lifecycleScope.coroutineContext,
             state = viewModel.state,
-            eventsSender = viewModel.events
+            eventsSender = viewModel.events,
           )
         }
       }

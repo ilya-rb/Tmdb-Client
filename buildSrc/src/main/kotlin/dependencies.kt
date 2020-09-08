@@ -48,6 +48,7 @@ object Deps {
     const val jacoco = "org.jacoco:org.jacoco.core:0.8.5"
     const val versionsCheck = "com.github.ben-manes:gradle-versions-plugin:0.29.0"
     const val junit5 = "de.mannodermaus.gradle.plugins:android-junit5:1.6.2.0"
+    const val jetifierCheck = "com.github.plnice:canidropjetifier:0.5"
   }
 
   object Kotlin {
@@ -105,7 +106,7 @@ object Deps {
     }
 
     object Compose {
-      private const val composeVersion = "1.0.0-alpha01"
+      private const val composeVersion = "1.0.0-alpha02"
       private const val accompanistVersion = "0.2.0"
 
       const val runtime = "androidx.compose.runtime:runtime:$composeVersion"
@@ -188,7 +189,7 @@ object Deps {
       }
 
       object Hyperion {
-        private const val hyperionVersion = "0.9.27"
+        private const val hyperionVersion = "0.9.29"
 
         const val core = "com.willowtreeapps.hyperion:hyperion-core:$hyperionVersion"
         const val geigerCounter =
@@ -223,6 +224,7 @@ object Deps {
       const val jupiterParams = "org.junit.jupiter:junit-jupiter-params:$jUnitVersion"
       const val junitVintageEngine = "org.junit.vintage:junit-vintage-engine:$jUnitVersion"
 
+      // TODO: Use when it upgrades to AndroidX
       const val androidTestCore = "de.mannodermaus.junit5:android-test-core:$androidTestVersion"
       const val androidTestRunner = "de.mannodermaus.junit5:android-test-runner:$androidTestVersion"
     }

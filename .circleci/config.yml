@@ -8,7 +8,7 @@ defaults: &defaults
 
   environment:
     JVM_OPTS: -Xmx3200m
-    GRADLE_OPTS: -Xmx1536m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.daemon=true -Dorg.gradle.caching=true -Dkotlin.incremental=false
+    GRADLE_OPTS: -Xmx1536m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.daemon=false -Dorg.gradle.caching=true -Dkotlin.incremental=false
 
 cache_key: &cache_key
   key: jars-{{ checksum "build.gradle.kts" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
