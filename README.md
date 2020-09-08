@@ -10,9 +10,10 @@ Simple playground for testing various Android stuff(libraries, frameworks, archi
 
 ## Technologies:
 - Kotlin
-- AndroidX/Jetpack (View model, Navigation, Lifecycle)
+- Jetpack libraries (View model, Navigation, Lifecycle, etc..)
+- Jetpack Compose
 - Room
-- Standard Square stuff (Retrofit, OkHttp)
+- Standard Square stuff (Retrofit, OkHttp, Moshi)
 - Firebase (remote config) for feature flags
 - [Binary preferences](https://github.com/yandextaxitech/binaryprefs) as a file cache
 - [Adapter delegates](https://github.com/sockeqwe/AdapterDelegates) for RecyclerView 
@@ -25,12 +26,17 @@ Simple playground for testing various Android stuff(libraries, frameworks, archi
 
 ## Some screenshots:
 ![1](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/1.png)
-![2](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/2.png)
 ![3](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/3.png)
 ![4](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/4.png)
 ![5](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/5.png)
 ![6](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/6.png)
 ![7](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/7.png)
+
+
+## Details screen:
+|Regular                                                            |Jetpack Compose
+|-------------------------------------------------------------------|-------------------------------------------------------------------------|
+|![7](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/2.png) |![8](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/2_compose.png)
 
 ## Navigation graph
 ![NavGraph](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/nav_graph.png)
