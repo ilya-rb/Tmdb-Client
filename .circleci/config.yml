@@ -37,7 +37,7 @@ jobs:
 
       - run:
           name: Build Project
-          command: ./gradlew assembleDebug --scan --rerun-tasks
+          command: ./gradlew assembleDebug --scan --rerun-tasks --exclude-task=test --exclude-task=lint
 
       - save_cache:
           paths:
