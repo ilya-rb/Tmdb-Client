@@ -37,7 +37,7 @@ jobs:
 
       - run:
           name: Build Project
-          command: ./gradlew assembleDebug --scan --rerun-tasks --exclude-task=test --exclude-task=lint
+          command: ./gradlew build --scan --rerun-tasks
 
       - save_cache:
           paths:
@@ -48,28 +48,31 @@ jobs:
           path: app/build/reports
           destination: reports
 
-  unit-tests:
-    <<: *defaults
-
-    steps:
-      - checkout
-
-      - restore_cache:
-          <<: *cache_key
-
-      - run:
-          <<: *grab_configuration_files
-
-      - run:
-          name: Run Unit Tests
-          command: ./gradlew testDebugUnitTestCoverage
-
-      - run:
-          name: Upload code coverage report
-          command: bash <(curl -s https://codecov.io/bash) -f "*.xml"
-
       - store_test_results:
           path: app/test/test-results
+#
+#  unit-tests:
+#    <<: *defaults
+#
+#    steps:
+#      - checkout
+#
+#      - restore_cache:
+#          <<: *cache_key
+#
+#      - run:
+#          <<: *grab_configuration_files
+#
+#      - run:
+#          name: Run Unit Tests
+#          command: ./gradlew testDebugUnitTestCoverage
+#
+#      - run:
+#          name: Upload code coverage report
+#          command: bash <(curl -s https://codecov.io/bash) -f "*.xml"
+#
+#      - store_test_results:
+#          path: app/test/test-results
 
   lint:
     <<: *defaults
@@ -106,10 +109,6 @@ workflows:
     jobs:
       - debug-build
 
-      - unit-tests:
+      - lint:
           requires:
             - debug-build
-#
-#      - lint:
-#          requires:
-#            - debug-build
