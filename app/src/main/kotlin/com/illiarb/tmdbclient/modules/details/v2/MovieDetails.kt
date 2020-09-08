@@ -3,6 +3,8 @@ package com.illiarb.tmdbclient.modules.details.v2
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.gestures.ZoomableController
+import androidx.compose.foundation.gestures.zoomable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ConstraintLayout
@@ -25,10 +27,14 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.drawLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.AnimationClockAmbient
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -77,6 +83,7 @@ fun SuccessState(
 ) {
   ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
     val (poster, backButton, fab) = createRefs()
+    val imageScale = remember { mutableStateOf(1f) }
 
     movie.backdropPath?.let {
       TmdbImage(
@@ -90,6 +97,25 @@ fun SuccessState(
             start.linkTo(parent.start)
             end.linkTo(parent.end)
           }
+          .zoomable(
+            controller = ZoomableController(
+              animationClock = AnimationClockAmbient.current
+            ) { value ->
+              imageScale.value = imageScale.value * value
+            },
+            onZoomStopped = {
+              imageScale.value = 1f
+            }
+          )
+          .drawLayer(
+            scaleX = imageScale.value,
+            scaleY = imageScale.value,
+          )
+          .clip(
+            MoviePosterShape(
+              offset = dimensionResource(id = R.dimen.movie_details_curve_offset).value
+            )
+          )
       )
     }
 

@@ -6,7 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.FrameManager
-import androidx.compose.runtime.onPreCommit
+import androidx.compose.runtime.onCommit
 import androidx.compose.runtime.stateFor
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageAsset
@@ -36,7 +36,7 @@ fun ComposeGlideImage(
   val drawable = stateFor<Drawable?>(null) { null }
   val context = ContextAmbient.current
 
-  onPreCommit(imageAsset) {
+  onCommit(imageAsset) {
     val glide = Glide.with(context)
     var target: CustomTarget<Bitmap>? = null
 
@@ -81,7 +81,7 @@ fun ComposeGlideImage(
       contentScale = contentScale
     )
   } else if (theDrawable != null) {
-    ComposeCanvas(modifier = Modifier.fillMaxSize() + modifier) {
+    ComposeCanvas(modifier = Modifier.fillMaxSize().then(modifier)) {
       drawCanvas { canvas, _ ->
         theDrawable.draw(canvas.nativeCanvas)
       }

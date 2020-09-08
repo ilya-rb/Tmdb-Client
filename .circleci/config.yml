@@ -37,7 +37,7 @@ jobs:
 
       - run:
           name: Build Project
-          command: ./gradlew build --scan --rerun-tasks
+          command: ./gradlew assembleDebug --scan --rerun-tasks
 
       - save_cache:
           paths:
@@ -109,6 +109,6 @@ workflows:
     jobs:
       - debug-build
 
-      - lint:
-          requires:
-            - debug-build
+#      - lint:
+#          requires:
+#            - debug-build
