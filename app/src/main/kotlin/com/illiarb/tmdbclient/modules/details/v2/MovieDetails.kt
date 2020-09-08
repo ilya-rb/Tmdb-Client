@@ -69,6 +69,7 @@ fun MovieDetails(
 }
 
 @Composable
+@Suppress("LongMethod")
 fun SuccessState(
   movie: Movie,
   movieSections: List<MovieDetailsViewModel.MovieDetailsSection>,
@@ -149,28 +150,11 @@ fun SuccessState(
 
   movieSections.find { it is MovieSimilar }?.let { section ->
     val similar = section as MovieSimilar
-
-    HorizontalList(
-      items = similar.movies,
-      title = stringResource(id = R.string.movie_details_similar)
-    ) { index, item ->
-      val padding = if (index == 0 || index == similar.movies.size - 1) {
-        0.dp
-      } else {
-        size(size = Size.Small)
-      }
-
-      MovieCard(
-        movie = item,
-        width = dimensionResource(id = R.dimen.item_movie_width),
-        height = dimensionResource(id = R.dimen.item_movie_height),
-        modifier = Modifier.padding(horizontal = padding),
-      ) { movie ->
-        eventsSender.offer(Event.MovieClicked(movie))
-      }
-    }
+    MovieSimilarSection(movies = similar.movies, eventsSender = eventsSender)
   }
 }
+
+private const val PROGRESS_SIZE = 40
 
 @Composable
 private fun ProgressState() {
@@ -179,12 +163,15 @@ private fun ProgressState() {
     verticalArrangement = Arrangement.Center,
     horizontalGravity = Alignment.CenterHorizontally
   ) {
-    CircularProgressIndicator(modifier = Modifier.size(40.dp).gravity(Alignment.CenterHorizontally))
+    CircularProgressIndicator(
+      modifier = Modifier.size(PROGRESS_SIZE.dp).gravity(Alignment.CenterHorizontally)
+    )
   }
 }
 
 @Composable
 private fun ErrorState() {
+  // No-op
 }
 
 @Composable
@@ -225,4 +212,30 @@ private fun MoviePhoto(
     modifier = imageModifier,
     contentScale = ContentScale.Crop
   )
+}
+
+@Composable
+private fun MovieSimilarSection(
+  movies: List<Movie>,
+  eventsSender: SendChannel<Event>,
+) {
+  HorizontalList(
+    items = movies,
+    title = stringResource(id = R.string.movie_details_similar)
+  ) { index, item ->
+    val padding = if (index == 0 || index == movies.size - 1) {
+      0.dp
+    } else {
+      size(size = Size.Small)
+    }
+
+    MovieCard(
+      movie = item,
+      width = dimensionResource(id = R.dimen.item_movie_width),
+      height = dimensionResource(id = R.dimen.item_movie_height),
+      modifier = Modifier.padding(horizontal = padding),
+    ) { movie ->
+      eventsSender.offer(Event.MovieClicked(movie))
+    }
+  }
 }
