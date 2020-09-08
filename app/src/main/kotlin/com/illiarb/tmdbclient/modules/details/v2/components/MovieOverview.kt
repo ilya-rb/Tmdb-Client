@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.modules.details.v2
+package com.illiarb.tmdbclient.modules.details.v2.components
 
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.ColumnScope.gravity

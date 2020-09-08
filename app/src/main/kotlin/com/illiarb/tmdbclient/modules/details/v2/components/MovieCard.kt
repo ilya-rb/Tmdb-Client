@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.modules.details.v2
+package com.illiarb.tmdbclient.modules.details.v2.components
 
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
@@ -22,6 +22,8 @@ import com.illiarb.tmdbclient.libs.ui.v2.theme.size
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import com.illiarb.tmdbclient.util.TmdbImage
 
+private const val TITLE_MAX_LINES = 2
+
 @Composable
 fun MovieCard(
   modifier: Modifier = Modifier,
@@ -30,8 +32,6 @@ fun MovieCard(
   movie: Movie,
   onClick: (Movie) -> Unit
 ) {
-  val titleMaxLines = 2
-
   Column(modifier = modifier.width(width)) {
     movie.posterPath?.let {
       TmdbImage(
@@ -49,7 +49,7 @@ fun MovieCard(
       textAlign = TextAlign.Center,
       text = movie.title,
       style = MaterialTheme.typography.caption,
-      maxLines = titleMaxLines,
+      maxLines = TITLE_MAX_LINES,
       modifier = Modifier.padding(top = size(Size.Small)).fillMaxWidth(),
     )
   }

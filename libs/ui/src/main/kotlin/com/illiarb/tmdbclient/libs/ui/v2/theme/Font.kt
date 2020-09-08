@@ -13,6 +13,7 @@ private val Montserrat = fontFamily(
   font(R.font.montserrat_bold, FontWeight.Bold)
 )
 
+@Suppress("MagicNumber")
 internal val TmdbTypography: Typography
   get() = Typography(
     h1 = TextStyle(
