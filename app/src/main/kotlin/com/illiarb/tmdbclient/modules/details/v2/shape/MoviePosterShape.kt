@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.modules.details.v2
+package com.illiarb.tmdbclient.modules.details.v2.shape
 
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path

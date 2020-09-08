@@ -1,4 +1,4 @@
-package com.illiarb.tmdbclient.modules.details.v2
+package com.illiarb.tmdbclient.modules.details.v2.components
 
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +15,25 @@ import androidx.compose.ui.text.style.TextAlign
 import com.illiarb.tmdbclient.R
 import com.illiarb.tmdbclient.libs.ui.v2.theme.Size
 import com.illiarb.tmdbclient.libs.ui.v2.theme.size
+
+data class MovieInfoParams(
+  val title: String,
+  val description: String?,
+  val releaseDate: String?,
+  val country: String?,
+  val runtime: String?
+) {
+
+  val showReleaseDate: Boolean
+    get() = !releaseDate.isNullOrEmpty()
+
+  val showCountry: Boolean
+    get() = !country.isNullOrEmpty()
+
+  val showRuntime: Boolean
+    get() = !runtime.isNullOrEmpty()
+}
+
 
 @Composable
 fun MovieInfo(
@@ -104,22 +123,4 @@ private fun ValuesRow(input: MovieInfoParams) {
       )
     }
   }
-}
-
-data class MovieInfoParams(
-  val title: String,
-  val description: String?,
-  val releaseDate: String?,
-  val country: String?,
-  val runtime: String?
-) {
-
-  val showReleaseDate: Boolean
-    get() = !releaseDate.isNullOrEmpty()
-
-  val showCountry: Boolean
-    get() = !country.isNullOrEmpty()
-
-  val showRuntime: Boolean
-    get() = !runtime.isNullOrEmpty()
 }
