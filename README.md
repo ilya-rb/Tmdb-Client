@@ -1,5 +1,5 @@
 # WIP [ 🚧 👷🔧 🚧 ] TMDB client
-### Simple application to browse some movies using [TMDB](https://www.themoviedb.org/)
+### It's a work-in-progress movie Android app that lets you explore movies using [TMDB API](https://www.themoviedb.org/)
 
 [![CircleCI](https://circleci.com/gh/ilya-rb/Tmdb-Client/tree/master.svg?style=svg)](https://circleci.com/gh/ilya-rb/Tmdb-Client/tree/master)
 [![codecov](https://codecov.io/gh/ilya-rb/Tmdb-Client/branch/master/graph/badge.svg)](https://codecov.io/gh/ilya-rb/Tmdb-Client)
