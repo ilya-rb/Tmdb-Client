@@ -40,6 +40,7 @@ import com.illiarb.tmdbclient.modules.details.v2.components.MovieOverview
 import com.illiarb.tmdbclient.modules.details.v2.components.MoviePhoto
 import com.illiarb.tmdbclient.modules.details.v2.components.MoviePoster
 import com.illiarb.tmdbclient.modules.details.v2.components.getListItemPadding
+import com.illiarb.tmdbclient.modules.details.v2.util.navigationBarsPadding
 import com.illiarb.tmdbclient.modules.details.v2.util.statusBarsPadding
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import kotlinx.coroutines.channels.SendChannel
@@ -149,7 +150,8 @@ fun SuccessState(
 
     HorizontalList(
       items = similar.movies,
-      title = stringResource(id = R.string.movie_details_similar)
+      title = stringResource(id = R.string.movie_details_similar),
+      listModifier = Modifier.navigationBarsPadding(),
     ) { index, item ->
       MovieCard(
         movie = item,
