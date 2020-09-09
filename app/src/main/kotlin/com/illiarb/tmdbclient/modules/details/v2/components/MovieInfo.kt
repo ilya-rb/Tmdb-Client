@@ -50,6 +50,7 @@ fun MovieInfo(
     if (!input.description.isNullOrEmpty()) {
       Text(
         text = input.description,
+        style = MaterialTheme.typography.body2,
         modifier = Modifier.fillMaxWidth().padding(top = size(Size.Normal)),
         textAlign = TextAlign.Center,
       )
