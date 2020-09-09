@@ -1,4 +1,5 @@
-# <img src="https://github.com/ilya-rb/Tmdb-Client/blob/master/art/tmdb_logo.svg" height="80">
+<img src="https://github.com/ilya-rb/Tmdb-Client/blob/master/art/tmdb_logo.svg" height="80">
+
 # TMDB browser [work in-progress 🚧 👷🔧 🚧 ]
 ### It's a work-in-progress movie Android app that lets you explore movies using [TMDB API](https://www.themoviedb.org/)
 
