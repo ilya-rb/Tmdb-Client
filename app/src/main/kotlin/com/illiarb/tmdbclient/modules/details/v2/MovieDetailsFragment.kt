@@ -15,6 +15,7 @@ import com.illiarb.tmdbclient.libs.ui.base.BaseFragment
 import com.illiarb.tmdbclient.libs.ui.v2.theme.TmdbTheme
 import com.illiarb.tmdbclient.modules.details.MovieDetailsViewModel
 import com.illiarb.tmdbclient.modules.details.di.DaggerMovieDetailsComponent
+import com.illiarb.tmdbclient.modules.details.v2.util.ProvideDisplayInsets
 import com.illiarb.tmdbclient.navigation.NavigationAction
 import javax.inject.Inject
 
@@ -42,11 +43,13 @@ class MovieDetailsFragment : BaseFragment(R.layout.fragment_movie_details_compos
     return super.onCreateView(inflater, container, savedInstanceState).apply {
       this?.findViewById<ComposeView>(R.id.compose_view)?.setContent {
         TmdbTheme(context = context) {
-          MovieDetails(
-            context = viewLifecycleOwner.lifecycleScope.coroutineContext,
-            state = viewModel.state,
-            eventsSender = viewModel.events,
-          )
+          ProvideDisplayInsets {
+            MovieDetails(
+              context = viewLifecycleOwner.lifecycleScope.coroutineContext,
+              state = viewModel.state,
+              eventsSender = viewModel.events,
+            )
+          }
         }
       }
     }

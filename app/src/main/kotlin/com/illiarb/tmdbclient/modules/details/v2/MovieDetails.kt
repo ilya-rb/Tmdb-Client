@@ -40,6 +40,7 @@ import com.illiarb.tmdbclient.modules.details.v2.components.MovieOverview
 import com.illiarb.tmdbclient.modules.details.v2.components.MoviePhoto
 import com.illiarb.tmdbclient.modules.details.v2.components.MoviePoster
 import com.illiarb.tmdbclient.modules.details.v2.components.getListItemPadding
+import com.illiarb.tmdbclient.modules.details.v2.util.statusBarsPadding
 import com.illiarb.tmdbclient.services.tmdb.domain.Movie
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.flow.StateFlow
@@ -91,7 +92,7 @@ fun SuccessState(
     IconButton(
       onClick = { eventsSender.offer(Event.BackPressed) },
       modifier = Modifier
-        .padding(top = size(Size.Normal), start = size(Size.Normal))
+        .statusBarsPadding()
         .constrainAs(backButton) {
           top.linkTo(parent.top)
           start.linkTo(parent.start)
@@ -124,7 +125,7 @@ fun SuccessState(
         formatArgs = arrayOf(movie.runtime)
       )
     ),
-    modifier = Modifier.padding(top = size(Size.Large))
+    modifier = Modifier.padding(top = dimensionResource(id = R.dimen.movie_details_title_padding)),
   )
 
   if (!movie.overview.isNullOrEmpty()) {

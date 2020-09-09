@@ -14,5 +14,6 @@
     <dimen name="movie_details_poster_height">250dp</dimen>
     <dimen name="movie_details_item_photo_height">100dp</dimen>
     <dimen name="movie_details_item_photo_width">150dp</dimen>
+    <dimen name="movie_details_title_padding">42dp</dimen>
 
 </resources>
