@@ -10,7 +10,7 @@ Simple playground for testing various Android stuff(libraries, frameworks, archi
 
 ## Some of the technologies used:
 - Entirely written in [Kotlin](https://kotlinlang.org/)
-- [Jetpack libraries]https://developer.android.com/jetpack (View model, Navigation, Lifecycle, etc..)
+- [Jetpack libraries](https://developer.android.com/jetpack) (View model, Navigation, Lifecycle, etc..)
 - [Jetpack Compose](https://developer.android.com/jetpack/compose)
 - [Room](https://developer.android.com/jetpack/androidx/releases/room)
 - Standard Square stuff: ([Retrofit](https://square.github.io/retrofit/), [OkHttp](https://square.github.io/okhttp/), [Moshi](https://github.com/square/moshi))
