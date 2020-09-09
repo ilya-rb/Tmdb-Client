@@ -23,8 +23,23 @@ Simple playground for testing various Android stuff(libraries, frameworks, archi
 - [Kaspresso](https://github.com/KasperskyLab/Kaspresso) for automated tests
 - [Jacoco](https://www.eclemma.org/jacoco/) for tests coverage
 
+## Setup
+1. To build the project you need to remove `.example` suffix in the `api-config.properties.example` and `keystore.properties.example` files.
+
+2. For building APK you need to specify path to debug and release `.jks` keystores.
+
+3. Also you need to supply TMDB API key. Instructions on how to get key is [here](https://developers.themoviedb.org/3/getting-started/introduction)
+
+4. And the last one is you need to create a Firebase project in order to get `google-services.json` for `google-services` gradle plugin. After that it should be placed in `app/src/debug` for debug and `app/src/release` for the release build respectively.
+For debug builds `google-services.json` file package name should contain .debug prefix like this:
+```"
+android_client_info": {
+  "package_name": "package.name.debug"
+}
+```
+
 ## Code style:
-This project uses [Detekt](https://github.com/detekt/detekt) for static analysis, also formatting code style can be found in `code-style/tmdb_code_style.xml` file
+This project uses [Detekt](https://github.com/detekt/detekt) for static analysis and formatting style can be found in `code-style/tmdb_code_style.xml` file
 
 ## Some screenshots:
 ![1](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/1.png)
@@ -33,7 +48,6 @@ This project uses [Detekt](https://github.com/detekt/detekt) for static analysis
 ![5](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/5.png)
 ![6](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/6.png)
 ![7](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/7.png)
-
 
 **Movie details screen**
 |Regular                                                            |Jetpack Compose
