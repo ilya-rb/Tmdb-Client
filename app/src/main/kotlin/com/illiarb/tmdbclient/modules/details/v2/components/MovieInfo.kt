@@ -1,7 +1,6 @@
 package com.illiarb.tmdbclient.modules.details.v2.components
 
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,7 +33,6 @@ data class MovieInfoParams(
     get() = !runtime.isNullOrEmpty()
 }
 
-
 @Composable
 fun MovieInfo(
   input: MovieInfoParams,
@@ -44,7 +42,6 @@ fun MovieInfo(
     Text(
       text = input.title,
       style = MaterialTheme.typography.h5,
-      color = MaterialTheme.colors.secondary,
       fontWeight = FontWeight.Bold,
       modifier = Modifier.fillMaxWidth(),
       textAlign = TextAlign.Center
@@ -66,15 +63,14 @@ fun MovieInfo(
 
 @Composable
 private fun LabelsRow(input: MovieInfoParams) {
-  Row(
-    modifier = Modifier.fillMaxWidth().padding(top = size(Size.Normal)),
-    horizontalArrangement = Arrangement.SpaceEvenly,
-  ) {
+  Row(modifier = Modifier.fillMaxWidth().padding(top = size(Size.Normal))) {
     if (input.showReleaseDate) {
       Text(
         text = stringResource(id = R.string.movie_details_year),
         color = MaterialTheme.colors.secondary,
-        style = MaterialTheme.typography.body1,
+        style = MaterialTheme.typography.body2,
+        modifier = Modifier.weight(1f),
+        textAlign = TextAlign.Center,
       )
     }
 
@@ -82,7 +78,9 @@ private fun LabelsRow(input: MovieInfoParams) {
       Text(
         text = stringResource(id = R.string.movie_details_country),
         color = MaterialTheme.colors.secondary,
-        style = MaterialTheme.typography.body1,
+        style = MaterialTheme.typography.body2,
+        modifier = Modifier.weight(1f),
+        textAlign = TextAlign.Center,
       )
     }
 
@@ -90,7 +88,9 @@ private fun LabelsRow(input: MovieInfoParams) {
       Text(
         text = stringResource(id = R.string.movie_details_length),
         color = MaterialTheme.colors.secondary,
-        style = MaterialTheme.typography.body1,
+        style = MaterialTheme.typography.body2,
+        modifier = Modifier.weight(1f),
+        textAlign = TextAlign.Center,
       )
     }
   }
@@ -98,14 +98,13 @@ private fun LabelsRow(input: MovieInfoParams) {
 
 @Composable
 private fun ValuesRow(input: MovieInfoParams) {
-  Row(
-    modifier = Modifier.fillMaxWidth().padding(top = size(Size.Small)),
-    horizontalArrangement = Arrangement.SpaceEvenly,
-  ) {
+  Row(modifier = Modifier.fillMaxWidth().padding(top = size(Size.Small))) {
     if (input.showReleaseDate) {
       Text(
         text = input.releaseDate!!,
         style = MaterialTheme.typography.caption,
+        modifier = Modifier.weight(1f),
+        textAlign = TextAlign.Center,
       )
     }
 
@@ -113,6 +112,8 @@ private fun ValuesRow(input: MovieInfoParams) {
       Text(
         text = input.country!!,
         style = MaterialTheme.typography.caption,
+        modifier = Modifier.weight(1f),
+        textAlign = TextAlign.Center,
       )
     }
 
@@ -120,6 +121,8 @@ private fun ValuesRow(input: MovieInfoParams) {
       Text(
         text = input.runtime!!,
         style = MaterialTheme.typography.caption,
+        modifier = Modifier.weight(1f),
+        textAlign = TextAlign.Center,
       )
     }
   }

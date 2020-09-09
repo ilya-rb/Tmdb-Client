@@ -18,7 +18,7 @@ import com.illiarb.tmdbclient.modules.details.v2.shape.MoviePosterShape
 import com.illiarb.tmdbclient.services.tmdb.domain.Image
 import com.illiarb.tmdbclient.util.TmdbImage
 
-private const val POSTER_BOTTOM_SHAPE_OFFSET = 300f
+private const val POSTER_BOTTOM_SHAPE_OFFSET = 200f
 
 @Composable
 fun MoviePoster(

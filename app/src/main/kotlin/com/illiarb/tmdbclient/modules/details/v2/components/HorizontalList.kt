@@ -11,6 +11,7 @@ import com.illiarb.tmdbclient.libs.ui.v2.theme.size
 
 @Composable
 fun <T> HorizontalList(
+  listModifier: Modifier = Modifier,
   items: List<T>,
   title: String,
   itemContent: @Composable (Int, T) -> Unit,
@@ -27,7 +28,7 @@ fun <T> HorizontalList(
 
   LazyRowForIndexed(
     items = items,
-    modifier = Modifier.padding(top = size(Size.Normal)),
+    modifier = Modifier.padding(top = size(Size.Normal)).then(listModifier),
     itemContent = { index, item ->
       itemContent(index, item)
     }
