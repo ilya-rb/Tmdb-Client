@@ -35,7 +35,7 @@ This project uses [Detekt](https://github.com/detekt/detekt) for static analysis
 ![7](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/7.png)
 
 
-## Details screen:
+Movie details screen:
 |Regular                                                            |Jetpack Compose
 |-------------------------------------------------------------------|-------------------------------------------------------------------------|
 |![7](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/2.png) |![8](https://github.com/ilya-rb/Tmdb-Client/blob/master/art/2_compose.png)
