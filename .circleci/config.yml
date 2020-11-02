@@ -50,29 +50,29 @@ jobs:
 
       - store_test_results:
           path: app/test/test-results
-#
-#  unit-tests:
-#    <<: *defaults
-#
-#    steps:
-#      - checkout
-#
-#      - restore_cache:
-#          <<: *cache_key
-#
-#      - run:
-#          <<: *grab_configuration_files
-#
-#      - run:
-#          name: Run Unit Tests
-#          command: ./gradlew testDebugUnitTestCoverage
-#
-#      - run:
-#          name: Upload code coverage report
-#          command: bash <(curl -s https://codecov.io/bash) -f "*.xml"
-#
-#      - store_test_results:
-#          path: app/test/test-results
+
+  unit-tests:
+    <<: *defaults
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          <<: *cache_key
+
+      - run:
+          <<: *grab_configuration_files
+
+      - run:
+          name: Run Unit Tests
+          command: ./gradlew testDebugUnitTestCoverage
+
+      - run:
+          name: Upload code coverage report
+          command: bash <(curl -s https://codecov.io/bash) -f "*.xml"
+
+      - store_test_results:
+          path: app/test/test-results
 
   lint:
     <<: *defaults
@@ -109,6 +109,10 @@ workflows:
     jobs:
       - debug-build
 
-#      - lint:
-#          requires:
-#            - debug-build
+      - unit-tests:
+          requires:
+            - debug-build
+
+      - lint:
+          requires:
+            - debug-build
