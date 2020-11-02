@@ -79,29 +79,6 @@ jobs:
           name: Run detekt
           command: ./gradlew detekt
 
-#      - run:
-#          name: Clear daemon cache
-#          command: rm -fr ~/.gradle/daemon/
-
-      - store_test_results:
-          path: app/test/test-results
-
-  lint:
-    <<: *defaults
-
-    steps:
-      - checkout
-
-      - restore_cache:
-          <<: *cache_key
-
-      - run:
-          <<: *grab_configuration_files
-
-      - run:
-          name: Run detekt
-          command: ./gradlew detekt
-
       - run:
           name: Run Android lint
           command: ./gradlew lintDebug
@@ -110,9 +87,8 @@ jobs:
           path: reports/
           destination: reports
 
-      - store_artifacts:
-          path: reports/detekt
-          destination: reports/detekt
+      - store_test_results:
+          path: app/test/test-results
 
 workflows:
   version: 2
@@ -120,7 +96,3 @@ workflows:
   develop:
     jobs:
       - unit-tests
-
-#      - lint:
-#          requires:
-#            - unit-tests
