@@ -76,8 +76,12 @@ jobs:
           command: bash <(curl -s https://codecov.io/bash) -f "*.xml"
 
       - run:
-          name: Clear daemon cache
-          command: rm -fr ~/.gradle/daemon/
+          name: Run detekt
+          command: ./gradlew detekt
+
+#      - run:
+#          name: Clear daemon cache
+#          command: rm -fr ~/.gradle/daemon/
 
       - store_test_results:
           path: app/test/test-results
@@ -117,6 +121,6 @@ workflows:
     jobs:
       - unit-tests
 
-      - lint:
-          requires:
-            - unit-tests
+#      - lint:
+#          requires:
+#            - unit-tests
