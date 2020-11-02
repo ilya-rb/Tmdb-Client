@@ -4,11 +4,11 @@ defaults: &defaults
   working_directory: ~/code
 
   docker:
-    - image: circleci/android:api-29
+    - image: circleci/android:api-30-node
 
   environment:
     JVM_OPTS: -Xmx3200m
-    GRADLE_OPTS: -Xmx1536m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.daemon=false -Dorg.gradle.caching=true -Dkotlin.incremental=false
+    GRADLE_OPTS: -Dorg.gradle.daemon=false
 
 cache_key: &cache_key
   key: jars-{{ checksum "build.gradle.kts" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
@@ -50,31 +50,8 @@ jobs:
 
       - store_test_results:
           path: app/test/test-results
-#
-#  unit-tests:
-#    <<: *defaults
-#
-#    steps:
-#      - checkout
-#
-#      - restore_cache:
-#          <<: *cache_key
-#
-#      - run:
-#          <<: *grab_configuration_files
-#
-#      - run:
-#          name: Run Unit Tests
-#          command: ./gradlew testDebugUnitTestCoverage
-#
-#      - run:
-#          name: Upload code coverage report
-#          command: bash <(curl -s https://codecov.io/bash) -f "*.xml"
-#
-#      - store_test_results:
-#          path: app/test/test-results
 
-  lint:
+  unit-tests:
     <<: *defaults
 
     steps:
@@ -87,8 +64,20 @@ jobs:
           <<: *grab_configuration_files
 
       - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+
+      - run:
+          name: Run Unit Tests
+          command: ./gradlew testDebugUnitTestCoverage --scan --rerun-tasks
+
+      - run:
+          name: Upload code coverage report
+          command: bash <(curl -s https://codecov.io/bash) -f "*.xml"
+
+      - run:
           name: Run detekt
-          command: ./gradlew detekt --refresh-dependencies --scan --rerun-tasks
+          command: ./gradlew detekt
 
       - run:
           name: Run Android lint
@@ -98,17 +87,12 @@ jobs:
           path: reports/
           destination: reports
 
-      - store_artifacts:
-          path: reports/detekt
-          destination: reports/detekt
+      - store_test_results:
+          path: app/test/test-results
 
 workflows:
   version: 2
 
   develop:
     jobs:
-      - debug-build
-
-#      - lint:
-#          requires:
-#            - debug-build
+      - unit-tests

@@ -87,7 +87,7 @@ dependencies {
   implementation(Deps.Android.AndroidX.Room.core)
 
   implementation(Deps.Retrofit.core)
-  implementation(Deps.Moshi.core)
+  implementation(Deps.Moshi.kotlin)
 
   debugImplementation(Deps.Tools.Debug.LeakCanary.android)
   debugImplementation(Deps.Tools.Debug.LeakCanary.objectWatcher)

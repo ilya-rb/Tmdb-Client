@@ -1,8 +1,8 @@
 package com.illiarb.tmdbclient.modules.details.v2.components
 
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.layout.ColumnScope.gravity
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
@@ -50,7 +50,7 @@ internal fun MovieOverview(text: String) {
       shape = MaterialTheme.shapes.medium,
       onClick = { isExpanded.value = !isExpanded.value },
       modifier = Modifier
-        .gravity(Alignment.End)
+        .wrapContentWidth(align = Alignment.End)
         .padding(end = size(Size.Small)),
     ) {
       Text(

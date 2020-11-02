@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package com.illiarb.tmdbclient.modules.details.v2.components
 
 import androidx.compose.foundation.Text

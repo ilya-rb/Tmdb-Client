@@ -1,4 +1,4 @@
-@file:Suppress("NOTHING_TO_INLINE", "unused")
+@file:Suppress("NOTHING_TO_INLINE", "unused", "TooManyFunctions")
 
 package com.illiarb.tmdbclient.modules.details.v2.util
 
@@ -419,6 +419,7 @@ fun Modifier.navigationBarsWidthPlus(
  * @param bottom Whether to apply the inset on the bottom dimension.
  */
 @Composable
+@Suppress("ComplexMethod")
 fun Insets.toInnerPadding(
   start: Boolean = true,
   top: Boolean = true,

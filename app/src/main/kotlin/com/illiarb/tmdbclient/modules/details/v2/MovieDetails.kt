@@ -172,7 +172,7 @@ private fun ProgressState() {
   Column(
     modifier = Modifier.fillMaxSize(),
     verticalArrangement = Arrangement.Center,
-    horizontalGravity = Alignment.CenterHorizontally
+    horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     CircularProgressIndicator(
       modifier = Modifier.size(PROGRESS_SIZE.dp).gravity(Alignment.CenterHorizontally)

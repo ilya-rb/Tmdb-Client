@@ -11,7 +11,7 @@ import androidx.compose.runtime.stateFor
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageAsset
 import androidx.compose.ui.graphics.asImageAsset
-import androidx.compose.ui.graphics.drawscope.drawCanvas
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ContextAmbient
@@ -82,7 +82,7 @@ fun ComposeGlideImage(
     )
   } else if (theDrawable != null) {
     ComposeCanvas(modifier = Modifier.fillMaxSize().then(modifier)) {
-      drawCanvas { canvas, _ ->
+      drawIntoCanvas { canvas ->
         theDrawable.draw(canvas.nativeCanvas)
       }
     }
