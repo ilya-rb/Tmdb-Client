@@ -68,16 +68,16 @@ jobs:
           command: ./gradlew androidDependencies
 
       - run:
-          name: Clear daemon cache
-          command: rm -fr ~/.gradle/daemon/
-
-      - run:
           name: Run Unit Tests
           command: ./gradlew testDebugUnitTestCoverage --scan --rerun-tasks
 
       - run:
           name: Upload code coverage report
           command: bash <(curl -s https://codecov.io/bash) -f "*.xml"
+
+      - run:
+          name: Clear daemon cache
+          command: rm -fr ~/.gradle/daemon/
 
       - store_test_results:
           path: app/test/test-results
@@ -117,6 +117,6 @@ workflows:
     jobs:
       - unit-tests
 
-#      - lint:
-#          requires:
-#            - debug-build
+      - lint:
+          requires:
+            - unit-tests
