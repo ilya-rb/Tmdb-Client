@@ -96,7 +96,7 @@ jobs:
 
       - run:
           name: Run detekt
-          command: ./gradlew detekt --refresh-dependencies --scan --rerun-tasks
+          command: ./gradlew detekt
 
       - run:
           name: Run Android lint
