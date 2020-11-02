@@ -46,6 +46,7 @@ private fun Project.configureKotlin() {
       jvmTarget = "1.8"
       @Suppress("SuspiciousCollectionReassignment")
       freeCompilerArgs += Build.kotlinStandardFreeCompilerArgs
+      useIR = false
     }
   }
 
@@ -101,7 +102,7 @@ private fun Project.configureAndroid() {
 
       composeOptions {
         kotlinCompilerVersion = Deps.Kotlin.kotlinVersion
-        kotlinCompilerExtensionVersion = "1.0.0-alpha02"
+        kotlinCompilerExtensionVersion = Deps.Android.Compose.composeVersion
       }
 
       compileOptions {

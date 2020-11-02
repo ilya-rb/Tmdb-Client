@@ -3,7 +3,7 @@ plugins {
   id("de.mannodermaus.android-junit5")
   kotlin("android")
   kotlin("kapt")
-  kotlin("plugin.serialization") version "1.4.0"
+  kotlin("plugin.serialization") version "1.4.10"
 }
 
 apply(from = rootProject.file("gradle/configure-kotlin-sources.gradle"))
@@ -29,9 +29,9 @@ dependencies {
   implementation(Deps.Retrofit.core)
   implementation(Deps.Retrofit.converterMoshi)
   implementation(Deps.Retrofit.coroutinesAdapter)
-  implementation(Deps.Moshi.core)
   implementation(Deps.Moshi.kotlin)
   implementation(Deps.Moshi.adapters)
+  implementation(Deps.Misc.javax)
 
   debugImplementation(Deps.Tools.Debug.Flipper.flipper)
   debugImplementation(Deps.Tools.Debug.Flipper.flipperNetwork)
