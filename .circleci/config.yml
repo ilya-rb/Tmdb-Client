@@ -7,8 +7,8 @@ defaults: &defaults
     - image: circleci/android:api-30-node
 
   environment:
-    JVM_OPTS: -Xmx2048m
-    GRADLE_OPTS: -Xmx1536m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.daemon=true -Dorg.gradle.caching=true -Dorg.gradle.configureondemand=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
+    JVM_OPTS: -Xmx3200m
+    GRADLE_OPTS: -Dorg.gradle.daemon=false
 
 cache_key: &cache_key
   key: jars-{{ checksum "build.gradle.kts" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
@@ -64,12 +64,16 @@ jobs:
           <<: *grab_configuration_files
 
       - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+
+      - run:
           name: Clear daemon cache
           command: rm -fr ~/.gradle/daemon/
 
       - run:
           name: Run Unit Tests
-          command: ./gradlew testDebugUnitTestCoverage
+          command: ./gradlew testDebugUnitTestCoverage --scan --rerun-tasks
 
       - run:
           name: Upload code coverage report
@@ -111,11 +115,7 @@ workflows:
 
   develop:
     jobs:
-      - debug-build
-
-      - unit-tests:
-          requires:
-            - debug-build
+      - unit-tests
 
 #      - lint:
 #          requires:
