@@ -64,6 +64,10 @@ jobs:
           <<: *grab_configuration_files
 
       - run:
+          name: Clear daemon cache
+          command: rm -fr ~/.gradle/daemon/
+
+      - run:
           name: Run Unit Tests
           command: ./gradlew testDebugUnitTestCoverage
 
@@ -113,6 +117,6 @@ workflows:
           requires:
             - debug-build
 
-      - lint:
-          requires:
-            - debug-build
+#      - lint:
+#          requires:
+#            - debug-build
