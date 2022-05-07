@@ -1,7 +1,6 @@
 <img src="https://github.com/ilya-rb/Tmdb-Client/blob/master/art/tmdb_logo.svg" height="80">
 
 # TMDB browser [work in-progress 🚧 👷🔧 🚧 ]
-### It's a work-in-progress movie Android app that lets you explore movies using [TMDB API](https://www.themoviedb.org/)
 
 [![CircleCI](https://circleci.com/gh/ilya-rb/Tmdb-Client/tree/master.svg?style=svg)](https://circleci.com/gh/ilya-rb/Tmdb-Client/tree/master)
 [![codecov](https://codecov.io/gh/ilya-rb/Tmdb-Client/branch/master/graph/badge.svg)](https://codecov.io/gh/ilya-rb/Tmdb-Client)
